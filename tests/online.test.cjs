@@ -88,3 +88,15 @@ test('nối vào game: tham quan không ghi bản lưu, phím tắt và bảng b
  assert.match(ol,/return \{cash:0,ws:WS,ds:DS,fl:FL,unlocked:\[\.\.\.UNLOCKED\],t:0,objs:/);
  assert.ok(!/'receivables'|'pickups'/.test(ol.slice(ol.indexOf('function olOfficeSnapshot'),ol.indexOf('function olProfileData'))));
 });
+
+test('OAuth chưa bật hoặc mất mạng không chuyển người chơi khỏi game',async()=>{
+ const c=setup();let requested='';
+ c.AbortSignal={timeout:()=>undefined};
+ c.fetch=async url=>{requested=url;return {ok:true,json:async()=>({external:{google:false,facebook:false}})};};
+ const be=c.olSupabaseBackend({url:'https://example.supabase.co',anonKey:'public'});
+ await assert.rejects(be.signInOAuth('google'),/Google chưa bật/);
+ assert.equal(requested,'https://example.supabase.co/auth/v1/settings');
+ await assert.rejects(be.signInOAuth('facebook'),/Facebook chưa bật/);
+ c.fetch=async()=>{throw Error('network');};
+ await assert.rejects(be.signInOAuth('google'),/network/);
+});

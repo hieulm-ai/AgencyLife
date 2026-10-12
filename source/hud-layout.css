@@ -527,3 +527,7 @@ body.visiting #repChip{display:none}
 .feedback-icon{display:inline-block;flex:none;width:48px;height:48px;background-image:url('__FEEDBACK_ICONS__');background-size:200% 200%;background-repeat:no-repeat;border-radius:9px;image-rendering:pixelated}
 .rv-opt.rv-icon-option{display:grid;grid-template-columns:48px minmax(0,1fr);align-items:center;gap:10px}.feedback-copy{min-width:0}.feedback-copy b,.feedback-copy small{display:block}.feedback-copy small{margin-top:3px;line-height:1.35}.feedback-later{display:flex;align-items:center;justify-content:center;gap:7px}.feedback-later .feedback-icon{width:28px;height:28px}
 @media(max-width:480px){.rv-opt.rv-icon-option{grid-template-columns:40px minmax(0,1fr);gap:8px}.rv-icon-option .feedback-icon{width:40px;height:40px}}
+
+.support-drink{display:block;width:min(100%,340px);max-height:48dvh;object-fit:contain;margin:8px auto;border-radius:18px}.support-caption{text-align:center;font-weight:bold}
+
+.duck-guide{width:76px;height:66px;margin:0 auto;background:url("__GUIDE_DUCK__") center top / 76px auto no-repeat;image-rendering:pixelated;flex-shrink:0}#guide .guide-head{flex-wrap:wrap}#guide .guide-head .duck-guide{flex-basis:100%;background-size:76px auto}#tour .thand{z-index:2}

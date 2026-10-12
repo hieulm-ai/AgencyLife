@@ -27,6 +27,6 @@ function buySupportPack(id){
 function renderSupportPacks(){
  return '<div class="cg2">Gói hỗ trợ</div><details class="compact-details"><summary>Cách dùng ⓘ</summary>Dùng ngay khi mua · tối đa 120⚡ · giữ hạn mức ngày.</details>'+SUPPORT_PACKS.map(p=>{
   const state=supportPackState(p);
-  return `<div class="pack" style="grid-template-columns:1fr auto"><span><b>${p.name}</b><br><small>⚡ Đầy · Stress −${p.stress}<br>${p.once?'1 lần/ván':'1 lần/ngày'}</small></span><button class="btn g" data-support="${p.id}" ${state?'disabled':''}>${state||p.cost+'💎'}</button></div>`;
+  return `<div class="pack">${UIIMG(p.once?'gift':'people',36)}<span><b>${p.name}</b><br><small>⚡ Đầy · Stress −${p.stress}<br>${p.once?'1 lần/ván':'1 lần/ngày'}</small></span><button class="btn g" data-support="${p.id}" ${state?'disabled':''}>${state||p.cost+'💎'}</button></div>`;
  }).join('');
 }

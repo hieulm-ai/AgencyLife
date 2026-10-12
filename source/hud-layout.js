@@ -152,9 +152,9 @@ function showSoon(){return askConfirm({title:'Tính năng sắp mở',text:'Gói
 function renderTopup(focus){
  const el=document.getElementById('topupBody');if(!el)return;
  const coin=[[Math.round(plotPrice()*0.2),'Túi coin'],[Math.round(plotPrice()*0.5),'Bao coin'],[plotPrice(),'Két coin']],gem=[[60,'Túi nhỏ'],[300,'Rương'],[980,'Kho báu']];
- const card=(kind,[v,n])=>`<div class="pack"><span class="ic">${UIIMG(kind==='gem'?'gem':'coin',36)}</span><span><b>${kind==='gem'?v+' 💎':fmt(v)}</b><br><small>${n}</small></span><button class="btn g" data-tp-kind="${kind}" data-tp="${v}">Nhận</button></div>`;
- el.innerHTML=gemify(`<p class="hub-note">Bản chơi thử: chưa kết nối cổng thanh toán. Bấm "Nhận" để nhận miễn phí và thử luồng nạp.</p><div class="cg2" id="topCoin">Nạp coin</div>${coin.map(x=>card('coin',x)).join('')}<div class="cg2" id="topGem">Nạp ruby</div>${gem.map(x=>card('gem',x)).join('')}`);
- el.querySelectorAll('[data-tp]').forEach(b=>b.onclick=()=>{const v=+b.dataset.tp,gemK=b.dataset.tpKind==='gem';if(gemK)GS.gems+=v;else cash+=v;hud();save();toast(`Đã nạp ${gemK?v+'💎':fmt(v)} (bản thử)`,'ok');});
+ const card=(kind,[v,n],tier)=>`<div class="pack"><span class="ic">${UIIMG(kind==='gem'?'gem':'coin',36)}</span><span><b>${kind==='gem'?v+' 💎':fmt(v)}</b><br><small>${n}</small></span><button class="btn g" data-tp-kind="${kind}" data-tp="${v}" data-tier="${tier}">Mua</button></div>`;
+ el.innerHTML=gemify(`<p class="hub-note">Bản chơi thử: chưa kết nối cổng thanh toán. Chọn gói để mời NPH một cốc nước ☕. Tính năng sắp ra mắt.</p><div class="cg2" id="topCoin">Nạp coin</div>${coin.map((x,i)=>card('coin',x,i)).join('')}<div class="cg2" id="topGem">Nạp ruby</div>${gem.map((x,i)=>card('gem',x,i)).join('')}`);
+ el.querySelectorAll('[data-tp]').forEach(b=>b.onclick=()=>openSupportDrink(b.dataset.tpKind,+b.dataset.tp,+b.dataset.tier));
  if(focus)el.querySelector(focus==='gem'?'#topGem':'#topCoin')?.scrollIntoView({block:'start'});
 }
 function openTopup(kind){openHub('shop','topup',{keep:true,focus:kind==='gem'?'gem':'coin'});}
@@ -191,4 +191,13 @@ function renderExpandPage(force){
  };
  const ro=new ResizeObserver(placeCounters);[hudWrap,counters,document.getElementById('co'),document.getElementById('topR')].forEach(el=>ro.observe(el));
  placeCounters();
+}
+
+function openSupportDrink(kind,value,tier){
+ const names=['Bạc Xỉu','Katinat Bơ Già Dừa','Starbucks Matcha Latte'];
+ const images=__SUPPORT_DRINK_IMAGES__;
+ if(!Number.isInteger(tier)||tier<0||tier>2)return;
+ olBox(`<h2>Mời NPH một cốc nước ☕</h2><img class="support-drink" src="${images[tier]}" alt="Vịt vàng dâng cốc ${names[tier]}"><p class="support-caption">Mua cho NPH 1 cốc ${names[tier]}</p><p class="hub-note">Bản thử · Chưa thu tiền</p><div class="ask-act"><button class="btn g" id="supportSoon">Tính năng sắp ra mắt</button></div>`,(el,close)=>{
+ el.querySelector('#supportSoon').onclick=close;
+ });
 }

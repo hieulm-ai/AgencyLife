@@ -237,7 +237,7 @@ __BOOT_CSS__
   <section id="menu" class="hub-page" aria-label="Cài đặt">
    <div class="set-sec" id="setAccount"></div>
    <div class="set-sec" id="setSound"><div class="cg2">Âm thanh và hiển thị</div><button id="bFull" class="btn c">Toàn màn hình</button></div>
-   <div class="set-sec"><div class="cg2">Bản lưu</div><button id="bExportSave" class="btn b">Tải bản lưu</button><button id="bImportSave" class="btn y">Khôi phục từ file</button><button id="bUndoImport" class="btn c" hidden>Trở lại ván trước</button><input id="saveFile" type="file" accept=".json,application/json" hidden><p class="hub-note">Giữ file bản lưu để chuyển tiến độ sang máy khác.</p></div>
+   <div class="set-sec"><div class="cg2">Bản lưu</div><button id="bExportSave" class="btn b">Lưu bản chơi</button><button id="bImportSave" class="btn y">Khôi phục từ file</button><button id="bUndoImport" class="btn c" hidden>Trở lại ván trước</button><input id="saveFile" type="file" accept=".json,application/json" hidden><p class="hub-note" id="saveModeNote">Chơi khách: lưu bản chơi ra file để giữ dự phòng hoặc chuyển máy.</p></div>
    <div class="set-sec"><div class="cg2">Chế độ thử</div><label class="tg"><input type="checkbox" id="unlim"> Tiêu quá số dư (thử nhanh)</label></div>
    <div class="set-sec danger"><div class="cg2">Vùng nguy hiểm</div><p class="hub-note">Mỗi nút đều hỏi xác nhận lần nữa trước khi làm.</p><button id="bNewGame" class="btn c">Chơi ván mới</button><button id="bClear" class="btn rd">Xóa hết tường và đồ</button></div>
   </section>
@@ -262,7 +262,7 @@ __BOOT_CSS__
 <div id="olBox" hidden role="dialog" aria-modal="true" aria-label="Online"><div class="ask-box pf ol-box"><div class="ol-body"></div></div></div>
 <div id="visitBar" class="ov pf" hidden role="toolbar" aria-label="Đang tham quan"><span class="vb-ic"></span><span class="vb-txt"><small>Đang tham quan</small><b class="vb-name"></b><small class="vb-sub"></small></span><button class="vb-b" data-vb="like"><b>❤</b><small>Thích</small></button><button class="vb-b" data-vb="note"><b>✉</b><small>Lời nhắn</small></button><button class="vb-b" data-vb="gift"><b>🎁</b><small>Tặng quà</small></button><button class="btn g vb-home" data-vb="home">Về văn phòng</button></div>
 <div id="askBox" hidden role="alertdialog" aria-modal="true" aria-labelledby="askTitle" aria-describedby="askText"><div class="ask-box pf"><div class="ask-ic" id="askIc" aria-hidden="true"></div><h2 id="askTitle"></h2><div id="askText" class="ask-text"></div><div class="ask-act"><button class="btn c" id="askNo">Hủy</button><button class="btn g" id="askYes">Đồng ý</button></div></div></div>
-<div id="guide" hidden inert role="dialog" aria-modal="true" aria-labelledby="guideTitle"><div class="guide-box pf"><div class="guide-head"><h2 id="guideTitle">Hướng dẫn chơi</h2><div class="guide-hbtn"><button class="btn g" data-g-tour>Chạy hướng dẫn chạm</button><button class="btn c guide-x" data-g-close aria-label="Đóng hướng dẫn">Đóng</button></div></div><div class="guide-main"><nav class="guide-nav" role="tablist" aria-label="Chủ đề hướng dẫn"></nav><section class="guide-page" id="guidePage" role="tabpanel" aria-live="polite"></section></div><div class="guide-foot"><button class="btn c" data-g-prev>Trang trước</button><span class="guide-count"></span><button class="btn g" data-g-next>Trang sau</button></div></div></div>
+<div id="guide" hidden inert role="dialog" aria-modal="true" aria-labelledby="guideTitle"><div class="guide-box pf"><div class="guide-head"><div class="duck-guide" aria-hidden="true"></div><h2 id="guideTitle">Hướng dẫn chơi</h2><div class="guide-hbtn"><button class="btn g" data-g-tour>Chạy hướng dẫn chạm</button><button class="btn c guide-x" data-g-close aria-label="Đóng hướng dẫn">Đóng</button></div></div><div class="guide-main"><nav class="guide-nav" role="tablist" aria-label="Chủ đề hướng dẫn"></nav><section class="guide-page" id="guidePage" role="tabpanel" aria-live="polite"></section></div><div class="guide-foot"><button class="btn c" data-g-prev>Trang trước</button><span class="guide-count"></span><button class="btn g" data-g-next>Trang sau</button></div></div></div>
 <div id="guideOffer" class="pf" hidden role="dialog" aria-label="Gợi ý xem hướng dẫn"><b>Lần đầu mở agency?</b><span>Xem nhanh 9 trang hướng dẫn: đón khách, làm job, nhân sự, xây văn phòng, bạn bè.</span><div><button class="btn c" data-skip-guide>Để sau</button><button class="btn g" data-go-guide>Xem hướng dẫn</button></div></div>
 </div><div id="rotate" role="status"><div><b>Xoay ngang điện thoại để tiếp tục chơi</b><p>Game đang tạm dừng. Năng lượng vẫn hồi trong lúc chờ.</p></div></div>
 <script>window.ARCH={"wall_white": "assets/static/0825ee7d5b897c738cc851ed.png", "wall_blue": "assets/static/4a71f375a62a5a7a91af7ec4.png", "glass_partition": "assets/static/735a2c48e27e429ce2c3ee62.png", "glass_railing": "assets/static/7993680b6d40270bc42ad1ff.png", "single_door": "assets/static/1fed6b8d9f2b0be6a54baf5e.png", "entrance_double_door": "assets/static/d591927e0bba0f9e6e7cfe10.png", "floor_tile_white": "assets/static/e4cfa8178bc1e827dad96a3a.png", "floor_tile_decorative": "assets/static/8d1a0fda31b5ce5be45833f2.png", "floor_slab_corner": "assets/static/c1a032c480da092d14bf5a79.png", "window": "assets/static/8a9fef23bddd817d9bd62a39.png"};</script>
@@ -920,12 +920,23 @@ const BIMGS=CHARS.map(c=>{ if(!c.burn) return null; const i=bootImage(); i.src=c
 function drawFlame(c,x,y,t){ for(let i=0;i<5;i++){ const ph=(t*3+i*0.37)%1, fx=x-6+i*3+Math.sin(t*9+i)*1.5, fy=y-ph*10, s=Math.round(4-ph*3);
   c.fillStyle=ph<0.35?"#FFE07A":ph<0.7?"#FF9A2E":"#E2483B"; c.fillRect(Math.round(fx),Math.round(fy),Math.max(1,s),Math.max(1,s+1)); }
   for(let i=0;i<2;i++){ const ph=(t*0.8+i*0.5)%1; c.fillStyle=`rgba(120,120,120,${(0.7-ph*0.7).toFixed(2)})`; c.fillRect(Math.round(x-4+i*7+ph*3),Math.round(y-10-ph*10),3,3); } }
+const STAFF_CATCHPHRASES={'06_Vu_a_Vu':'Từng chút, từng chút…'};
+function drawStaffSpeech(c){
+ const visible=AG.filter(a=>!a.away);if(!visible.length)return;
+ const clock=performance.now()/1000,slot=Math.floor(clock/9);if(clock%9>5)return;
+ const a=visible[slot%visible.length],id=CHARS[a.ci]?.id;
+ const text=STAFF_CATCHPHRASES[id]||(a.state==='sit'?'Đang làm đây!':'Cố lên cả nhà!');
+ const [x,y]=a.seat?[a.seat.sx,a.seat.sy]:iso(a.x+.5,a.y+.5);
+ c.save();c.font='bold 7px sans-serif';const w=c.measureText(text).width+10,bx=x-w/2,by=y-47;
+ c.fillStyle='#5A3618';c.fillRect(bx-1,by-1,w+2,15);c.beginPath();c.moveTo(x-3,by+13);c.lineTo(x,by+18);c.lineTo(x+3,by+13);c.fill();
+ c.fillStyle='#FFF9EC';c.fillRect(bx,by,w,13);c.fillStyle='#5A3618';c.textAlign='center';c.fillText(text,x,by+9);c.restore();
+}
 function drawAgent(c,a){ if(a.away)return; c.imageSmoothingEnabled=true; c.imageSmoothingQuality="high"; try{ drawAgent0(c,a); } finally { c.imageSmoothingEnabled=false; } }
 function drawAgent0(c,a){
   const rk=a.react?a.react.kind:(a.sadToday&&a.state==="wander"&&!a.path.length?"sad":null);
   if(rk&&RIMGS[rk][a.ci]&&RIMGS[rk][a.ci].complete){ const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.t*(rk==="sad"?1.5:4))%2;
     c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill(); c.drawImage(RIMGS[rk][a.ci],col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore();
-    if(rk==="talk"&&Math.floor(a.t*2)%2===0){ c.fillStyle="#FFFFFF"; c.fillRect(Math.round(sx+4),Math.round(sy-44),12,8); c.fillStyle="#5A3618"; c.fillRect(Math.round(sx+6),Math.round(sy-41),2,2); c.fillRect(Math.round(sx+9),Math.round(sy-41),2,2); c.fillRect(Math.round(sx+12),Math.round(sy-41),2,2); }
+    if(rk==="talk"){const bx=Math.round(sx+3),by=Math.round(sy-46);c.fillStyle="#5A3618";c.fillRect(bx-1,by-1,18,12);c.fillRect(bx+2,by+10,4,3);c.fillStyle="#FFFFFF";c.fillRect(bx,by,16,10);c.fillRect(bx+3,by+9,2,3);for(let i=0;i<3;i++){c.fillStyle=(Math.floor(a.t*3)%3)>=i?"#5A3618":"#D9C9B4";c.fillRect(bx+3+i*4,by+4,2,2);}}
     return; }
   if(a.state==="burn"){ const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE");
     c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1);
@@ -1414,7 +1425,7 @@ let gemTab="shop";
 // earn (Thành tựu → Quà & Pass), achievements (Thành tựu → Thành tựu). Tiêu đề và tab do khung #hub lo.
 function renderGemShop(){ const el=document.getElementById("gemShop"); if(!el) return; ensureDQ();
   let body="";
-  if(gemTab==="shop"){ body=`<p class="hub-note"><b>${GS.gems}💎</b></p>`+renderSupportPacks()+`<div class="cg2">Dùng ngay</div>`+GEM_SHOP.map(it=>`<div class="pack" style="grid-template-columns:1fr auto"><span><b style="font-size:14px">${it.name}</b><br><span style="font-size:11.5px">${it.desc}${it.k==="kol"&&GS.kolDay===GS.day?" · <b>đang hiệu lực</b>":""}</span></span><button class="btn b" data-gem="${it.k}">${it.cost}💎</button></div>`).join("")
+  if(gemTab==="shop"){ body=`<p class="hub-note"><b>${GS.gems}💎</b></p>`+renderSupportPacks()+`<div class="cg2">Dùng ngay</div>`+GEM_SHOP.map(it=>`<div class="pack">${UIIMG(({energy:'bolt',rush:'fast',chill:'coffee',newjobs:'brief',kol:'star'})[it.k]||'gift',36)}<span><b style="font-size:14px">${it.name}</b><br><span style="font-size:11.5px">${it.desc}${it.k==="kol"&&GS.kolDay===GS.day?" · <b>đang hiệu lực</b>":""}</span></span><button class="btn b" data-gem="${it.k}">${it.cost}💎</button></div>`).join("")
      +`<details class="compact-details"><summary>Vật phẩm đặc biệt ⓘ</summary><p class="hub-note">Mua tại Xây dựng › Nội thất › Đặc biệt (ruby).</p>`+GEM_SOON.map(([n,c,d])=>`<div class="pack" style="grid-template-columns:1fr auto"><span><b style="font-size:13px">${n}</b><br><span style="font-size:11px">${d}</span></span><b>${c}💎</b></div>`).join("")+`</details>`; }
   else if(gemTab==="achievements"){ body=renderReputation()+`<div class="cg2">Thành tựu của agency (1 lần)</div>`+ACH.map(([k,t,f,r])=>{ const item=ACH_ITEMS[k]&&FBY[ACH_ITEMS[k]]; return `<div class="pack ach${GS.ach[k]?" done":""}" style="grid-template-columns:1fr auto"><span>${GS.ach[k]?"✓ ":""}${t}${item?`<br><small>Quà: ${item.name} vào Kho</small>`:""}</span><b>${r}💎</b></div>`; }).join(""); }
   else if(gemTab==="skins"){ body=renderSkinShop(); }
@@ -1605,6 +1616,7 @@ function frame(){ clampCam(); renderGround(); g.setTransform(1,0,0,1,0,0); g.cle
   for(const P of PLOTS){ const [id,,x0,y0,x1,y1]=P; if(UNLOCKED.has(id)) continue; const [cx,cy]=iso((x0+x1+1)/2,(y0+y1+1)/2); drawLock(g,cx,cy-10,canUnlock(P)); }
   for(const a of AG) if(a.state==="use"&&a.useObj){ const o=OBJS.find(b=>b.uid===a.useObj); if(!o) continue; const U=USE[o.id]; if(U.fx) drawFx(g,o,U.fx,a.useT,a.useT/U.t); drawBubble(g,a,U.icon); }
   if(!closingOffice) for(const a of AG) if(!a.emo&&!(a.state==="use"&&a.useObj)) drawProgressRing(g,a);   // vòng tiến trình; nhường chỗ cho biểu tượng cảm xúc và bong bóng đang dùng đồ
+  drawStaffSpeech(g);
   for(const a of AG) if(a.emo&&!a.away){ g.imageSmoothingEnabled=true; drawAgentEmo(g,a); g.imageSmoothingEnabled=false; } }   // biểu tượng giao việc vẽ trên cùng (người đang ngồi được vẽ cùng ghế)
 
 // ---------- giao diện pixel ----------
@@ -1803,3 +1815,4 @@ addEventListener("pageshow",()=>{
     if(!cv.width||!cv.height){ fit(); if(!cv.width||!cv.height) return; } frame(); drawRain(now); }catch(err){ if(!loop.warned){ loop.warned=1; console.error(err); } } })(last);
 })();
 </script></body></html>
+

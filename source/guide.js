@@ -134,7 +134,7 @@ const TOUR=[
  {id:"guide",rect:()=>domRect("#bGuide"),text:"Quên cách chơi? Biểu tượng Hướng dẫn luôn ở đây. Chạm để hoàn tất.",tap:true,swallow:true}];   // bảng đang mở được đóng khi kết thúc (endTour)
 function tourEls(){
  let el=document.getElementById("tour");
- if(!el){el=document.createElement("div");el.id="tour";el.innerHTML='<div class="tb" data-b="t"></div><div class="tb" data-b="r"></div><div class="tb" data-b="b"></div><div class="tb" data-b="l"></div><div class="tring"></div><div class="thand" aria-hidden="true"></div><div class="tbub pf" role="dialog" aria-live="polite"><small class="tcount"></small><p class="ttext"></p><div class="tact"><button class="btn c" data-tour-skip>Bỏ qua</button><button class="btn g" data-tour-next hidden>Tiếp</button></div></div>';document.body.append(el);
+ if(!el){el=document.createElement("div");el.id="tour";el.innerHTML='<div class="tb" data-b="t"></div><div class="tb" data-b="r"></div><div class="tb" data-b="b"></div><div class="tb" data-b="l"></div><div class="tring"></div><div class="thand" aria-hidden="true"></div><div class="tbub pf" role="dialog" aria-live="polite"><div class="duck-guide" aria-hidden="true"></div><small class="tcount"></small><p class="ttext"></p><div class="tact"><button class="btn c" data-tour-skip>Bỏ qua</button><button class="btn g" data-tour-next hidden>Tiếp</button></div></div>';document.body.append(el);
   el.querySelector("[data-tour-skip]").onclick=()=>endTour(true);el.querySelector("[data-tour-next]").onclick=()=>nextTour();
 }
  return el;
@@ -195,7 +195,7 @@ function tourLoop(){
   const cx=(hole.l+hole.r)/2,cy=(hole.t+hole.b)/2,bob=Math.sin(performance.now()/220)*5;
   // Ảnh bàn tay chỉ sang phải: xoay 90° để chỉ xuống (đứng trên điểm chạm), −90° để chỉ lên (đứng dưới).
   const below=cy<H*.45,img=window.UIICON?.hand?`background-image:url("${window.UIICON.hand}");`:"";
-  hand.style.cssText=`${img}left:${cx-22}px;top:${below?hole.b+6+bob:hole.t-50-bob}px;transform:rotate(${below?-90:90}deg)`;}
+  hand.style.cssText=`${img}left:${cx-22}px;top:${below?hole.b-4+bob:hole.t-40-bob}px;transform:rotate(${below?25:205}deg)`;}
  const bw=Math.min(340,W-24),bh=bub.offsetHeight||110;let bx,by;
  if(r){const cx=(hole.l+hole.r)/2;bx=Math.min(W-bw-12,Math.max(12,cx-bw/2));by=hole.b+64+bh<H?hole.b+64:Math.max(12,hole.t-64-bh);}
  else{bx=(W-bw)/2;by=H/2-bh/2;}

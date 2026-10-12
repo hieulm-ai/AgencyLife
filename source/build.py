@@ -63,6 +63,8 @@ def chair_sprite(path, kind):
             # Normalize the source cell before aligning it to the correct floor anchor.
             source_rot=5-rot if rot>=2 and reversed_rear else rot
             frame=source.crop((source_rot*144,row*224,(source_rot+1)*144,(row+1)*224))
+            if Path(path).parent.name=='03_Pali' and 'streetwear' not in Path(path).parts and kind=='blue' and rot==2:
+                frame=frame.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
             box=frame.getbbox()
             if not box: continue
             part=frame.crop(box);pw,pc,pb=base(part)
@@ -248,6 +250,8 @@ s=s.replace('__BOOT_ART__',webp(ASSETS/'loading/agency-team-v25.png',lossless=Fa
 loading_gif=ASSETS/'loading/vu-a-vu-transparent.gif'
 loading_still=Image.open(loading_gif).convert('RGBA')
 s=s.replace('__BOOT_VU_GIF__',export_bytes(loading_gif.read_bytes(),'gif')).replace('__BOOT_VU_STILL__',webp(loading_still))
+s=s.replace('__SUPPORT_DRINK_IMAGES__',json.dumps([webp(ASSETS/f'support-drink-{i}.png') for i in range(1,4)]))
+s=s.replace('__GUIDE_DUCK__',webp(ASSETS/'characters/09_Vit_Vang/portrait_48x64.png'))
 s=s.replace('__FEEDBACK_ICONS__',webp(ASSETS/'feedback-icons.png'))
 if 'data:image/' in s:
     raise ValueError('Unexpected embedded image in generated HTML')

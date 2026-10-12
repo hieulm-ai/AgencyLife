@@ -2,6 +2,8 @@
 let ambientAudio=null,ambientTimer=null,ambientStarted=false,ambientBeat=0;
 function ambientPrefs(){
  if(!GS.ambience||typeof GS.ambience!=='object')GS.ambience={rain:false,music:false,volume:.18};
+ const slot=Math.floor(((GS.day||1)*1440+(GS.min||480))/180);
+ if(GS.ambience.weatherSlot!==slot){GS.ambience.weatherSlot=slot;GS.ambience.rain=Math.random()<.3;}
  GS.ambience.volume=Math.max(0,Math.min(1,Number(GS.ambience.volume)||0));return GS.ambience;
 }
 function ambientLabel(){const b=document.getElementById('ambientMusic');if(b)b.textContent=ambientStarted?'Tắt nhạc nền':ambientPrefs().music?'Tiếp tục nhạc nền':'Bật nhạc nền';}
@@ -34,9 +36,8 @@ async function toggleAmbientMusic0(){
 }
 function setupAmbience(){
  const prefs=ambientPrefs(),box=document.createElement('div');box.style.cssText='display:flex;flex-direction:column;gap:8px';
- box.innerHTML='<label class="tg"><input id="ambientRain" type="checkbox">Mưa ngoài trời</label><button id="ambientMusic" class="btn c">Bật nhạc nền</button><label style="font-size:12px">Âm lượng <input id="ambientVolume" aria-label="Âm lượng nhạc nền" type="range" min="0" max="100" step="5" style="width:100%"></label>';
+ box.innerHTML='<button id="ambientMusic" class="btn c">Bật nhạc nền</button><label style="font-size:12px">Âm lượng <input id="ambientVolume" aria-label="Âm lượng nhạc nền" type="range" min="0" max="100" step="5" style="width:100%"></label>';
  (document.getElementById('setSound')||document.getElementById('menu')).append(box);   // V15: mục Âm thanh và hiển thị trong Cài đặt
- const rain=document.getElementById('ambientRain');rain.checked=!!prefs.rain;rain.onchange=()=>{prefs.rain=rain.checked;save();};
  const volume=document.getElementById('ambientVolume');volume.value=Math.round(prefs.volume*100);volume.oninput=()=>{prefs.volume=+volume.value/100;save();};
  document.getElementById('ambientMusic').onclick=toggleAmbientMusic;ambientLabel();
  document.addEventListener('visibilitychange',()=>{if(!ambientAudio||!ambientStarted)return;if(document.hidden)ambientAudio.suspend().catch(()=>{});else ambientAudio.resume().catch(()=>{});});
