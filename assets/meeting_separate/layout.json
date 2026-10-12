@@ -1,0 +1,210 @@
+[
+  {
+    "size": [
+      96,
+      80
+    ],
+    "anchor": [
+      56,
+      68
+    ],
+    "fp": [
+      3,
+      2
+    ],
+    "seatsPx": [
+      {
+        "cx": 47,
+        "cy": 22,
+        "face": "SW",
+        "z": "before"
+      },
+      {
+        "cx": 63,
+        "cy": 30,
+        "face": "SW",
+        "z": "before"
+      },
+      {
+        "cx": 79,
+        "cy": 38,
+        "face": "SW",
+        "z": "before"
+      },
+      {
+        "cx": 12,
+        "cy": 40,
+        "face": "NE",
+        "z": "after"
+      },
+      {
+        "cx": 28,
+        "cy": 48,
+        "face": "NE",
+        "z": "after"
+      },
+      {
+        "cx": 44,
+        "cy": 56,
+        "face": "NE",
+        "z": "after"
+      }
+    ]
+  },
+  {
+    "size": [
+      96,
+      80
+    ],
+    "anchor": [
+      56,
+      68
+    ],
+    "fp": [
+      3,
+      2
+    ],
+    "seatsPx": [
+      {
+        "cx": 45,
+        "cy": 22,
+        "face": "SE",
+        "z": "before"
+      },
+      {
+        "cx": 29,
+        "cy": 30,
+        "face": "SE",
+        "z": "before"
+      },
+      {
+        "cx": 13,
+        "cy": 38,
+        "face": "SE",
+        "z": "before"
+      },
+      {
+        "cx": 80,
+        "cy": 40,
+        "face": "NW",
+        "z": "after"
+      },
+      {
+        "cx": 64,
+        "cy": 48,
+        "face": "NW",
+        "z": "after"
+      },
+      {
+        "cx": 48,
+        "cy": 56,
+        "face": "NW",
+        "z": "after"
+      }
+    ]
+  },
+  {
+    "size": [
+      96,
+      80
+    ],
+    "anchor": [
+      56,
+      68
+    ],
+    "fp": [
+      3,
+      2
+    ],
+    "seatsPx": [
+      {
+        "cx": 47,
+        "cy": 22,
+        "face": "SW",
+        "z": "before"
+      },
+      {
+        "cx": 63,
+        "cy": 30,
+        "face": "SW",
+        "z": "before"
+      },
+      {
+        "cx": 79,
+        "cy": 38,
+        "face": "SW",
+        "z": "before"
+      },
+      {
+        "cx": 12,
+        "cy": 40,
+        "face": "NE",
+        "z": "after"
+      },
+      {
+        "cx": 28,
+        "cy": 48,
+        "face": "NE",
+        "z": "after"
+      },
+      {
+        "cx": 44,
+        "cy": 56,
+        "face": "NE",
+        "z": "after"
+      }
+    ]
+  },
+  {
+    "size": [
+      96,
+      80
+    ],
+    "anchor": [
+      56,
+      68
+    ],
+    "fp": [
+      3,
+      2
+    ],
+    "seatsPx": [
+      {
+        "cx": 45,
+        "cy": 22,
+        "face": "SE",
+        "z": "before"
+      },
+      {
+        "cx": 29,
+        "cy": 30,
+        "face": "SE",
+        "z": "before"
+      },
+      {
+        "cx": 13,
+        "cy": 38,
+        "face": "SE",
+        "z": "before"
+      },
+      {
+        "cx": 80,
+        "cy": 40,
+        "face": "NW",
+        "z": "after"
+      },
+      {
+        "cx": 64,
+        "cy": 48,
+        "face": "NW",
+        "z": "after"
+      },
+      {
+        "cx": 48,
+        "cy": 56,
+        "face": "NW",
+        "z": "after"
+      }
+    ]
+  }
+]

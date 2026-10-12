@@ -1,0 +1,5 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const src=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(jobs){const c={GS:{jobs},saves:0,renderJobs(){},save(){c.saves++;},toast(){}};vm.createContext(c);vm.runInContext(src.slice(src.indexOf('function sortJobsByDeadline('),src.indexOf('function prioritizeJob(')),c);return c;}
+test('deadline sort preserves state and tie ordering',()=>{const a={id:1,due:5,work:4,staff:['A'],paused:true},b={id:2,due:3},d={id:3,due:3},c=setup([a,b,d]);assert.equal(c.sortJobsByDeadline(),true);assert.equal(c.GS.jobs.map(j=>j.id).join(','),'2,3,1');assert.equal(c.GS.jobs[2],a);assert.equal(a.work,4);assert.equal(a.paused,true);assert.deepEqual(a.staff,['A']);assert.equal(c.saves,1);});
+test('already ordered and empty queues do not rewrite save',()=>{for(const jobs of [[],[{due:1}],[{due:1},{due:2}]]){const c=setup(jobs);assert.equal(c.sortJobsByDeadline(),false);assert.equal(c.saves,0);}});

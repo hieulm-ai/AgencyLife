@@ -1,0 +1,61 @@
+body.booting #wrap{visibility:hidden}
+#boot[hidden],#titleScreen[hidden]{display:none!important}
+#boot{position:fixed;inset:0;z-index:5000;background:#f6e7c7;display:grid;place-items:center;text-align:center;color:#4a2a1a;padding:24px}
+.boot-card{width:min(440px,100%)}.boot-card h1{font-family:'Baloo 2',sans-serif;font-size:clamp(28px,5vw,44px);line-height:1.05}.boot-duck{font-size:48px;display:inline-block;animation:bootBob 1s ease-in-out infinite}
+#bootProgress{width:100%;height:20px;accent-color:#75954b}#bootStatus{min-height:24px}.boot-tip{font-size:13px;line-height:1.6;opacity:.8}.boot-version{font-size:11px;opacity:.6}
+@keyframes bootBob{50%{transform:translateY(-8px)}}
+#titleScreen{position:fixed;inset:0;z-index:70;display:flex;align-items:center;background:linear-gradient(90deg,rgba(48,29,15,.92),rgba(48,29,15,.67) 48%,rgba(48,29,15,.15));padding:clamp(20px,5vw,70px);color:#fff1ce}
+.title-card{width:min(460px,100%)}.title-kicker{font-size:12px;letter-spacing:2px;color:#e1bd73}.title-card h1{font-family:'Baloo 2',sans-serif;font-size:clamp(32px,5vw,62px);line-height:.98;margin:12px 0 24px}.title-save{border-left:3px solid #ddb362;padding:8px 14px;margin-bottom:20px}.title-save strong{font-size:20px}.title-save p{font-size:13px;line-height:1.6;margin:6px 0;color:#e4d0aa}.title-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.title-actions button{min-height:44px}.title-actions #titlePlay{grid-column:1/-1;font-size:18px;min-height:52px}.title-extra{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.title-extra button{background:transparent;border:1px solid #9a7f55;border-radius:8px;color:#fff1ce;padding:8px 12px;cursor:pointer}
+.title-view #c{filter:blur(3px);pointer-events:none}.title-view #co,.title-view #res,.title-view #topR,.title-view #nav{visibility:hidden}.title-view #hub{z-index:150!important}
+@media(max-height:450px){#titleScreen{padding:16px 28px}.title-card{width:420px}.title-card h1{font-size:34px;margin:6px 0 10px}.title-save{margin-bottom:10px}.title-extra{margin-top:8px}.title-actions{gap:6px}.title-actions button,.title-actions #titlePlay{min-height:36px}.title-kicker{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.boot-duck{animation:none}}
+
+.title-view #askBox{z-index:300!important}.title-view #guide{z-index:250!important}
+
+.boot-track{position:relative;padding-top:100px;margin-top:12px}.boot-runway{position:absolute;left:36px;right:36px;top:0;height:100px}.boot-runner{position:absolute;left:var(--progress);bottom:0;width:72px;height:96px;transform:translateX(-50%);transition:left .18s linear}.boot-runner img{display:block;width:72px;height:96px;image-rendering:pixelated}.boot-runner .boot-vu-still{display:none}#bootProgress{display:block;margin:0;height:18px}
+@media(prefers-reduced-motion:reduce){.boot-runner{transition:none}.boot-runner .boot-vu-motion{display:none}.boot-runner .boot-vu-still{display:block}}
+#bootRetry[hidden]{display:none!important}
+
+/* Supplied portrait GIF: preserve its aspect ratio and speech bubble. */
+.boot-track{padding-top:241px}.boot-runway{left:80px;right:80px;height:241px}.boot-runner{width:160px;height:auto;aspect-ratio:682/1027}.boot-runner img{width:100%;height:auto}
+@media(max-height:650px){.boot-track{padding-top:181px}.boot-runway{left:60px;right:60px;height:181px}.boot-runner{width:120px}.boot-card h1{margin:8px 0;font-size:28px}}
+
+/* V22: responsive key art with real text and a separate animated loader. */
+#boot{padding:20px;background:#f6e7c7;overflow:auto;isolation:isolate}
+.boot-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-1}
+.boot-card{position:relative;width:min(1100px,100%);height:100%;min-height:520px}
+.boot-card h1{position:absolute;top:0;left:0;width:100%;margin:0;font-size:clamp(28px,4vw,54px);color:#fff3cf;text-shadow:2px 2px 0 #56351f,-2px -2px 0 #56351f,2px -2px 0 #56351f,-2px 2px 0 #56351f,0 4px 0 #56351f;line-height:1.1}
+.boot-track{position:absolute;bottom:88px;left:50%;transform:translateX(-50%);width:min(520px,100%);padding-top:181px;margin:0}
+.boot-runway{left:60px;right:60px;height:181px}.boot-runner{width:120px}
+#bootStatus{position:absolute;bottom:53px;width:100%;margin:0;line-height:1.3;font-weight:700}
+.boot-tip{position:absolute;bottom:22px;width:100%;margin:0}.boot-version{position:absolute;bottom:0;width:100%;margin:0}
+#bootRetry{position:absolute;bottom:0;left:50%;transform:translateX(-50%);z-index:2}
+#boot:has(#bootRetry:not([hidden])) .boot-tip,#boot:has(#bootRetry:not([hidden])) .boot-version{visibility:hidden}
+@media(max-aspect-ratio:1/1){.boot-art{object-fit:contain;object-position:center 26%;height:78%}.boot-card h1{top:4%;font-size:clamp(28px,7vw,48px)}.boot-track{bottom:104px}.boot-tip{padding:0 10px}.boot-card{min-height:550px}}
+@media(max-height:600px) and (min-aspect-ratio:1/1){#boot{padding:10px}.boot-card{min-height:300px}.boot-card h1{font-size:28px}.boot-track{bottom:55px;padding-top:121px;width:min(420px,70%)}.boot-runway{left:40px;right:40px;height:121px}.boot-runner{width:80px}#bootStatus{bottom:27px;font-size:12px}.boot-tip{display:none}.boot-version{font-size:10px}}
+@media(min-aspect-ratio:1/1){.boot-art{height:74%;object-fit:contain;object-position:center top;mask-image:linear-gradient(#000 82%,transparent 100%)}}
+
+/* V25: supplied art includes its logo; keep all characters and logo visible. */
+#boot{padding:0;background:#eaf5df;display:flex;flex-direction:column;overflow:auto}
+.boot-art{position:relative;inset:auto;flex:1;min-height:0;height:calc(100% - 210px);width:100%;object-fit:contain;object-position:center;mask-image:none;z-index:auto}
+.boot-card{flex:none;width:min(520px,calc(100% - 32px));height:210px;min-height:210px}
+.boot-card h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.boot-track{bottom:66px;padding-top:121px;width:100%}.boot-runway{height:121px;left:40px;right:40px}.boot-runner{width:80px}
+#bootStatus{bottom:37px;font-size:13px}.boot-tip{bottom:13px;font-size:11px;display:block}.boot-version{display:none}
+#titleScreen{padding:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:20px;background:#eaf5df;color:#4a2a1a;overflow:auto;touch-action:pan-y}
+.title-art{width:100%;height:100%;min-height:0;object-fit:contain}.title-card{width:100%;padding:20px;border-radius:20px;background:#fff8e9;box-sizing:border-box;box-shadow:0 4px 18px #345a2522}
+.title-card h1{font-size:28px;line-height:1.05;margin:10px 0 18px}.title-kicker{color:#587d31}.title-save p{color:#695139}.title-extra button{color:#4a2a1a}
+@media(max-width:700px){#titleScreen{display:flex;flex-direction:column;justify-content:center;gap:12px}.title-art{flex:none;height:auto;max-height:42dvh}.title-card{max-width:460px;padding:16px}.title-card h1,.title-kicker{display:none}.title-save{margin-bottom:12px}.title-extra{margin-top:12px}.boot-art{flex:none;height:auto;max-height:calc(100dvh - 230px);margin:auto 0}.boot-card{margin-top:auto}}
+@media(max-height:480px) and (min-width:701px){#boot{flex-direction:row;gap:10px;padding:12px}.boot-art{width:65%;height:100%;flex:1}.boot-card{width:30%;height:210px;align-self:center}#titleScreen{gap:12px}.title-card{padding:12px}.title-card h1{font-size:23px}.title-save{margin-bottom:10px}}
+
+@media(max-width:700px) and (min-height:481px){#boot{justify-content:center;gap:20px}.boot-art{margin:0;max-height:calc(100dvh - 250px)}.boot-card{margin:0}}
+
+/* Full-bleed opening screens: controls float over the supplied artwork. */
+#titleScreen,#boot{padding:0;display:block;overflow:hidden;background:#84cbe8}
+.title-art,.boot-art{position:absolute;inset:0;width:100%;height:100%;max-height:none;margin:0;object-fit:cover;object-position:center;mask-image:none}
+.title-card{position:absolute;right:clamp(16px,3vw,48px);bottom:clamp(16px,4vh,40px);width:280px;max-height:calc(100% - 32px);overflow:auto;padding:16px;background:rgba(255,248,233,.92);backdrop-filter:blur(10px);box-shadow:0 6px 24px #23462e44;border:1px solid #fff9}
+.title-card h1,.title-kicker{display:none}.title-save{margin-bottom:12px;padding:6px 10px}.title-save strong{font-size:17px}.title-save p{font-size:12px}.title-extra{margin-top:12px;gap:6px}.title-actions{gap:8px}
+.boot-card{position:absolute;right:clamp(16px,3vw,48px);bottom:20px;width:min(360px,calc(100% - 32px));height:200px;min-height:0;margin:0;z-index:1;color:#fff;text-shadow:0 1px 4px #163b21}
+.boot-track{bottom:58px}#bootStatus{bottom:29px}.boot-tip{bottom:4px}#bootProgress{filter:drop-shadow(0 1px 3px #173621)}
+@media(max-width:600px) and (orientation:portrait){.title-card{right:16px;left:16px;bottom:16px;width:auto;max-width:none}.title-art,.boot-art{object-position:50% center}.boot-card{right:16px;bottom:16px}}
+@media(max-height:480px){.title-card{right:12px;bottom:12px;width:246px;padding:12px}.title-save{margin-bottom:8px}.title-extra{margin-top:8px}.title-actions button,.title-actions #titlePlay{min-height:38px}.boot-card{bottom:10px;height:180px;width:260px}.boot-tip{display:none}}

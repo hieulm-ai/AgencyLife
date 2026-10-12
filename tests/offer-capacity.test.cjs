@@ -1,0 +1,8 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const src=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(rate=2){const c={jobCapacity:()=>3,GS:{jobs:[{need:20,work:8},{need:10,work:0,staff:['A']}],min:1200,energy:10},CLOSE_MIN:1260,enLeftToday:()=>200,jobRates:()=>({free:rate})};vm.createContext(c);vm.runInContext(src.slice(src.indexOf('function offerCapacity('),src.indexOf('function jobTeamUI(')),c);return c;}
+test('offer estimate includes automatic backlog but not reserved teams',()=>{const c=setup(),r=c.offerCapacity({need:8,days:1,en:4});assert.equal(r.backlog,12);assert.equal(r.hours,10);assert.equal(r.available,14);assert.equal(r.late,false);assert.equal(c.GS.jobs[0].work,8);});
+test('offer warns for insufficient capacity, energy and full queue',()=>{const c=setup(1);c.GS.jobs.push({need:20,work:0});const r=c.offerCapacity({need:30,days:1,en:15});assert.equal(r.full,true);assert.equal(r.lowEnergy,true);assert.equal(r.late,true);});
+test('idle team has no invented completion estimate',()=>{const c=setup(0),r=c.offerCapacity({need:8,days:1});assert.equal(r.hours,Infinity);assert.equal(r.late,false);assert.match(c.offerCapacityUI({need:8,days:1}),/chưa có người/);});
+
+test('full energy cannot hide exhausted daily spending limit',()=>{const c=setup();c.GS.energy=120;c.enLeftToday=()=>3;const r=c.offerCapacity({need:16,days:2,en:8});assert.equal(r.lowEnergy,false);assert.equal(r.dailyLimit,true);assert.match(c.offerCapacityUI({need:16,days:2,en:8}),/hạn mức năng lượng hôm nay/);});

@@ -1,0 +1,10 @@
+{
+ "date": "2026-10-07",
+ "purpose": "2 dang tu tao moi cho man mo dau: m2 = Nam toc ngan (C_short_m), f2 = Nu toc ngan (C_short_f). Trang phuc tu chon = doi mau ao/quan qua mat na vung.",
+ "model": "gpt_image_2_5 (quality high, 2k, background transparent)",
+ "images": 4,
+ "credits": "4 x 2.75 = 11 (lich su giao dich Higgsfield 07/10/2026 14:10-14:13 UTC; so du 1530.39 -> 1519.39)",
+ "files": {"m2_walk_raw.png": "3x2 di bo truoc/sau", "m2_actions_raw.png": "4x4 ngoi, dien thoai, noi, an mung, buon", "f2_walk_raw.png": "3x2", "f2_actions_raw.png": "4x4"},
+ "transfer": "Anh tai trong sandbox Higgsfield, thu nho 1/2 roi chuyen ve may lam viec (CDN bi chan 403).",
+ "job_ids": "chua ghi lai trong ban nay"
+}

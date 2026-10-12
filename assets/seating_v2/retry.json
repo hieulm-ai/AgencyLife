@@ -1,0 +1,34 @@
+{
+  "request": {
+    "index": 3,
+    "params": {
+      "model": "gpt_image_2_5",
+      "quality": "high",
+      "resolution": "2k",
+      "background": "transparent",
+      "aspect_ratio": "1:1",
+      "count": 1,
+      "medias": [
+        {
+          "role": "image",
+          "value": "94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064"
+        }
+      ],
+      "prompt": "Pixel art game spritesheet, exactly FOUR isolated figures in TWO columns TWO rows. Same petite woman Pali as reference, preserve black hoodie cream lining, black pants white sneakers, dark hair updo and ornaments. She sits in ONE black mesh ergonomic chair with ONE backrest and ONE headrest. Top row both figures face down-left SW, front of person visible, hands resting then typing. Bottom row both figures face diagonally AWAY and LEFT NW: chair back is in foreground below her shoulders, her head above it, no second chair behind her. One complete chair per figure, five caster wheels, subtle gold details. Four identical scales and generous transparent margins. Chibi isometric 2:1, crisp outlines, full body and all wheels, transparent background, no floor shadow, no text."
+    }
+  },
+  "jobs": [
+    {
+      "index": 3,
+      "job_id": "a46aa29e-fc15-412a-8fc6-0f959ca37124",
+      "status": "pending",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      }
+    }
+  ]
+}

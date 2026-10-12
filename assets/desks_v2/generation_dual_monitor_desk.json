@@ -1,0 +1,18 @@
+{
+ "date": "2026-10-07",
+ "note": "Sheet goc nam tren Higgsfield (job duoi day); tach nen + can luoi chay trong sandbox Higgsfield bang scripts/prepare_desks_v2.py vi may lam viec khong tai duoc anh tu CDN.",
+ "dual_monitor_desk": {
+  "sheet": "dual_monitor_desk-sheet.png",
+  "footprint_rot0": [
+   2,
+   1
+  ],
+  "model": "nano_banana_2_1",
+  "job_id": "89c1f85d-ae17-4bcc-8f35-cbb1e75f6712",
+  "background": "magenta #FF00FF, tach nen bang scripts/prepare_desks_v2.py",
+  "references": [
+   "guide_2x1_magenta media 79f879d5-5a06-4c64-beef-1bdee51a6bea",
+   "style media b987e673-44f1-4ce2-8d55-7863ecee4114"
+  ]
+ }
+}

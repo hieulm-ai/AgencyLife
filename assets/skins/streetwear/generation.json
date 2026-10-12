@@ -1,0 +1,2168 @@
+{
+  "theme": "Streetwear",
+  "estimatedCreditsPerSheet": 2.75,
+  "plannedSheets": 60,
+  "jobs": [
+    {
+      "index": 0,
+      "character": "01_Huy",
+      "sheet": "walk",
+      "job_id": "109d21d5-f040-4bbc-9d7c-03bea6987c9d",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_082735_109d21d5-f040-4bbc-9d7c-03bea6987c9d.png"
+    },
+    {
+      "index": 4,
+      "job_id": "9cd0ead0-ee6c-438c-b11d-b86fbe8db185",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "02_Luwon",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_082952_9cd0ead0-ee6c-438c-b11d-b86fbe8db185.png"
+    },
+    {
+      "index": 8,
+      "job_id": "94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "03_Pali",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_082952_94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064.png"
+    },
+    {
+      "index": 12,
+      "job_id": "0b178429-5a4e-4b6a-a36f-fe14c9a4369e",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "04_Tamny",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_082952_0b178429-5a4e-4b6a-a36f-fe14c9a4369e.png"
+    },
+    {
+      "index": 16,
+      "job_id": "9ebe25ab-8de3-4441-b34c-6fc1f443cc4d",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "trinh_lac_corrected_v2",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_082953_9ebe25ab-8de3-4441-b34c-6fc1f443cc4d.png"
+    },
+    {
+      "index": 20,
+      "job_id": "054b876b-dedf-4c57-836f-5a95710306dc",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "06_Vu_a_Vu",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_082951_054b876b-dedf-4c57-836f-5a95710306dc.png"
+    },
+    {
+      "index": 24,
+      "job_id": "c501ad9c-9158-4267-b60a-8cd7681bb766",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "07_Hao_Hao",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_082952_c501ad9c-9158-4267-b60a-8cd7681bb766.png"
+    },
+    {
+      "index": 40,
+      "job_id": "501b7893-0760-40d4-8b04-0c60eb74b92d",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "11_Juice",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083015_501b7893-0760-40d4-8b04-0c60eb74b92d.png"
+    },
+    {
+      "index": 48,
+      "job_id": "93ee6ef6-6b82-4725-ac55-d939f1123f16",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "13_AB",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083015_93ee6ef6-6b82-4725-ac55-d939f1123f16.png"
+    },
+    {
+      "index": 28,
+      "job_id": "6c4d525d-0438-42bd-85f0-b10582731a65",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "08_Nganh",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083106_6c4d525d-0438-42bd-85f0-b10582731a65.png"
+    },
+    {
+      "index": 32,
+      "job_id": "42edd9e4-3f9f-42c0-ac3b-efec55a9fdbf",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "09_Vit_Vang",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083107_42edd9e4-3f9f-42c0-ac3b-efec55a9fdbf.png"
+    },
+    {
+      "index": 36,
+      "job_id": "7815d13f-b893-4735-9c62-e3cf0d4cd0af",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "10_Con_LT",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083106_7815d13f-b893-4735-9c62-e3cf0d4cd0af.png"
+    },
+    {
+      "index": 44,
+      "job_id": "f43da759-bf78-43ee-b3d9-099fd1430fff",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "12_ADM",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083106_f43da759-bf78-43ee-b3d9-099fd1430fff.png"
+    },
+    {
+      "index": 52,
+      "job_id": "1a4f0881-bf93-4afa-b15a-e63150e9735c",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "14_HM",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083107_1a4f0881-bf93-4afa-b15a-e63150e9735c.png"
+    },
+    {
+      "index": 56,
+      "job_id": "632f9e1b-fab2-4248-98b7-0cc42abd1d71",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "15_CongB",
+      "sheet": "walk",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083107_632f9e1b-fab2-4248-98b7-0cc42abd1d71.png"
+    },
+    {
+      "index": 1,
+      "job_id": "9b59c9a8-730d-4329-b482-4328002a579e",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "01_Huy",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083205_9b59c9a8-730d-4329-b482-4328002a579e.png"
+    },
+    {
+      "index": 2,
+      "job_id": "87fb2407-40f2-4cba-897a-80e22841b12c",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "01_Huy",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083204_87fb2407-40f2-4cba-897a-80e22841b12c.png"
+    },
+    {
+      "index": 3,
+      "job_id": "20547dbb-43f7-4e26-92a9-9a675f38a623",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "01_Huy",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083205_20547dbb-43f7-4e26-92a9-9a675f38a623.png"
+    },
+    {
+      "index": 5,
+      "job_id": "ec272a1f-5ed1-412d-9680-197087caa51a",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "02_Luwon",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083205_ec272a1f-5ed1-412d-9680-197087caa51a.png"
+    },
+    {
+      "index": 6,
+      "job_id": "d0d7e96c-8c15-4813-a42d-c806209c4a71",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "02_Luwon",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083205_d0d7e96c-8c15-4813-a42d-c806209c4a71.png"
+    },
+    {
+      "index": 7,
+      "job_id": "de1e991f-6d65-440d-887c-8d9b9bfbe2ba",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "02_Luwon",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083205_de1e991f-6d65-440d-887c-8d9b9bfbe2ba.png"
+    },
+    {
+      "index": 9,
+      "job_id": "7fca6725-a44c-40f1-b97a-d1e0ebbb0797",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "03_Pali",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083352_7fca6725-a44c-40f1-b97a-d1e0ebbb0797.png"
+    },
+    {
+      "index": 10,
+      "job_id": "1e985649-4a7d-45b3-9fe9-164a95285aba",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "03_Pali",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083353_1e985649-4a7d-45b3-9fe9-164a95285aba.png"
+    },
+    {
+      "index": 11,
+      "job_id": "09199a04-8b42-4af4-914e-b3c5cd168924",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "03_Pali",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083352_09199a04-8b42-4af4-914e-b3c5cd168924.png"
+    },
+    {
+      "index": 13,
+      "job_id": "38fb9774-6a15-4e79-b1db-bb81ca73012b",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "04_Tamny",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083352_38fb9774-6a15-4e79-b1db-bb81ca73012b.png"
+    },
+    {
+      "index": 14,
+      "job_id": "a22e8910-c9f5-46fc-8938-6cbcb79114d7",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "04_Tamny",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083352_a22e8910-c9f5-46fc-8938-6cbcb79114d7.png"
+    },
+    {
+      "index": 15,
+      "job_id": "065197ce-f4c1-4d80-bcd7-00e677492d2e",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "04_Tamny",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083352_065197ce-f4c1-4d80-bcd7-00e677492d2e.png"
+    },
+    {
+      "index": 17,
+      "job_id": "66e8bc69-7ecb-445f-b733-d6adf26cf714",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "trinh_lac_corrected_v2",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083439_66e8bc69-7ecb-445f-b733-d6adf26cf714.png"
+    },
+    {
+      "index": 18,
+      "job_id": "e50bacad-d5ff-4a9a-93d5-c58bad1bd52d",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "trinh_lac_corrected_v2",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083439_e50bacad-d5ff-4a9a-93d5-c58bad1bd52d.png"
+    },
+    {
+      "index": 19,
+      "job_id": "586b06fa-8721-45b5-b598-df2b769373aa",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "trinh_lac_corrected_v2",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083439_586b06fa-8721-45b5-b598-df2b769373aa.png"
+    },
+    {
+      "index": 21,
+      "job_id": "3fd54170-7293-4078-a0e2-23b3fa91ed26",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "06_Vu_a_Vu",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083440_3fd54170-7293-4078-a0e2-23b3fa91ed26.png"
+    },
+    {
+      "index": 22,
+      "job_id": "42c9582c-cd8b-4521-90ce-df6697afa506",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "06_Vu_a_Vu",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083440_42c9582c-cd8b-4521-90ce-df6697afa506.png"
+    },
+    {
+      "index": 23,
+      "job_id": "79f7af5a-4114-4182-abbf-bb59344d4bee",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "06_Vu_a_Vu",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083440_79f7af5a-4114-4182-abbf-bb59344d4bee.png"
+    },
+    {
+      "index": 25,
+      "job_id": "bdae98db-9f36-4a30-b7ce-4e3373ff916b",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "07_Hao_Hao",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083527_bdae98db-9f36-4a30-b7ce-4e3373ff916b.png"
+    },
+    {
+      "index": 26,
+      "job_id": "bc60f59b-b4c5-43c9-ade7-2e087e9e5f7e",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "07_Hao_Hao",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083528_bc60f59b-b4c5-43c9-ade7-2e087e9e5f7e.png"
+    },
+    {
+      "index": 27,
+      "job_id": "9581e7fb-6b6d-4cac-8530-d2d86ddb57f7",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "07_Hao_Hao",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083528_9581e7fb-6b6d-4cac-8530-d2d86ddb57f7.png"
+    },
+    {
+      "index": 29,
+      "job_id": "82125756-3fbc-4962-a8a4-ed607bb8ca94",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "08_Nganh",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083526_82125756-3fbc-4962-a8a4-ed607bb8ca94.png"
+    },
+    {
+      "index": 30,
+      "job_id": "408ad508-0a98-4637-83cf-32b8c4bb997d",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "08_Nganh",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083528_408ad508-0a98-4637-83cf-32b8c4bb997d.png"
+    },
+    {
+      "index": 31,
+      "job_id": "e285f33f-6e34-46e0-aa38-5a9049297256",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "08_Nganh",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083527_e285f33f-6e34-46e0-aa38-5a9049297256.png"
+    },
+    {
+      "index": 33,
+      "job_id": "ee1a83d6-d5dc-49ed-8310-b789a73866fe",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "09_Vit_Vang",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083655_ee1a83d6-d5dc-49ed-8310-b789a73866fe.png"
+    },
+    {
+      "index": 34,
+      "job_id": "b6a69564-9f83-48ba-9941-a778c58492b1",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "09_Vit_Vang",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083654_b6a69564-9f83-48ba-9941-a778c58492b1.png"
+    },
+    {
+      "index": 35,
+      "job_id": "7fa07a8a-fa68-4211-9d7d-f60e8e7b1737",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "09_Vit_Vang",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083655_7fa07a8a-fa68-4211-9d7d-f60e8e7b1737.png"
+    },
+    {
+      "index": 37,
+      "job_id": "0df9fe3a-cda1-443a-92e5-399197e03afb",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "10_Con_LT",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083654_0df9fe3a-cda1-443a-92e5-399197e03afb.png"
+    },
+    {
+      "index": 38,
+      "job_id": "988053fe-cf5e-40f5-9eff-c4a23982b283",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "10_Con_LT",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083654_988053fe-cf5e-40f5-9eff-c4a23982b283.png"
+    },
+    {
+      "index": 39,
+      "job_id": "227f866b-ba81-4eec-9e4f-e0ca3ee21b98",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "10_Con_LT",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083654_227f866b-ba81-4eec-9e4f-e0ca3ee21b98.png"
+    },
+    {
+      "index": 41,
+      "job_id": "c303bbbc-98ad-4861-8a3b-30ee01037c4a",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "11_Juice",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083816_c303bbbc-98ad-4861-8a3b-30ee01037c4a.png"
+    },
+    {
+      "index": 42,
+      "job_id": "32e92241-2803-4348-8211-0a5f3c206760",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "11_Juice",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083816_32e92241-2803-4348-8211-0a5f3c206760.png"
+    },
+    {
+      "index": 43,
+      "job_id": "ed046763-e3e7-40d7-861f-738badc19363",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "11_Juice",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083818_ed046763-e3e7-40d7-861f-738badc19363.png"
+    },
+    {
+      "index": 45,
+      "job_id": "61d1354e-03b0-4eba-a219-94b56eaaef7c",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "12_ADM",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083817_61d1354e-03b0-4eba-a219-94b56eaaef7c.png"
+    },
+    {
+      "index": 46,
+      "job_id": "85a54549-3cef-4f56-b490-13c0bf104980",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "12_ADM",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083817_85a54549-3cef-4f56-b490-13c0bf104980.png"
+    },
+    {
+      "index": 47,
+      "job_id": "25cc1e92-3b5c-45b3-9833-0bba928ad20c",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "12_ADM",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083817_25cc1e92-3b5c-45b3-9833-0bba928ad20c.png"
+    },
+    {
+      "index": 49,
+      "job_id": "4b7d05f5-d5ae-42d4-82de-d3444c690fe4",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "13_AB",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083932_4b7d05f5-d5ae-42d4-82de-d3444c690fe4.png"
+    },
+    {
+      "index": 50,
+      "job_id": "44679eb6-6230-4d43-bcb6-41e64a1b7c81",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "13_AB",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083932_44679eb6-6230-4d43-bcb6-41e64a1b7c81.png"
+    },
+    {
+      "index": 51,
+      "job_id": "5a0f887a-c61c-48e3-9500-068ae9eeec06",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "13_AB",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083931_5a0f887a-c61c-48e3-9500-068ae9eeec06.png"
+    },
+    {
+      "index": 53,
+      "job_id": "1fc22e0c-42e4-4f70-b423-a4bc9239f2fa",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "14_HM",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083932_1fc22e0c-42e4-4f70-b423-a4bc9239f2fa.png"
+    },
+    {
+      "index": 54,
+      "job_id": "a051e8b5-a981-428b-849d-2644503af0cb",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "14_HM",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083932_a051e8b5-a981-428b-849d-2644503af0cb.png"
+    },
+    {
+      "index": 55,
+      "job_id": "6fcfd820-0560-42a8-8994-9bcfa1462a5b",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "14_HM",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_083931_6fcfd820-0560-42a8-8994-9bcfa1462a5b.png"
+    },
+    {
+      "index": 57,
+      "job_id": "b679c094-7f27-4333-a012-02d7e8cd2cf3",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "15_CongB",
+      "sheet": "actions",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_084011_b679c094-7f27-4333-a012-02d7e8cd2cf3.png"
+    },
+    {
+      "index": 58,
+      "job_id": "af902696-4898-421d-aa8d-27ab46665e0a",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "15_CongB",
+      "sheet": "blue",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_084011_af902696-4898-421d-aa8d-27ab46665e0a.png"
+    },
+    {
+      "index": 59,
+      "job_id": "5d8abf3f-2b47-4aff-be1a-09f7296f6e81",
+      "status": "completed",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      },
+      "character": "15_CongB",
+      "sheet": "ergo",
+      "type": "image",
+      "model": "gpt_image_2_5",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3BNKHVPmtBSKR5EHigq456WT6Fs/hf_20261003_084011_5d8abf3f-2b47-4aff-be1a-09f7296f6e81.png"
+    }
+  ],
+  "requests": [
+    {
+      "index": 0,
+      "params": {
+        "model": "gpt_image_2_5",
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character Huy in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment.",
+        "aspect_ratio": "3:2",
+        "reference_images": [
+          "dfde063e-06da-4d63-9ea6-b0c523c1b477"
+        ],
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent"
+      }
+    },
+    {
+      "index": 4,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "80c448ff-d8ed-4d40-b67a-605d98ebe3ab"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 02_Luwon in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 8,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "9d34e0b5-feb4-407a-8abc-0a476f2aaa8b"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 03_Pali in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 12,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "95c68c3f-3132-48e8-b29a-50336f83044b"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 04_Tamny in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 16,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "0e203168-a931-41ec-9659-aa6640067fd2"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character trinh_lac_corrected_v2 in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 20,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "dc8b5d85-538e-43dd-9fee-8b908932f43a"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 06_Vu_a_Vu in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 24,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "8360c6a8-0ab8-4556-9e48-6b79c5af212e"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 07_Hao_Hao in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 28,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "4cb704e3-8b08-40e7-baba-6a9c84ab2870"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 08_Nganh in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 32,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "b1b0158e-9b3d-435e-81c9-1035e5e5848f"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 09_Vit_Vang in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 36,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "782a8f52-1c29-4cd7-8c1c-884cc0d77535"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 10_Con_LT in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 40,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "b5ca89ea-ea36-4360-b007-2235b9030ae4"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 11_Juice in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 44,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "8cea20d4-e8e4-4e21-bd4c-0cb90d5c5847"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 12_ADM in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 48,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "b38ca6a7-3b83-4d70-a5cb-56358a51ed32"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 13_AB in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 28,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "4cb704e3-8b08-40e7-baba-6a9c84ab2870"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 08_Nganh in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 32,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "b1b0158e-9b3d-435e-81c9-1035e5e5848f"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 09_Vit_Vang in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 36,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "782a8f52-1c29-4cd7-8c1c-884cc0d77535"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 10_Con_LT in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 44,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "8cea20d4-e8e4-4e21-bd4c-0cb90d5c5847"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 12_ADM in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 52,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "a330fc8b-0458-412e-a126-2ab176fbe63a"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 14_HM in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 56,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "d6c435ab-b6cf-46be-8329-331207c56835"
+          }
+        ],
+        "prompt": "Create a production-ready pixel-art walking sprite sheet for the SAME character 15_CongB in the reference. Preserve exact recognizable face, hairstyle, hair color, skin tone, chibi proportions, isometric camera, pixel-art rendering and silhouette scale. Change only clothing to premium STREETWEAR: charcoal bomber jacket over cream hoodie, subtle amber trim, dark tapered cargo trousers and cream sneakers. No hat or accessories hiding face. Exactly 3 equal columns x 2 equal rows, six isolated full-body sprites on truly transparent background, no text, no grid, no shadows crossing cells. Top row faces southwest/front-left at 3/4 isometric angle: left foot forward, neutral, right foot forward. Bottom row faces northwest/back-left: corresponding three walking poses. Character identical across all six frames, same size and feet baseline within every cell, centered with generous transparent margins; no clipping. Faithfully match the original reference's game sprite style, not a realistic illustration. This is a clothing skin for an existing game; maintain animation alignment. Preserve this referenced character's own identity and species exactly, including any non-human mascot features. No glow or semi-transparent haze around sprites; empty pixels must be fully transparent."
+      }
+    },
+    {
+      "index": 1,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "109d21d5-f040-4bbc-9d7c-03bea6987c9d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 2,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "109d21d5-f040-4bbc-9d7c-03bea6987c9d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 3,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "109d21d5-f040-4bbc-9d7c-03bea6987c9d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 5,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "9cd0ead0-ee6c-438c-b11d-b86fbe8db185"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 6,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "9cd0ead0-ee6c-438c-b11d-b86fbe8db185"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 7,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "9cd0ead0-ee6c-438c-b11d-b86fbe8db185"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 9,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 10,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 11,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 13,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "0b178429-5a4e-4b6a-a36f-fe14c9a4369e"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 14,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "0b178429-5a4e-4b6a-a36f-fe14c9a4369e"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 15,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "0b178429-5a4e-4b6a-a36f-fe14c9a4369e"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 17,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "9ebe25ab-8de3-4441-b34c-6fc1f443cc4d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 18,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "9ebe25ab-8de3-4441-b34c-6fc1f443cc4d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 19,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "9ebe25ab-8de3-4441-b34c-6fc1f443cc4d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 21,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "054b876b-dedf-4c57-836f-5a95710306dc"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 22,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "054b876b-dedf-4c57-836f-5a95710306dc"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 23,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "054b876b-dedf-4c57-836f-5a95710306dc"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 25,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "c501ad9c-9158-4267-b60a-8cd7681bb766"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 26,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "c501ad9c-9158-4267-b60a-8cd7681bb766"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 27,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "c501ad9c-9158-4267-b60a-8cd7681bb766"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 29,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "6c4d525d-0438-42bd-85f0-b10582731a65"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 30,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "6c4d525d-0438-42bd-85f0-b10582731a65"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 31,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "6c4d525d-0438-42bd-85f0-b10582731a65"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 33,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "42edd9e4-3f9f-42c0-ac3b-efec55a9fdbf"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 34,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "42edd9e4-3f9f-42c0-ac3b-efec55a9fdbf"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 35,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "42edd9e4-3f9f-42c0-ac3b-efec55a9fdbf"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 37,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "7815d13f-b893-4735-9c62-e3cf0d4cd0af"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 38,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "7815d13f-b893-4735-9c62-e3cf0d4cd0af"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 39,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "7815d13f-b893-4735-9c62-e3cf0d4cd0af"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 41,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "501b7893-0760-40d4-8b04-0c60eb74b92d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 42,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "501b7893-0760-40d4-8b04-0c60eb74b92d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 43,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "501b7893-0760-40d4-8b04-0c60eb74b92d"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 45,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "f43da759-bf78-43ee-b3d9-099fd1430fff"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 46,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "f43da759-bf78-43ee-b3d9-099fd1430fff"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 47,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "f43da759-bf78-43ee-b3d9-099fd1430fff"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 49,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "93ee6ef6-6b82-4725-ac55-d939f1123f16"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 50,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "93ee6ef6-6b82-4725-ac55-d939f1123f16"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 51,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "93ee6ef6-6b82-4725-ac55-d939f1123f16"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 53,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "1a4f0881-bf93-4afa-b15a-e63150e9735c"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 54,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "1a4f0881-bf93-4afa-b15a-e63150e9735c"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 55,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "1a4f0881-bf93-4afa-b15a-e63150e9735c"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 57,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "632f9e1b-fab2-4248-98b7-0cc42abd1d71"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and FOUR ROWS, sixteen sprites. Row 1 facing southwest/front-left: column1 sitting hands on lap pose A, column2 sitting hands on lap pose B, column3 standing using smartphone pose A, column4 standing using smartphone pose B. Row 2 same four poses facing northwest/back-left. Row 3 facing southwest: column1 talking gesture A, column2 talking gesture B, column3 joyful arms up celebration, column4 sad slumped posture. Row 4 same four poses facing northwest/back-left. Sitting figures have bent hips/knees and NO CHAIR or furniture; standing figures show feet. Keep same head size in every cell."
+      }
+    },
+    {
+      "index": 58,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "632f9e1b-fab2-4248-98b7-0cc42abd1d71"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a blue padded rolling office chair, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND blue chair, five-star caster base, arms and chair back visible where appropriate. Same chair geometry across all views. Keep scale and seat height perfectly consistent."
+      }
+    },
+    {
+      "index": 59,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "3:2",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "632f9e1b-fab2-4248-98b7-0cc42abd1d71"
+          }
+        ],
+        "prompt": "Production game pixel-art sprite atlas. Match the supplied Streetwear character reference EXACTLY: face, hair, species, proportions, charcoal bomber, cream hoodie, amber details, cargo pants, cream sneakers. Same isometric chibi pixel-art style, no redesign. Transparent background, no glow, no floor, no text or separators. Each sprite completely isolated, evenly spaced equal cells with generous margins. Exactly FOUR COLUMNS and TWO ROWS, eight sprites of the character SITTING ON a black mesh ergonomic rolling office chair with headrest, typing on an invisible keyboard in front. No desk or keyboard drawn. Columns orientations in this exact order: southwest/front-left, southeast/front-right, northeast/back-right, northwest/back-left. Row1 typing pose A; row2 typing pose B with small hand movement. Entire character AND ergonomic chair, five-star caster base, arms and back/headrest visible where appropriate. Keep scale and seat height perfectly consistent."
+      }
+    }
+  ]
+}

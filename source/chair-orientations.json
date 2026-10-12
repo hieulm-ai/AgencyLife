@@ -1,0 +1,33 @@
+{
+  "base": {
+    "blue": [
+      "03_Pali",
+      "09_Vit_Vang"
+    ],
+    "ergo": [
+      "01_Huy",
+      "02_Luwon",
+      "03_Pali",
+      "06_Vu_a_Vu",
+      "07_Hao_Hao",
+      "08_Nganh",
+      "11_Juice",
+      "13_AB",
+      "14_HM",
+      "trinh_lac_corrected_v2"
+    ]
+  },
+  "streetwear": {
+    "blue": [
+      "09_Vit_Vang",
+      "11_Juice",
+      "trinh_lac_corrected_v2"
+    ],
+    "ergo": [
+      "06_Vu_a_Vu",
+      "08_Nganh",
+      "13_AB",
+      "trinh_lac_corrected_v2"
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const src=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(){const c={GS:{jobs:[{id:1,name:'Logo',work:4,need:10},{id:2,name:'Pitch',work:0,need:60,meeting:{phase:'queued',remaining:20}},{id:3,name:'Banner',work:2,need:8}]},saved:0,renderJobs(){},save(){c.saved++;},toast(){},meetingPending:j=>j.meeting&&j.meeting.phase!=='done'};vm.createContext(c);vm.runInContext(src.slice(src.indexOf('function prioritizeJob('),src.indexOf('function isWorking(')),c);return c;}
+test('prioritizing changes queue without losing progress or meeting state',()=>{const c=setup(),job=c.GS.jobs[1];c.prioritizeJob(2);assert.equal(c.GS.jobs[0],job);assert.equal(c.GS.jobs.map(j=>j.id).join(','),'2,1,3');assert.equal(job.meeting.remaining,20);assert.equal(c.GS.jobs[1].work,4);assert.equal(c.saved,1);});
+test('stale or repeated priority click does not duplicate jobs or save',()=>{const c=setup();c.prioritizeJob(99);c.prioritizeJob(1);assert.equal(c.saved,0);assert.equal(c.GS.jobs.length,3);});

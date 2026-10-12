@@ -1,0 +1,6 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const s=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(doc){const messages=[],c={document:doc,toast:(...args)=>messages.push(args)};vm.createContext(c);vm.runInContext(s.slice(s.indexOf('async function toggleFullscreen()'),s.indexOf('$id("bFull").onclick')),c);return {c,messages};}
+test('rejected fullscreen promise gives feedback without unhandled rejection',async()=>{const {c,messages}=setup({documentElement:{requestFullscreen:async()=>{throw Error('denied');}}});await c.toggleFullscreen();assert.equal(messages.length,1);assert.equal(messages[0][1],'err');});
+test('unsupported fullscreen is handled',async()=>{const {c,messages}=setup({documentElement:{}});await c.toggleFullscreen();assert.equal(messages.length,1);});
+test('fullscreen toggles both directions without error toast',async()=>{let entered=0,exited=0;const doc={documentElement:{requestFullscreen:async()=>entered++},exitFullscreen:async()=>exited++};const {c,messages}=setup(doc);await c.toggleFullscreen();doc.fullscreenElement={};await c.toggleFullscreen();assert.equal(entered,1);assert.equal(exited,1);assert.equal(messages.length,0);});

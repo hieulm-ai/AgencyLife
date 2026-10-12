@@ -1,0 +1,5 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+function setup(){const el={innerHTML:''},c={GS:{day:1,min:480,energy:100,jobs:[]},AG:[],CHARS:[{id:'09_Vit_Vang'}],document:{getElementById:()=>el},el};vm.createContext(c);vm.runInContext(fs.readFileSync(path.join(__dirname,'../source/news.js'),'utf8'),c);return c;}
+test('bulletin keeps newest 30 entries',()=>{const c=setup();for(let i=0;i<35;i++)c.addOfficeNews('job',String(i));assert.equal(c.GS.officeNews.length,30);assert.equal(c.GS.officeNews[0].message,'34');});
+test('duck only comments when hired and reacts to urgent conditions',()=>{const c=setup();assert.match(c.duckComment(),/Tuyển/);c.AG=[{ci:0,state:'burn'}];assert.match(c.duckComment(),/bốc cháy/);c.AG[0].state='wander';c.GS.energy=10;assert.match(c.duckComment(),/Pin/);});
+test('renders saved history with escaped labels',()=>{const c=setup();c.addOfficeNews('job','<script>');c.GS=JSON.parse(JSON.stringify(c.GS));c.renderOfficeNews();assert.ok(c.el.innerHTML.includes('&lt;script&gt;'));assert.ok(c.el.innerHTML.includes('08:00'));});

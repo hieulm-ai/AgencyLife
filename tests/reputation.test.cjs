@@ -1,0 +1,7 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+function setup(gs={}){const c={GS:{day:1,...gs},toast(){},addOfficeNews(){}};vm.createContext(c);vm.runInContext(fs.readFileSync(path.join(__dirname,'../source/reputation.js'),'utf8'),c);c.ensureReputation();return c;}
+test('VIP and early completion add to base points',()=>{const c=setup();assert.equal(c.recordReputation({name:'VIP',vip:true,due:2},true),17);assert.equal(c.GS.reputation.points,17);});
+test('failure floors at zero; cannot create negative reputation',()=>{const c=setup();c.recordReputation({name:'normal',due:1},true);c.recordReputation({name:'late'},false);assert.equal(c.GS.reputation.points,2);assert.equal(c.recordReputation({name:'late'},false),-2);assert.equal(c.GS.reputation.points,0);});
+test('thresholds promote and lower levels correctly',()=>{const c=setup();assert.equal(c.reputationLevel(49),0);assert.equal(c.reputationLevel(50),1);assert.equal(c.reputationLevel(700),4);});
+test('legacy results migrate once without inventing VIP bonuses',()=>{const c=setup({done:10,failed:2});assert.equal(c.GS.reputation.points,84);c.GS.done++;c.ensureReputation();assert.equal(c.GS.reputation.points,84);});
+test('history is bounded and job labels escaped',()=>{const c=setup();for(let i=0;i<10;i++)c.recordReputation({name:'<img>',due:1},true);assert.equal(c.GS.reputation.history.length,8);assert.ok(c.renderReputation().includes('&lt;img&gt;'));});

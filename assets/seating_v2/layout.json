@@ -1,0 +1,286 @@
+{
+  "round_table": [
+    {
+      "size": [
+        80,
+        80
+      ],
+      "anchor": [
+        40,
+        72
+      ],
+      "fp": [
+        2,
+        2
+      ],
+      "seatsPx": [
+        {
+          "cx": 18,
+          "cy": 38,
+          "face": "SE",
+          "z": "before"
+        },
+        {
+          "cx": 62,
+          "cy": 38,
+          "face": "SW",
+          "z": "before"
+        },
+        {
+          "cx": 18,
+          "cy": 58,
+          "face": "NE",
+          "z": "after"
+        },
+        {
+          "cx": 62,
+          "cy": 58,
+          "face": "NW",
+          "z": "after"
+        }
+      ],
+      "separateChairs": true
+    },
+    {
+      "size": [
+        80,
+        80
+      ],
+      "anchor": [
+        40,
+        72
+      ],
+      "fp": [
+        2,
+        2
+      ],
+      "seatsPx": [
+        {
+          "cx": 18,
+          "cy": 38,
+          "face": "SE",
+          "z": "before"
+        },
+        {
+          "cx": 62,
+          "cy": 38,
+          "face": "SW",
+          "z": "before"
+        },
+        {
+          "cx": 18,
+          "cy": 58,
+          "face": "NE",
+          "z": "after"
+        },
+        {
+          "cx": 62,
+          "cy": 58,
+          "face": "NW",
+          "z": "after"
+        }
+      ],
+      "separateChairs": true
+    },
+    {
+      "size": [
+        80,
+        80
+      ],
+      "anchor": [
+        40,
+        72
+      ],
+      "fp": [
+        2,
+        2
+      ],
+      "seatsPx": [
+        {
+          "cx": 18,
+          "cy": 38,
+          "face": "SE",
+          "z": "before"
+        },
+        {
+          "cx": 62,
+          "cy": 38,
+          "face": "SW",
+          "z": "before"
+        },
+        {
+          "cx": 18,
+          "cy": 58,
+          "face": "NE",
+          "z": "after"
+        },
+        {
+          "cx": 62,
+          "cy": 58,
+          "face": "NW",
+          "z": "after"
+        }
+      ],
+      "separateChairs": true
+    },
+    {
+      "size": [
+        80,
+        80
+      ],
+      "anchor": [
+        40,
+        72
+      ],
+      "fp": [
+        2,
+        2
+      ],
+      "seatsPx": [
+        {
+          "cx": 18,
+          "cy": 38,
+          "face": "SE",
+          "z": "before"
+        },
+        {
+          "cx": 62,
+          "cy": 38,
+          "face": "SW",
+          "z": "before"
+        },
+        {
+          "cx": 18,
+          "cy": 58,
+          "face": "NE",
+          "z": "after"
+        },
+        {
+          "cx": 62,
+          "cy": 58,
+          "face": "NW",
+          "z": "after"
+        }
+      ],
+      "separateChairs": true
+    }
+  ],
+  "sofa_blue": [
+    {
+      "size": [
+        72,
+        60
+      ],
+      "anchor": [
+        48,
+        55
+      ],
+      "fp": [
+        2,
+        1
+      ],
+      "sofaLayers": true,
+      "seatsPx": [
+        {
+          "cx": 25,
+          "cy": 27,
+          "face": "SW",
+          "z": "after"
+        },
+        {
+          "cx": 45,
+          "cy": 37,
+          "face": "SW",
+          "z": "after"
+        }
+      ]
+    },
+    {
+      "size": [
+        72,
+        60
+      ],
+      "anchor": [
+        24,
+        55
+      ],
+      "fp": [
+        1,
+        2
+      ],
+      "sofaLayers": true,
+      "seatsPx": [
+        {
+          "cx": 27,
+          "cy": 37,
+          "face": "SE",
+          "z": "after"
+        },
+        {
+          "cx": 47,
+          "cy": 27,
+          "face": "SE",
+          "z": "after"
+        }
+      ]
+    },
+    {
+      "size": [
+        72,
+        60
+      ],
+      "anchor": [
+        48,
+        55
+      ],
+      "fp": [
+        2,
+        1
+      ],
+      "sofaLayers": true,
+      "seatsPx": [
+        {
+          "cx": 26,
+          "cy": 24,
+          "face": "NE",
+          "z": "after"
+        },
+        {
+          "cx": 46,
+          "cy": 34,
+          "face": "NE",
+          "z": "after"
+        }
+      ]
+    },
+    {
+      "size": [
+        72,
+        60
+      ],
+      "anchor": [
+        24,
+        55
+      ],
+      "fp": [
+        1,
+        2
+      ],
+      "sofaLayers": true,
+      "seatsPx": [
+        {
+          "cx": 26,
+          "cy": 34,
+          "face": "NW",
+          "z": "after"
+        },
+        {
+          "cx": 46,
+          "cy": 24,
+          "face": "NW",
+          "z": "after"
+        }
+      ]
+    }
+  ]
+}

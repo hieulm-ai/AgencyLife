@@ -1,0 +1,4 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');const src=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(){let id=10;const c={jobCapacity:()=>3,GS:{offers:[{id:1,missing:true},{id:2,missing:true},{id:3}]},VIS:[],missingReq:j=>j.missing?['camera']:[],mkOffer:()=>({id:id++})};vm.createContext(c);vm.runInContext(src.slice(src.indexOf('function fillOffers('),src.indexOf('function missingReq(')),c);return c;}
+test('offer refresh never replaces received briefs or customers already walking in',()=>{const c=setup();c.GS.offers[0].received=true;c.VIS=[{jobId:2}];c.fillOffers();assert.equal(c.GS.offers.map(j=>j.id).join(','),'1,2,3');});
+test('unseen new offers can still guarantee accessible job choices',()=>{const c=setup();c.fillOffers();assert.ok(c.GS.offers.filter(j=>!j.missing).length>=2);assert.equal(c.GS.offers.length,3);});

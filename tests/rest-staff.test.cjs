@@ -1,0 +1,10 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const src=fs.readFileSync(path.join(__dirname,'../source/staff.js'),'utf8');
+function setup(){const a={ci:0,state:'sit',stress:80,x:4,y:4,acc:[4,5],path:[[6,6]],seat:{uid:1}},c={GS:{day:1,min:480},AG:[a],CHARS:[{id:'A'}],closingOffice:false,BUSY:new Map(),staffName:x=>x,dq(){},save(){},hud(){},toast(){}};vm.createContext(c);vm.runInContext(src.slice(src.indexOf('function restStaff(')),c);return {c,a};}
+test('rest leaves chair via its access tile and clears old route',()=>{const {c,a}=setup();assert.equal(c.restStaff(a),true);assert.equal(a.y,5);assert.equal(a.stress,55);assert.equal(a.state,'wander');assert.equal(a.path.length,0);});
+test('rest cannot interrupt a meeting, reception, collection or closing',()=>{for(const key of ['meetingJob','receptionUid','collection']){const {c,a}=setup();a[key]=1;assert.equal(c.restStaff(a),false);assert.equal(a.stress,80);}const {c,a}=setup();c.closingOffice=true;assert.equal(c.restStaff(a),false);});
+test('burn recovery uses the same below-60 threshold as relaxation',()=>{const {c,a}=setup();a.state='burn';a.stress=100;c.restStaff(a);assert.equal(a.state,'burn');c.GS.min+=30;c.restStaff(a);assert.equal(a.state,'wander');assert.equal(a.stress,50);});
+test('stale card or stress-free staff does not award a rest action',()=>{const {c,a}=setup();c.AG=[];assert.equal(c.restStaff(a),false);c.AG=[a];a.stress=0;assert.equal(c.restStaff(a),false);});
+
+test('rest cooldown prevents repeated rewards and survives serializing game state',()=>{const {c,a}=setup();c.restStaff(a);c.GS=JSON.parse(JSON.stringify(c.GS));assert.equal(c.restStaff(a),false);assert.equal(a.stress,55);assert.equal(c.restCooldown(a),30);c.GS.min+=29;assert.equal(c.restStaff(a),false);c.GS.min++;assert.equal(c.restStaff(a),true);assert.equal(a.stress,30);});
+test('rest cooldown expires across game day boundary',()=>{const {c,a}=setup();c.GS.min=1250;c.restStaff(a);c.GS.day++;c.GS.min=480;assert.equal(c.restCooldown(a),0);});

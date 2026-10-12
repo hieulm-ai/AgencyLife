@@ -1,0 +1,7 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const src=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(){const c={GS:{offers:[{id:1,received:true},{id:2,received:false}],jobs:[],gems:20},VIS:[{jobId:1,kind:'offer',state:'lounge'},{jobId:7,kind:'pickup',state:'pickup'}],saves:0,visLeave(v){v.state='leave';v.seat=null;},renderJobs(){},save(){c.saves++;},toast(){}};vm.createContext(c);vm.runInContext(src.slice(src.indexOf('function declineOffer('),src.indexOf('function acceptJob(')),c);return c;}
+test('declining brief sends matching guest home without touching other visitors or currency',()=>{const c=setup();assert.equal(c.declineOffer(1),true);assert.equal(c.GS.offers.length,1);assert.equal(c.VIS[0].state,'leave');assert.equal(c.VIS[1].state,'pickup');assert.equal(c.GS.gems,20);assert.equal(c.saves,1);});
+test('cannot decline before briefing or an accepted job',()=>{const c=setup();assert.equal(c.declineOffer(2),false);c.GS.jobs=[{id:1}];assert.equal(c.declineOffer(1),false);assert.equal(c.saves,0);});
+test('repeated decline does not save again or replace offer',()=>{const c=setup();c.declineOffer(1);assert.equal(c.declineOffer(1),false);assert.equal(c.saves,1);assert.equal(c.GS.offers[0].id,2);});
+test('decline also works after guest already left',()=>{const c=setup();c.VIS=[];assert.equal(c.declineOffer(1),true);assert.equal(c.GS.offers.length,1);});

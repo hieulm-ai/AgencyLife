@@ -1,0 +1,6 @@
+{
+ "date": "2026-10-07",
+ "purpose": "Ve lai ban lam viec va ban dung phim khop luoi san isometric 2:1; sheet 2 goc (trai = 01_front_left, phai = 04_back_left), 02/03 lay bang lat ngang.",
+ "work_desk": {"sheet": "work_desk-sheet.png", "footprint_rot0": [2, 1], "model": "nano_banana_2_1", "job_id": "9f0dda8e-385a-47c1-afe0-caa23e77ef68", "background": "magenta #FF00FF, tach nen bang scripts/prepare_desks_v2.py", "references": ["guide_2x1_magenta media 79f879d5-5a06-4c64-beef-1bdee51a6bea", "style media b987e673-44f1-4ce2-8d55-7863ecee4114"]},
+ "editing_workstation": {"sheet": "editing_workstation-sheet.png", "footprint_rot0": [3, 1], "model": "gpt_image_2_5 (high, 2k, transparent)", "job_id": "107e64c3-45f4-4adc-b4f5-cdf8484652e8", "references": ["guide_3x1 media a4ab7935-fe71-4032-b89c-c41516a4c98d", "style media b987e673-44f1-4ce2-8d55-7863ecee4114"]}
+}

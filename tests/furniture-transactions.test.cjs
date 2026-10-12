@@ -1,0 +1,20 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const source=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(){const c={undo:[],GS:{gems:2},cash:2,UNLIM:false,G:[[1,2],[3,0]],N:2,WS:{'0,0':1,'1,0':2,'0,1':3},DS:{'1,0':1},FL:{'0,0':2},OBJS:[],FBY:{chair:{price:5},ergo:{price:100,gem:30}},WINDOW_PRICE:1.5,WALLSTY:{kem:{price:.5},trang:{price:.8},kinh:{price:1.5}},DOORSTY:{truot:{price:2},kinhdoi:{price:4}},REFUND:.5,RUBY_COIN:10,PRICE:{wall:.5,door:2},document:{getElementById(){return {};}},askConfirm:async()=>true,toast(){},rebuild(){},hud(){},save(){},fmt:String};vm.createContext(c);
+vm.runInContext(source.slice(source.indexOf('function structureCoinValue('),source.indexOf('function planFor(')),c);
+let sa=source.indexOf('function sellObj('),sb=source.indexOf('function drawLayered',sa);vm.runInContext(source.slice(sa,sb),c);
+let a=source.indexOf('function doUndo()'),b=source.indexOf('\n',source.indexOf('toast("Đã hoàn tác"',a));vm.runInContext(source.slice(a,b),c);
+a=source.indexOf('function clearOfficeNow()');b=source.indexOf('\ndocument.getElementById("bClear")',a);vm.runInContext(source.slice(a,b),c);return c;}
+test('undo cannot reclaim sold ruby furniture after spending its refund',()=>{const c=setup();c.undo=[{before:[],cost:0,gem:-15,objs:'[{"id":"ergo"}]'}];c.doUndo();assert.equal(c.undo.length,1);assert.equal(c.GS.gems,2);assert.equal(c.OBJS.length,0);c.GS.gems=15;c.doUndo();assert.equal(c.GS.gems,0);assert.equal(c.OBJS[0].id,'ergo');assert.equal(c.undo.length,0);});
+test('coin undo requires funds outside test mode and retains history for retry',()=>{const c=setup();c.undo=[{before:[],cost:-2.5,objs:'[{"id":"chair"}]'}];c.doUndo();assert.equal(c.cash,2);assert.equal(c.undo.length,1);c.cash=2.5;c.doUndo();assert.equal(c.cash,0);assert.equal(c.OBJS.length,1);});
+test('undo purchase still refunds both currencies',()=>{const c=setup();c.undo=[{before:[],cost:5,gem:30,objs:'[]'}];c.doUndo();assert.equal(c.cash,7);assert.equal(c.GS.gems,32);});
+test('clear refunds half value in coin including ruby conversion, only once',()=>{const c=setup();c.OBJS=[{id:'chair'},{id:'ergo'}];c.clearOfficeNow();assert.equal(c.cash,156);assert.equal(c.GS.gems,2);assert.equal(c.G[1][0],3);assert.equal(c.WS['0,1'],3);assert.equal(c.WS['0,0'],undefined);assert.equal(c.FL['0,0'],2);c.clearOfficeNow();assert.equal(c.cash,156);assert.equal(c.GS.gems,2);});
+test('cancel clear leaves office and balances intact',async()=>{const c=setup();c.askConfirm=async()=>false;c.OBJS=[{id:'ergo'}];assert.equal(await c.clearOffice(),false);assert.equal(c.OBJS.length,1);assert.equal(c.GS.gems,2);assert.equal(c.G[0][0],1);});
+
+test('selling ruby furniture returns coin only; undo takes coin back',()=>{const c=setup();c.OBJS=[{uid:1,id:'ergo'}];c.sellObj(c.OBJS[0]);assert.equal(c.cash,152);assert.equal(c.GS.gems,2);assert.equal(c.OBJS.length,0);c.doUndo();assert.equal(c.cash,2);assert.equal(c.GS.gems,2);assert.equal(c.OBJS[0].id,'ergo');});
+test('ruby sale undo cannot reclaim furniture after spending coin refund',()=>{const c=setup();c.OBJS=[{uid:1,id:'ergo'}];c.sellObj(c.OBJS[0]);c.cash=0;c.doUndo();assert.equal(c.OBJS.length,0);assert.equal(c.undo.length,1);assert.equal(c.GS.gems,2);});
+
+test('clear uses actual wall and door styles, preserving the floor (sau khi xác nhận trong hộp giữa màn hình)',async()=>{const c=setup();c.WS={'0,0':'trang','1,0':'kinh'};c.DS={'1,0':'kinhdoi'};assert.equal(await c.clearOffice(),true);assert.equal(c.cash,5.15);assert.equal(c.FL['0,0'],2);});
+test('structure sale value includes the door and its underlying wall',()=>{const c=setup();c.WS={'1,0':'trang'};c.DS={'1,0':'kinhdoi'};assert.equal(c.structureCoinValue(1,0),4.8);assert.equal(c.structureCoinValue(1,0)*c.REFUND,2.4);});
+
+test('stale sell action cannot refund an object twice',()=>{const c=setup(),o={uid:1,id:'chair'};c.OBJS=[o];c.sellObj(o);assert.equal(c.cash,4.5);c.sellObj(o);assert.equal(c.cash,4.5);assert.equal(c.undo.length,1);});

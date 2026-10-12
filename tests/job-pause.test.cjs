@@ -1,0 +1,4 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const src=fs.readFileSync(path.join(__dirname,'../source/template.html'),'utf8');
+function setup(){const c={GS:{jobs:[{id:1,need:10,work:2},{id:2,need:10,work:0}]},jobRates:()=>({free:2,teams:new Map([[1,2]])}),meetingPending:()=>false,renderJobs(){},save(){}};vm.createContext(c);vm.runInContext(src.slice(src.indexOf('function advanceJobWork('),src.indexOf('function offerCapacity('))+src.slice(src.indexOf('function toggleJobPaused('),src.indexOf('function prioritizeJob(')),c);return c;}
+test('missing or completed jobs cannot be paused',()=>{const c=setup();assert.equal(c.toggleJobPaused(99),false);c.GS.jobs[0].work=10;assert.equal(c.toggleJobPaused(1),false);});

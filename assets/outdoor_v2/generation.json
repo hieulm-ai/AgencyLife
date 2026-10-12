@@ -1,0 +1,27 @@
+{
+  "job_id": "cd04e3ea-1e0d-49d8-94f8-7a542ecfe940",
+  "model": "gpt_image_2_5",
+  "resolution": "1k",
+  "quality": "medium",
+  "estimated_credits": 0.5,
+  "rects": {
+    "lamp": [
+      60,
+      27,
+      143,
+      629
+    ],
+    "tree": [
+      271,
+      32,
+      388,
+      624
+    ],
+    "walk": [
+      706,
+      280,
+      291,
+      177
+    ]
+  }
+}

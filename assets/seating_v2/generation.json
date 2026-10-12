@@ -1,0 +1,147 @@
+{
+  "budget": 200,
+  "initialBalance": 3129.45,
+  "quotePerImage": 2.75,
+  "requests": [
+    {
+      "index": 0,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "b987e673-44f1-4ce2-8d55-7863ecee4114"
+          }
+        ],
+        "prompt": "Production sprite sheet for a cute pixel art isometric office game. Match reference art style. Four identical ROUND MEETING TABLES ONLY, NO CHAIRS and NO PEOPLE, arranged in strict 2x2 grid, each centered in quadrant, same scale. White round tabletop with thin dark navy rim and single dark charcoal central pedestal with low four-foot base. True 2:1 isometric ellipse tabletop, width twice height, table height from ground appropriate for small seated chibi figures. Top left front-left view, top right front-right, bottom left rear-right, bottom right rear-left. Transparent background, no floor, no ground shadows, no labels, large transparent margins, full objects uncropped. No plants or decorations."
+      }
+    },
+    {
+      "index": 1,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "b987e673-44f1-4ce2-8d55-7863ecee4114"
+          }
+        ],
+        "prompt": "Production sprite sheet for cute crisp pixel art isometric office tycoon game matching reference. Exactly four rotations of SAME compact BLUE TWO-SEATER SOFA, strict 2x2 grid, one full sofa each quadrant, equal scale, large transparent gaps. Royal blue upholstery, two clearly separated seat cushions, LOW backrest and LOW arms, simple short dark legs. Backrest reaches seated person's waist, not head. No people, NO decorative pillows, NO table. Orthographic 2:1 isometric. Top left: front-left, open seating area faces diagonally down-left SW. Top right: front-right, seating faces down-right SE. Bottom left: REAR-RIGHT view facing away NE, show back of sofa, long edge slopes down-right. Bottom right: REAR-LEFT view facing away NW, show back of sofa, long edge slopes down-left. Transparent background, no floor or ground shadows, no text. Distinct front and rear views."
+      }
+    },
+    {
+      "index": 2,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064"
+          },
+          {
+            "role": "image",
+            "value": "54d0cf92-3b7d-4a85-97d1-a7bae64bb0c5"
+          }
+        ],
+        "prompt": "Production isometric pixel art sprite atlas, FOUR columns by TWO rows, exactly eight isolated full-body figures. Preserve precisely the petite woman's face, dark hair updo with ornament and STREETWEAR outfit from reference1. She is seated correctly IN the full BLACK ERGONOMIC OFFICE CHAIR from reference2: mesh backrest, headrest, armrests and 5 caster wheels. Every frame must include complete chair with visible mesh back and headrest, never a stool, even rear views. Column1 front-left facing down-left SW, column2 front-right facing down-right SE, column3 rear-right facing away up-right NE, column4 rear-left facing away up-left NW. Row1 relaxed hands near lap; row2 subtle typing hands, no desk. Seated hips contact chair cushion, feet below knees, character proportions same as walk reference. All eight figures same scale, equal cells with ample clear margins, all fully visible, transparent background, no ground shadows, no labels or text, crisp pixel art."
+      }
+    },
+    {
+      "index": 3,
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "background": "transparent",
+        "aspect_ratio": "1:1",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "94fc8b4d-dbde-49a9-87fe-eb8c4c6e5064"
+          }
+        ],
+        "prompt": "Pixel art game spritesheet, exactly FOUR isolated figures in TWO columns TWO rows. Same petite woman Pali as reference, preserve black hoodie cream lining, black pants white sneakers, dark hair updo and ornaments. She sits in ONE black mesh ergonomic chair with ONE backrest and ONE headrest. Top row both figures face down-left SW, front of person visible, hands resting then typing. Bottom row both figures face diagonally AWAY and LEFT NW: chair back is in foreground below her shoulders, her head above it, no second chair behind her. One complete chair per figure, five caster wheels, subtle gold details. Four identical scales and generous transparent margins. Chibi isometric 2:1, crisp outlines, full body and all wheels, transparent background, no floor shadow, no text."
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "index": 0,
+      "job_id": "a29f41ff-9ee3-4a37-8a26-9379ddc32118",
+      "status": "pending",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "job_id": "5bee761f-1217-4532-9205-0967049d95c7",
+      "status": "pending",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "job_id": "aaaf56df-9aad-417b-92eb-c80d340f49d6",
+      "status": "pending",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        },
+        "medias[1].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "job_id": "a46aa29e-fc15-412a-8fc6-0f959ca37124",
+      "status": "pending",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      }
+    }
+  ],
+  "finalBalance": 3118.45,
+  "spent": 11,
+  "remainingBudget": 189,
+  "qa": {
+    "a29f41ff-9ee3-4a37-8a26-9379ddc32118": "integrated round table",
+    "5bee761f-1217-4532-9205-0967049d95c7": "integrated layered sofa",
+    "aaaf56df-9aad-417b-92eb-c80d340f49d6": "rejected: duplicate chair in rear frame",
+    "a46aa29e-fc15-412a-8fc6-0f959ca37124": "integrated Pali ergonomic chair"
+  }
+}

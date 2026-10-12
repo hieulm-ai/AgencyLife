@@ -1,0 +1,24 @@
+{
+ "m2": {
+  "char": "C_short_m",
+  "sheets": [
+   "walk",
+   "sit",
+   "use",
+   "talk",
+   "cele",
+   "sad"
+  ]
+ },
+ "f2": {
+  "char": "C_short_f",
+  "sheets": [
+   "walk",
+   "sit",
+   "use",
+   "talk",
+   "cele",
+   "sad"
+  ]
+ }
+}

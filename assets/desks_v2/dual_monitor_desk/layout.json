@@ -1,0 +1,116 @@
+{
+ "source_sheet": "dual_monitor_desk-sheet.png",
+ "higgsfield_job": "89c1f85d-ae17-4bcc-8f35-cbb1e75f6712",
+ "footprint_rot0": [
+  2,
+  1
+ ],
+ "views": {
+  "01_front_left": {
+   "size": [
+    48,
+    44
+   ],
+   "anchor": [
+    34,
+    44
+   ],
+   "footprint": [
+    2,
+    1
+   ],
+   "fit": {
+    "src_corners": {
+     "left": [
+      249.0,
+      790.0
+     ],
+     "bottom": [
+      1043.5229007633588,
+      1214.0
+     ],
+     "right": [
+      1385.0,
+      1026.0
+     ]
+    },
+    "src_angle_long": 28.09,
+    "src_angle_short": 28.83,
+    "grid_angle": 26.57,
+    "x_residual_hd3x": [
+     -2.4,
+     -5.7
+    ],
+    "vertical_scale": 0.1205
+   }
+  },
+  "02_front_right": {
+   "size": [
+    48,
+    44
+   ],
+   "anchor": [
+    14,
+    44
+   ],
+   "footprint": [
+    1,
+    2
+   ],
+   "fit": "mirror of 01_front_left"
+  },
+  "04_back_left": {
+   "size": [
+    47,
+    42
+   ],
+   "anchor": [
+    33,
+    42
+   ],
+   "footprint": [
+    2,
+    1
+   ],
+   "fit": {
+    "src_corners": {
+     "left": [
+      197.0,
+      774.0
+     ],
+     "bottom": [
+      1020.479020979021,
+      1207.0
+     ],
+     "right": [
+      1358.0,
+      1024.0
+     ]
+    },
+    "src_angle_long": 27.74,
+    "src_angle_short": 28.47,
+    "grid_angle": 26.57,
+    "x_residual_hd3x": [
+     -3.0,
+     -7.4
+    ],
+    "vertical_scale": 0.1212
+   }
+  },
+  "03_back_right": {
+   "size": [
+    47,
+    42
+   ],
+   "anchor": [
+    14,
+    42
+   ],
+   "footprint": [
+    1,
+    2
+   ],
+   "fit": "mirror of 04_back_left"
+  }
+ }
+}

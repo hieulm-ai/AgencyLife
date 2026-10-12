@@ -1,0 +1,4297 @@
+{
+ "manifest": {
+  "version": "3.0",
+  "grid": {
+   "projection": "isometric 2:1",
+   "tile_px": [
+    32,
+    16
+   ],
+   "character_world_px": [
+    24,
+    32
+   ],
+   "character_portrait_px": [
+    48,
+    64
+   ],
+   "rotations": [
+    "01_front_left",
+    "02_front_right",
+    "03_back_right",
+    "04_back_left"
+   ],
+   "anchor": "đỉnh dưới của hình thoi footprint (ô xa nhất về phía người xem), tính từ góc trái trên của sprite"
+  },
+  "items": {
+   "furniture/bookshelf": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       48,
+       69
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       33,
+       68
+      ],
+      "scale_from_src": 0.1967,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       48,
+       69
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       15,
+       68
+      ],
+      "scale_from_src": 0.1967,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       48,
+       68
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       14,
+       67
+      ],
+      "scale_from_src": 0.1959,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       48,
+       68
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       34,
+       67
+      ],
+      "scale_from_src": 0.1967,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     }
+    }
+   },
+   "furniture/coffee_table": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       33,
+       30
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       15,
+       29
+      ],
+      "scale_from_src": 0.0506,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       32,
+       30
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       14,
+       29
+      ],
+      "scale_from_src": 0.05,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       33,
+       29
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       17,
+       28
+      ],
+      "scale_from_src": 0.0502,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       33,
+       30
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       17,
+       29
+      ],
+      "scale_from_src": 0.0507,
+      "align": "front_corner"
+     }
+    }
+   },
+   "furniture/dual_monitor_desk": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       48,
+       44
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       34,
+       44
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 89c1f85d-ae17-4bcc-8f35-cbb1e75f6712"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       48,
+       44
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       14,
+       44
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 89c1f85d-ae17-4bcc-8f35-cbb1e75f6712"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       47,
+       42
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       14,
+       42
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 89c1f85d-ae17-4bcc-8f35-cbb1e75f6712"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       47,
+       42
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       33,
+       42
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 89c1f85d-ae17-4bcc-8f35-cbb1e75f6712"
+     }
+    }
+   },
+   "furniture/editing_workstation": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     3,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       64,
+       50
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       49,
+       50
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 107e64c3-45f4-4adc-b4f5-cdf8484652e8"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       64,
+       50
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       15,
+       50
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 107e64c3-45f4-4adc-b4f5-cdf8484652e8"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       63,
+       49
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       14,
+       49
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 107e64c3-45f4-4adc-b4f5-cdf8484652e8"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       63,
+       49
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       49,
+       49
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 107e64c3-45f4-4adc-b4f5-cdf8484652e8"
+     }
+    }
+   },
+   "furniture/meeting_table": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 6,
+    "footprint_rot0": [
+     4,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       80,
+       56
+      ],
+      "footprint": [
+       3,
+       2
+      ],
+      "anchor": [
+       48,
+       55
+      ],
+      "scale_from_src": 0.1235,
+      "base_px_src": [
+       0,
+       526,
+       647,
+       449
+      ],
+      "align": "center"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       80,
+       61
+      ],
+      "footprint": [
+       3,
+       2
+      ],
+      "anchor": [
+       48,
+       60
+      ],
+      "scale_from_src": 0.1231,
+      "base_px_src": [
+       0,
+       262,
+       649,
+       497
+      ],
+      "align": "center"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       81,
+       62
+      ],
+      "footprint": [
+       3,
+       2
+      ],
+      "anchor": [
+       48,
+       61
+      ],
+      "scale_from_src": 0.1244,
+      "base_px_src": [
+       0,
+       371,
+       648,
+       494
+      ],
+      "align": "center"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       80,
+       58
+      ],
+      "footprint": [
+       3,
+       2
+      ],
+      "anchor": [
+       48,
+       57
+      ],
+      "scale_from_src": 0.1236,
+      "base_px_src": [
+       0,
+       402,
+       648,
+       468
+      ],
+      "align": "center"
+     }
+    },
+    "note": "Cả 4 góc ảnh gốc đều vẽ bàn dài theo trục x (AI không xoay bàn); footprint cố định 4×2, xoay chỉ đổi biến thể hình."
+   },
+   "furniture/office_chair_blue": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       20,
+       26
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       9,
+       25
+      ],
+      "scale_from_src": 0.0401,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       20,
+       26
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       11,
+       25
+      ],
+      "scale_from_src": 0.0401,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       22,
+       26
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       11,
+       25
+      ],
+      "scale_from_src": 0.0401,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       22,
+       26
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       11,
+       25
+      ],
+      "scale_from_src": 0.0401,
+      "align": "front_corner"
+     }
+    }
+   },
+   "furniture/pantry_counter": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     4,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       80,
+       71
+      ],
+      "footprint": [
+       4,
+       1
+      ],
+      "anchor": [
+       64,
+       70
+      ],
+      "scale_from_src": 0.2446,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       80,
+       70
+      ],
+      "footprint": [
+       1,
+       4
+      ],
+      "anchor": [
+       16,
+       69
+      ],
+      "scale_from_src": 0.2439,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       80,
+       69
+      ],
+      "footprint": [
+       1,
+       4
+      ],
+      "anchor": [
+       16,
+       68
+      ],
+      "scale_from_src": 0.236,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       80,
+       69
+      ],
+      "footprint": [
+       4,
+       1
+      ],
+      "anchor": [
+       64,
+       68
+      ],
+      "scale_from_src": 0.2353,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     }
+    }
+   },
+   "furniture/printer_cabinet": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     3,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       64,
+       68
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       48,
+       67
+      ],
+      "scale_from_src": 0.2092,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       64,
+       68
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       16,
+       67
+      ],
+      "scale_from_src": 0.2098,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       64,
+       66
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       22,
+       65
+      ],
+      "scale_from_src": 0.2013,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       64,
+       66
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       42,
+       65
+      ],
+      "scale_from_src": 0.2013,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     }
+    }
+   },
+   "furniture/reception_counter": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 1,
+    "footprint_rot0": [
+     3,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       65,
+       54
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       51,
+       53
+      ],
+      "scale_from_src": 0.1951,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       66,
+       55
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       15,
+       54
+      ],
+      "scale_from_src": 0.1951,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       64,
+       52
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       15,
+       51
+      ],
+      "scale_from_src": 0.1905,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       64,
+       53
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       49,
+       52
+      ],
+      "scale_from_src": 0.191,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     }
+    }
+   },
+   "furniture/round_table": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       67,
+       57
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       34,
+       56
+      ],
+      "scale_from_src": 0.1031,
+      "align": "center"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       66,
+       57
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       33,
+       56
+      ],
+      "scale_from_src": 0.1019,
+      "align": "center"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       66,
+       58
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       33,
+       57
+      ],
+      "scale_from_src": 0.1021,
+      "align": "center"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       67,
+       59
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       34,
+       58
+      ],
+      "scale_from_src": 0.1032,
+      "align": "center"
+     }
+    }
+   },
+   "furniture/sofa_blue": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 2,
+    "footprint_rot0": [
+     2,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       49,
+       36
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       35,
+       35
+      ],
+      "scale_from_src": 0.0755,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       49,
+       36
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       14,
+       35
+      ],
+      "scale_from_src": 0.0756,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       58,
+       42
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       42,
+       41
+      ],
+      "scale_from_src": 0.0889,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       58,
+       43
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       16,
+       42
+      ],
+      "scale_from_src": 0.0892,
+      "align": "front_corner"
+     }
+    }
+   },
+   "furniture/work_desk": {
+    "category": "furniture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 1,
+    "footprint_rot0": [
+     2,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       47,
+       46
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       33,
+       46
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 9f0dda8e-385a-47c1-afe0-caa23e77ef68"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       47,
+       46
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       14,
+       46
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 9f0dda8e-385a-47c1-afe0-caa23e77ef68"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       47,
+       44
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       14,
+       44
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 9f0dda8e-385a-47c1-afe0-caa23e77ef68"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       47,
+       44
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       33,
+       44
+      ],
+      "align": "corner",
+      "source": "higgsfield_desks_v2 9f0dda8e-385a-47c1-afe0-caa23e77ef68"
+     }
+    }
+   },
+   "props/binders": {
+    "category": "props",
+    "layer": "top",
+    "blocking": false,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       12,
+       12
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       6,
+       11
+      ],
+      "scale_from_src": 0.0187,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       12,
+       12
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       6,
+       11
+      ],
+      "scale_from_src": 0.0187,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       12,
+       12
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       6,
+       11
+      ],
+      "scale_from_src": 0.019,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       12,
+       12
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       6,
+       11
+      ],
+      "scale_from_src": 0.019,
+      "align": "front_corner"
+     }
+    }
+   },
+   "props/camera_tripod": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       21,
+       36
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       10,
+       35
+      ],
+      "scale_from_src": 0.0555,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       22,
+       36
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       11,
+       35
+      ],
+      "scale_from_src": 0.0555,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       22,
+       36
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       10,
+       35
+      ],
+      "scale_from_src": 0.0556,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       21,
+       36
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       11,
+       35
+      ],
+      "scale_from_src": 0.0556,
+      "align": "front_corner"
+     }
+    }
+   },
+   "props/decorative_blue_mark": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       48,
+       57
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       32,
+       56
+      ],
+      "scale_from_src": 0.1739,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       48,
+       57
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       16,
+       56
+      ],
+      "scale_from_src": 0.1739,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       48,
+       56
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       16,
+       55
+      ],
+      "scale_from_src": 0.1727,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       48,
+       56
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       32,
+       55
+      ],
+      "scale_from_src": 0.1733,
+      "align": "center",
+      "source": "higgsfield_redraw_v2"
+     }
+    }
+   },
+   "props/green_screen": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     3,
+     3
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       96,
+       88
+      ],
+      "footprint": [
+       3,
+       3
+      ],
+      "anchor": [
+       48,
+       87
+      ],
+      "scale_from_src": 0.1479,
+      "align": "center"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       96,
+       89
+      ],
+      "footprint": [
+       3,
+       3
+      ],
+      "anchor": [
+       48,
+       88
+      ],
+      "scale_from_src": 0.1479,
+      "align": "center"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       96,
+       87
+      ],
+      "footprint": [
+       3,
+       3
+      ],
+      "anchor": [
+       48,
+       86
+      ],
+      "scale_from_src": 0.1477,
+      "align": "center"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       96,
+       88
+      ],
+      "footprint": [
+       3,
+       3
+      ],
+      "anchor": [
+       48,
+       87
+      ],
+      "scale_from_src": 0.1479,
+      "align": "center"
+     }
+    }
+   },
+   "props/microphone_kit": {
+    "category": "props",
+    "layer": "top",
+    "blocking": false,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       28,
+       23
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       14,
+       22
+      ],
+      "scale_from_src": 0.0432,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       28,
+       23
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       14,
+       22
+      ],
+      "scale_from_src": 0.0432,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       28,
+       21
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       14,
+       20
+      ],
+      "scale_from_src": 0.0431,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       28,
+       21
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       14,
+       20
+      ],
+      "scale_from_src": 0.0432,
+      "align": "front_corner"
+     }
+    }
+   },
+   "props/potted_plant": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       29,
+       40
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       15,
+       39
+      ],
+      "scale_from_src": 0.0616,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       29,
+       40
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       14,
+       39
+      ],
+      "scale_from_src": 0.0616,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       31,
+       40
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       39
+      ],
+      "scale_from_src": 0.0616,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       30,
+       40
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       39
+      ],
+      "scale_from_src": 0.0617,
+      "align": "front_corner"
+     }
+    }
+   },
+   "props/rug_blue": {
+    "category": "props",
+    "layer": "floor",
+    "blocking": false,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     3
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       88,
+       52
+      ],
+      "footprint": [
+       3,
+       2
+      ],
+      "anchor": [
+       52,
+       51
+      ],
+      "scale_from_src": 0.1358,
+      "align": "center"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       88,
+       52
+      ],
+      "footprint": [
+       2,
+       3
+      ],
+      "anchor": [
+       36,
+       51
+      ],
+      "scale_from_src": 0.1361,
+      "align": "center"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       87,
+       51
+      ],
+      "footprint": [
+       2,
+       3
+      ],
+      "anchor": [
+       36,
+       50
+      ],
+      "scale_from_src": 0.134,
+      "align": "center"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       86,
+       51
+      ],
+      "footprint": [
+       3,
+       2
+      ],
+      "anchor": [
+       51,
+       50
+      ],
+      "scale_from_src": 0.1327,
+      "align": "center"
+     }
+    }
+   },
+   "props/softbox": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       26,
+       44
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       9,
+       43
+      ],
+      "scale_from_src": 0.0677,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       26,
+       44
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       43
+      ],
+      "scale_from_src": 0.0678,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       25,
+       44
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       15,
+       43
+      ],
+      "scale_from_src": 0.0679,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       25,
+       44
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       10,
+       43
+      ],
+      "scale_from_src": 0.0679,
+      "align": "front_corner"
+     }
+    }
+   },
+   "props/sound_booth": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 1,
+    "footprint_rot0": [
+     2,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       64,
+       63
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       32,
+       62
+      ],
+      "scale_from_src": 0.0988,
+      "align": "center"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       64,
+       63
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       32,
+       62
+      ],
+      "scale_from_src": 0.0988,
+      "align": "center"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       64,
+       67
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       32,
+       66
+      ],
+      "scale_from_src": 0.1031,
+      "align": "center"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       64,
+       67
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       32,
+       66
+      ],
+      "scale_from_src": 0.1027,
+      "align": "center"
+     }
+    }
+   },
+   "props/tabletop_plant": {
+    "category": "props",
+    "layer": "top",
+    "blocking": false,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       11,
+       14
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       5,
+       13
+      ],
+      "scale_from_src": 0.0216,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       11,
+       14
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       5,
+       13
+      ],
+      "scale_from_src": 0.0217,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       12,
+       14
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       6,
+       13
+      ],
+      "scale_from_src": 0.0217,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       12,
+       14
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       6,
+       13
+      ],
+      "scale_from_src": 0.0217,
+      "align": "front_corner"
+     }
+    }
+   },
+   "props/water_dispenser": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       19,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       9,
+       37
+      ],
+      "scale_from_src": 0.1173,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       19,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       9,
+       37
+      ],
+      "scale_from_src": 0.1173,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       19,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       9,
+       37
+      ],
+      "scale_from_src": 0.1184,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       19,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       9,
+       37
+      ],
+      "scale_from_src": 0.1184,
+      "align": "front_corner",
+      "source": "higgsfield_redraw_v2"
+     }
+    }
+   },
+   "props/whiteboard": {
+    "category": "props",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     3,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       64,
+       71
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       49,
+       70
+      ],
+      "scale_from_src": 0.1092,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       64,
+       72
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       15,
+       71
+      ],
+      "scale_from_src": 0.1103,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       64,
+       70
+      ],
+      "footprint": [
+       3,
+       1
+      ],
+      "anchor": [
+       47,
+       69
+      ],
+      "scale_from_src": 0.1077,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       64,
+       70
+      ],
+      "footprint": [
+       1,
+       3
+      ],
+      "anchor": [
+       16,
+       69
+      ],
+      "scale_from_src": 0.1074,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/entrance_double_door": {
+    "category": "architecture",
+    "layer": "edge",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     0.5,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       40,
+       54
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       53
+      ],
+      "scale_from_src": 0.0837,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       40,
+       54
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       53
+      ],
+      "scale_from_src": 0.0837,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       40,
+       55
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       54
+      ],
+      "scale_from_src": 0.0853,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       40,
+       55
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       54
+      ],
+      "scale_from_src": 0.0858,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/floor_slab_corner": {
+    "category": "architecture",
+    "layer": "floor",
+    "blocking": false,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       32,
+       16
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       9,
+       15
+      ],
+      "scale_from_src": 0.0493,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       32,
+       16
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       23,
+       15
+      ],
+      "scale_from_src": 0.0494,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       38,
+       19
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       18,
+       18
+      ],
+      "scale_from_src": 0.058,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       37,
+       19
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       19,
+       18
+      ],
+      "scale_from_src": 0.0577,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/floor_tile_decorative": {
+    "category": "architecture",
+    "layer": "floor",
+    "blocking": false,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0494,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0492,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0492,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0498,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/floor_tile_white": {
+    "category": "architecture",
+    "layer": "floor",
+    "blocking": false,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0494,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0493,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0494,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       32,
+       18
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       17
+      ],
+      "scale_from_src": 0.0494,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/glass_partition": {
+    "category": "architecture",
+    "layer": "edge",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     0.5,
+     3
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       56,
+       59
+      ],
+      "footprint": [
+       0.5,
+       3
+      ],
+      "anchor": [
+       8,
+       58
+      ],
+      "scale_from_src": 0.0911,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       56,
+       60
+      ],
+      "footprint": [
+       3,
+       0.5
+      ],
+      "anchor": [
+       48,
+       59
+      ],
+      "scale_from_src": 0.0923,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       56,
+       60
+      ],
+      "footprint": [
+       3,
+       0.5
+      ],
+      "anchor": [
+       48,
+       59
+      ],
+      "scale_from_src": 0.0921,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       56,
+       59
+      ],
+      "footprint": [
+       0.5,
+       3
+      ],
+      "anchor": [
+       8,
+       58
+      ],
+      "scale_from_src": 0.0903,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/glass_railing": {
+    "category": "architecture",
+    "layer": "edge",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     3,
+     0.5
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       56,
+       49
+      ],
+      "footprint": [
+       3,
+       0.5
+      ],
+      "anchor": [
+       48,
+       48
+      ],
+      "scale_from_src": 0.0863,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       56,
+       49
+      ],
+      "footprint": [
+       0.5,
+       3
+      ],
+      "anchor": [
+       8,
+       48
+      ],
+      "scale_from_src": 0.0864,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       56,
+       49
+      ],
+      "footprint": [
+       3,
+       0.5
+      ],
+      "anchor": [
+       48,
+       48
+      ],
+      "scale_from_src": 0.0864,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       56,
+       49
+      ],
+      "footprint": [
+       0.5,
+       3
+      ],
+      "anchor": [
+       8,
+       48
+      ],
+      "scale_from_src": 0.0864,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/single_door": {
+    "category": "architecture",
+    "layer": "edge",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     0.5,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       24,
+       48
+      ],
+      "footprint": [
+       0.5,
+       1
+      ],
+      "anchor": [
+       8,
+       47
+      ],
+      "scale_from_src": 0.0741,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       24,
+       48
+      ],
+      "footprint": [
+       1,
+       0.5
+      ],
+      "anchor": [
+       16,
+       47
+      ],
+      "scale_from_src": 0.0745,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       24,
+       48
+      ],
+      "footprint": [
+       1,
+       0.5
+      ],
+      "anchor": [
+       16,
+       47
+      ],
+      "scale_from_src": 0.0745,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       24,
+       48
+      ],
+      "footprint": [
+       0.5,
+       1
+      ],
+      "anchor": [
+       8,
+       47
+      ],
+      "scale_from_src": 0.0741,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/stair_landing": {
+    "category": "architecture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       64,
+       49
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       28,
+       48
+      ],
+      "scale_from_src": 0.0985,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       64,
+       49
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       36,
+       48
+      ],
+      "scale_from_src": 0.0985,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       64,
+       49
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       29,
+       48
+      ],
+      "scale_from_src": 0.0985,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       64,
+       49
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "anchor": [
+       34,
+       48
+      ],
+      "scale_from_src": 0.0986,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/staircase": {
+    "category": "architecture",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     4
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       113,
+       114
+      ],
+      "footprint": [
+       2,
+       4
+      ],
+      "anchor": [
+       42,
+       113
+      ],
+      "scale_from_src": 0.1752,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       113,
+       113
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "anchor": [
+       70,
+       112
+      ],
+      "scale_from_src": 0.1749,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       115,
+       100
+      ],
+      "footprint": [
+       2,
+       4
+      ],
+      "anchor": [
+       76,
+       99
+      ],
+      "scale_from_src": 0.1778,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       115,
+       99
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "anchor": [
+       39,
+       98
+      ],
+      "scale_from_src": 0.1768,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/wall_blue": {
+    "category": "architecture",
+    "layer": "edge",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     0.5,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       40,
+       51
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       50
+      ],
+      "scale_from_src": 0.0781,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       40,
+       51
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       50
+      ],
+      "scale_from_src": 0.0781,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       40,
+       52
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       51
+      ],
+      "scale_from_src": 0.0803,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       40,
+       52
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       51
+      ],
+      "scale_from_src": 0.0806,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/wall_white": {
+    "category": "architecture",
+    "layer": "edge",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     0.5,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       40,
+       49
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       48
+      ],
+      "scale_from_src": 0.0759,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       40,
+       49
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       48
+      ],
+      "scale_from_src": 0.0756,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       40,
+       49
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       48
+      ],
+      "scale_from_src": 0.0749,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       40,
+       48
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       47
+      ],
+      "scale_from_src": 0.0749,
+      "align": "front_corner"
+     }
+    }
+   },
+   "architecture/window": {
+    "category": "architecture",
+    "layer": "edge",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     0.5,
+     2
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       40,
+       48
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       47
+      ],
+      "scale_from_src": 0.0734,
+      "align": "front_corner"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       40,
+       47
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       46
+      ],
+      "scale_from_src": 0.0731,
+      "align": "front_corner"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       40,
+       47
+      ],
+      "footprint": [
+       0.5,
+       2
+      ],
+      "anchor": [
+       8,
+       46
+      ],
+      "scale_from_src": 0.0731,
+      "align": "front_corner"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       40,
+       48
+      ],
+      "footprint": [
+       2,
+       0.5
+      ],
+      "anchor": [
+       32,
+       47
+      ],
+      "scale_from_src": 0.0734,
+      "align": "front_corner"
+     }
+    }
+   },
+   "special/aquarium": {
+    "category": "special",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     2,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       48,
+       56
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       32,
+       55
+      ],
+      "scale_from_src": 0.1481,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       48,
+       57
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       16,
+       56
+      ],
+      "scale_from_src": 0.1491,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       48,
+       50
+      ],
+      "footprint": [
+       1,
+       2
+      ],
+      "anchor": [
+       16,
+       49
+      ],
+      "scale_from_src": 0.1486,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       48,
+       52
+      ],
+      "footprint": [
+       2,
+       1
+      ],
+      "anchor": [
+       32,
+       51
+      ],
+      "scale_from_src": 0.1481,
+      "align": "center",
+      "source": "higgsfield_v3"
+     }
+    }
+   },
+   "special/ergo_chair": {
+    "category": "special",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       15,
+       28
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       8,
+       27
+      ],
+      "scale_from_src": 0.0657,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       15,
+       28
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       8,
+       27
+      ],
+      "scale_from_src": 0.0659,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       16,
+       28
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       8,
+       27
+      ],
+      "scale_from_src": 0.0678,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       16,
+       28
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       8,
+       27
+      ],
+      "scale_from_src": 0.0678,
+      "align": "center",
+      "source": "higgsfield_v3"
+     }
+    }
+   },
+   "special/cat_house": {
+    "category": "special",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       31,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       37
+      ],
+      "scale_from_src": 0.1076,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       32,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       15,
+       37
+      ],
+      "scale_from_src": 0.1101,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       32,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       37
+      ],
+      "scale_from_src": 0.1086,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       31,
+       38
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       37
+      ],
+      "scale_from_src": 0.1095,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     }
+    }
+   },
+   "special/premium_coffee": {
+    "category": "special",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       32,
+       36
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       21,
+       35
+      ],
+      "scale_from_src": 0.1036,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       32,
+       36
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       11,
+       35
+      ],
+      "scale_from_src": 0.1032,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       33,
+       35
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       14,
+       34
+      ],
+      "scale_from_src": 0.1013,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       33,
+       35
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       19,
+       34
+      ],
+      "scale_from_src": 0.1013,
+      "align": "corner",
+      "source": "higgsfield_v3"
+     }
+    }
+   },
+   "special/big_tree": {
+    "category": "special",
+    "layer": "object",
+    "blocking": true,
+    "seats": 0,
+    "footprint_rot0": [
+     1,
+     1
+    ],
+    "views": {
+     "01_front_left": {
+      "file": "01_front_left.png",
+      "size": [
+       31,
+       56
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       55
+      ],
+      "scale_from_src": 0.1333,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "02_front_right": {
+      "file": "02_front_right.png",
+      "size": [
+       31,
+       56
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       55
+      ],
+      "scale_from_src": 0.1333,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "03_back_right": {
+      "file": "03_back_right.png",
+      "size": [
+       32,
+       56
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       55
+      ],
+      "scale_from_src": 0.1376,
+      "align": "center",
+      "source": "higgsfield_v3"
+     },
+     "04_back_left": {
+      "file": "04_back_left.png",
+      "size": [
+       32,
+       56
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "anchor": [
+       16,
+       55
+      ],
+      "scale_from_src": 0.1376,
+      "align": "center",
+      "source": "higgsfield_v3"
+     }
+    }
+   }
+  },
+  "characters": {
+   "01_Huy": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "02_Luwon": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "03_Pali": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "04_Tamny": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "06_Vu_a_Vu": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "07_Hao_Hao": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "08_Nganh": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "09_Vit_Vang": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật); sheet đi bộ đã tạo lại (hàng lưng không còn thấy mỏ)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "10_Con_LT": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "11_Juice": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "12_ADM": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "13_AB": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "14_HM": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "15_CongB": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   },
+   "trinh_lac_corrected_v2": {
+    "portrait": "portrait_48x64.png",
+    "world_sheet": "world_iso_24x32.png",
+    "world_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "world_cols": [
+     "step_left",
+     "stand",
+     "step_right"
+    ],
+    "mirror_for": {
+     "SE": "front_SW",
+     "NE": "back_NW"
+    },
+    "anchor_world": [
+     12,
+     31
+    ],
+    "source": "Higgsfield GPT Image 2.5, góc chéo isometric thật (giữ nguyên hướng AI vẽ, không lật)",
+    "sit_sheet": "world_sit_24x32.png",
+    "sit_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "sit_cols": [
+     "typing_1",
+     "typing_2"
+    ],
+    "sit_anchor": [
+     12,
+     31
+    ],
+    "use_sheet": "world_use_24x32.png",
+    "use_rows": {
+     "front_SW": 0,
+     "back_NW": 1
+    },
+    "use_cols": [
+     "reach_low",
+     "reach_high"
+    ],
+    "burn_sheet": "world_burn_32x44.png",
+    "burn_frame": [
+     32,
+     44
+    ],
+    "burn_anchor": [
+     16,
+     43
+    ],
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png (128×176/khung)",
+     "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
+    }
+   }
+  }
+ },
+ "warnings": [
+  "props/rug_blue 03_back_right: trục ảnh ngược quy luật xoay (kỳ vọng 2×3, ảnh là 3×2)",
+  "props/rug_blue 04_back_left: trục ảnh ngược quy luật xoay (kỳ vọng 3×2, ảnh là 2×3)",
+  "architecture/entrance_double_door 03_back_right: trục ảnh ngược quy luật xoay (kỳ vọng 0.5×2, ảnh là 2×0.5)",
+  "architecture/entrance_double_door 04_back_left: trục ảnh ngược quy luật xoay (kỳ vọng 2×0.5, ảnh là 0.5×2)",
+  "architecture/glass_partition 03_back_right: trục ảnh ngược quy luật xoay (kỳ vọng 0.5×3, ảnh là 3×0.5)",
+  "architecture/glass_partition 04_back_left: trục ảnh ngược quy luật xoay (kỳ vọng 3×0.5, ảnh là 0.5×3)",
+  "architecture/single_door 03_back_right: trục ảnh ngược quy luật xoay (kỳ vọng 0.5×1, ảnh là 1×0.5)",
+  "architecture/single_door 04_back_left: trục ảnh ngược quy luật xoay (kỳ vọng 1×0.5, ảnh là 0.5×1)",
+  "architecture/staircase 03_back_right: trục ảnh ngược quy luật xoay (kỳ vọng 2×4, ảnh là 4×2)",
+  "architecture/staircase 04_back_left: trục ảnh ngược quy luật xoay (kỳ vọng 4×2, ảnh là 2×4)",
+  "architecture/wall_blue 03_back_right: trục ảnh ngược quy luật xoay (kỳ vọng 0.5×2, ảnh là 2×0.5)",
+  "architecture/wall_blue 04_back_left: trục ảnh ngược quy luật xoay (kỳ vọng 2×0.5, ảnh là 0.5×2)",
+  "architecture/wall_white 03_back_right: trục ảnh ngược quy luật xoay (kỳ vọng 0.5×2, ảnh là 2×0.5)",
+  "architecture/wall_white 04_back_left: trục ảnh ngược quy luật xoay (kỳ vọng 2×0.5, ảnh là 0.5×2)",
+  "furniture/meeting_table: cả 4 góc ảnh đều dài theo trục x, đã cố định footprint 4×2 cho mọi góc"
+ ]
+}
