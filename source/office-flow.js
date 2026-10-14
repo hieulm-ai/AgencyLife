@@ -17,11 +17,16 @@ function receptionPair(){
 function releaseReception(a){if(a.state==='reception'||a.state==='toReception'){a.state='wander';a.path=[];a.wait=0;}delete a.receptionUid;if(!closingOffice)assignSeats();}
 // Nhân vật của người chơi đứng quầy lễ tân cố định (07/10/2026): không nhận bàn làm việc, không làm job, không đi thu tiền, không chủ trì họp.
 // Khi chưa có quầy dùng được (bị bán, đang di chuyển, bị chắn lối) thì nhân vật của bạn làm việc như nhân viên thường.
-function deskBound(a){return !!a&&!!a.founder&&!!deskBound.on;}
-function frontDeskAgent(){return AG.find(a=>a.founder&&!a.mascot)||null;}
+function deskBound(a){return !!a&&a===frontDeskAgent()&&!!deskBound.on;}
+function frontDeskAgent(){
+ const current=AG.find(a=>a.receptionUid!=null&&!a.handover&&deskReady(a)&&(a.founder||['HR','Kế toán','Trợ lý'].includes(a.role)));if(current&&!current.founder)return current;
+ const pool=AG.filter(a=>!a.mascot&&deskReady(a)&&!a.handover&&!a.pass&&!a.autoBreak&&['HR','Kế toán','Trợ lý'].includes(a.role)&&!(typeof agentTask==='function'&&agentTask(a)));
+ pool.sort((a,b)=>(a.lastReception||0)-(b.lastReception||0));
+ return pool[0]||current||AG.find(a=>a.founder&&!a.mascot&&deskReady(a)&&!a.handover)||null;
+}
 function deskReady(a){return !!a&&!a.away&&a.state!=='leaving'&&a.state!=='arrive'&&a.state!=='burn'&&!a.collection&&a.meetingJob==null;}
 function finishReceptionTurn(host){
-  if(host.stress>=75&&!host.founder){releaseReception(host);updateAutoBreak(host);}
+  host.lastReception=Date.now();if(!host.founder){releaseReception(host);updateAutoBreak(host);}
 }
 function claimFrontDesk(host,pair){
   if(host.state==='sit'&&host.acc){[host.x,host.y]=host.acc;}
@@ -44,7 +49,7 @@ function stepReception(dt){
   const pair=receptionPair(),waiting=VIS.filter(v=>(v.kind==='offer'&&v.state==='wait'&&GS.offers.some(j=>j.id===v.jobId&&!j.received))||(v.kind==='pickup'&&v.state==='pickup'&&(GS.pickups||[]).some(j=>j.id===v.jobId))).sort((a,b)=>(a.qn??a.id)-(b.qn??b.id));   // tiếp theo thứ tự xếp hàng
   const was=deskBound.on;deskBound.on=!!pair;
   const host=frontDeskAgent();
-  for(const a of AG)if(a!==host&&a.receptionUid!=null)releaseReception(a);   // bản lưu cũ: người khác đang đứng quầy thì về chỗ
+  for(const a of AG)if(a!==host&&a.receptionUid!=null&&!a.handover)releaseReception(a);   // bản lưu cũ: người khác đang đứng quầy thì về chỗ
   if(!host){for(const v of waiting)v.receptionT=0;return;}
   if(host.handover){for(const v of waiting)v.receptionT=0;return;}   // đang đi giao việc: khách chờ tại chỗ
   if(!pair||!deskReady(host)){for(const v of waiting)v.receptionT=0;if(host.receptionUid!=null)releaseReception(host);else if(was&&!pair&&!closingOffice)assignSeats();return;}
@@ -142,11 +147,8 @@ function jobAccountLine(j){
   return j.account?`<br>Account phụ trách: ${staffName(j.account)}`:'';
 }
 function drawAgentEmo(c,a){
-  const e=emoImage(a.emo.k);if(!e||!e.complete||!e.naturalWidth)return;
-  const [sx,sy]=a.state==='sit'&&a.seat&&a.seat.sx!=null?[a.seat.sx,a.seat.sy+14]:iso(a.x+.5,a.y+.5);   // người ngồi: đầu thấp hơn người đứng
-  const bob=Math.sin(performance.now()/200),S=EMO[a.emo.k]?16:12;
-  if(!EMO[a.emo.k]){c.fillStyle='#FFFFFF';c.fillRect(Math.round(sx-8),Math.round(sy-54+bob),16,14);c.fillStyle='#3A2414';c.fillRect(Math.round(sx-8),Math.round(sy-55+bob),16,1);c.fillRect(Math.round(sx-8),Math.round(sy-40+bob),16,1);}
-  c.drawImage(e,Math.round(sx-S/2),Math.round(sy-(EMO[a.emo.k]?58:53)+bob),S,S);
+ const [sx,sy]=a.state==='sit'&&a.seat&&a.seat.sx!=null?[a.seat.sx,a.seat.sy+14]:iso(a.x+.5,a.y+.5);
+ drawStatusChat(c,sx,sy,a.emo.k);
 }
 
 function beginClosing(){

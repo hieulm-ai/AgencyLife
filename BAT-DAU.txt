@@ -1,0 +1,27 @@
+AGENCY LIFE TYCOON — BÀN GIAO 14/10/2026
+
+CHƠI NGAY
+1. Giải nén, vào thư mục AgencyLife.
+2. Cần Python 3. Mở Terminal tại thư mục này và chạy: python3 run_game.py
+3. Mở http://localhost:8765/index.html và giữ Terminal chạy.
+4. Dừng bằng Ctrl+C. Nếu cổng 8765 đã dùng, dừng máy chủ cũ trước.
+Không mở index.html trực tiếp bằng file://.
+
+CHỈNH SỬA
+python3 -m pip install -r requirements.txt
+python3 source/build.py
+node --test tests/*.test.cjs
+Node.js cần để chạy kiểm tra. Bản chạy sẵn không cần cài thư viện dựng game.
+
+PHÁT HÀNH
+Workflow trong .github/workflows/pages.yml xuất bản thư mục game.
+Cập nhật mã lên GitHub, commit và push; chọn GitHub Actions trong Pages.
+Kiểm tra Actions hoàn tất và kiểm tra link online. Gói này chưa tự xuất bản.
+
+DỮ LIỆU
+Không chứa bản lưu cá nhân hoặc phiên đăng nhập. Khách lưu theo trình duyệt và địa chỉ truy cập.
+online/config.json là cấu hình public dùng để dựng game, không phải khóa quản trị.
+Không áp dụng lại SQL vào dữ liệu thật khi chưa rà soát.
+
+Xem DUONG-DAN.md và docs/Bao-cao-ban-giao-AgencyLife-2026-10-14.docx.
+Bộ kiểm tra ngày bàn giao: 324/324 đạt. Kiểm thử thiết bị thật còn cần thực hiện.

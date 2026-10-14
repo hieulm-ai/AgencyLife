@@ -40,7 +40,7 @@ function maybeRevision(j,k,rnd){ if(k!=='prod'||j.fb) return false; const r=rnd=
 function fbPending(j){ return !!(j&&j.fb&&!j.fb.done); }
 function persuadeChance(){ const acc=AG.some(a=>!a.away&&TRACK_OF[a.role]&&TRACK_OF[a.role].spec.includes('acc'));
  return Math.min(.85,.35+(acc?.15:0)+reputationLevel(ensureReputation().points)*.07); }
-function addProdWork(j,f){ const s=j.stg&&j.stg[3]; if(!s) return 0; const add=Math.round(s.need*f*100)/100; s.need+=add; j.need+=add; ensureStages(j); return add; }
+function addProdWork(j,f){ const s=j.stg&&j.stg.find(s=>s.k==='prod'); if(!s) return 0; const add=Math.round(s.need*f*100)/100; s.need+=add; j.need+=add; ensureStages(j); return add; }
 function resolveRevision(j,m,rnd){ if(!fbPending(j)) return null; const r=rnd==null?Math.random():rnd; let msg;
  if(m==='fix'){ addProdWork(j,.25); j.fbMod=.1; repAdd(1); msg='Team sửa kỹ phần Sản xuất (+25% khối lượng) · khách đánh giá cao thiện chí · +1 danh tiếng'; }
  else if(m==='talk'){ if(r<persuadeChance()){ j.fbMod=0; msg='Account thuyết phục được khách giữ bản hiện tại'; } else { j.fbMod=-.15; repAdd(-2); msg='Khách không đồng ý, vẫn giữ bản cũ nhưng không vui · −2 danh tiếng, đánh giá sẽ thấp hơn'; } }

@@ -4,14 +4,8 @@
 // Planner = Đốc Giám (ADM). Thiếu bộ phận thì người khác làm chậm hơn. Xong mỗi bước, người làm cầm hồ sơ sang bàn người làm bước kế.
 // j.stg = [{k, role, need, done}], j.cur = bước đang làm, j.who = id người đang làm bước đó, j.handoff = id người vừa xong (chờ chuyển hồ sơ),
 // j.passing = đang chuyển hồ sơ (bước kế chưa làm). j.work = tổng giờ công các bước (giữ cho giao diện, thanh toán và bản lưu cũ).
-const STAGE_DEF=[
- {k:'brief',role:'acc',n:'Brief',split:.10},
- {k:'plan',role:'plan',n:'Chia việc',split:.10},
- {k:'creative',role:null,n:'Sáng tạo',split:.30},
- {k:'prod',role:null,n:'Sản xuất',split:.30},
- {k:'deliver',role:'acc',n:'Bàn giao',split:.10},
- {k:'invoice',role:'fin',n:'Hoá đơn',split:.10}];
-const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'moneybag'};
+const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.2},{k:'creative',role:'con',n:'Content',split:.35},{k:'prod',role:'des',n:'Design',split:.45}];
+const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'coin'};
 const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',fin:'Kế toán'};
 // Bước Sáng tạo / Sản xuất theo loại job (tên mẫu job, bỏ dấu ⭐ VIP).
 const JOB_FLOW={'Thiết kế logo':['des','des'],'Bộ ấn phẩm Tết':['des','des'],'Kế hoạch truyền thông':['con','con'],'Quản lý fanpage 1 tuần':['con','des'],
@@ -23,14 +17,29 @@ const TRACK_OF={'Account':{spec:['acc'],near:['plan']},'Sale':{spec:['acc'],near
  'HR':{spec:[],near:['acc','fin']},'Trợ lý':{spec:[],near:['acc','con','fin']}};
 const MATCH_F={spec:1.35,near:1,off:.6}, MATCH_N={spec:'Đúng chuyên môn',near:'Gần chuyên môn',off:'Trái nghề'};
 const STAR_F=1.2;   // ứng viên nổi bật (HR giới thiệu) làm nhanh hơn 20% — thông số thử
-const WORK_SPEED=5; // Đo với 3 người làm job; lễ tân và linh vật không tham gia sản xuất.
+const WORK_SPEED=12; // Đo với 3 người làm job; lễ tân và linh vật không tham gia sản xuất.
 function jobCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
 const PASS_GIVEUP=30, PASS_TALK=2.2;
 function roleMatch(a,role){ const t=TRACK_OF[a&&a.role]||{spec:[],near:[]}; return t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'; }
 function jobFlow(j){ return JOB_FLOW[String(j&&j.name||'').replace(/^⭐ /,'')]||['des','des']; }
-function buildStages(j){ const [cr,pr]=jobFlow(j); return STAGE_DEF.map(s=>({k:s.k,role:s.k==='creative'?cr:s.k==='prod'?pr:s.role,need:Math.round(j.need*s.split*100)/100,done:0})); }
+function buildStages(j){ const [cr,pr]=jobFlow(j); return STAGE_DEF.map(s=>({k:s.k,role:s.role,need:Math.round(j.need*s.split*100)/100,done:0})); }
 // Bản lưu cũ chưa có bước: dựng bước và rải giờ công đã làm từ bước đầu.
+function applyOnboardingPace(j){
+ if(j.onboardingPace!=null)return j;
+ const done=GS.done;
+ const factor=Number.isFinite(done)&&done>=0&&GS.day<=3?(done<3?.25:done<5?.5:1):1;
+ j.onboardingPace=factor;
+ if(factor===1||!Number.isFinite(j.need)||j.need<=0)return j;
+ j.need*=factor;j.work=(j.work||0)*factor;
+ if(Array.isArray(j.stg))for(const stage of j.stg){stage.need*=factor;stage.done*=factor;}
+ return j;
+}
 function ensureStages(j){
+ if(j.flowVersion!==2&&Number.isFinite(j.reward)){
+  const progress=j.need>0?Math.max(0,Math.min(1,(j.work||0)/j.need)):0;
+  j.need=Math.max(2,Math.round(j.reward*.18*100)/100);j.work=j.need*progress;
+  delete j.stg;delete j.who;delete j.handoff;j.passing=false;j.flowVersion=2;
+ }
  if(!Array.isArray(j.stg)||j.stg.length!==STAGE_DEF.length||j.stg.some(s=>!s||!Number.isFinite(s.need)||!Number.isFinite(s.done))){
   j.stg=buildStages(j);const sum=j.stg.slice(0,-1).reduce((n,s)=>n+s.need,0);j.stg[j.stg.length-1].need=Math.max(0,Math.round((j.need-sum)*100)/100);
   let left=Math.max(0,Math.min(j.need,j.work||0));for(const s of j.stg){const t=Math.min(s.need,left);s.done=t;left-=t;}
@@ -41,8 +50,8 @@ function ensureStages(j){
 function staffById(id){ return id?AG.find(a=>CHARS[a.ci].id===id)||null:null; }
 function canTakeTask(a){ return !!a&&!a.mascot&&!a.away&&!a.autoBreak&&!a.collection&&!a.handover&&!a.pass&&a.state!=='burn'&&a.state!=='leaving'&&a.state!=='arrive'&&a.meetingJob==null&&a.receptionUid==null&&!(typeof deskBound==='function'&&deskBound(a)); }
 function hasWorkSeat(a){ const o=a&&a.seat&&OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
-function briefPending(j){ return (typeof handoverQueue!=='undefined'&&handoverQueue.includes(j.id))||(typeof frontDeskAgent==='function'&&frontDeskAgent()?.handover?.jobId===j.id); }
-function jobReady(j){ return !j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
+function briefPending(j){ return (typeof handoverQueue!=='undefined'&&handoverQueue.includes(j.id))||AG.some(a=>a.handover?.jobId===j.id); }
+function jobReady(j){ return !(j.early&&j.cur===1&&!j.early.idea)&&!j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
 function inTeam(j,id){ return !Array.isArray(j.staff)||j.staff.includes(id); }
 // Việc của 1 người: bước đang được giao cho người đó.
 function agentTask(a){ if(!a) return null; const id=CHARS[a.ci].id; for(const j of GS.jobs){ ensureStages(j); const s=j.stg[j.cur]; if(s&&j.who===id) return {j,s}; } return null; }
@@ -83,10 +92,10 @@ function advanceJobWork(h){
  if(closingOffice) return;
  assignStages();
  for(const j of GS.jobs){ const s=j.stg[j.cur]; if(!s||!j.who||!jobReady(j)) continue; const a=staffById(j.who); if(!a) continue;
-  const r=stageRate(a,s.role); if(r<=0) continue;
+  const r=stageRate(a,s.role)*((GS.earlyBoostUntil||0)>GS.day*1440+GS.min?1.15:1); if(r<=0) continue;
   const before=s.done; s.done=Math.min(s.need,s.done+r*h);
   if(typeof trackQuality==='function') trackQuality(j,a,s.role,s.done-before);
-  if(s.done>=s.need-1e-9){ s.done=s.need; const prev=j.who; j.who=null; ensureStages(j); if(j.cur<j.stg.length) j.handoff=prev; if(typeof maybeRevision==='function') maybeRevision(j,s.k); }
+  if(s.done>=s.need-1e-9){ s.done=s.need; const prev=j.who; a.sitT=0; j.who=null; ensureStages(j); if(j.cur<j.stg.length) j.handoff=prev; if(typeof maybeRevision==='function') maybeRevision(j,s.k); }
   j.work=Math.min(j.need,j.stg.reduce((n,x)=>n+x.done,0));
   if(j.cur>=j.stg.length) j.work=j.need;
  }

@@ -1,5 +1,6 @@
 <!doctype html><html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="AgencyLife"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#5E9E42">
 <title>Agency's Life Tycoon · bản chơi thử</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=Baloo+2:wght@600;700;800&family=Silkscreen&display=swap" rel="stylesheet">
@@ -739,7 +740,7 @@ const PATIENCE_MIN=240;   // khách chờ tối đa 4 giờ game (4 phút thật
 let VIS=[], visId=1;
 const EMO=window.EMOTES||{};   // biểu tượng cảm xúc trên đầu khách (Higgsfield); thiếu thì dùng icon UI
 const EMO_FALL={happy:"heart",angry:"fire",wait:"clock",star:"star",money:"coin",job:"brief",sad:"clock",done:"star"};   // dự phòng khi thiếu ảnh biểu tượng
-function emoImg(k){ if(EMO[k]) return EMO[k]; const n=EMO_FALL[k]; return n&&window.UIICON?window.UIICON[n]:null; }
+function emoImg(k){if(k==='angry'&&EMO[k])return EMO[k];const n=EMO_FALL[k];return (n&&window.UIICON?.[n])||EMO[k]||null;}
 const EMO_CACHE={}; function emoImage(k){ if(!EMO_CACHE[k]){ const src=emoImg(k); EMO_CACHE[k]=src?Object.assign(bootImage(),{src}):null; } return EMO_CACHE[k]; }
 function custFor(name){ const base=name.replace(/^⭐ /,""), l=JOB_CUST[base]||[0,1,2,3,4,5,6,7]; return l[Math.floor(Math.random()*l.length)]; }
 // Hàng chờ một hàng dọc: ô khách trước quầy, rồi nối thẳng ra phía sau; vướng tường/đồ hoặc tới cửa thì rẽ ngang.
@@ -784,6 +785,7 @@ function rerouteWaitingVisitor(v){
 function spawnVisitor(kind,job){ if(!CUSTS.length) return; if(VIS.some(v=>v.jobId===job.id&&v.kind===kind)) return;
   const goal=freeSpot(), v={id:visId++,qn:++queueSeq,kind,jobId:job.id,ci:job.cust??0,x:SIDEWALK[0],y:SIDEWALK[1],path:[],dir:"NE",t:0,state:"in",goal,wait:VIS.filter(v=>v.state==="in").length*1.2,emo:kind==="pickup"?null:{k:job.vip?"alert":(missingReq(job).length?"question":"job"),t:2.5}};
   const e=streetExit(v); [v.x,v.y]=e; v.dir=e[0]<OUTSIDE_ENTRY[0]?"SE":"NW";   // đi bộ từ đầu vỉa hè (mép bản đồ) tới
+  if(kind==='offer'&&GS.day===1&&(GS.done||0)===0&&!GS.earlyFirstArrival){GS.earlyFirstArrival=true;[v.x,v.y]=OUTSIDE_ENTRY;v.wait=0;}
   const p=goal&&bfs(ENTRY,goal); v.path=p?[OUTSIDE_ENTRY,ENTRY,...p.slice(1)]:[OUTSIDE_ENTRY,ENTRY]; VIS.push(v); }
 function visitorExitPath(v){
   if(v.y>=OUTSIDE_ENTRY[1])return [streetExit(v)];
@@ -791,7 +793,7 @@ function visitorExitPath(v){
   const p=bfs([Math.round(v.x),Math.round(v.y)],ENTRY);
   return p?[...p.slice(1),OUTSIDE_ENTRY,streetExit(v)]:[];
 }
-function visLeave(v,emo){if(v.state==="lounge"&&v.acc)[v.x,v.y]=v.acc;v.seat=null;v.state="leave";if(emo)v.emo={k:emo,t:2.5};v.goal=null;v.path=visitorExitPath(v);v.wait=emo?1.2:.2;}
+function visLeave(v,emo){if(v.state==="lounge"&&v.acc)[v.x,v.y]=v.acc;v.seat=null;v.state="leave";if(emo)v.emo={k:emo,t:emo==="angry"?30:2.5};v.goal=null;v.path=visitorExitPath(v);v.wait=emo?1.2:.2;}
 __MEETINGS__
 __PIPELINE__
 __FEEDBACK__
@@ -837,10 +839,18 @@ function drawVisitor(c,v){ const im=CUIMG[v.ci]; if(!im||!im.complete||!im.natur
   c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill();
   c.imageSmoothingEnabled=true; c.imageSmoothingQuality="high"; c.drawImage(im,col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.imageSmoothingEnabled=false; c.restore();
   // thanh kiên nhẫn khi đang chờ
-  if(v.state==="wait"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/PATIENCE_MIN));
+  if(v.kind==="offer"&&v.state!=="leave"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j&&!j.received){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/PATIENCE_MIN));
     c.fillStyle="#3A2414"; c.fillRect(Math.round(sx-9),Math.round(sy-37),18,4); c.fillStyle=r>0.5?"#6CC24A":r>0.25?"#FFC93C":"#F04E3E"; c.fillRect(Math.round(sx-8),Math.round(sy-36),Math.round(16*r),2); } }
-  if(v.emo){ const e=emoImage(v.emo.k); if(e&&e.complete&&e.naturalWidth){ const bob=Math.sin(performance.now()/200)*1; const S=EMO[v.emo.k]?16:12; if(!EMO[v.emo.k]){ c.fillStyle="#FFFFFF"; c.fillRect(Math.round(sx-8),Math.round(sy-54+bob),16,14); c.fillStyle="#3A2414"; c.fillRect(Math.round(sx-8),Math.round(sy-55+bob),16,1); c.fillRect(Math.round(sx-8),Math.round(sy-40+bob),16,1); }
-      c.imageSmoothingEnabled=true; c.drawImage(e,Math.round(sx-S/2),Math.round(sy-(EMO[v.emo.k]?58:53)+bob),S,S); c.imageSmoothingEnabled=false; } } }
+  if(v.emo)drawStatusChat(c,sx,sy,v.emo.k); }
+function drawStatusChat(c,sx,sy,kind){
+ const image=emoImage(kind);if(!image||!image.complete||!image.naturalWidth)return;
+ const x=Math.round(sx-10),y=Math.round(sy-49);
+ c.save();c.fillStyle='#FFF9EC';c.strokeStyle='#6B452B';c.lineWidth=1;
+ c.beginPath();c.roundRect(x,y,20,17,4);c.fill();c.stroke();
+ c.beginPath();c.moveTo(sx-3,y+16);c.lineTo(sx,y+21);c.lineTo(sx+3,y+16);c.fill();
+ c.beginPath();c.moveTo(sx-3,y+17);c.lineTo(sx,y+21);c.lineTo(sx+3,y+17);c.stroke();
+ c.imageSmoothingEnabled=true;c.drawImage(image,x+4,y+2,12,12);c.restore();
+}
 function startReact(a,kind,dur,face){ a.react={kind,t:0,dur}; a.t=0; a.path=[]; if(face) a.dir=face; }
 function updateAutoBreak(a){
  if(a.away||closingOffice||a.collection||a.handover||a.meetingJob!=null||a.receptionUid!=null||a.state==='burn')return;
@@ -891,7 +901,7 @@ function stepAgents(dt){ if(dt<=0)return; for(const a of AG){
     if(d>1e-3) a.dir = Math.abs(dx)>=Math.abs(dy) ? (dx>0?"SE":"NW") : (dy>0?"SW":"NE");
     if(d<=sp){ a.x=tx; a.y=ty; a.path.shift(); } else { a.x+=dx/d*sp; a.y+=dy/d*sp; } a.t+=dt; }
   else {
-    if(a.state==="sit"){ a.t+=dt;if(a.meetingJob!=null)continue;if(!a.autoBreak&&isWorking(a)&&hasWorkFor(a)){a.sitT=Math.max(a.sitT,15);continue;}/* có việc thì ngồi lại bàn */a.sitT-=dt; if(a.sitT<=0){ a.state="wander"; if(a.acc){ a.x=a.acc[0]; a.y=a.acc[1]; } a.roam=1+Math.floor(Math.random()*2); a.wait=0.3; } continue; }
+    if(a.state==="sit"){ a.t+=dt;if(a.meetingJob!=null)continue;if(!a.autoBreak&&isWorking(a)&&hasWorkFor(a)){a.sitT=Math.max(a.sitT,2);continue;}/* có việc thì ngồi lại bàn */a.sitT-=dt; if(a.sitT<=0){ a.state="wander"; if(a.acc){ a.x=a.acc[0]; a.y=a.acc[1]; } a.roam=1+Math.floor(Math.random()*2); a.wait=0.3; } continue; }
     const here=[Math.round(a.x),Math.round(a.y)];
     if(a.seat && a.state==="toSeat"){ const acc=accessOf(a.seat);
       if(acc && here[0]===acc[0] && here[1]===acc[1]){ a.acc=acc; a.state="sit"; { const so=OBJS.find(b=>b.uid===a.seat.uid); a.sitT=(so&&WORKSEAT.has(so.id))?45+Math.random()*40:10+Math.random()*14; } a.t=0; continue; } }
@@ -1296,8 +1306,14 @@ function shade(hex,k){ const n=parseInt(hex.slice(1),16); const f=v=>Math.max(0,
 // ---------- vận hành: thời gian, job, stress ----------
 for(const a of AG){ if(a.stress==null) a.stress=10+Math.random()*25; }
 const hasItem=id=>OBJS.some(o=>o.id===id);
-function mkOffer(){ const t=JOB_TPL[Math.floor(Math.random()*JOB_TPL.length)]; const k=0.85+Math.random()*0.3;
-  const need=Math.round(t[1]*k), vip=Math.random()<0.12; return {invoice:vip, vip,gem:vip?3+Math.floor(Math.random()*6):0,id:GS.nextJob++,name:(vip?"⭐ ":"")+t[0],need,reward:Math.round(t[2]*k*lvlMul()*10)/10,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8))}; }
+function mkOffer(){
+ const small=Math.random()<.7;
+ const pool=small?JOB_TPL.filter(t=>!t[4].length):JOB_TPL;
+ const t=pool[Math.floor(Math.random()*pool.length)],k=.85+Math.random()*.3;
+ const reward=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
+ const need=Math.max(2,Math.round(reward*.18*100)/100),vip=!small&&Math.random()<.12;
+ return {invoice:vip,vip,gem:vip?3+Math.floor(Math.random()*6):0,id:GS.nextJob++,name:(vip?'⭐ ':'')+t[0],need,reward,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8)),flowVersion:2,onboardingPace:1};
+}
 function fillOffers(){ while(GS.offers.length<jobCapacity()) GS.offers.push(typeof applyRepeat==="function"?applyRepeat(mkOffer()):mkOffer());
   // luôn có ít nhất 2 khách không cần đồ đặc biệt (thay khách cần đồ còn thiếu)
   let free=GS.offers.filter(o=>!missingReq(o).length).length, guard=0;
@@ -1363,7 +1379,7 @@ function jobTeamUI(j){
   if(team.some(a=>a.stress>75))warnings.push('Stress cao làm giảm năng suất');
   if(Number.isFinite(hours)&&hours>available)warnings.push('Có nguy cơ trễ hạn');
   const estimate=j.paused?'Đang tạm dừng sản xuất · hạn giao vẫn tiếp tục':meetingPending(j)?'Chờ họp xong mới sản xuất':Number.isFinite(hours)?`Dự kiến ${hours.toFixed(1)} giờ game cho ${j.stg.length-j.cur} bước còn lại`:'Chưa ước tính được';
-  return `<div class="jm">${manual?'Đội riêng ('+team.map(a=>staffName(CHARS[a.ci].id)).join(', ')+')':'Planner tự chia việc theo chuyên môn'}${cur?` · bước hiện tại ${cur.toFixed(1)} giờ công/giờ game`:''}<br>${estimate}<br><small>Ước tính theo năng suất hiện tại, chưa tính nghỉ và thay đổi stress.</small>${warnings.length?`<br><b style="color:#C0392B">${warnings.join(' · ')}</b>`:''}</div><button class="btn c" data-team-edit="${j.id}" aria-label="Phân công: ${j.name}">${teamEditorJob===j.id?'Đóng phân công':'Phân công nhân sự'}</button>${teamEditorJob===j.id?`<div class="jm">Đội riêng: chỉ những người được chọn làm các bước của job này (người làm trái nghề sẽ chậm hơn). Mỗi người thuộc một đội. Bỏ hết người sẽ tạm dừng job này.</div><div style="display:flex;flex-wrap:wrap;gap:4px">${AG.filter(a=>!a.mascot&&!deskBound(a)).map(a=>{const id=CHARS[a.ci].id;return `<button class="btn ${ids.includes(id)?'g':'c'}" data-team-job="${j.id}" data-team-id="${id}" aria-pressed="${ids.includes(id)}">${staffName(id)}</button>`;}).join('')}<button class="btn b" data-team-job="${j.id}" data-team-id="auto">Để Planner tự chia</button></div>`:''}`;
+  return `<div class="jm">${manual?'Đội riêng ('+team.map(a=>staffName(CHARS[a.ci].id)).join(', ')+')':'Tự chia việc theo chuyên môn'}${cur?` · bước hiện tại ${cur.toFixed(1)} giờ công/giờ game`:''}<br>${estimate}<br><small>Ước tính theo năng suất hiện tại, chưa tính nghỉ và thay đổi stress.</small>${warnings.length?`<br><b style="color:#C0392B">${warnings.join(' · ')}</b>`:''}</div><button class="btn c" data-team-edit="${j.id}" aria-label="Phân công: ${j.name}">${teamEditorJob===j.id?'Đóng phân công':'Phân công nhân sự'}</button>${teamEditorJob===j.id?`<div class="jm">Đội riêng: chỉ những người được chọn làm các bước của job này (người làm trái nghề sẽ chậm hơn). Mỗi người thuộc một đội. Bỏ hết người sẽ tạm dừng job này.</div><div style="display:flex;flex-wrap:wrap;gap:4px">${AG.filter(a=>!a.mascot&&!deskBound(a)).map(a=>{const id=CHARS[a.ci].id;return `<button class="btn ${ids.includes(id)?'g':'c'}" data-team-job="${j.id}" data-team-id="${id}" aria-pressed="${ids.includes(id)}">${staffName(id)}</button>`;}).join('')}<button class="btn b" data-team-job="${j.id}" data-team-id="auto">Tự phân công</button></div>`:''}`;
 }
 function toggleJobPaused(id){
  const j=GS.jobs.find(j=>j.id===id);if(!j||j.work>=j.need)return false;
@@ -1475,8 +1491,8 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
     if(a.stress>=100){ a.state="burn"; a.burnT=90; a.path=[]; if(a.useObj){ BUSY.delete(a.useObj); a.useObj=null; } toast(`${staffName(CHARS[a.ci].id)} bốc cháy vì quá tải!`,"err"); }
   }
   if(!closingOffice&&lvl()>=3&&hasItem("green_screen")&&hasItem("camera_tripod")&&hasItem("softbox")&&!GS.jobs.some(j=>j.req.includes("camera_tripod"))){ const inc=0.4*lvlMul()*h; cash+=inc; GS.passToday+=inc; GS.revToday+=inc; GS.revTotal=(GS.revTotal||0)+inc; }
-  if(typeof tickRevisions==="function") tickRevisions(); advanceJobWork(h);
-  for(const j of [...GS.jobs]) if(j.work>=j.need-1e-6){ finishJobVisitor(j); for(const a of AG) if(!a.collection&&!a.handover&&a.state!=="burn"&&a.state!=="sit"&&a.state!=="use") startReact(a,"cele",2.6); GS.jobs=GS.jobs.filter(x=>x!==j); payJob(j); if(j.vip&&j.gem) addGems(j.gem,`Job VIP "${j.name}"`); if(GS.day<j.due){ addGems(1,"Xong job trước hạn"); dq("early"); } dq("job");
+  if(typeof tickRevisions==="function") tickRevisions(); advanceJobWork(h); if(typeof earlyTick==="function")earlyTick();
+  for(const j of [...GS.jobs]) if(j.work>=j.need-1e-6&&!fbPending(j)&&(typeof earlyReviewReady!=="function"||earlyReviewReady(j))){ finishJobVisitor(j); for(const a of AG) if(!a.collection&&!a.handover&&a.state!=="burn"&&a.state!=="sit"&&a.state!=="use") startReact(a,"cele",2.6); GS.jobs=GS.jobs.filter(x=>x!==j); payJob(j); if(j.vip&&j.gem) addGems(j.gem,`Job VIP "${j.name}"`); if(GS.day<j.due){ addGems(1,"Xong job trước hạn"); dq("early"); } dq("job");
     GS.done++; recordReputation(j,true,typeof reviewJob==="function"?reviewJob(j):0); advanceWeeklyPass(); GS.weekDone++; GS.lvlRev[lvl()]=(GS.lvlRev[lvl()]||0)+j.reward; if(lvl()>=3&&/Thiết kế|ấn phẩm|logo/i.test(j.name)) GS.templates=Math.min(20,GS.templates+1); hud(); save(); }
   for(const [minute,bit] of [[630,2],[780,1],[960,4]])if(GS.min>=minute&&!((GS.midRefresh||0)&bit)){ GS.midRefresh=(GS.midRefresh||0)|bit; fillOffers(); renderJobs(); }   // Bổ sung chỗ trống, không đuổi khách đang còn kiên nhẫn.
   if(GS.min>=CLOSE_MIN){ // Tan làm lúc 21:00, chờ đội ngũ đi ra vỉa hè.
@@ -1534,7 +1550,7 @@ function renderJobs(){ const el=document.getElementById("jobList"); if(!el) retu
   srcs.push(`<div class="job off"><div class="jt"><b>Bán template số</b><span class="num">${lvl()>=3?GS.templates+"/20 mẫu":"cấp 3"}</span></div><div class="jm">Mỗi job thiết kế xong tạo 1 mẫu; mỗi mẫu +${fmt(Math.round(0.5*M*10)/10)}/ngày</div></div>`);
   srcs.push(`<div class="job off"><div class="jt"><b>Giải thưởng sáng tạo</b><span class="num">${lvl()>=4?GS.weekDone+"/10 job":"cấp 4"}</span></div><div class="jm">Mỗi 7 ngày, xong ≥ 10 job: thưởng 25% giá khu kế tiếp</div></div>`);
   const srcHtml=srcs.map((html,i)=>html.replace('<div class="job off">',`<div class="job off income-card"><span class="income-icon">${UIIMG(['brief','book','shop','chart','trophy'][i],30)}</span>`).replace(/<div class="jm">(.*?)<\/div>/g,(_,text)=>text.startsWith('Мở')||text.startsWith('Mở')||text.startsWith('Cần')?`<div class="jm">${text}</div>`:`<details class="compact-details"><summary>Điều kiện ⓘ</summary><div class="jm">${text}</div></details>`)).join("");
-  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details><div id="jOff" class="hub-list"></div></div><div class="jsec" data-sec="active"><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Mỗi job đi qua 6 bước: Brief (Account) → Chia việc (Planner) → Sáng tạo → Sản xuất (Design / Content / Editor) → Bàn giao (Account) → Hoá đơn (Kế toán). Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
+  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details><div id="jOff" class="hub-list"></div></div><div class="jsec" data-sec="active"><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Lễ tân (HR / Kế toán / Trợ lý) → Account → Content → Design. Giá trị job quyết định khối lượng công việc. Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
     el.addEventListener("click",e=>{ if(e.target.closest("[data-sort-deadline]")){sortJobsByDeadline();return;} const pause=e.target.closest("[data-pause-job]");if(pause){toggleJobPaused(+pause.dataset.pauseJob);return;} const decline=e.target.closest("[data-decline]");if(decline){const id=+decline.dataset.decline;const offer=GS.offers.find(j=>j.id===id);if(offer)askConfirm({title:`Từ chối ${offer.name}?`,text:"Khách sẽ ra về, không mất coin hay danh tiếng.",ok:"Từ chối job",danger:true}).then(ok=>{if(ok)declineOffer(id);});return;} const workplace=e.target.closest("[data-workplace]");if(workplace){fSel=workplace.dataset.workplace;fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt, chừa ô ghế và lối vào","ok");return;} const collect=e.target.closest("[data-collect]");if(collect){sendCollector(+collect.dataset.collect,collect.dataset.person);return;} const editor=e.target.closest("[data-team-edit]");if(editor){const id=+editor.dataset.teamEdit;teamEditorJob=teamEditorJob===id?null:id;renderJobs();return;} const team=e.target.closest("[data-team-job]");if(team){setJobStaff(+team.dataset.teamJob,team.dataset.teamId);return;} const priority=e.target.closest("[data-priority]");if(priority){prioritizeJob(+priority.dataset.priority);return;} if(e.target.closest("[data-reception]")){fSel="reception_counter";fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt quầy; chừa lối đi hai phía","ok");return;} const b=e.target.closest("[data-acc]"); if(b) acceptJob(+b.dataset.acc); const c2=e.target.closest("[data-src]"); if(c2&&c2.getAttribute("aria-disabled")!=="true") useSource(c2.dataset.src); }); }
   { const S=document.getElementById("jSrc"); if(S.dataset.sig!==srcHtml){ S.innerHTML=gemify(srcHtml); S.dataset.sig=srcHtml; } }
   document.getElementById("sortJobs").disabled=GS.jobs.length<2;

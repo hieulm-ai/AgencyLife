@@ -1,5 +1,6 @@
 <!doctype html><html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="AgencyLife"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#5E9E42">
 <title>Agency's Life Tycoon · bản chơi thử</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=Baloo+2:wght@600;700;800&family=Silkscreen&display=swap" rel="stylesheet">
@@ -706,6 +707,25 @@ body.visiting #repChip{display:none}
 
 .duck-guide{width:76px;height:66px;margin:0 auto;background:url("assets/generated/e2c0e562251c793046b92541.webp") center top / 76px auto no-repeat;image-rendering:pixelated;flex-shrink:0}#guide .guide-head{flex-wrap:wrap}#guide .guide-head .duck-guide{flex-basis:100%;background-size:76px auto}#tour .thand{z-index:2}
 
+#earlyPlay{position:fixed;right:14px;bottom:110px;width:min(330px,calc(100vw - 28px));z-index:6;padding:12px;display:grid;gap:7px}#earlyPlay small{font-size:11px}#earlyPlay .early-actions{display:flex;gap:5px}#earlyPlay .btn{font-size:11px;min-height:38px;padding:5px;flex:1;display:flex;align-items:center;justify-content:center;gap:4px}#earlyPlay .early-preview{display:flex;align-items:center;gap:10px}.title-view #earlyPlay,.booting #earlyPlay{display:none!important}@media(max-height:500px){#earlyPlay{bottom:80px;width:285px;padding:8px;gap:4px}}
+
+#earlyPlay{padding-right:30px}#earlyPlay .early-close{position:absolute;right:5px;top:5px;width:28px;height:28px;border:1px solid #9A6030;border-radius:50%;background:#FFF9EC;color:#6B3512;font-size:22px;line-height:22px;padding:0}
+
+/* Fill the available phone viewport; preserve safe areas for controls. */
+html,body{width:100%;height:100%;overscroll-behavior:none}
+#wrap{width:100%;height:100dvh;max-width:none;max-height:none;border:0;margin:0}
+@media(pointer:coarse) and (orientation:landscape) and (max-height:600px){
+ #nav{height:58px!important;bottom:max(5px,env(safe-area-inset-bottom))!important;gap:5px!important}
+ #nav .nb{height:54px!important;min-height:44px!important;padding:3px 8px!important}
+ #nav .nb:not(.crown-wide) .ic img,#nav #expand .ic img{width:28px!important;height:28px!important}
+ #nav .nl{font-size:10px!important}#nav .crown-wide .ic img{width:30px!important;height:30px!important}
+ #co{transform:scale(.72);transform-origin:top left}#topR{transform:scale(.8);transform-origin:top right}
+ #wrap.hud-stacked #res{top:65px!important}#res .pill,#res .staff-pill{height:36px!important}#res .pill b{font-size:12px!important}#res .ic img{width:22px!important;height:22px!important}
+}
+/* Điện thoại ngang: thu gọn hộp chọn nhân vật để nút hướng dẫn không bị khuất */
+@media(max-height:500px){#intro .intro-box{max-height:calc(100dvh - 16px);padding:8px 14px 10px;gap:6px}#intro h1{font-size:22px;margin:0}#intro .intro-head p{font-size:12px}#intro .intro-lead{font-size:13px;margin:0 0 2px}#intro .intro-opt{padding:8px 10px;gap:3px}#intro .intro-trio{height:72px}#intro .intro-trio .ic-spr{width:54px;height:72px;background-size:162px 144px;background-position:-54px 0}#intro .intro-opt b{font-size:15px}#intro .intro-opt small{font-size:11px}#intro .intro-help{margin:0}}
+@media(max-height:500px) and (orientation:landscape){#intro .intro-opts{grid-template-columns:1fr 1fr;gap:10px}}
+
 body.booting #wrap{visibility:hidden}
 #boot[hidden],#titleScreen[hidden]{display:none!important}
 #boot{position:fixed;inset:0;z-index:5000;background:#f6e7c7;display:grid;place-items:center;text-align:center;color:#4a2a1a;padding:24px}
@@ -767,6 +787,8 @@ body.booting #wrap{visibility:hidden}
 .boot-track{bottom:58px}#bootStatus{bottom:29px}.boot-tip{bottom:4px}#bootProgress{filter:drop-shadow(0 1px 3px #173621)}
 @media(max-width:600px) and (orientation:portrait){.title-card{right:16px;left:16px;bottom:16px;width:auto;max-width:none}.title-art,.boot-art{object-position:50% center}.boot-card{right:16px;bottom:16px}}
 @media(max-height:480px){.title-card{right:12px;bottom:12px;width:246px;padding:12px}.title-save{margin-bottom:8px}.title-extra{margin-top:8px}.title-actions button,.title-actions #titlePlay{min-height:38px}.boot-card{bottom:10px;height:180px;width:260px}.boot-tip{display:none}}
+/* Điện thoại ngang: giữ trọn ảnh nhận diện (logo nằm sát đáy ảnh), thẻ menu nằm bên phải */
+@media(max-height:480px) and (orientation:landscape){#titleScreen,#boot{background:linear-gradient(#8fd0ec 0 60%,#bfe3a6 60%)}.title-art,.boot-art{object-fit:contain;object-position:left center}}
 
 #dayTransition{position:absolute;inset:0;z-index:100;background:#f7f4ef;color:#fff3ce;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:auto}
 #dayTransition[hidden]{display:none}#dayTransition .vu{position:absolute;left:2%;bottom:3%;height:94%;width:48%;object-fit:contain;image-rendering:pixelated;opacity:1}
@@ -1403,7 +1425,7 @@ const PATIENCE_MIN=240;   // khách chờ tối đa 4 giờ game (4 phút thật
 let VIS=[], visId=1;
 const EMO=window.EMOTES||{};   // biểu tượng cảm xúc trên đầu khách (Higgsfield); thiếu thì dùng icon UI
 const EMO_FALL={happy:"heart",angry:"fire",wait:"clock",star:"star",money:"coin",job:"brief",sad:"clock",done:"star"};   // dự phòng khi thiếu ảnh biểu tượng
-function emoImg(k){ if(EMO[k]) return EMO[k]; const n=EMO_FALL[k]; return n&&window.UIICON?window.UIICON[n]:null; }
+function emoImg(k){if(k==='angry'&&EMO[k])return EMO[k];const n=EMO_FALL[k];return (n&&window.UIICON?.[n])||EMO[k]||null;}
 const EMO_CACHE={}; function emoImage(k){ if(!EMO_CACHE[k]){ const src=emoImg(k); EMO_CACHE[k]=src?Object.assign(bootImage(),{src}):null; } return EMO_CACHE[k]; }
 function custFor(name){ const base=name.replace(/^⭐ /,""), l=JOB_CUST[base]||[0,1,2,3,4,5,6,7]; return l[Math.floor(Math.random()*l.length)]; }
 // Hàng chờ một hàng dọc: ô khách trước quầy, rồi nối thẳng ra phía sau; vướng tường/đồ hoặc tới cửa thì rẽ ngang.
@@ -1448,6 +1470,7 @@ function rerouteWaitingVisitor(v){
 function spawnVisitor(kind,job){ if(!CUSTS.length) return; if(VIS.some(v=>v.jobId===job.id&&v.kind===kind)) return;
   const goal=freeSpot(), v={id:visId++,qn:++queueSeq,kind,jobId:job.id,ci:job.cust??0,x:SIDEWALK[0],y:SIDEWALK[1],path:[],dir:"NE",t:0,state:"in",goal,wait:VIS.filter(v=>v.state==="in").length*1.2,emo:kind==="pickup"?null:{k:job.vip?"alert":(missingReq(job).length?"question":"job"),t:2.5}};
   const e=streetExit(v); [v.x,v.y]=e; v.dir=e[0]<OUTSIDE_ENTRY[0]?"SE":"NW";   // đi bộ từ đầu vỉa hè (mép bản đồ) tới
+  if(kind==='offer'&&GS.day===1&&(GS.done||0)===0&&!GS.earlyFirstArrival){GS.earlyFirstArrival=true;[v.x,v.y]=OUTSIDE_ENTRY;v.wait=0;}
   const p=goal&&bfs(ENTRY,goal); v.path=p?[OUTSIDE_ENTRY,ENTRY,...p.slice(1)]:[OUTSIDE_ENTRY,ENTRY]; VIS.push(v); }
 function visitorExitPath(v){
   if(v.y>=OUTSIDE_ENTRY[1])return [streetExit(v)];
@@ -1455,7 +1478,7 @@ function visitorExitPath(v){
   const p=bfs([Math.round(v.x),Math.round(v.y)],ENTRY);
   return p?[...p.slice(1),OUTSIDE_ENTRY,streetExit(v)]:[];
 }
-function visLeave(v,emo){if(v.state==="lounge"&&v.acc)[v.x,v.y]=v.acc;v.seat=null;v.state="leave";if(emo)v.emo={k:emo,t:2.5};v.goal=null;v.path=visitorExitPath(v);v.wait=emo?1.2:.2;}
+function visLeave(v,emo){if(v.state==="lounge"&&v.acc)[v.x,v.y]=v.acc;v.seat=null;v.state="leave";if(emo)v.emo={k:emo,t:emo==="angry"?30:2.5};v.goal=null;v.path=visitorExitPath(v);v.wait=emo?1.2:.2;}
 // Included inside the game closure by build.py. Times are active game minutes.
 const MEETING_MINUTES = 20;
 const meetingPending = j => !!j.meeting && j.meeting.phase !== "done";
@@ -1566,14 +1589,8 @@ function meetingLabel(j){
 // Planner = Đốc Giám (ADM). Thiếu bộ phận thì người khác làm chậm hơn. Xong mỗi bước, người làm cầm hồ sơ sang bàn người làm bước kế.
 // j.stg = [{k, role, need, done}], j.cur = bước đang làm, j.who = id người đang làm bước đó, j.handoff = id người vừa xong (chờ chuyển hồ sơ),
 // j.passing = đang chuyển hồ sơ (bước kế chưa làm). j.work = tổng giờ công các bước (giữ cho giao diện, thanh toán và bản lưu cũ).
-const STAGE_DEF=[
- {k:'brief',role:'acc',n:'Brief',split:.10},
- {k:'plan',role:'plan',n:'Chia việc',split:.10},
- {k:'creative',role:null,n:'Sáng tạo',split:.30},
- {k:'prod',role:null,n:'Sản xuất',split:.30},
- {k:'deliver',role:'acc',n:'Bàn giao',split:.10},
- {k:'invoice',role:'fin',n:'Hoá đơn',split:.10}];
-const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'moneybag'};
+const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.2},{k:'creative',role:'con',n:'Content',split:.35},{k:'prod',role:'des',n:'Design',split:.45}];
+const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'coin'};
 const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',fin:'Kế toán'};
 // Bước Sáng tạo / Sản xuất theo loại job (tên mẫu job, bỏ dấu ⭐ VIP).
 const JOB_FLOW={'Thiết kế logo':['des','des'],'Bộ ấn phẩm Tết':['des','des'],'Kế hoạch truyền thông':['con','con'],'Quản lý fanpage 1 tuần':['con','des'],
@@ -1585,14 +1602,29 @@ const TRACK_OF={'Account':{spec:['acc'],near:['plan']},'Sale':{spec:['acc'],near
  'HR':{spec:[],near:['acc','fin']},'Trợ lý':{spec:[],near:['acc','con','fin']}};
 const MATCH_F={spec:1.35,near:1,off:.6}, MATCH_N={spec:'Đúng chuyên môn',near:'Gần chuyên môn',off:'Trái nghề'};
 const STAR_F=1.2;   // ứng viên nổi bật (HR giới thiệu) làm nhanh hơn 20% — thông số thử
-const WORK_SPEED=5; // Đo với 3 người làm job; lễ tân và linh vật không tham gia sản xuất.
+const WORK_SPEED=12; // Đo với 3 người làm job; lễ tân và linh vật không tham gia sản xuất.
 function jobCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
 const PASS_GIVEUP=30, PASS_TALK=2.2;
 function roleMatch(a,role){ const t=TRACK_OF[a&&a.role]||{spec:[],near:[]}; return t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'; }
 function jobFlow(j){ return JOB_FLOW[String(j&&j.name||'').replace(/^⭐ /,'')]||['des','des']; }
-function buildStages(j){ const [cr,pr]=jobFlow(j); return STAGE_DEF.map(s=>({k:s.k,role:s.k==='creative'?cr:s.k==='prod'?pr:s.role,need:Math.round(j.need*s.split*100)/100,done:0})); }
+function buildStages(j){ const [cr,pr]=jobFlow(j); return STAGE_DEF.map(s=>({k:s.k,role:s.role,need:Math.round(j.need*s.split*100)/100,done:0})); }
 // Bản lưu cũ chưa có bước: dựng bước và rải giờ công đã làm từ bước đầu.
+function applyOnboardingPace(j){
+ if(j.onboardingPace!=null)return j;
+ const done=GS.done;
+ const factor=Number.isFinite(done)&&done>=0&&GS.day<=3?(done<3?.25:done<5?.5:1):1;
+ j.onboardingPace=factor;
+ if(factor===1||!Number.isFinite(j.need)||j.need<=0)return j;
+ j.need*=factor;j.work=(j.work||0)*factor;
+ if(Array.isArray(j.stg))for(const stage of j.stg){stage.need*=factor;stage.done*=factor;}
+ return j;
+}
 function ensureStages(j){
+ if(j.flowVersion!==2&&Number.isFinite(j.reward)){
+  const progress=j.need>0?Math.max(0,Math.min(1,(j.work||0)/j.need)):0;
+  j.need=Math.max(2,Math.round(j.reward*.18*100)/100);j.work=j.need*progress;
+  delete j.stg;delete j.who;delete j.handoff;j.passing=false;j.flowVersion=2;
+ }
  if(!Array.isArray(j.stg)||j.stg.length!==STAGE_DEF.length||j.stg.some(s=>!s||!Number.isFinite(s.need)||!Number.isFinite(s.done))){
   j.stg=buildStages(j);const sum=j.stg.slice(0,-1).reduce((n,s)=>n+s.need,0);j.stg[j.stg.length-1].need=Math.max(0,Math.round((j.need-sum)*100)/100);
   let left=Math.max(0,Math.min(j.need,j.work||0));for(const s of j.stg){const t=Math.min(s.need,left);s.done=t;left-=t;}
@@ -1603,8 +1635,8 @@ function ensureStages(j){
 function staffById(id){ return id?AG.find(a=>CHARS[a.ci].id===id)||null:null; }
 function canTakeTask(a){ return !!a&&!a.mascot&&!a.away&&!a.autoBreak&&!a.collection&&!a.handover&&!a.pass&&a.state!=='burn'&&a.state!=='leaving'&&a.state!=='arrive'&&a.meetingJob==null&&a.receptionUid==null&&!(typeof deskBound==='function'&&deskBound(a)); }
 function hasWorkSeat(a){ const o=a&&a.seat&&OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
-function briefPending(j){ return (typeof handoverQueue!=='undefined'&&handoverQueue.includes(j.id))||(typeof frontDeskAgent==='function'&&frontDeskAgent()?.handover?.jobId===j.id); }
-function jobReady(j){ return !j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
+function briefPending(j){ return (typeof handoverQueue!=='undefined'&&handoverQueue.includes(j.id))||AG.some(a=>a.handover?.jobId===j.id); }
+function jobReady(j){ return !(j.early&&j.cur===1&&!j.early.idea)&&!j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
 function inTeam(j,id){ return !Array.isArray(j.staff)||j.staff.includes(id); }
 // Việc của 1 người: bước đang được giao cho người đó.
 function agentTask(a){ if(!a) return null; const id=CHARS[a.ci].id; for(const j of GS.jobs){ ensureStages(j); const s=j.stg[j.cur]; if(s&&j.who===id) return {j,s}; } return null; }
@@ -1645,10 +1677,10 @@ function advanceJobWork(h){
  if(closingOffice) return;
  assignStages();
  for(const j of GS.jobs){ const s=j.stg[j.cur]; if(!s||!j.who||!jobReady(j)) continue; const a=staffById(j.who); if(!a) continue;
-  const r=stageRate(a,s.role); if(r<=0) continue;
+  const r=stageRate(a,s.role)*((GS.earlyBoostUntil||0)>GS.day*1440+GS.min?1.15:1); if(r<=0) continue;
   const before=s.done; s.done=Math.min(s.need,s.done+r*h);
   if(typeof trackQuality==='function') trackQuality(j,a,s.role,s.done-before);
-  if(s.done>=s.need-1e-9){ s.done=s.need; const prev=j.who; j.who=null; ensureStages(j); if(j.cur<j.stg.length) j.handoff=prev; if(typeof maybeRevision==='function') maybeRevision(j,s.k); }
+  if(s.done>=s.need-1e-9){ s.done=s.need; const prev=j.who; a.sitT=0; j.who=null; ensureStages(j); if(j.cur<j.stg.length) j.handoff=prev; if(typeof maybeRevision==='function') maybeRevision(j,s.k); }
   j.work=Math.min(j.need,j.stg.reduce((n,x)=>n+x.done,0));
   if(j.cur>=j.stg.length) j.work=j.need;
  }
@@ -1714,6 +1746,79 @@ function starCandidate(free){
  return GS.starPick.id;
 }
 
+// First three completed jobs teach decisions without stopping office simulation.
+const EARLY_CHOICE_MIN=20;
+function earlyNow(){return GS.day*1440+GS.min;}
+function earlyEligible(){return GS.day<=3&&(GS.done||0)<3;}
+function earlyState(j){return j.early||(j.early={});}
+function earlyPending(j,kind){const e=earlyState(j);if(e[kind])return false;e[kind+'At']??=earlyNow();return true;}
+function earlyChoose(id,kind,value){
+ const j=[...GS.offers,...GS.jobs].find(j=>j.id===id);if(!j)return;
+ const e=earlyState(j);if(e[kind])return;
+ if(kind==='brief'){
+  if(!j.received||!GS.offers.includes(j))return;
+  e.brief=value;acceptJob(id);
+  if(!GS.jobs.includes(j)){delete e.brief;return;}
+  toast(value==='playful'?'Khách thích phong cách vui nhộn!':'Khách đã chốt brief rõ ràng!','ok');
+ }else if(kind==='idea'){
+  if(!GS.jobs.includes(j)||j.cur<1)return;
+  e.idea=value;
+  if(value==='bold'){j.reward=Math.round(j.reward*1.1*10)/10;const s=j.stg.find(s=>s.k==='creative');if(s){const add=s.need*.15;s.need+=add;j.need+=add;}}
+ }else if(kind==='review'){
+  if(j.work<j.need-1e-6)return;
+  e.review=value;
+  if(value==='polish'){const s=j.stg.find(s=>s.k==='prod');const add=s.need*.15;s.need+=add;j.need+=add;j.reward=Math.round(j.reward*1.05*10)/10;ensureStages(j);}
+ }
+ save();renderJobs();earlyRender();
+}
+function earlyReviewReady(j){
+ if(!j.early)return true;
+ return !!j.early.review;
+}
+function earlyWater(){
+ const j=GS.offers.find(j=>!j.received&&!j.earlyWater&&VIS.some(v=>v.jobId===j.id&&v.state!=='leave'));
+ if(!j)return;
+ j.earlyWater=true;j.expire=(Number.isFinite(j.expire)?j.expire:earlyNow()+PATIENCE_MIN)+60;
+ const v=VIS.find(v=>v.jobId===j.id);if(v)v.emo={k:'happy',t:4};
+ toast('Mời nước · Khách chờ thêm 60 phút game','ok');save();earlyRender();
+}
+function earlyCheer(){
+ if((GS.earlyCheerUntil||0)>earlyNow())return;
+ const a=AG.find(a=>!a.away&&hasWorkFor(a));if(!a)return;
+ GS.earlyCheerUntil=earlyNow()+60;
+ a.stress=Math.max(0,a.stress-10);GS.earlyBoostUntil=earlyNow()+20;
+ a.emo={k:'happy',t:4};toast('Cả đội cố lên! +15% tốc độ trong 20 phút game','ok');save();earlyRender();
+}
+let earlyPaintAt=-1;
+let earlyDismissed=false;
+function earlyTick(){
+ if(!earlyEligible()&&!GS.jobs.some(j=>j.early&&!j.early.review)){document.getElementById('earlyPlay')?.remove();return;}
+ const now=earlyNow();
+ for(const j of GS.offers){if(!earlyEligible()||!j.received||missingReq(j).length)continue;
+  if(earlyPending(j,'brief')&&now-j.early.briefAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'brief','clear');break;
+ }
+ for(const j of GS.jobs){
+  if(!j.early&&earlyEligible())earlyState(j);if(!j.early)continue;
+  if(j.cur>=1&&earlyPending(j,'idea')&&now-j.early.ideaAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'idea','safe');
+  if(j.work>=j.need-1e-6&&earlyPending(j,'review')&&now-j.early.reviewAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'review','send');
+ }
+ if(Math.floor(now)!==earlyPaintAt){earlyPaintAt=Math.floor(now);earlyRender();}
+}
+function earlyRender(){
+ if(earlyDismissed)return;
+ if(!earlyEligible()&&!GS.jobs.some(j=>j.early&&!j.early.review))return;
+ let box=document.getElementById('earlyPlay');if(!box){box=document.createElement('section');box.id='earlyPlay';box.className='pf';box.setAttribute('aria-label','Việc đầu tiên');document.body.append(box);}
+ let j=GS.jobs.find(j=>j.early&&!j.early.review&&j.work>=j.need-1e-6),kind='review';
+ if(!j){j=GS.jobs.find(j=>j.early&&!j.early.idea&&j.cur>=1);kind='idea';}
+ if(!j){j=GS.offers.find(j=>j.received&&!j.early?.brief&&!missingReq(j).length);kind='brief';}
+ const choices={brief:[['clear','brief','Rõ ràng'],['playful','palette','Vui nhộn']],idea:[['safe','pen','An toàn'],['bold','star','Táo bạo · +10% thưởng']],review:[['send','clip','Gửi khách'],['polish','palette','Chỉnh thêm · +5% thưởng']]};
+ const title={brief:'Chọn brief',idea:'Chọn ý tưởng',review:'Duyệt sản phẩm'};
+ box.innerHTML=`<button class="early-close" aria-label="Đóng hướng dẫn" title="Đóng">×</button><b>${j?title[kind]:'Agency đầu tiên của bạn'}</b><small>${j?olEsc(j.name):'Đón khách · Làm job · Nhận thưởng'}</small>${j?`${kind==='review'?`<div class="early-preview">${jobArtwork(j)}<span>${j.early.brief==='playful'?'Vui nhộn':'Rõ ràng'} · ${j.early.idea==='bold'?'Táo bạo':'An toàn'}</span></div>`:''}<div class="early-actions">${choices[kind].map(([value,icon,label])=>`<button class="btn c" data-choice="${value}">${UIIMG(icon,28)}${label}</button>`).join('')}</div><small>Tự chọn ${kind==='review'?'Gửi khách':kind==='idea'?'An toàn':'Rõ ràng'} sau ${Math.max(0,Math.ceil(EARLY_CHOICE_MIN-(earlyNow()-(j.early?.[kind+'At']??earlyNow()))))} phút game</small>`:''}<div class="early-actions"><button class="btn c" id="earlyWater" ${GS.offers.some(o=>!o.received&&!o.earlyWater)?'':'disabled'}>${UIIMG('coffee',20)}Mời nước</button><button class="btn c" id="earlyCheer" ${(GS.earlyCheerUntil||0)>earlyNow()?'disabled':''}>${UIIMG('heart',20)}Động viên</button><button class="btn c" id="earlyBuild">${UIIMG('chair',20)}Nội thất</button></div>`;
+ box.querySelector('.early-close').onclick=()=>{earlyDismissed=true;box.remove();};
+ box.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>earlyChoose(j.id,kind,b.dataset.choice));
+ box.querySelector('#earlyWater').onclick=earlyWater;box.querySelector('#earlyCheer').onclick=earlyCheer;box.querySelector('#earlyBuild').onclick=()=>document.getElementById('bBuild')?.click();
+}
+
 // ---------- Phản hồi của khách và trả lời đánh giá (V18, 08/10/2026) ----------
 // Theo bản game đầu tiên (deploy v4):
 //  1) Khách góp ý giữa chừng: xong bước Sản xuất, khách có thể yêu cầu sửa → Sửa kỹ / Thuyết phục khách / Account sửa nhẹ.
@@ -1756,7 +1861,7 @@ function maybeRevision(j,k,rnd){ if(k!=='prod'||j.fb) return false; const r=rnd=
 function fbPending(j){ return !!(j&&j.fb&&!j.fb.done); }
 function persuadeChance(){ const acc=AG.some(a=>!a.away&&TRACK_OF[a.role]&&TRACK_OF[a.role].spec.includes('acc'));
  return Math.min(.85,.35+(acc?.15:0)+reputationLevel(ensureReputation().points)*.07); }
-function addProdWork(j,f){ const s=j.stg&&j.stg[3]; if(!s) return 0; const add=Math.round(s.need*f*100)/100; s.need+=add; j.need+=add; ensureStages(j); return add; }
+function addProdWork(j,f){ const s=j.stg&&j.stg.find(s=>s.k==='prod'); if(!s) return 0; const add=Math.round(s.need*f*100)/100; s.need+=add; j.need+=add; ensureStages(j); return add; }
 function resolveRevision(j,m,rnd){ if(!fbPending(j)) return null; const r=rnd==null?Math.random():rnd; let msg;
  if(m==='fix'){ addProdWork(j,.25); j.fbMod=.1; repAdd(1); msg='Team sửa kỹ phần Sản xuất (+25% khối lượng) · khách đánh giá cao thiện chí · +1 danh tiếng'; }
  else if(m==='talk'){ if(r<persuadeChance()){ j.fbMod=0; msg='Account thuyết phục được khách giữ bản hiện tại'; } else { j.fbMod=-.15; repAdd(-2); msg='Khách không đồng ý, vẫn giữ bản cũ nhưng không vui · −2 danh tiếng, đánh giá sẽ thấp hơn'; } }
@@ -1941,11 +2046,16 @@ function receptionPair(){
 function releaseReception(a){if(a.state==='reception'||a.state==='toReception'){a.state='wander';a.path=[];a.wait=0;}delete a.receptionUid;if(!closingOffice)assignSeats();}
 // Nhân vật của người chơi đứng quầy lễ tân cố định (07/10/2026): không nhận bàn làm việc, không làm job, không đi thu tiền, không chủ trì họp.
 // Khi chưa có quầy dùng được (bị bán, đang di chuyển, bị chắn lối) thì nhân vật của bạn làm việc như nhân viên thường.
-function deskBound(a){return !!a&&!!a.founder&&!!deskBound.on;}
-function frontDeskAgent(){return AG.find(a=>a.founder&&!a.mascot)||null;}
+function deskBound(a){return !!a&&a===frontDeskAgent()&&!!deskBound.on;}
+function frontDeskAgent(){
+ const current=AG.find(a=>a.receptionUid!=null&&!a.handover&&deskReady(a)&&(a.founder||['HR','Kế toán','Trợ lý'].includes(a.role)));if(current&&!current.founder)return current;
+ const pool=AG.filter(a=>!a.mascot&&deskReady(a)&&!a.handover&&!a.pass&&!a.autoBreak&&['HR','Kế toán','Trợ lý'].includes(a.role)&&!(typeof agentTask==='function'&&agentTask(a)));
+ pool.sort((a,b)=>(a.lastReception||0)-(b.lastReception||0));
+ return pool[0]||current||AG.find(a=>a.founder&&!a.mascot&&deskReady(a)&&!a.handover)||null;
+}
 function deskReady(a){return !!a&&!a.away&&a.state!=='leaving'&&a.state!=='arrive'&&a.state!=='burn'&&!a.collection&&a.meetingJob==null;}
 function finishReceptionTurn(host){
-  if(host.stress>=75&&!host.founder){releaseReception(host);updateAutoBreak(host);}
+  host.lastReception=Date.now();if(!host.founder){releaseReception(host);updateAutoBreak(host);}
 }
 function claimFrontDesk(host,pair){
   if(host.state==='sit'&&host.acc){[host.x,host.y]=host.acc;}
@@ -1968,7 +2078,7 @@ function stepReception(dt){
   const pair=receptionPair(),waiting=VIS.filter(v=>(v.kind==='offer'&&v.state==='wait'&&GS.offers.some(j=>j.id===v.jobId&&!j.received))||(v.kind==='pickup'&&v.state==='pickup'&&(GS.pickups||[]).some(j=>j.id===v.jobId))).sort((a,b)=>(a.qn??a.id)-(b.qn??b.id));   // tiếp theo thứ tự xếp hàng
   const was=deskBound.on;deskBound.on=!!pair;
   const host=frontDeskAgent();
-  for(const a of AG)if(a!==host&&a.receptionUid!=null)releaseReception(a);   // bản lưu cũ: người khác đang đứng quầy thì về chỗ
+  for(const a of AG)if(a!==host&&a.receptionUid!=null&&!a.handover)releaseReception(a);   // bản lưu cũ: người khác đang đứng quầy thì về chỗ
   if(!host){for(const v of waiting)v.receptionT=0;return;}
   if(host.handover){for(const v of waiting)v.receptionT=0;return;}   // đang đi giao việc: khách chờ tại chỗ
   if(!pair||!deskReady(host)){for(const v of waiting)v.receptionT=0;if(host.receptionUid!=null)releaseReception(host);else if(was&&!pair&&!closingOffice)assignSeats();return;}
@@ -2066,11 +2176,8 @@ function jobAccountLine(j){
   return j.account?`<br>Account phụ trách: ${staffName(j.account)}`:'';
 }
 function drawAgentEmo(c,a){
-  const e=emoImage(a.emo.k);if(!e||!e.complete||!e.naturalWidth)return;
-  const [sx,sy]=a.state==='sit'&&a.seat&&a.seat.sx!=null?[a.seat.sx,a.seat.sy+14]:iso(a.x+.5,a.y+.5);   // người ngồi: đầu thấp hơn người đứng
-  const bob=Math.sin(performance.now()/200),S=EMO[a.emo.k]?16:12;
-  if(!EMO[a.emo.k]){c.fillStyle='#FFFFFF';c.fillRect(Math.round(sx-8),Math.round(sy-54+bob),16,14);c.fillStyle='#3A2414';c.fillRect(Math.round(sx-8),Math.round(sy-55+bob),16,1);c.fillRect(Math.round(sx-8),Math.round(sy-40+bob),16,1);}
-  c.drawImage(e,Math.round(sx-S/2),Math.round(sy-(EMO[a.emo.k]?58:53)+bob),S,S);
+ const [sx,sy]=a.state==='sit'&&a.seat&&a.seat.sx!=null?[a.seat.sx,a.seat.sy+14]:iso(a.x+.5,a.y+.5);
+ drawStatusChat(c,sx,sy,a.emo.k);
 }
 
 function beginClosing(){
@@ -2459,10 +2566,18 @@ function drawVisitor(c,v){ const im=CUIMG[v.ci]; if(!im||!im.complete||!im.natur
   c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill();
   c.imageSmoothingEnabled=true; c.imageSmoothingQuality="high"; c.drawImage(im,col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.imageSmoothingEnabled=false; c.restore();
   // thanh kiên nhẫn khi đang chờ
-  if(v.state==="wait"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/PATIENCE_MIN));
+  if(v.kind==="offer"&&v.state!=="leave"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j&&!j.received){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/PATIENCE_MIN));
     c.fillStyle="#3A2414"; c.fillRect(Math.round(sx-9),Math.round(sy-37),18,4); c.fillStyle=r>0.5?"#6CC24A":r>0.25?"#FFC93C":"#F04E3E"; c.fillRect(Math.round(sx-8),Math.round(sy-36),Math.round(16*r),2); } }
-  if(v.emo){ const e=emoImage(v.emo.k); if(e&&e.complete&&e.naturalWidth){ const bob=Math.sin(performance.now()/200)*1; const S=EMO[v.emo.k]?16:12; if(!EMO[v.emo.k]){ c.fillStyle="#FFFFFF"; c.fillRect(Math.round(sx-8),Math.round(sy-54+bob),16,14); c.fillStyle="#3A2414"; c.fillRect(Math.round(sx-8),Math.round(sy-55+bob),16,1); c.fillRect(Math.round(sx-8),Math.round(sy-40+bob),16,1); }
-      c.imageSmoothingEnabled=true; c.drawImage(e,Math.round(sx-S/2),Math.round(sy-(EMO[v.emo.k]?58:53)+bob),S,S); c.imageSmoothingEnabled=false; } } }
+  if(v.emo)drawStatusChat(c,sx,sy,v.emo.k); }
+function drawStatusChat(c,sx,sy,kind){
+ const image=emoImage(kind);if(!image||!image.complete||!image.naturalWidth)return;
+ const x=Math.round(sx-10),y=Math.round(sy-49);
+ c.save();c.fillStyle='#FFF9EC';c.strokeStyle='#6B452B';c.lineWidth=1;
+ c.beginPath();c.roundRect(x,y,20,17,4);c.fill();c.stroke();
+ c.beginPath();c.moveTo(sx-3,y+16);c.lineTo(sx,y+21);c.lineTo(sx+3,y+16);c.fill();
+ c.beginPath();c.moveTo(sx-3,y+17);c.lineTo(sx,y+21);c.lineTo(sx+3,y+17);c.stroke();
+ c.imageSmoothingEnabled=true;c.drawImage(image,x+4,y+2,12,12);c.restore();
+}
 function startReact(a,kind,dur,face){ a.react={kind,t:0,dur}; a.t=0; a.path=[]; if(face) a.dir=face; }
 function updateAutoBreak(a){
  if(a.away||closingOffice||a.collection||a.handover||a.meetingJob!=null||a.receptionUid!=null||a.state==='burn')return;
@@ -2513,7 +2628,7 @@ function stepAgents(dt){ if(dt<=0)return; for(const a of AG){
     if(d>1e-3) a.dir = Math.abs(dx)>=Math.abs(dy) ? (dx>0?"SE":"NW") : (dy>0?"SW":"NE");
     if(d<=sp){ a.x=tx; a.y=ty; a.path.shift(); } else { a.x+=dx/d*sp; a.y+=dy/d*sp; } a.t+=dt; }
   else {
-    if(a.state==="sit"){ a.t+=dt;if(a.meetingJob!=null)continue;if(!a.autoBreak&&isWorking(a)&&hasWorkFor(a)){a.sitT=Math.max(a.sitT,15);continue;}/* có việc thì ngồi lại bàn */a.sitT-=dt; if(a.sitT<=0){ a.state="wander"; if(a.acc){ a.x=a.acc[0]; a.y=a.acc[1]; } a.roam=1+Math.floor(Math.random()*2); a.wait=0.3; } continue; }
+    if(a.state==="sit"){ a.t+=dt;if(a.meetingJob!=null)continue;if(!a.autoBreak&&isWorking(a)&&hasWorkFor(a)){a.sitT=Math.max(a.sitT,2);continue;}/* có việc thì ngồi lại bàn */a.sitT-=dt; if(a.sitT<=0){ a.state="wander"; if(a.acc){ a.x=a.acc[0]; a.y=a.acc[1]; } a.roam=1+Math.floor(Math.random()*2); a.wait=0.3; } continue; }
     const here=[Math.round(a.x),Math.round(a.y)];
     if(a.seat && a.state==="toSeat"){ const acc=accessOf(a.seat);
       if(acc && here[0]===acc[0] && here[1]===acc[1]){ a.acc=acc; a.state="sit"; { const so=OBJS.find(b=>b.uid===a.seat.uid); a.sitT=(so&&WORKSEAT.has(so.id))?45+Math.random()*40:10+Math.random()*14; } a.t=0; continue; } }
@@ -2918,8 +3033,14 @@ function shade(hex,k){ const n=parseInt(hex.slice(1),16); const f=v=>Math.max(0,
 // ---------- vận hành: thời gian, job, stress ----------
 for(const a of AG){ if(a.stress==null) a.stress=10+Math.random()*25; }
 const hasItem=id=>OBJS.some(o=>o.id===id);
-function mkOffer(){ const t=JOB_TPL[Math.floor(Math.random()*JOB_TPL.length)]; const k=0.85+Math.random()*0.3;
-  const need=Math.round(t[1]*k), vip=Math.random()<0.12; return {invoice:vip, vip,gem:vip?3+Math.floor(Math.random()*6):0,id:GS.nextJob++,name:(vip?"⭐ ":"")+t[0],need,reward:Math.round(t[2]*k*lvlMul()*10)/10,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8))}; }
+function mkOffer(){
+ const small=Math.random()<.7;
+ const pool=small?JOB_TPL.filter(t=>!t[4].length):JOB_TPL;
+ const t=pool[Math.floor(Math.random()*pool.length)],k=.85+Math.random()*.3;
+ const reward=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
+ const need=Math.max(2,Math.round(reward*.18*100)/100),vip=!small&&Math.random()<.12;
+ return {invoice:vip,vip,gem:vip?3+Math.floor(Math.random()*6):0,id:GS.nextJob++,name:(vip?'⭐ ':'')+t[0],need,reward,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8)),flowVersion:2,onboardingPace:1};
+}
 function fillOffers(){ while(GS.offers.length<jobCapacity()) GS.offers.push(typeof applyRepeat==="function"?applyRepeat(mkOffer()):mkOffer());
   // luôn có ít nhất 2 khách không cần đồ đặc biệt (thay khách cần đồ còn thiếu)
   let free=GS.offers.filter(o=>!missingReq(o).length).length, guard=0;
@@ -2985,7 +3106,7 @@ function jobTeamUI(j){
   if(team.some(a=>a.stress>75))warnings.push('Stress cao làm giảm năng suất');
   if(Number.isFinite(hours)&&hours>available)warnings.push('Có nguy cơ trễ hạn');
   const estimate=j.paused?'Đang tạm dừng sản xuất · hạn giao vẫn tiếp tục':meetingPending(j)?'Chờ họp xong mới sản xuất':Number.isFinite(hours)?`Dự kiến ${hours.toFixed(1)} giờ game cho ${j.stg.length-j.cur} bước còn lại`:'Chưa ước tính được';
-  return `<div class="jm">${manual?'Đội riêng ('+team.map(a=>staffName(CHARS[a.ci].id)).join(', ')+')':'Planner tự chia việc theo chuyên môn'}${cur?` · bước hiện tại ${cur.toFixed(1)} giờ công/giờ game`:''}<br>${estimate}<br><small>Ước tính theo năng suất hiện tại, chưa tính nghỉ và thay đổi stress.</small>${warnings.length?`<br><b style="color:#C0392B">${warnings.join(' · ')}</b>`:''}</div><button class="btn c" data-team-edit="${j.id}" aria-label="Phân công: ${j.name}">${teamEditorJob===j.id?'Đóng phân công':'Phân công nhân sự'}</button>${teamEditorJob===j.id?`<div class="jm">Đội riêng: chỉ những người được chọn làm các bước của job này (người làm trái nghề sẽ chậm hơn). Mỗi người thuộc một đội. Bỏ hết người sẽ tạm dừng job này.</div><div style="display:flex;flex-wrap:wrap;gap:4px">${AG.filter(a=>!a.mascot&&!deskBound(a)).map(a=>{const id=CHARS[a.ci].id;return `<button class="btn ${ids.includes(id)?'g':'c'}" data-team-job="${j.id}" data-team-id="${id}" aria-pressed="${ids.includes(id)}">${staffName(id)}</button>`;}).join('')}<button class="btn b" data-team-job="${j.id}" data-team-id="auto">Để Planner tự chia</button></div>`:''}`;
+  return `<div class="jm">${manual?'Đội riêng ('+team.map(a=>staffName(CHARS[a.ci].id)).join(', ')+')':'Tự chia việc theo chuyên môn'}${cur?` · bước hiện tại ${cur.toFixed(1)} giờ công/giờ game`:''}<br>${estimate}<br><small>Ước tính theo năng suất hiện tại, chưa tính nghỉ và thay đổi stress.</small>${warnings.length?`<br><b style="color:#C0392B">${warnings.join(' · ')}</b>`:''}</div><button class="btn c" data-team-edit="${j.id}" aria-label="Phân công: ${j.name}">${teamEditorJob===j.id?'Đóng phân công':'Phân công nhân sự'}</button>${teamEditorJob===j.id?`<div class="jm">Đội riêng: chỉ những người được chọn làm các bước của job này (người làm trái nghề sẽ chậm hơn). Mỗi người thuộc một đội. Bỏ hết người sẽ tạm dừng job này.</div><div style="display:flex;flex-wrap:wrap;gap:4px">${AG.filter(a=>!a.mascot&&!deskBound(a)).map(a=>{const id=CHARS[a.ci].id;return `<button class="btn ${ids.includes(id)?'g':'c'}" data-team-job="${j.id}" data-team-id="${id}" aria-pressed="${ids.includes(id)}">${staffName(id)}</button>`;}).join('')}<button class="btn b" data-team-job="${j.id}" data-team-id="auto">Tự phân công</button></div>`:''}`;
 }
 function toggleJobPaused(id){
  const j=GS.jobs.find(j=>j.id===id);if(!j||j.work>=j.need)return false;
@@ -3097,8 +3218,8 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
     if(a.stress>=100){ a.state="burn"; a.burnT=90; a.path=[]; if(a.useObj){ BUSY.delete(a.useObj); a.useObj=null; } toast(`${staffName(CHARS[a.ci].id)} bốc cháy vì quá tải!`,"err"); }
   }
   if(!closingOffice&&lvl()>=3&&hasItem("green_screen")&&hasItem("camera_tripod")&&hasItem("softbox")&&!GS.jobs.some(j=>j.req.includes("camera_tripod"))){ const inc=0.4*lvlMul()*h; cash+=inc; GS.passToday+=inc; GS.revToday+=inc; GS.revTotal=(GS.revTotal||0)+inc; }
-  if(typeof tickRevisions==="function") tickRevisions(); advanceJobWork(h);
-  for(const j of [...GS.jobs]) if(j.work>=j.need-1e-6){ finishJobVisitor(j); for(const a of AG) if(!a.collection&&!a.handover&&a.state!=="burn"&&a.state!=="sit"&&a.state!=="use") startReact(a,"cele",2.6); GS.jobs=GS.jobs.filter(x=>x!==j); payJob(j); if(j.vip&&j.gem) addGems(j.gem,`Job VIP "${j.name}"`); if(GS.day<j.due){ addGems(1,"Xong job trước hạn"); dq("early"); } dq("job");
+  if(typeof tickRevisions==="function") tickRevisions(); advanceJobWork(h); if(typeof earlyTick==="function")earlyTick();
+  for(const j of [...GS.jobs]) if(j.work>=j.need-1e-6&&!fbPending(j)&&(typeof earlyReviewReady!=="function"||earlyReviewReady(j))){ finishJobVisitor(j); for(const a of AG) if(!a.collection&&!a.handover&&a.state!=="burn"&&a.state!=="sit"&&a.state!=="use") startReact(a,"cele",2.6); GS.jobs=GS.jobs.filter(x=>x!==j); payJob(j); if(j.vip&&j.gem) addGems(j.gem,`Job VIP "${j.name}"`); if(GS.day<j.due){ addGems(1,"Xong job trước hạn"); dq("early"); } dq("job");
     GS.done++; recordReputation(j,true,typeof reviewJob==="function"?reviewJob(j):0); advanceWeeklyPass(); GS.weekDone++; GS.lvlRev[lvl()]=(GS.lvlRev[lvl()]||0)+j.reward; if(lvl()>=3&&/Thiết kế|ấn phẩm|logo/i.test(j.name)) GS.templates=Math.min(20,GS.templates+1); hud(); save(); }
   for(const [minute,bit] of [[630,2],[780,1],[960,4]])if(GS.min>=minute&&!((GS.midRefresh||0)&bit)){ GS.midRefresh=(GS.midRefresh||0)|bit; fillOffers(); renderJobs(); }   // Bổ sung chỗ trống, không đuổi khách đang còn kiên nhẫn.
   if(GS.min>=CLOSE_MIN){ // Tan làm lúc 21:00, chờ đội ngũ đi ra vỉa hè.
@@ -3156,7 +3277,7 @@ function renderJobs(){ const el=document.getElementById("jobList"); if(!el) retu
   srcs.push(`<div class="job off"><div class="jt"><b>Bán template số</b><span class="num">${lvl()>=3?GS.templates+"/20 mẫu":"cấp 3"}</span></div><div class="jm">Mỗi job thiết kế xong tạo 1 mẫu; mỗi mẫu +${fmt(Math.round(0.5*M*10)/10)}/ngày</div></div>`);
   srcs.push(`<div class="job off"><div class="jt"><b>Giải thưởng sáng tạo</b><span class="num">${lvl()>=4?GS.weekDone+"/10 job":"cấp 4"}</span></div><div class="jm">Mỗi 7 ngày, xong ≥ 10 job: thưởng 25% giá khu kế tiếp</div></div>`);
   const srcHtml=srcs.map((html,i)=>html.replace('<div class="job off">',`<div class="job off income-card"><span class="income-icon">${UIIMG(['brief','book','shop','chart','trophy'][i],30)}</span>`).replace(/<div class="jm">(.*?)<\/div>/g,(_,text)=>text.startsWith('Мở')||text.startsWith('Mở')||text.startsWith('Cần')?`<div class="jm">${text}</div>`:`<details class="compact-details"><summary>Điều kiện ⓘ</summary><div class="jm">${text}</div></details>`)).join("");
-  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details><div id="jOff" class="hub-list"></div></div><div class="jsec" data-sec="active"><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Mỗi job đi qua 6 bước: Brief (Account) → Chia việc (Planner) → Sáng tạo → Sản xuất (Design / Content / Editor) → Bàn giao (Account) → Hoá đơn (Kế toán). Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
+  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details><div id="jOff" class="hub-list"></div></div><div class="jsec" data-sec="active"><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Lễ tân (HR / Kế toán / Trợ lý) → Account → Content → Design. Giá trị job quyết định khối lượng công việc. Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
     el.addEventListener("click",e=>{ if(e.target.closest("[data-sort-deadline]")){sortJobsByDeadline();return;} const pause=e.target.closest("[data-pause-job]");if(pause){toggleJobPaused(+pause.dataset.pauseJob);return;} const decline=e.target.closest("[data-decline]");if(decline){const id=+decline.dataset.decline;const offer=GS.offers.find(j=>j.id===id);if(offer)askConfirm({title:`Từ chối ${offer.name}?`,text:"Khách sẽ ra về, không mất coin hay danh tiếng.",ok:"Từ chối job",danger:true}).then(ok=>{if(ok)declineOffer(id);});return;} const workplace=e.target.closest("[data-workplace]");if(workplace){fSel=workplace.dataset.workplace;fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt, chừa ô ghế và lối vào","ok");return;} const collect=e.target.closest("[data-collect]");if(collect){sendCollector(+collect.dataset.collect,collect.dataset.person);return;} const editor=e.target.closest("[data-team-edit]");if(editor){const id=+editor.dataset.teamEdit;teamEditorJob=teamEditorJob===id?null:id;renderJobs();return;} const team=e.target.closest("[data-team-job]");if(team){setJobStaff(+team.dataset.teamJob,team.dataset.teamId);return;} const priority=e.target.closest("[data-priority]");if(priority){prioritizeJob(+priority.dataset.priority);return;} if(e.target.closest("[data-reception]")){fSel="reception_counter";fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt quầy; chừa lối đi hai phía","ok");return;} const b=e.target.closest("[data-acc]"); if(b) acceptJob(+b.dataset.acc); const c2=e.target.closest("[data-src]"); if(c2&&c2.getAttribute("aria-disabled")!=="true") useSource(c2.dataset.src); }); }
   { const S=document.getElementById("jSrc"); if(S.dataset.sig!==srcHtml){ S.innerHTML=gemify(srcHtml); S.dataset.sig=srcHtml; } }
   document.getElementById("sortJobs").disabled=GS.jobs.length<2;
@@ -4038,13 +4159,13 @@ function guidePages(){
     "Giao job xong được <b>+10 danh tiếng</b> (VIP thêm +5, xong trước hạn thêm +2); trễ hạn <b>−8</b>. Khách chấm <b>1–5 sao</b> (5★ +5 · 1★ −8): người làm đúng chuyên môn thì sao cao.",
     "Bấm dải <b>★ Danh tiếng</b> dưới ảnh nhân vật để xem cấp, đọc đánh giá và <b>trả lời khách 2 lượt</b>. Xong bước Sản xuất, khách có thể <b>góp ý</b>: chọn Sửa kỹ, Thuyết phục hoặc để Account sửa nhẹ."],
    tip:"Game tự lưu trong trình duyệt. Muốn giữ file: Cài đặt → Tải bản lưu."},
-  {id:"reception",icon:"brief",title:"Đón khách ở quầy lễ tân",lead:"Nhân vật của bạn là lễ tân, luôn đứng sau quầy.",
+  {id:"reception",icon:"brief",title:"Đón khách ở quầy lễ tân",lead:"HR, Kế toán và Trợ lý luân phiên tiếp khách; người chơi hỗ trợ khi thiếu người.",
    items:["Khách xếp hàng trước quầy; bạn tiếp từng người khoảng <b>2 giây</b> để nhận brief.",
     "Mở <b>Công việc</b> (cặp hồ sơ) → tab <b>Khách chờ</b> để <b>Nhận job</b> hoặc <b>Từ chối job</b>. Từ chối không mất danh tiếng.",
     `Nhận job tốn <b>năng lượng ⚡</b> (bằng nửa số giờ công). Khách chỉ chờ tối đa <b>${h(PATIENCE_MIN)}</b> trước khi bạn nhận.`,
     "Nhận xong, bạn mang brief tới <b>Account</b> gần nhất rồi về quầy. Job bắt đầu làm ngay, không chờ giao xong."],
    tip:"Khách tới khi bạn đang đi giao việc sẽ đứng chờ ở quầy."},
-  {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua 6 bước, mỗi bước do một bộ phận làm; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
+  {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua Account → Content → Design; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
    items:["<b>Brief</b> (Account) → <b>Chia việc</b> (Planner) → <b>Sáng tạo</b> → <b>Sản xuất</b> (Design / Content / Editor tùy loại job) → <b>Bàn giao</b> (Account) → <b>Hoá đơn</b> (Kế toán).",
     "Đúng chuyên môn làm nhanh ×1,35; gần chuyên môn ×1; trái nghề ×0,6. Thiếu bộ phận thì người khác làm thay. Vòng trên đầu nhân vật: icon bộ phận + tiến độ bước.",
     `Làm tối đa <b>${jobCapacity()} job</b> cùng lúc; tuyển thêm người làm job sẽ tăng số chỗ nhận việc. Trong <b>Công việc → Đang làm</b>: <b>Ưu tiên làm trước</b>, <b>Phân công nhân sự</b>, <b>Xếp theo hạn giao</b>.`,
@@ -4145,7 +4266,7 @@ function closeAllPanels(){   // V15: mọi bảng nằm trong 1 ngăn #hub
 }
 function acceptButton(){return [...document.querySelectorAll("#jOff [data-acc]")].find(b=>b.getAttribute("aria-disabled")!=="true"&&/Nhận job/.test(b.textContent))||null;}
 const TOUR=[
- {id:"me",rect:founderRect,text:"Đây là bạn, lễ tân của agency. Chạm vào nhân vật của bạn.",tap:true,after:closeAllPanels},
+ {id:"me",rect:founderRect,text:"Đây là bạn, chủ agency. Chạm vào nhân vật của bạn.",tap:true,after:closeAllPanels},
  {id:"wait",rect:counterRect,text:"Khách sẽ xếp hàng trước quầy để giao yêu cầu. Đang tua nhanh tới khi khách đầu tiên giao xong…",
   start(){tourSpeed=GS.speed;GS.speed=3;},done:()=>GS.offers.some(o=>o.received),end(){if(tourSpeed!=null){GS.speed=tourSpeed;tourSpeed=null;}},passive:true},
  {id:"jobs",rect:()=>domRect("#bJobs"),text:"Khách đã giao yêu cầu. Chạm Công việc.",tap:true,keepOpen:true},
@@ -4992,6 +5113,11 @@ const appearanceReady=Promise.all([restoreSkins(),applyCustomLook()]); restoreMe
 if(!hadSave&&!GS.player) GS.introPending=true;
 initGuideButton();
 function enterOffice(showWelcome=true){
+ if(typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches&&!document.fullscreenElement&&navigator.userActivation?.isActive){
+  const request=document.documentElement.requestFullscreen;
+  if(request)request.call(document.documentElement).catch(()=>{});
+ }
+
  closeHub();if(guideOpen)closeGuide();titleOpen=false;document.getElementById('titleScreen').hidden=true;document.body.classList.remove('title-view');
  if(!GS.player)openIntro(!hadSave||GS.introPending===true);
  else if(showWelcome)setTimeout(()=>{if(!maybeStartTour()&&!showUiNotice())offerGuide();},300);

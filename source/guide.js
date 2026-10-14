@@ -10,13 +10,13 @@ function guidePages(){
     "Giao job xong được <b>+10 danh tiếng</b> (VIP thêm +5, xong trước hạn thêm +2); trễ hạn <b>−8</b>. Khách chấm <b>1–5 sao</b> (5★ +5 · 1★ −8): người làm đúng chuyên môn thì sao cao.",
     "Bấm dải <b>★ Danh tiếng</b> dưới ảnh nhân vật để xem cấp, đọc đánh giá và <b>trả lời khách 2 lượt</b>. Xong bước Sản xuất, khách có thể <b>góp ý</b>: chọn Sửa kỹ, Thuyết phục hoặc để Account sửa nhẹ."],
    tip:"Game tự lưu trong trình duyệt. Muốn giữ file: Cài đặt → Tải bản lưu."},
-  {id:"reception",icon:"brief",title:"Đón khách ở quầy lễ tân",lead:"Nhân vật của bạn là lễ tân, luôn đứng sau quầy.",
+  {id:"reception",icon:"brief",title:"Đón khách ở quầy lễ tân",lead:"HR, Kế toán và Trợ lý luân phiên tiếp khách; người chơi hỗ trợ khi thiếu người.",
    items:["Khách xếp hàng trước quầy; bạn tiếp từng người khoảng <b>2 giây</b> để nhận brief.",
     "Mở <b>Công việc</b> (cặp hồ sơ) → tab <b>Khách chờ</b> để <b>Nhận job</b> hoặc <b>Từ chối job</b>. Từ chối không mất danh tiếng.",
     `Nhận job tốn <b>năng lượng ⚡</b> (bằng nửa số giờ công). Khách chỉ chờ tối đa <b>${h(PATIENCE_MIN)}</b> trước khi bạn nhận.`,
     "Nhận xong, bạn mang brief tới <b>Account</b> gần nhất rồi về quầy. Job bắt đầu làm ngay, không chờ giao xong."],
    tip:"Khách tới khi bạn đang đi giao việc sẽ đứng chờ ở quầy."},
-  {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua 6 bước, mỗi bước do một bộ phận làm; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
+  {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua Account → Content → Design; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
    items:["<b>Brief</b> (Account) → <b>Chia việc</b> (Planner) → <b>Sáng tạo</b> → <b>Sản xuất</b> (Design / Content / Editor tùy loại job) → <b>Bàn giao</b> (Account) → <b>Hoá đơn</b> (Kế toán).",
     "Đúng chuyên môn làm nhanh ×1,35; gần chuyên môn ×1; trái nghề ×0,6. Thiếu bộ phận thì người khác làm thay. Vòng trên đầu nhân vật: icon bộ phận + tiến độ bước.",
     `Làm tối đa <b>${jobCapacity()} job</b> cùng lúc; tuyển thêm người làm job sẽ tăng số chỗ nhận việc. Trong <b>Công việc → Đang làm</b>: <b>Ưu tiên làm trước</b>, <b>Phân công nhân sự</b>, <b>Xếp theo hạn giao</b>.`,
@@ -117,7 +117,7 @@ function closeAllPanels(){   // V15: mọi bảng nằm trong 1 ngăn #hub
 }
 function acceptButton(){return [...document.querySelectorAll("#jOff [data-acc]")].find(b=>b.getAttribute("aria-disabled")!=="true"&&/Nhận job/.test(b.textContent))||null;}
 const TOUR=[
- {id:"me",rect:founderRect,text:"Đây là bạn, lễ tân của agency. Chạm vào nhân vật của bạn.",tap:true,after:closeAllPanels},
+ {id:"me",rect:founderRect,text:"Đây là bạn, chủ agency. Chạm vào nhân vật của bạn.",tap:true,after:closeAllPanels},
  {id:"wait",rect:counterRect,text:"Khách sẽ xếp hàng trước quầy để giao yêu cầu. Đang tua nhanh tới khi khách đầu tiên giao xong…",
   start(){tourSpeed=GS.speed;GS.speed=3;},done:()=>GS.offers.some(o=>o.received),end(){if(tourSpeed!=null){GS.speed=tourSpeed;tourSpeed=null;}},passive:true},
  {id:"jobs",rect:()=>domRect("#bJobs"),text:"Khách đã giao yêu cầu. Chạm Công việc.",tap:true,keepOpen:true},

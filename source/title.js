@@ -1,4 +1,9 @@
 function enterOffice(showWelcome=true){
+ if(typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches&&!document.fullscreenElement&&navigator.userActivation?.isActive){
+  const request=document.documentElement.requestFullscreen;
+  if(request)request.call(document.documentElement).catch(()=>{});
+ }
+
  closeHub();if(guideOpen)closeGuide();titleOpen=false;document.getElementById('titleScreen').hidden=true;document.body.classList.remove('title-view');
  if(!GS.player)openIntro(!hadSave||GS.introPending===true);
  else if(showWelcome)setTimeout(()=>{if(!maybeStartTour()&&!showUiNotice())offerGuide();},300);

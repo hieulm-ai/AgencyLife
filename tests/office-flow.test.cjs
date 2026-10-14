@@ -44,3 +44,12 @@ test('khách đang được tiếp dở thì giao việc sau; trong lúc đi gia
  c.queueHandover(c.GS.jobs[0]);c.stepReception(.5);assert.equal(me.handover,undefined,'đang tiếp khách thì chưa rời quầy');c.stepReception(.6);assert.equal(c.GS.offers[0].received,true);
  c.VIS.push({jobId:2,kind:'offer',state:'wait',x:28,y:49,path:[]});c.stepReception(.05);assert.equal(me.state,'handover');c.stepReception(3);assert.equal(c.GS.offers[1].received,undefined);assert.equal(c.VIS[1].receptionT,0);});
 test('tan làm giữa chừng: bỏ chuyến giao, xoá hàng chờ giao',()=>{const {c,me}=handoverSetup();c.queueHandover(c.GS.jobs[0]);c.stepReception(.05);assert.ok(me.handover);c.beginClosing();assert.equal(me.handover,undefined);assert.equal(me.state,'leaving');assert.equal(vm.runInContext('handoverQueue.length',c),0);});
+
+test('HR, accountant and assistant rotate after receiving a brief',()=>{
+ const c=setup();c.AG=[];
+ for(const [i,role] of ['HR','Kế toán','Trợ lý'].entries())c.AG.push({ci:i,role,state:'wander',path:[],x:29,y:47,stress:0});
+ c.updateAutoBreak=()=>{};c.assignSeats=()=>{};
+ const first=c.frontDeskAgent();assert.equal(first.role,'HR');first.receptionUid=1;first.state='reception';c.finishReceptionTurn(first);
+ const second=c.frontDeskAgent();assert.equal(second.role,'Kế toán');second.receptionUid=1;second.state='reception';c.finishReceptionTurn(second);
+ assert.equal(c.frontDeskAgent().role,'Trợ lý');
+});

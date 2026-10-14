@@ -2,7 +2,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
 const root=path.join(__dirname,'../source'),src=fs.readFileSync(path.join(root,'template.html'),'utf8'),pipe=fs.readFileSync(path.join(root,'pipeline.js'),'utf8');
 const ROLE={A:'Account',P:'Planner',D:'Design',C:'Content',E:'Editor',K:'Kế toán',H:'HR'};
-function setup(ids='APDEK'){
+function setup(ids='ACDEK'){
  const CHARS=[...ids].map(id=>({id}));
  const c={CHARS,GS:{day:1,min:600,jobs:[]},AG:CHARS.map((x,i)=>({ci:i,role:ROLE[x.id],state:'sit',seat:{uid:i+1},stress:0,x:i,y:0,path:[]})),OBJS:CHARS.map((x,i)=>({uid:i+1,id:'office_chair_blue'})),
   WORKSEAT:new Set(['office_chair_blue']),closingOffice:false,isWorking:a=>a.state==='sit',seatKind:()=>'office_chair_blue',meetingPending:j=>!!j.meeting&&j.meeting.phase!=='done',
@@ -16,33 +16,33 @@ const job=(id,name,need,extra={})=>({id,name,need,work:0,due:5,req:[],...extra})
 const who=(c,j)=>j.who;
 test('dựng 6 bước theo loại job, tổng giờ công đúng bằng job; bản lưu cũ rải giờ công đã làm từ bước đầu',()=>{
  const c=setup(),j=c.ensureStages(job(1,'Quay video TikTok',24));
- assert.deepEqual(Array.from(j.stg,s=>s.k),['brief','plan','creative','prod','deliver','invoice']);
- assert.deepEqual(Array.from(j.stg,s=>s.role),['acc','plan','con','edit','acc','fin']);
+ assert.deepEqual(Array.from(j.stg,s=>s.k),['brief','creative','prod']);
+ assert.deepEqual(Array.from(j.stg,s=>s.role),['acc','con','des']);
  assert.ok(Math.abs(j.stg.reduce((n,s)=>n+s.need,0)-24)<1e-9);
  const old=c.ensureStages(job(2,'⭐ Thiết kế logo',20,{work:7}));
- assert.equal(old.stg[2].role,'des');assert.equal(old.cur,2);assert.equal(old.stg[0].done,2);assert.equal(old.stg[1].done,2);assert.equal(old.stg[2].done,3);
+ assert.equal(old.stg[2].role,'des');assert.equal(old.cur,1);assert.equal(old.stg[0].done,4);assert.equal(old.stg[1].done,3);assert.equal(old.stg[2].done,0);
 });
 test('mỗi bước giao cho người đúng chuyên môn; người làm đúng nghề nhanh ×1,35',()=>{
  const c=setup(),j=job(1,'Quay video TikTok',100);c.GS.jobs=[j];
- c.advanceJobWork(1);assert.equal(j.who,'A');assert.ok(Math.abs(j.stg[0].done-1.35*5)<1e-9);
+ c.advanceJobWork(1);assert.equal(j.who,'A');assert.ok(Math.abs(j.stg[0].done-1.35*12)<1e-9);
  j.stg[0].done=j.stg[0].need-0.1;c.advanceJobWork(1);assert.equal(j.cur,1);assert.equal(j.handoff,'A');
- c.advanceJobWork(0);assert.equal(j.who,'P');assert.equal(j.passing,true,'Account mang hồ sơ sang bàn Planner');assert.equal(c.AG[0].pass.to,'P');
+ c.advanceJobWork(0);assert.equal(j.who,'C');assert.equal(j.passing,true,'Account mang hồ sơ sang bàn Planner');assert.equal(c.AG[0].pass.to,'C');
  const before=j.stg[1].done;c.advanceJobWork(1);assert.equal(j.stg[1].done,before,'chưa nhận hồ sơ thì chưa làm');
  c.endPass(c.AG[0]);c.advanceJobWork(1);assert.ok(j.stg[1].done>before);
 });
 test('thiếu bộ phận thì người khác làm thay, chậm hơn (gần nghề ×1, trái nghề ×0,6)',()=>{
  const c=setup('ADK'),j=job(1,'Quay video TikTok',100);c.GS.jobs=[j];c.ensureStages(j);
- for(let i=0;i<3;i++)j.stg[i].done=j.stg[i].need;c.ensureStages(j);   // tới bước Sản xuất (Editor)
- c.advanceJobWork(1);assert.ok(j.who,'vẫn có người làm thay');assert.ok(Math.abs(j.stg[3].done-0.6*5)<1e-9,'không ai gần nghề Editor: ×0,6');
- const c3=setup('PK'),j3=job(1,'Kế hoạch truyền thông',100);c3.GS.jobs=[j3];c3.ensureStages(j3);for(let i=0;i<2;i++)j3.stg[i].done=j3.stg[i].need;c3.ensureStages(j3);
- c3.advanceJobWork(1);assert.equal(j3.who,'P','Planner gần nghề Content');assert.ok(Math.abs(j3.stg[2].done-5)<1e-9);
+ for(let i=0;i<1;i++)j.stg[i].done=j.stg[i].need;c.ensureStages(j);   // tới bước Sản xuất (Editor)
+ c.advanceJobWork(1);assert.ok(j.who,'vẫn có người làm thay');assert.ok(Math.abs(j.stg[1].done-0.6*12)<1e-9,'không ai gần nghề Editor: ×0,6');
+ const c3=setup('PK'),j3=job(1,'Kế hoạch truyền thông',100);c3.GS.jobs=[j3];c3.ensureStages(j3);for(let i=0;i<1;i++)j3.stg[i].done=j3.stg[i].need;c3.ensureStages(j3);
+ c3.advanceJobWork(1);assert.equal(j3.who,'P','Planner gần nghề Content');assert.ok(Math.abs(j3.stg[1].done-12)<1e-9);
  const c2=setup('AK'),j2=job(1,'Thiết kế logo',100);c2.GS.jobs=[j2];c2.ensureStages(j2);for(let i=0;i<2;i++)j2.stg[i].done=j2.stg[i].need;c2.ensureStages(j2);
- c2.advanceJobWork(1);assert.ok(Math.abs(j2.stg[2].done-0.6*5)<1e-9,'trái nghề ×0,6');
+ c2.advanceJobWork(1);assert.ok(Math.abs(j2.stg[2].done-0.6*12)<1e-9,'trái nghề ×0,6');
 });
 test('mỗi người 1 bước; job đứng trước trong danh sách được chọn người trước',()=>{
  const c=setup('AD'),a=job(1,'Thiết kế logo',100),b=job(2,'Bộ ấn phẩm Tết',100);c.GS.jobs=[a,b];
- c.advanceJobWork(1);assert.equal(a.who,'A');assert.equal(b.who,'D');
- c.GS.jobs=[b,a];a.who=b.who=null;c.advanceJobWork(1);assert.equal(b.who,'A');assert.equal(a.who,'D');
+ c.advanceJobWork(.1);assert.equal(a.who,'A');assert.equal(b.who,'D');
+ c.GS.jobs=[b,a];a.who=b.who=null;c.advanceJobWork(.1);assert.equal(b.who,'A');assert.equal(a.who,'D');
 });
 test('tạm dừng, chờ họp, chờ lễ tân mang brief: không làm; đội riêng chỉ dùng người được chọn',()=>{
  const c=setup(),j=job(1,'Thiết kế logo',100,{paused:true});c.GS.jobs=[j];c.advanceJobWork(1);assert.equal(j.work,0);
@@ -54,8 +54,8 @@ test('tạm dừng, chờ họp, chờ lễ tân mang brief: không làm; đội
 test('người bận (họp, thu nợ, bốc cháy, tự nghỉ) bị thay; không vượt quá giờ công; xong bước cuối thì job đủ giờ công',()=>{
  const c=setup('AP'),j=job(1,'Thiết kế logo',100);c.GS.jobs=[j];c.advanceJobWork(1);assert.equal(j.who,'A');
  c.AG[0].collection={};c.advanceJobWork(.1);assert.equal(j.who,'P');delete c.AG[0].collection;
- j.need=10;j.stg=null;c.ensureStages(j);for(const s of j.stg)s.done=s.need;j.stg[5].done=j.stg[5].need-0.01;c.ensureStages(j);j.who=null;
- for(let i=0;i<5;i++)c.advanceJobWork(1);assert.equal(j.cur,6);assert.equal(j.work,10);
+ j.need=10;j.stg=null;c.ensureStages(j);for(const s of j.stg)s.done=s.need;j.stg[2].done=j.stg[2].need-0.01;c.ensureStages(j);j.who=null;
+ for(let i=0;i<5;i++)c.advanceJobWork(1);assert.equal(j.cur,3);assert.equal(j.work,10);
  c.closingOffice=true;const k=job(2,'Thiết kế logo',10);c.GS.jobs=[k];c.advanceJobWork(1);assert.equal(k.work,0);
 });
 test('Account nhận brief từ lễ tân thì làm luôn bước Brief',()=>{
@@ -65,19 +65,19 @@ test('HR giới thiệu 1 ứng viên nổi bật mỗi ngày; người đó là
  const c=setup('AD'),free=[{id:'X'},{id:'Y'},{id:'V'}];assert.equal(c.starCandidate(free),null,'không có HR');
  c.AG[1].role='HR';const id=c.starCandidate(free);assert.ok(['X','Y'].includes(id));assert.equal(c.starCandidate(free),id,'cố định trong ngày');
  const d=setup('AD');d.GS.stars={D:1};const j=job(1,'Thiết kế logo',100);d.GS.jobs=[j];d.ensureStages(j);for(let i=0;i<2;i++)j.stg[i].done=j.stg[i].need;d.ensureStages(j);
- d.advanceJobWork(1);assert.equal(j.who,'D');assert.ok(Math.abs(j.stg[2].done-1.35*1.2*5)<1e-9);
+ d.advanceJobWork(1);assert.equal(j.who,'D');assert.ok(Math.abs(j.stg[2].done-1.35*1.2*12)<1e-9);
 });
 test('thẻ job: cảnh báo khi đội riêng trống, không ra vô cực; ước tính theo các bước còn lại',()=>{
  const c=setup(),j=job(1,'Thiết kế logo',10,{staff:[]});c.GS.jobs=[j];c.ensureStages(j);
  let html=c.jobTeamUI(j);assert.ok(html.includes('Chưa có người phụ trách'));assert.ok(html.includes('Chưa ước tính được'));assert.ok(!html.includes('Infinity'));
- delete j.staff;c.advanceJobWork(0.01);html=c.jobTeamUI(j);assert.ok(html.includes('6 bước còn lại'));
+ delete j.staff;c.advanceJobWork(0.01);html=c.jobTeamUI(j);assert.ok(html.includes('3 bước còn lại'));
  c.GS.min=1250;j.due=1;c.GS.day=1;j.need=500;c.ensureStages(Object.assign(j,{stg:null}));html=c.jobTeamUI(j);assert.ok(html.includes('Có nguy cơ trễ hạn'));
 });
 test('người đúng chuyên môn vừa rảnh nhận lại bước (chưa quá nửa) từ người làm thay, có chuyển hồ sơ',()=>{
  const c=setup('PC'),a=job(1,'Kế hoạch truyền thông',100),b=job(2,'Kế hoạch truyền thông',100);c.GS.jobs=[b,a];
- for(const j of [a,b]){c.ensureStages(j);for(let i=0;i<2;i++)j.stg[i].done=j.stg[i].need;c.ensureStages(j);}   // cả 2 job ở bước Sáng tạo (Content)
+ for(const j of [a,b]){c.ensureStages(j);for(let i=0;i<1;i++)j.stg[i].done=j.stg[i].need;c.ensureStages(j);}   // cả 2 job ở bước Sáng tạo (Content)
  c.advanceJobWork(1);assert.equal(b.who,'C');assert.equal(a.who,'P','Planner (gần nghề) làm thay');
- b.stg[2].done=b.stg[2].need;c.ensureStages(b);b.who=null;b.paused=true;c.advanceJobWork(0);   // Content xong bước ở job b
+ b.stg[1].done=b.stg[1].need;c.ensureStages(b);b.who=null;b.paused=true;c.advanceJobWork(0);   // Content xong bước ở job b
  assert.equal(a.who,'C','Content nhận lại bước Sáng tạo');assert.equal(c.AG[0].pass.to,'C','Planner mang hồ sơ sang');assert.equal(a.passing,true);
 });
 test('số chỗ nhận việc tăng theo người làm job, loại lễ tân và linh vật; không mất chỗ khi tan ca',()=>{
@@ -94,4 +94,23 @@ test('ước tính từng bước dùng đúng hệ số sản xuất; ghế t�
  c.GS.stars={A:1,D:1,K:1};c.seatKind=()=> 'ergo_chair';
  assert.ok(c.estimateStageHours(j,c.AG)<hours);
  c.AG[1].mascot=true;assert.ok(c.stagePotentialRate(c.AG[1],'des')===0);
+});
+
+test('price drives workload and migration preserves progress once',()=>{
+ const c=setup();const j=job(1,'Logo',24,{work:12,reward:30});c.ensureStages(j);
+ assert.equal(j.need,5.4);assert.equal(j.work,2.7);c.ensureStages(j);assert.equal(j.need,5.4);
+ const higher=job(2,'Logo',24,{reward:60});c.ensureStages(higher);assert.equal(higher.need,10.8);
+});
+
+test('10 jobs at 30tr fit within a 13-hour workday with transfer allowance',()=>{
+ const c=setup('ACD');let hours=0;
+ for(let id=1;id<=10;id++){
+  const j=job(id,'Thiết kế logo',40,{reward:30});c.GS.jobs=[j];
+  for(let ticks=0;ticks<1000&&j.work<j.need;ticks++){
+   c.advanceJobWork(.025);hours+=.025;
+   for(const a of c.AG)if(a.pass){c.endPass(a);a.state='sit';hours+=.12;}
+  }
+  assert.equal(j.work,j.need);hours+=.25; // reception, walking and breaks per job
+ }
+ assert.ok(hours<=13,`${hours.toFixed(2)} game hours`);
 });
