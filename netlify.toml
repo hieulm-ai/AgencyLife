@@ -1,0 +1,15 @@
+# Netlify (14/10/2026): game đã build sẵn trong thư mục game/ — không cần lệnh build.
+# GitHub Pages (.github/workflows) vẫn chạy song song ở hieulm-ai.github.io/AgencyLife/.
+[build]
+  publish = "game"
+  command = ""
+
+# index.html luôn lấy bản mới; ảnh trong assets/ có tên theo nội dung nên giữ lâu được.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
