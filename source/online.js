@@ -436,14 +436,14 @@ async function olBorrowPick(p){
  const gs=data&&data.gs;if(!gs||!Array.isArray(gs.staffIds)){toast(OL_ERR.borrow_no_office,'err');return;}
  const owner=gs.player&&gs.player.id,ids=[...new Set(gs.staffIds)].filter(id=>id!==owner&&id!==MASCOT_ID&&STAFF_ROLE[id]&&CHARS.some(c=>c.id===id));
  const today=borrowList().find(b=>b.day===GS.day);
- olBox(`<h2>Mượn nhân viên của ${olEsc(p.agency)}</h2><p class="hub-note">Người được mượn làm cho bạn tới hết ngày game hôm nay rồi về, không tính lương. ${olEsc(p.agency)} vẫn giữ người và nhận tiền công bằng 2 ngày lương. Mỗi ngày game mượn 1 người.</p>
+ olBox(`<h2>Mượn nhân viên của ${olEsc(p.agency)}</h2><p class="hub-note">Người được mượn làm cho bạn tới hết ngày game hôm nay rồi về. Bạn trả <b>tiền mượn bằng 2 ngày lương</b> một lần, không trả lương ngày; số tiền này chuyển thành tiền công cho ${olEsc(p.agency)}. Mỗi ngày game mượn 1 người.</p>
   ${today?`<p class="hub-note"><b>Hôm nay đã mượn ${olEsc(staffName(today.id))} từ ${olEsc(today.agency)}.</b></p>`:''}
-  <div class="ol-borrow">${ids.length?ids.map(id=>{const why=borrowBlock(id);return `<button class="ol-gift" data-borrow="${olEsc(id)}"${why?' disabled':''}>${staffAvatar(id)}<span><b>${olEsc(staffName(id))}</b><br><small>${olEsc(STAFF_ROLE[id])}${why?' · '+olEsc(why):''}</small></span></button>`;}).join(''):'<p class="hub-note">Văn phòng của bạn này chưa có nhân viên để mượn.</p>'}</div>
+  <div class="ol-borrow">${ids.length?ids.map(id=>{const why=borrowBlock(id);return `<button class="ol-gift" data-borrow="${olEsc(id)}"${why?' disabled':''}>${staffAvatar(id)}<span><b>${olEsc(staffName(id))}</b><br><small>${olEsc(STAFF_ROLE[id])} · ${olEsc(fmt(borrowWage(id)))}${why?' · '+olEsc(why):''}</small></span></button>`;}).join(''):'<p class="hub-note">Văn phòng của bạn này chưa có nhân viên để mượn.</p>'}</div>
   <p class="ol-err" id="olErr" role="alert"></p><div class="ask-act"><button class="btn c" data-ol-close>Đóng</button></div>`,(el,close)=>{
   el.querySelectorAll('[data-borrow]').forEach(b=>b.onclick=async()=>{const id=b.dataset.borrow,why=borrowBlock(id),er=el.querySelector('#olErr');
    if(why){er.textContent=why;return;}
    el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=true);
-   try{await OL.be.borrowStaff(p.id,id);startBorrow(id,{id:p.id,agency:p.agency});close();toast(`${staffName(id)} từ ${p.agency} đang tới làm giúp`,'ok');olPush(true);}
+   try{await OL.be.borrowStaff(p.id,id);startBorrow(id,{id:p.id,agency:p.agency});close();toast(`Đã mượn ${staffName(id)} từ ${p.agency} · −${fmt(borrowWage(id))}`,'ok');olPush(true);}
    catch(e){er.textContent=olErrText(e);el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=!!borrowBlock(x.dataset.borrow));}});});
 }
 function renderRequests(){

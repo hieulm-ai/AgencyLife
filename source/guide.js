@@ -56,7 +56,7 @@ function guidePages(){
     "Nút <b>Bạn bè</b> (góc trên phải): gửi <b>mã bạn</b> dạng AGN-XXXX cho nhau để kết bạn, tối đa 50 bạn.",
     "<b>Tham quan</b>: xem văn phòng của bạn (chỉ xem). Mỗi ngày được <b>thích</b> 1 lần, gửi 3 lời nhắn và <b>tặng 1 quà</b> cho mỗi bạn; tặng được nhiều bạn trong ngày.",
     "<b>Hộp thư</b> (phong bì): quà, lời nhắn, lượt thích của bạn bè và Bảng tin văn phòng. Bấm <b>Nhận</b> hoặc <b>Nhận tất cả</b> để quà vào <b>Kho</b> (ruby cộng thẳng).",
-    "<b>Mượn nhân viên</b> (Bạn bè → ⋯): mượn 1 người bạn mình chưa có, làm tới hết ngày game rồi về, không tính lương. Mỗi ngày game mượn 1 người; bạn bè vẫn giữ người và nhận <b>tiền công bằng 2 ngày lương</b> trong Hộp thư."],
+    "<b>Mượn nhân viên</b> (Bạn bè → ⋯): mượn 1 người bạn mình chưa có, làm tới hết ngày game rồi về. Bạn trả <b>tiền mượn bằng 2 ngày lương</b> một lần (không trả lương ngày); bạn bè vẫn giữ người và nhận số tiền đó trong Hộp thư. Mỗi ngày game mượn 1 người, không mượn sau 20:00."],
    tip:"Quà do game tặng, không lấy từ Kho của bạn; danh sách quà đổi mỗi ngày."},
   {id:"controls",icon:"hand",title:"Điều khiển",lead:"Chơi bằng chuột, bàn phím hoặc màn hình cảm ứng (xoay ngang điện thoại).",
    items:["Kéo trên bản đồ để xem chỗ khác; lăn chuột hoặc chụm 2 ngón để phóng to, thu nhỏ.",
