@@ -555,6 +555,10 @@ button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:3p
 .ol-mail.done{opacity:.6}
 .ol-claimall{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;margin-bottom:8px;background:#E7F5DF;border:2px solid #7DB45A;border-radius:10px;font-weight:800;color:#2F5E1F}
 .ol-gifts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.ol-borrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:52vh;overflow:auto}
+.ol-borrow .ol-gift{flex-direction:row;justify-content:flex-start;text-align:left;gap:8px}
+.ol-borrow .ol-gift small{font-weight:600;color:#8A5A2E}
+.ol-borrow .ol-gift:disabled{opacity:.55;cursor:not-allowed}
 .ol-gift{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;background:#FFFDF6;border:2px solid #E0B78B;border-radius:12px;font:700 13px/1.2 var(--rf,var(--font));color:#5B2E10;cursor:pointer}
 .ol-gift:hover,.ol-gift:focus-visible{border-color:#2552A8;background:#EEF4FF}
 .ol-gift img{width:48px;height:48px;object-fit:contain}
@@ -3300,7 +3304,7 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
     let award=0; if(GS.day%7===0){ if(lvl()>=4&&GS.weekDone>=10){ award=Math.round(0.25*plotPrice()); cash+=award; GS.revTotal=(GS.revTotal||0)+award; addGems(20,"Giải thưởng sáng tạo tuần"); } GS.weekDone=0; }
     const payroll=typeof settlePayroll==="function"?settlePayroll():null;
     GS.lastDayReport=captureDayReport(award);if(payroll)GS.lastDayReport.payroll=payroll;hud();
-    const sum=`Hết ngày ${GS.day}: doanh thu ${fmt(Math.round(GS.revToday*10)/10)}${pas?` (thụ động ${fmt(Math.round(pas*10)/10)})`:""}${award?` · Giải thưởng sáng tạo +${fmt(award)}`:""}`; GS.day++; GS.min=480; GS.revToday=0; GS.passToday=0;
+    const sum=`Hết ngày ${GS.day}: doanh thu ${fmt(Math.round(GS.revToday*10)/10)}${pas?` (thụ động ${fmt(Math.round(pas*10)/10)})`:""}${award?` · Giải thưởng sáng tạo +${fmt(award)}`:""}`; GS.day++; GS.min=480; GS.revToday=0; GS.passToday=0; if(typeof endBorrowDay==="function") endBorrowDay();
     for(const a of AG) if(a.state!=="burn") a.stress=Math.max(0,a.stress-25);
     for(const j of [...GS.jobs]) if(GS.day>j.due){ GS.jobs=GS.jobs.filter(x=>x!==j); GS.failed++; recordReputation(j,false); if(typeof reviewLate==="function") reviewLate(j); save(); toast(`Trễ hạn job "${j.name}"`,"err"); }
     GS.offers=[]; VIS=VIS.filter(v=>v.state==="leave"&&!v.gone); finishClosing(); fillOffers(); pickSad(); GS.dayStartTotals={done:GS.done||0,failed:GS.failed||0};showDayTransition();save(); }
@@ -3861,12 +3865,14 @@ function restoreRoster(){
  // Vịt Vàng là linh vật của game: luôn có trong đội từ đầu (kể cả bản lưu cũ chưa tuyển).
  ids=[...new Set([FOUNDER_ID,...ids.filter(id=>known.has(id)),...(known.has(MASCOT_ID)?[MASCOT_ID]:[])])];
  GS.staffIds=ids;
- for(let i=AG.length-1;i>=0;i--)if(!ids.includes(CHARS[AG[i].ci].id))AG.splice(i,1);
+ const lent=(Array.isArray(GS.borrowed)?GS.borrowed:[]).filter(b=>b.day===GS.day).map(b=>b.id);   // người mượn của bạn bè (borrow.js)
+ for(let i=AG.length-1;i>=0;i--)if(!ids.includes(CHARS[AG[i].ci].id)&&!lent.includes(CHARS[AG[i].ci].id))AG.splice(i,1);
  for(const a of AG){const n=GS.staffStress?.[CHARS[a.ci].id];if(Number.isFinite(n))a.stress=Math.max(0,Math.min(100,n));a.autoBreak=Array.isArray(GS.staffBreakIds)&&GS.staffBreakIds.includes(CHARS[a.ci].id)&&a.stress>55;tagStaff(a);}
+ if(typeof restoreBorrowed==='function')restoreBorrowed();
 }
 function commitRoster(){
  assignSeats();
- GS.staffIds=AG.map(a=>CHARS[a.ci].id);
+ GS.staffIds=AG.filter(a=>!a.borrowed).map(a=>CHARS[a.ci].id);   // người mượn không thuộc đội
  GS.staffStress=Object.fromEntries(AG.map(a=>[CHARS[a.ci].id,Math.round(a.stress||0)]));
  save();updatePanels();renderStaff();
 }
@@ -3887,6 +3893,7 @@ function hireStaff(id){
 }
 function dismissStaff(id){
  if(id===FOUNDER_ID||id===MASCOT_ID)return;   // nhân vật của bạn và linh vật luôn ở lại
+ if(typeof isBorrowed==='function'&&isBorrowed(id)){toast(`${staffName(id)} được mượn từ bạn bè, cuối ngày tự về.`,'err');return;}
  const index=AG.findIndex(a=>CHARS[a.ci].id===id);if(index<0)return;
  const a=AG[index];
  if(a.collection){toast("Nhân viên đang đi thu tiền; chờ họ trở về.","err");return;}
@@ -3945,8 +3952,9 @@ function restCooldown(a){return Math.max(0,Math.ceil((GS.staffRestUntil?.[CHARS[
 
 // Trial daily rates in million coin. Featured staff earn a 20% premium.
 const SALARY_RATE={'Account':2,'Design':2.5,'Content':2,'Planner':3,'AI Designer':3.5,'Editor':3,'Kế toán':2,'Sale':2,'HR':2,'Trợ lý':1.5};
-function salaryRate(id,featured=!!GS.stars?.[id]){return id===FOUNDER_ID||id===MASCOT_ID?0:Math.round((SALARY_RATE[roleOf(id)]||2)*(featured?1.2:1)*100)/100;}
-function salaryLabel(id){return salaryRate(id)?`${GS.stars?.[id]?'★ · ':''}${fmt(salaryRate(id))}/ngày`:'Miễn lương';}
+function salaryRate(id,featured=!!GS.stars?.[id]){return id===FOUNDER_ID||id===MASCOT_ID||(typeof isBorrowed==='function'&&isBorrowed(id))?0:Math.round((SALARY_RATE[roleOf(id)]||2)*(featured?1.2:1)*100)/100;}
+// Người mượn của bạn bè: tên agency do người chơi khác đặt nên thoát HTML.
+function salaryLabel(id){const lent=typeof borrowedInfo==='function'&&borrowedInfo(id);if(lent)return `Mượn từ ${String(lent.agency).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')} · về cuối ngày`;return salaryRate(id)?`${GS.stars?.[id]?'★ · ':''}${fmt(salaryRate(id))}/ngày`:'Miễn lương';}
 function payrollState(){
  if(!GS.payroll)GS.payroll={day:GS.day,items:{},debt:0,closedDay:0};
  const p=GS.payroll;if(p.day!==GS.day){p.day=GS.day;p.items={};}return p;
@@ -3971,6 +3979,66 @@ function renderPayroll(){
  const budget=AG.reduce((n,a)=>n+salaryRate(CHARS[a.ci].id),0);
  box.innerHTML=`<b>Lương ${fmt(budget)}/ngày</b><details class="compact-details"><summary>Chi tiết lương ⓘ</summary>Đã phát sinh hôm nay: ${fmt(payrollDue())} · Nợ lương: ${fmt(p.debt)}<br><small>Chốt lúc tan ca 21:00. Tuyển hoặc thôi việc giữa ngày tính theo thời gian thuộc đội; nghỉ giải lao vẫn hưởng lương. Nhân sự nổi bật +20%. Nợ được trả trước cùng kỳ lương kế tiếp. Bản lưu cũ tính từ lúc cập nhật, không truy thu.</small></details>`;
  document.getElementById('staffList').prepend(box);
+}
+
+// ---------- Mượn nhân viên của bạn bè (14/10/2026, phương án A đã chốt) ----------
+// Bản sao nhân viên của bạn tới làm hết ngày game hiện tại rồi về; bạn bè không mất người.
+// Bên mượn: không trả lương, không cho nghỉ việc được, mỗi ngày game mượn 1 người, cần 1 chỗ làm trống, chỉ mượn người mình chưa có.
+// Bên cho mượn: nhận thư "tiền công" = 2 × lương ngày của nhân viên đó (★ ứng viên nổi bật tính lương ★), bấm Nhận trong Hộp thư.
+// Giới hạn chống lạm dụng nằm ở máy chủ (online/supabase-schema.sql: borrow_staff): mỗi bạn 1 lần/ngày thật, tối đa 3 lần/ngày thật.
+const BORROW_WAGE_X=2;
+function borrowList(){if(!Array.isArray(GS.borrowed))GS.borrowed=[];return GS.borrowed;}
+function borrowedInfo(id){return (Array.isArray(GS.borrowed)?GS.borrowed:[]).find(b=>b.id===id&&b.day===GS.day)||null;}
+function isBorrowed(id){return !!borrowedInfo(id);}
+// Tiền công cho người cho mượn, tính ở máy người nhận theo lương hiện hành.
+function borrowWage(id,featured=!!GS.stars?.[id]){return Math.round(BORROW_WAGE_X*(SALARY_RATE[STAFF_ROLE[id]]||2)*(featured?1.2:1)*100)/100;}
+function borrowIdFromItem(item){const m=/^wage_([a-z0-9_]{1,34})$/.exec(item||'');return m?Object.keys(STAFF_ROLE).find(id=>id.toLowerCase()===m[1])||null:null;}
+// Số chỗ làm việc còn trống (ghế/bàn làm việc trừ người cần ngồi; nhân vật chính đứng quầy, linh vật không ngồi).
+function freeWorkSeats(){
+ const uidOk=new Set(OBJS.filter(o=>WORKSEAT.has(o.id)&&!o.guest).map(o=>o.uid));
+ const seats=(Array.isArray(SEATS)?SEATS:[]).filter(z=>uidOk.has(z.uid)).length;
+ return seats-AG.filter(a=>!a.mascot&&!(a.founder&&GS.player)).length;
+}
+// Lý do không mượn được (chuỗi rỗng = mượn được). Kiểm tra trước khi gọi máy chủ để không phát tiền công oan.
+function borrowBlock(id){
+ if(typeof VISIT!=='undefined'&&VISIT)return 'Đang tham quan văn phòng bạn bè.';
+ const ci=CHARS.findIndex(c=>c.id===id);
+ if(ci<0||!STAFF_ROLE[id]||id===MASCOT_ID)return 'Không mượn được người này.';
+ if(AG.some(a=>a.ci===ci))return 'Agency của bạn đã có người này.';
+ if(borrowList().some(b=>b.day===GS.day))return 'Mỗi ngày game chỉ mượn được 1 người.';
+ if(closingOffice||GS.min>=CLOSE_MIN-60)return 'Sắp hết giờ làm (sau 20:00). Mượn vào ngày mai.';
+ if(AG.length>=15)return 'Văn phòng đã đủ 15 người.';
+ if(freeWorkSeats()<1)return 'Cần 1 chỗ làm việc trống (đặt thêm bàn ghế).';
+ return '';
+}
+function borrowAgent(ci,arrive){
+ const a=tagStaff({x:ENTRY[0],y:ENTRY[1],ci,path:[],dir:'NE',t:0,wait:.3,seat:null,state:'wander',sitT:0,roam:0,stress:0});
+ a.borrowed=true;if(arrive)startArrival(a,.3);return a;
+}
+// Gọi sau khi máy chủ đã ghi nhận lượt mượn.
+function startBorrow(id,from){
+ const ci=CHARS.findIndex(c=>c.id===id);if(ci<0)return false;
+ if(typeof bootEnsure==='function')bootEnsure(CHARS[ci]);
+ borrowList().push({id,day:GS.day,fromId:String(from.id||''),agency:String(from.agency||'Bạn bè').slice(0,40)});
+ AG.push(borrowAgent(ci,true));
+ addOfficeNews('staff',`${staffName(id)} từ ${from.agency} tới làm giúp tới hết hôm nay`);
+ commitRoster();hud();return true;
+}
+// Tải lại giữa ngày: giữ người đang mượn; người mượn từ hôm trước đã về.
+function restoreBorrowed(){
+ GS.borrowed=borrowList().filter(b=>b.day===GS.day&&CHARS.some(c=>c.id===b.id));
+ for(const a of AG)if(isBorrowed(CHARS[a.ci].id))a.borrowed=true;
+}
+// Sang ngày mới (gọi ngay sau GS.day++): người mượn về agency của bạn.
+function endBorrowDay(){
+ const gone=borrowList().filter(b=>b.day<GS.day);if(!gone.length)return;
+ GS.borrowed=borrowList().filter(b=>b.day>=GS.day);
+ for(const b of gone){const i=AG.findIndex(a=>CHARS[a.ci].id===b.id&&a.borrowed);if(i<0)continue;const a=AG[i];
+  for(const j of GS.jobs){if(j.id===a.meetingJob&&typeof releaseMeeting==='function')releaseMeeting(j);if(j.who===b.id)j.who=null;}
+  if(a.useObj)BUSY.delete(a.useObj);AG.splice(i,1);
+  addOfficeNews('staff',`${staffName(b.id)} đã về ${b.agency}`);}
+ if(typeof SEAT_COMPOSITES!=='undefined')SEAT_COMPOSITES.clear();
+ GS.staffIds=AG.filter(a=>!a.borrowed).map(a=>CHARS[a.ci].id);
 }
 
 // Nhân vật của người chơi (07/10/2026).
@@ -4293,7 +4361,8 @@ function guidePages(){
    items:["<b>Cài đặt → Tài khoản</b>: đăng nhập bằng email, Google hoặc Facebook. Không đăng nhập vẫn chơi bình thường, tiến độ nằm trên máy này.",
     "Nút <b>Bạn bè</b> (góc trên phải): gửi <b>mã bạn</b> dạng AGN-XXXX cho nhau để kết bạn, tối đa 50 bạn.",
     "<b>Tham quan</b>: xem văn phòng của bạn (chỉ xem). Mỗi ngày được <b>thích</b> 1 lần, gửi 3 lời nhắn và <b>tặng 1 quà</b> cho mỗi bạn; tặng được nhiều bạn trong ngày.",
-    "<b>Hộp thư</b> (phong bì): quà, lời nhắn, lượt thích của bạn bè và Bảng tin văn phòng. Bấm <b>Nhận</b> hoặc <b>Nhận tất cả</b> để quà vào <b>Kho</b> (ruby cộng thẳng)."],
+    "<b>Hộp thư</b> (phong bì): quà, lời nhắn, lượt thích của bạn bè và Bảng tin văn phòng. Bấm <b>Nhận</b> hoặc <b>Nhận tất cả</b> để quà vào <b>Kho</b> (ruby cộng thẳng).",
+    "<b>Mượn nhân viên</b> (Bạn bè → ⋯): mượn 1 người bạn mình chưa có, làm tới hết ngày game rồi về, không tính lương. Mỗi ngày game mượn 1 người; bạn bè vẫn giữ người và nhận <b>tiền công bằng 2 ngày lương</b> trong Hộp thư."],
    tip:"Quà do game tặng, không lấy từ Kho của bạn; danh sách quà đổi mỗi ngày."},
   {id:"controls",icon:"hand",title:"Điều khiển",lead:"Chơi bằng chuột, bàn phím hoặc màn hình cảm ứng (xoay ngang điện thoại).",
    items:["Kéo trên bản đồ để xem chỗ khác; lăn chuột hoặc chụm 2 ngón để phóng to, thu nhỏ.",
@@ -4705,7 +4774,9 @@ const OL_ERR={not_logged_in:'Cần đăng nhập trước.',code_not_found:'Khô
  not_friends:'Chỉ tương tác được với bạn bè.',bad_gift:'Món quà không hợp lệ.',gift_done_today:'Hôm nay bạn đã tặng quà cho agency này.',bad_note:'Lời nhắn 1–140 ký tự.',
  note_limit:'Hôm nay đã gửi đủ 3 lời nhắn cho agency này.',like_done_today:'Hôm nay bạn đã thích văn phòng này.',not_claimable:'Thư này đã nhận rồi.',
  bad_login:'Email hoặc mật khẩu chưa đúng.',email_taken:'Email này đã có tài khoản.',weak_pw:'Mật khẩu cần ít nhất 6 ký tự.',bad_email:'Email chưa đúng dạng.',
- offline:'Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.',no_server:'Chưa kết nối máy chủ.'};
+ offline:'Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.',no_server:'Chưa kết nối máy chủ.',
+ borrow_done_today:'Hôm nay bạn đã mượn người của agency này.',borrow_limit:'Hôm nay bạn đã mượn đủ 3 lượt.',borrow_bad_staff:'Không mượn được người này (có thể bạn ấy vừa đổi đội).',
+ borrow_no_office:'Bạn này chưa lưu văn phòng lên tài khoản.',borrow_staff:'Máy chủ chưa cập nhật tính năng mượn người.'};
 const olEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const olToday=()=>new Date(Date.now()+7*3600e3).toISOString().slice(0,10);
 function olErrText(e){const m=String(e&&e.message||e||'');const k=Object.keys(OL_ERR).find(k=>m.includes(k));return k?OL_ERR[k]:(/fetch|network|Failed/i.test(m)?OL_ERR.offline:'Có lỗi: '+m.slice(0,80));}
@@ -4764,7 +4835,10 @@ function olMockBackend(){
  const botTick=d=>{let u;try{u=me();}catch(e){return;}
   for(const b of OL_BOTS){if(!isFriend(d,u,b.id))continue;
    if(!d.mail.some(m=>m.kind==='gift'&&m.from_id===b.id&&m.to_id===u&&m.day===olToday())){const g=olGiftsToday();addMail(d,{to_id:u,from_id:b.id,kind:'gift',item:g[(b.code.charCodeAt(4)+olToday().length)%g.length]});
-    addMail(d,{to_id:u,from_id:b.id,kind:'note',body:BOT_NOTES[(d.seq+b.level)%BOT_NOTES.length]});}}};
+    addMail(d,{to_id:u,from_id:b.id,kind:'note',body:BOT_NOTES[(d.seq+b.level)%BOT_NOTES.length]});}}
+  // Sao Mai mượn 1 người của bạn mỗi ngày (khi đã lưu văn phòng) để thử thư tiền công
+  const sm=OL_BOTS[0],gs=d.offices[u]&&d.offices[u].data&&d.offices[u].data.gs,pick=gs&&Array.isArray(gs.staffIds)?gs.staffIds.find(id=>id!==(gs.player&&gs.player.id)&&id!==MASCOT_ID&&STAFF_ROLE[id]):null;
+  if(pick&&isFriend(d,u,sm.id)&&!d.mail.some(m=>m.kind==='wage'&&m.from_id===sm.id&&m.to_id===u&&m.day===olToday()))addMail(d,{to_id:u,from_id:sm.id,kind:'wage',item:'wage_'+pick.toLowerCase()});};
  const prof=(d,id)=>d.profiles[id]?{...d.profiles[id]}:{id,agency:'(đã rời game)',code:'',level:1,likes:0};
  return {
   kind:'mock',
@@ -4801,17 +4875,23 @@ function olMockBackend(){
    if(!ok){r.status='declined';put(d);return 'declined';}if(isBlocked(d,r.from_id,u))fail('blocked');if(nFriends(d,u)>=50||nFriends(d,r.from_id)>=50)fail('friend_limit');accept(d,r);put(d);return 'accepted';},
   async removeFriend(id){const d=db(),u=me();d.friends=d.friends.filter(f=>!((f[0]===u&&f[1]===id)||(f[0]===id&&f[1]===u)));d.requests=d.requests.filter(r=>!((r.from_id===u&&r.to_id===id)||(r.from_id===id&&r.to_id===u)));put(d);},
   async block(id){const d=db(),u=me();if(id===u)fail('self');if(!d.blocks.some(b=>b[0]===u&&b[1]===id))d.blocks.push([u,id]);put(d);await this.removeFriend(id);
-   const d2=db();d2.mail=d2.mail.filter(m=>!(m.to_id===u&&m.from_id===id&&!(m.kind==='gift'&&!m.claimed)));put(d2);},
+   const d2=db();d2.mail=d2.mail.filter(m=>!(m.to_id===u&&m.from_id===id&&!((m.kind==='gift'||m.kind==='wage')&&!m.claimed)));put(d2);},
   async mail(){const d=db(),u=me();botTick(d);put(d);return d.mail.filter(m=>m.to_id===u).sort((a,b)=>b.id-a.id).slice(0,100).map(m=>({...m,from:prof(d,m.from_id)}));},
-  async sentToday(id){const d=db(),u=me(),t=olToday(),s=d.mail.filter(m=>m.from_id===u&&m.to_id===id&&m.day===t);return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length};},
+  async sentToday(id){const d=db(),u=me(),t=olToday(),s=d.mail.filter(m=>m.from_id===u&&m.to_id===id&&m.day===t);return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length,borrow:s.some(m=>m.kind==='wage')};},
+  async borrowStaff(owner,staff){const d=db(),u=pair(d,owner);if(!/^[A-Za-z0-9_]{1,34}$/.test(String(staff))||staff===MASCOT_ID)fail('borrow_bad_staff');
+   const o=d.offices[owner]&&d.offices[owner].data;if(!o)fail('borrow_no_office');const gs=o.gs||{};
+   if(!Array.isArray(gs.staffIds)||!gs.staffIds.includes(staff)||(gs.player&&gs.player.id)===staff)fail('borrow_bad_staff');
+   if(d.mail.filter(m=>m.kind==='wage'&&m.from_id===u&&m.day===olToday()).length>=3)fail('borrow_limit');
+   if(d.mail.some(m=>m.kind==='wage'&&m.from_id===u&&m.to_id===owner&&m.day===olToday()))fail('borrow_done_today');
+   const row=addMail(d,{to_id:owner,from_id:u,kind:'wage',item:'wage_'+staff.toLowerCase()});put(d);return row.id;},
   async sendGift(to,item){const d=db(),u=pair(d,to);if(![...OL_GIFT_DECOR,...OL_GIFT_RUBY].includes(item))fail('bad_gift');
    if(d.mail.some(m=>m.kind==='gift'&&m.from_id===u&&m.to_id===to&&m.day===olToday()))fail('gift_done_today');addMail(d,{to_id:to,from_id:u,kind:'gift',item});put(d);},
   async sendNote(to,body){const d=db(),u=pair(d,to),b=String(body??'').trim();if(b.length<1||b.length>140)fail('bad_note');
    if(d.mail.filter(m=>m.kind==='note'&&m.from_id===u&&m.to_id===to&&m.day===olToday()).length>=3)fail('note_limit');addMail(d,{to_id:to,from_id:u,kind:'note',body:b});put(d);},
   async sendLike(to){const d=db(),u=pair(d,to);if(d.mail.some(m=>m.kind==='like'&&m.from_id===u&&m.to_id===to&&m.day===olToday()))fail('like_done_today');
    addMail(d,{to_id:to,from_id:u,kind:'like'});if(d.profiles[to])d.profiles[to].likes++;put(d);},
-  async claim(id){const d=db(),u=me(),m=d.mail.find(m=>m.id===id&&m.to_id===u&&m.kind==='gift'&&!m.claimed);if(!m)fail('not_claimable');m.claimed=true;put(d);return m.item;},
-  async claimAll(){const d=db(),u=me(),out=[];for(const m of d.mail)if(m.to_id===u&&m.kind==='gift'&&!m.claimed){m.claimed=true;out.push({id:m.id,item:m.item});}put(d);return out;},
+  async claim(id){const d=db(),u=me(),m=d.mail.find(m=>m.id===id&&m.to_id===u&&(m.kind==='gift'||m.kind==='wage')&&!m.claimed);if(!m)fail('not_claimable');m.claimed=true;put(d);return m.item;},
+  async claimAll(){const d=db(),u=me(),out=[];for(const m of d.mail)if(m.to_id===u&&(m.kind==='gift'||m.kind==='wage')&&!m.claimed){m.claimed=true;out.push({id:m.id,item:m.item});}put(d);return out;},
   async deleteMail(id){const d=db(),u=me();d.mail=d.mail.filter(m=>!(m.id===id&&m.to_id===u));put(d);},
   async deleteMyData(){const d=db(),u=me();d.mail=d.mail.filter(m=>m.to_id!==u&&m.from_id!==u);d.friends=d.friends.filter(f=>f[0]!==u&&f[1]!==u);
    d.requests=d.requests.filter(r=>r.from_id!==u&&r.to_id!==u);d.blocks=d.blocks.filter(b=>b[0]!==u&&b[1]!==u);delete d.offices[u];delete d.saves[u];delete d.profiles[u];put(d);}
@@ -4860,7 +4940,8 @@ function olSupabaseBackend(cfg){
   async removeFriend(id){chk(await sb.rpc('remove_friend',{p_other:id}));},
   async block(id){chk(await sb.rpc('block_user',{p_other:id}));},
   async mail(){const rows=chk(await sb.from('mail').select('*').eq('to_id',me()).order('created_at',{ascending:false}).limit(100));const m=await profs(rows.map(r=>r.from_id));return rows.map(r=>({...r,from:m[r.from_id]}));},
-  async sentToday(id){const s=chk(await sb.from('mail').select('kind').eq('from_id',me()).eq('to_id',id).eq('day',olToday()));return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length};},
+  async sentToday(id){const s=chk(await sb.from('mail').select('kind').eq('from_id',me()).eq('to_id',id).eq('day',olToday()));return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length,borrow:s.some(m=>m.kind==='wage')};},
+  async borrowStaff(owner,staff){return chk(await sb.rpc('borrow_staff',{p_owner:owner,p_staff:staff}));},
   async sendGift(to,item){chk(await sb.rpc('send_gift',{p_to:to,p_item:item}));},
   async sendNote(to,body){chk(await sb.rpc('send_note',{p_to:to,p_body:body}));},
   async sendLike(to){chk(await sb.rpc('send_like',{p_to:to}));},
@@ -4951,8 +5032,8 @@ async function olRefreshSocial(){
  updateOnlineBadges();
  if(hubKey==='friends'||hubKey==='news'){const p=hubPage();if(p==='pFriends')renderFriends();else if(p==='pRequests')renderRequests();else if(p==='pMail')renderMail();updateHubTabs();}
 }
-function olUnclaimed(){return OL.mail.filter(m=>m.kind==='gift'&&!m.claimed).length;}
-function olUnseenMail(){const seen=(olLS(OL_META_KEY)||{}).mailSeen||0;return OL.mail.filter(m=>m.id>seen&&!(m.kind==='gift'&&!m.claimed)).length+olUnclaimed();}
+function olUnclaimed(){return OL.mail.filter(m=>(m.kind==='gift'||m.kind==='wage')&&!m.claimed).length;}
+function olUnseenMail(){const seen=(olLS(OL_META_KEY)||{}).mailSeen||0;return OL.mail.filter(m=>m.id>seen&&!((m.kind==='gift'||m.kind==='wage')&&!m.claimed)).length+olUnclaimed();}
 function updateOnlineBadges(){
  const show=(id,v)=>{const b=document.getElementById(id);if(!b)return;b.textContent=v||'';b.style.display=v?'flex':'none';};
  show('friendBadge',OL.user?OL.req.incoming.length:0);
@@ -5101,11 +5182,29 @@ function renderFriends(){
  el.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>olFriendMenu(OL.friends.find(f=>f.id===b.dataset.more)));
 }
 function olFriendMenu(p){if(!p)return;
- olBox(`<h2>${olEsc(p.agency)}</h2><p class="hub-note">LV ${p.level||1} · ${p.jobs||0} job đã xong · ❤ ${p.likes||0}</p><div class="ol-menu"><button class="btn y" data-a="visit">Tham quan</button><button class="btn c" data-a="remove">Xóa bạn</button><button class="btn rd" data-a="block">Chặn</button></div><div class="ask-act"><button class="btn c" data-ol-close>Đóng</button></div>`,(el,close)=>{
+ olBox(`<h2>${olEsc(p.agency)}</h2><p class="hub-note">LV ${p.level||1} · ${p.jobs||0} job đã xong · ❤ ${p.likes||0}</p><div class="ol-menu"><button class="btn y" data-a="visit">Tham quan</button><button class="btn g" data-a="borrow">Mượn nhân viên</button><button class="btn c" data-a="remove">Xóa bạn</button><button class="btn rd" data-a="block">Chặn</button></div><div class="ask-act"><button class="btn c" data-ol-close>Đóng</button></div>`,(el,close)=>{
   el.querySelector('[data-a="visit"]').onclick=()=>{close();olVisit(p.id);};
+  el.querySelector('[data-a="borrow"]').onclick=()=>{close();olBorrowPick(p);};
   el.querySelector('[data-a="remove"]').onclick=async()=>{close();if(!await askConfirm({title:'Xóa bạn?',text:`Xóa ${p.agency} khỏi danh sách bạn. Hai bên không xem văn phòng và gửi quà cho nhau được nữa.`,ok:'Xóa bạn',danger:true}))return;try{await OL.be.removeFriend(p.id);toast('Đã xóa bạn','ok');olRefreshSocial();}catch(e){toast(olErrText(e),'err');}};
   el.querySelector('[data-a="block"]').onclick=async()=>{close();if(!await askConfirm({title:'Chặn agency này?',text:`${p.agency} sẽ không kết bạn, nhắn tin hay tặng quà cho bạn được. Lời nhắn cũ của họ bị xóa.`,ok:'Chặn',danger:true}))return;try{await OL.be.block(p.id);toast('Đã chặn','ok');olRefreshSocial();}catch(e){toast(olErrText(e),'err');}};
  });
+}
+// Mượn nhân viên của bạn (borrow.js): chọn từ văn phòng bạn đã lưu lên tài khoản.
+async function olBorrowPick(p){
+ if(!OL.user)return openLogin();
+ let data;try{data=await OL.be.getOffice(p.id);}catch(e){toast(olErrText(e),'err');return;}
+ const gs=data&&data.gs;if(!gs||!Array.isArray(gs.staffIds)){toast(OL_ERR.borrow_no_office,'err');return;}
+ const owner=gs.player&&gs.player.id,ids=[...new Set(gs.staffIds)].filter(id=>id!==owner&&id!==MASCOT_ID&&STAFF_ROLE[id]&&CHARS.some(c=>c.id===id));
+ const today=borrowList().find(b=>b.day===GS.day);
+ olBox(`<h2>Mượn nhân viên của ${olEsc(p.agency)}</h2><p class="hub-note">Người được mượn làm cho bạn tới hết ngày game hôm nay rồi về, không tính lương. ${olEsc(p.agency)} vẫn giữ người và nhận tiền công bằng 2 ngày lương. Mỗi ngày game mượn 1 người.</p>
+  ${today?`<p class="hub-note"><b>Hôm nay đã mượn ${olEsc(staffName(today.id))} từ ${olEsc(today.agency)}.</b></p>`:''}
+  <div class="ol-borrow">${ids.length?ids.map(id=>{const why=borrowBlock(id);return `<button class="ol-gift" data-borrow="${olEsc(id)}"${why?' disabled':''}>${staffAvatar(id)}<span><b>${olEsc(staffName(id))}</b><br><small>${olEsc(STAFF_ROLE[id])}${why?' · '+olEsc(why):''}</small></span></button>`;}).join(''):'<p class="hub-note">Văn phòng của bạn này chưa có nhân viên để mượn.</p>'}</div>
+  <p class="ol-err" id="olErr" role="alert"></p><div class="ask-act"><button class="btn c" data-ol-close>Đóng</button></div>`,(el,close)=>{
+  el.querySelectorAll('[data-borrow]').forEach(b=>b.onclick=async()=>{const id=b.dataset.borrow,why=borrowBlock(id),er=el.querySelector('#olErr');
+   if(why){er.textContent=why;return;}
+   el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=true);
+   try{await OL.be.borrowStaff(p.id,id);startBorrow(id,{id:p.id,agency:p.agency});close();toast(`${staffName(id)} từ ${p.agency} đang tới làm giúp`,'ok');olPush(true);}
+   catch(e){er.textContent=olErrText(e);el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=!!borrowBlock(x.dataset.borrow));}});});
 }
 function renderRequests(){
  const el=document.getElementById('requestsBody');if(!el)return;
@@ -5120,6 +5219,8 @@ function renderRequests(){
 
 // ---------- Hộp thư → Thư ----------
 function olGiveGift(item,from){
+ const w=typeof borrowIdFromItem==='function'?borrowIdFromItem(item):null;
+ if(w){const v=borrowWage(w);cash=Math.round((cash+v)*100)/100;GS.revTotal=(GS.revTotal||0)+v;if(typeof addOfficeNews==='function')addOfficeNews('staff',`Nhận ${fmt(v)} tiền công: ${from} mượn ${staffName(w)}`);return `${fmt(v)} tiền công`;}
  const r=/^ruby_(\d)$/.exec(item);
  if(r){GS.gems+=+r[1];return `${r[1]} ruby`;}
  if(FBY[item]&&addToStore(item,1,'reward',`Quà từ ${from}`))return `${FBY[item].name} (vào Kho)`;
@@ -5134,9 +5235,11 @@ function renderMail(){
  const n=olUnclaimed();
  const row=m=>{const who=olEsc(m.from.agency),when=olEsc(m.day||'');
   if(m.kind==='gift')return `<div class="ol-row ol-mail${m.claimed?' done':''}"><span class="ol-av">${olGiftIcon(m.item,30)}</span><span class="ol-who"><b>${who} tặng bạn ${olEsc(olGiftName(m.item))}</b><small>${when}${m.claimed?' · đã nhận':''}</small></span><span class="ol-act">${m.claimed?'':`<button class="btn g" data-claim="${m.id}">Nhận</button>`}</span></div>`;
+  if(m.kind==='wage'){const sid=typeof borrowIdFromItem==='function'?borrowIdFromItem(m.item):null,nm=sid?olEsc(staffName(sid)):'nhân viên';
+   return `<div class="ol-row ol-mail${m.claimed?' done':''}"><span class="ol-av">${UIIMG('coin',28)}</span><span class="ol-who"><b>${who} mượn ${nm} một ngày</b><small>${when} · tiền công ${sid?fmt(borrowWage(sid)):''}${m.claimed?' · đã nhận':''}</small></span><span class="ol-act">${m.claimed?'':`<button class="btn g" data-claim="${m.id}">Nhận</button>`}</span></div>`;}
   if(m.kind==='like')return `<div class="ol-row ol-mail"><span class="ol-av">${UIIMG('heart',28)}</span><span class="ol-who"><b>${who} đã thích văn phòng của bạn</b><small>${when}</small></span><span class="ol-act"><button class="btn c" data-del="${m.id}" aria-label="Xóa thư">✕</button></span></div>`;
   return `<div class="ol-row ol-mail"><span class="ol-av">${UIIMG('mail',28)}</span><span class="ol-who"><b>${who}</b><small>${when}</small><span class="ol-note"></span></span><span class="ol-act"><button class="btn c" data-del="${m.id}" aria-label="Xóa thư">✕</button></span></div>`;};
- el.innerHTML=`${n?`<div class="ol-claimall"><span>${n} quà chưa nhận</span><button class="btn g" id="olClaimAll">Nhận tất cả</button></div>`:''}
+ el.innerHTML=`${n?`<div class="ol-claimall"><span>${n} quà / tiền công chưa nhận</span><button class="btn g" id="olClaimAll">Nhận tất cả</button></div>`:''}
   ${OL.mail.length?OL.mail.map(row).join(''):'<p class="hub-note">Chưa có thư. Quà, lời nhắn và lượt thích của bạn bè sẽ đến đây.</p>'}`;
  // lời nhắn là nội dung người dùng viết: gán bằng textContent
  el.querySelectorAll('.ol-note').forEach((s,i)=>{const notes=OL.mail.filter(m=>m.kind==='note');s.textContent=notes[i]?notes[i].body:'';});
@@ -5146,7 +5249,7 @@ function renderMail(){
  el.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{try{await OL.be.deleteMail(+b.dataset.del);OL.mail=OL.mail.filter(x=>x.id!==+b.dataset.del);renderMail();updateOnlineBadges();}catch(e){toast(olErrText(e),'err');}});
  const ca=el.querySelector('#olClaimAll');if(ca)ca.onclick=async()=>{ca.disabled=true;
   try{const rows=await OL.be.claimAll();const got=[];for(const r of rows){const m=OL.mail.find(x=>x.id===r.id);if(m)m.claimed=true;const g=olGiveGift(r.item,m?m.from.agency:'bạn bè');if(g)got.push(g);}
-   hud();save();updateHubBadges();toast(got.length?`Đã nhận ${got.length} quà: ${got.join(', ')}`:'Không còn quà chưa nhận','ok');}catch(e){toast(olErrText(e),'err');}
+   hud();save();updateHubBadges();toast(got.length?`Đã nhận ${got.length} món: ${got.join(', ')}`:'Không còn quà chưa nhận','ok');}catch(e){toast(olErrText(e),'err');}
   renderMail();updateOnlineBadges();updateHubTabs();};
  updateOnlineBadges();
 }

@@ -98,6 +98,28 @@ await fails(U.b, 'select public.send_like($1)', [U.a], 'like_done_today');
 ok((await as(U.c, 'select likes from public.profiles where id=$1', [U.a]))[0].likes === 1, 'like cộng vào hồ sơ');
 ok((await as(U.c, 'select * from public.mail where to_id=$1', [U.a])).every(m => m.from_id === U.c), 'C chỉ thấy thư mình gửi cho A');
 
+// mượn nhân viên (14/10/2026): A cho mượn; B, C là bạn của A; D không phải bạn
+await as(U.a, 'update public.offices set data=$2 where id=$1', [U.a, JSON.stringify({ objs: [], gs: { player: { id: '03_Pali' }, staffIds: ['03_Pali', '11_Juice', '13_AB', '12_ADM', '09_Vit_Vang'] } })]);
+await fails(U.b, 'select public.borrow_staff($1,$2)', [U.a, '03_Pali'], 'borrow_bad_staff');        // nhân vật chính
+await fails(U.b, 'select public.borrow_staff($1,$2)', [U.a, '09_Vit_Vang'], 'borrow_bad_staff');    // linh vật
+await fails(U.b, 'select public.borrow_staff($1,$2)', [U.a, '01_Huy'], 'borrow_bad_staff');         // không có trong văn phòng
+await fails(U.b, 'select public.borrow_staff($1,$2)', [U.a, "x' or 1=1"], 'borrow_bad_staff');
+await fails(U.d, 'select public.borrow_staff($1,$2)', [U.a, '11_Juice'], 'not_friends');
+await fails(U.a, 'select public.borrow_staff($1,$2)', [U.b, '11_Juice'], 'borrow_no_office');
+const w1 = (await as(U.b, 'select public.borrow_staff($1,$2) id', [U.a, '11_Juice']))[0].id;
+await fails(U.b, 'select public.borrow_staff($1,$2)', [U.a, '13_AB'], 'borrow_done_today');
+ok((await as(U.c, 'select public.borrow_staff($1,$2) id', [U.a, '11_Juice']))[0].id > 0, 'bạn khác mượn cùng người được');
+await fails(U.b, 'insert into public.mail (to_id, from_id, kind, item) values ($1,$2,$3,$4)', [U.a, U.b, 'wage', 'wage_11_juice'], 'permission');
+ok((await as(U.a, "select item from public.mail where id=$1", [w1]))[0].item === 'wage_11_juice', 'A thấy thư tiền công');
+await fails(U.b, 'select public.claim_mail($1)', [w1], 'not_claimable');
+ok((await as(U.a, 'select public.claim_mail($1) it', [w1]))[0].it === 'wage_11_juice', 'A nhận tiền công');
+ok((await as(U.a, 'select * from public.claim_all_mail()')).map(r => r.item).join() === 'wage_11_juice', 'nhận tất cả gồm cả tiền công');
+// giới hạn 3 lượt/ngày: thêm 2 lượt hôm nay của B (ghi thẳng, bỏ qua RLS) → lượt thứ 4 bị chặn; lượt hôm qua không tính
+await db.exec(`reset role; insert into public.mail (to_id, from_id, kind, item, day) values ('${U.c}','${U.b}','wage','wage_13_ab',public.vn_today()),('${U.d}','${U.b}','wage','wage_13_ab',public.vn_today());`);
+await fails(U.b, 'select public.borrow_staff($1,$2)', [U.a, '13_AB'], 'borrow_limit');
+await db.exec(`reset role; update public.mail set day = public.vn_today() - 1 where from_id = '${U.b}' and kind = 'wage';`);
+ok((await as(U.b, 'select public.borrow_staff($1,$2) id', [U.a, '13_AB']))[0].id > 0, 'sang ngày mới mượn lại được');
+
 // chặn: hết là bạn, không gửi được nữa, không xem văn phòng
 await as(U.a, 'select public.block_user($1)', [U.b]);
 ok((await as(U.b, 'select * from public.offices where id=$1', [U.a])).length === 0, 'bị chặn thì không xem văn phòng');

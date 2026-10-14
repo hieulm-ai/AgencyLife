@@ -380,6 +380,10 @@
 .ol-mail.done{opacity:.6}
 .ol-claimall{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;margin-bottom:8px;background:#E7F5DF;border:2px solid #7DB45A;border-radius:10px;font-weight:800;color:#2F5E1F}
 .ol-gifts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.ol-borrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:52vh;overflow:auto}
+.ol-borrow .ol-gift{flex-direction:row;justify-content:flex-start;text-align:left;gap:8px}
+.ol-borrow .ol-gift small{font-weight:600;color:#8A5A2E}
+.ol-borrow .ol-gift:disabled{opacity:.55;cursor:not-allowed}
 .ol-gift{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;background:#FFFDF6;border:2px solid #E0B78B;border-radius:12px;font:700 13px/1.2 var(--rf,var(--font));color:#5B2E10;cursor:pointer}
 .ol-gift:hover,.ol-gift:focus-visible{border-color:#2552A8;background:#EEF4FF}
 .ol-gift img{width:48px;height:48px;object-fit:contain}

@@ -36,7 +36,7 @@ test('máy chủ thử: kết bạn, quà 1 lần/bạn/ngày, tặng nhiều b�
  await be.sendGift('bot-saomai','ruby_2');
  for(let i=0;i<3;i++)await be.sendNote(B.id,'chào '+i);await rej(be.sendNote(B.id,'4'),'note_limit');await rej(be.sendNote(B.id,'x'.repeat(141)),'bad_note');
  await be.sendLike(B.id);await rej(be.sendLike(B.id),'like_done_today');
- assert.deepEqual(JSON.parse(JSON.stringify(await be.sentToday(B.id))),{gift:true,like:true,notes:3});
+ assert.deepEqual(JSON.parse(JSON.stringify(await be.sentToday(B.id))),{gift:true,like:true,notes:3,borrow:false});
  // B nhận: 1 lần; nhận tất cả không còn gì
  await be.signOut();await be.signIn('b@x.vn','abcdef');
  const mail=await be.mail(),gift=mail.find(m=>m.kind==='gift');assert.equal(gift.item,'potted_plant');assert.equal(gift.from.agency,'A');
@@ -52,6 +52,25 @@ test('máy chủ thử: kết bạn, quà 1 lần/bạn/ngày, tặng nhiều b�
  await be.signOut();await be.signIn('a@x.vn','123456');await be.block(B.id);
  await be.signOut();await be.signIn('b@x.vn','abcdef');assert.equal(await be.getOffice(A.id),null);await rej(be.addFriend(pa.code),'blocked');
  assert.ok(c.olErrText(Error('gift_done_today')).includes('đã tặng quà'));
+});
+test('máy chủ thử: mượn nhân viên của bạn — chỉ người có trong văn phòng, mỗi bạn 1 lần/ngày, chủ nhận thư tiền công; Sao Mai mượn người của mình',async()=>{
+ const c=setup();c.MASCOT_ID='09_Vit_Vang';c.STAFF_ROLE={'11_Juice':'Design','13_AB':'Content','04_Tamny':'Kế toán'};const be=c.olMockBackend();await be.init();
+ const A=await be.signUp('a@x.vn','123456');await be.upsertProfile({agency:'A',look:{},level:1,rep:0,jobs:0});
+ const sm=c.OL_BOTS[0];
+ await rej(be.borrowStaff(sm.id,'11_Juice'),'not_friends');
+ const r=await be.requests();await be.respond(r.incoming[0].id,true);
+ await rej(be.borrowStaff(sm.id,sm.player),'borrow_bad_staff');
+ await rej(be.borrowStaff(sm.id,'01_Huy'),'borrow_bad_staff');
+ await rej(be.borrowStaff(sm.id,'09_Vit_Vang'),'borrow_bad_staff');
+ assert.ok(await be.borrowStaff(sm.id,'11_Juice')>0);
+ await rej(be.borrowStaff(sm.id,'04_Tamny'),'borrow_done_today');
+ assert.equal((await be.sentToday(sm.id)).borrow,true);
+ // Sao Mai mượn lại người của A khi A đã lưu văn phòng; A nhận tiền công 1 lần
+ await be.putOffice({gs:{player:{id:'03_Pali'},staffIds:['03_Pali','13_AB','09_Vit_Vang']}});
+ const mail=await be.mail(),w=mail.find(m=>m.kind==='wage');
+ assert.equal(w.item,'wage_13_ab');assert.equal(w.from_id,sm.id);
+ assert.equal(await be.claim(w.id),'wage_13_ab');await rej(be.claim(w.id),'not_claimable');
+ assert.equal((await be.mail()).filter(m=>m.kind==='wage').length,1,'mỗi ngày Sao Mai mượn 1 lần');
 });
 test('quà hằng ngày: 3 đồ trang trí + 1 gói ruby, cố định trong ngày, đồng bộ với SQL',()=>{
  const c=setup();

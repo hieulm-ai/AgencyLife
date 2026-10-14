@@ -38,12 +38,14 @@ function restoreRoster(){
  // Vịt Vàng là linh vật của game: luôn có trong đội từ đầu (kể cả bản lưu cũ chưa tuyển).
  ids=[...new Set([FOUNDER_ID,...ids.filter(id=>known.has(id)),...(known.has(MASCOT_ID)?[MASCOT_ID]:[])])];
  GS.staffIds=ids;
- for(let i=AG.length-1;i>=0;i--)if(!ids.includes(CHARS[AG[i].ci].id))AG.splice(i,1);
+ const lent=(Array.isArray(GS.borrowed)?GS.borrowed:[]).filter(b=>b.day===GS.day).map(b=>b.id);   // người mượn của bạn bè (borrow.js)
+ for(let i=AG.length-1;i>=0;i--)if(!ids.includes(CHARS[AG[i].ci].id)&&!lent.includes(CHARS[AG[i].ci].id))AG.splice(i,1);
  for(const a of AG){const n=GS.staffStress?.[CHARS[a.ci].id];if(Number.isFinite(n))a.stress=Math.max(0,Math.min(100,n));a.autoBreak=Array.isArray(GS.staffBreakIds)&&GS.staffBreakIds.includes(CHARS[a.ci].id)&&a.stress>55;tagStaff(a);}
+ if(typeof restoreBorrowed==='function')restoreBorrowed();
 }
 function commitRoster(){
  assignSeats();
- GS.staffIds=AG.map(a=>CHARS[a.ci].id);
+ GS.staffIds=AG.filter(a=>!a.borrowed).map(a=>CHARS[a.ci].id);   // người mượn không thuộc đội
  GS.staffStress=Object.fromEntries(AG.map(a=>[CHARS[a.ci].id,Math.round(a.stress||0)]));
  save();updatePanels();renderStaff();
 }
@@ -64,6 +66,7 @@ function hireStaff(id){
 }
 function dismissStaff(id){
  if(id===FOUNDER_ID||id===MASCOT_ID)return;   // nhân vật của bạn và linh vật luôn ở lại
+ if(typeof isBorrowed==='function'&&isBorrowed(id)){toast(`${staffName(id)} được mượn từ bạn bè, cuối ngày tự về.`,'err');return;}
  const index=AG.findIndex(a=>CHARS[a.ci].id===id);if(index<0)return;
  const a=AG[index];
  if(a.collection){toast("Nhân viên đang đi thu tiền; chờ họ trở về.","err");return;}

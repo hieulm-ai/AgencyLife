@@ -79,7 +79,7 @@ create table if not exists public.mail (
   id bigint generated always as identity primary key,
   to_id uuid not null references auth.users(id) on delete cascade,
   from_id uuid not null references auth.users(id) on delete cascade,
-  kind text not null check (kind in ('gift','note','like')),
+  kind text not null check (kind in ('gift','note','like','wage')),
   item text check (item is null or item ~ '^[a-z0-9_]{1,40}$'),
   body text check (body is null or char_length(body) between 1 and 140),
   day date not null default public.vn_today(),
@@ -90,6 +90,11 @@ create table if not exists public.mail (
 create unique index if not exists mail_gift_once on public.mail (from_id, to_id, day) where kind = 'gift';
 create unique index if not exists mail_like_once on public.mail (from_id, to_id, day) where kind = 'like';
 create index if not exists mail_to on public.mail (to_id, created_at desc);
+-- 14/10/2026: thư 'wage' = tiền công khi bạn bè mượn nhân viên. Bảng cũ (chạy lại file này) được nới ràng buộc ở đây.
+alter table public.mail drop constraint if exists mail_kind_check;
+alter table public.mail add constraint mail_kind_check check (kind in ('gift','note','like','wage'));
+-- mượn mỗi bạn 1 lần/ngày
+create unique index if not exists mail_wage_once on public.mail (from_id, to_id, day) where kind = 'wage';
 
 -- Danh sách quà được phép (game chọn 4 món mỗi ngày từ danh sách này). Đổi danh sách: sửa bảng này.
 create table if not exists public.gift_pool (item text primary key);
@@ -209,7 +214,7 @@ begin
   if auth.uid() is null or p_other = auth.uid() then raise exception 'self'; end if;
   insert into public.blocks (blocker, blocked) values (auth.uid(), p_other) on conflict do nothing;
   perform public.remove_friend(p_other);
-  delete from public.mail where to_id = auth.uid() and from_id = p_other and not (kind = 'gift' and claimed = false);
+  delete from public.mail where to_id = auth.uid() and from_id = p_other and not (kind in ('gift','wage') and claimed = false);
 end $$;
 
 create or replace function public.check_pair(p_to uuid) returns uuid
@@ -256,13 +261,33 @@ begin
   update public.profiles set likes = likes + 1 where id = p_to;
 end $$;
 
+-- Mượn nhân viên của bạn (14/10/2026): người mượn gọi hàm; người cho mượn nhận thư 'wage'.
+-- Tiền công = 2 × lương ngày của nhân viên đó; game của người cho mượn tính khi bấm Nhận.
+-- Mỗi bạn 1 lần/ngày, tối đa 3 lần/ngày; chỉ mượn người có trong văn phòng đã lưu của bạn, không phải nhân vật chính hay linh vật.
+create or replace function public.borrow_staff(p_owner uuid, p_staff text) returns bigint
+language plpgsql security definer set search_path = public as $$
+declare me uuid := public.check_pair(p_owner); office jsonb; new_id bigint;
+begin
+  if p_staff is null or p_staff !~ '^[A-Za-z0-9_]{1,34}$' or p_staff = '09_Vit_Vang' then raise exception 'borrow_bad_staff'; end if;
+  select data into office from public.offices where id = p_owner;
+  if office is null then raise exception 'borrow_no_office'; end if;
+  if jsonb_typeof(office->'gs'->'staffIds') is distinct from 'array' or not (office->'gs'->'staffIds' ? p_staff)
+     or coalesce(office->'gs'->'player'->>'id', '') = p_staff then raise exception 'borrow_bad_staff'; end if;
+  if (select count(*) from public.mail where from_id = me and kind = 'wage' and day = public.vn_today()) >= 3 then raise exception 'borrow_limit'; end if;
+  begin
+    insert into public.mail (to_id, from_id, kind, item) values (p_owner, me, 'wage', 'wage_' || lower(p_staff)) returning id into new_id;
+  exception when unique_violation then raise exception 'borrow_done_today';
+  end;
+  return new_id;
+end $$;
+
 -- Nhận quà: mỗi thư chỉ đổi "chưa nhận → đã nhận" 1 lần; game chỉ cộng vào Kho khi hàm trả về món quà.
 create or replace function public.claim_mail(p_id bigint) returns text
 language plpgsql security definer set search_path = public as $$
 declare it text;
 begin
   update public.mail set claimed = true
-   where id = p_id and to_id = auth.uid() and kind = 'gift' and claimed = false
+   where id = p_id and to_id = auth.uid() and kind in ('gift','wage') and claimed = false
   returning item into it;
   if it is null then raise exception 'not_claimable'; end if;
   return it;
@@ -271,7 +296,7 @@ end $$;
 create or replace function public.claim_all_mail() returns table (id bigint, item text)
 language sql security definer set search_path = public as $$
   update public.mail m set claimed = true
-   where m.to_id = auth.uid() and m.kind = 'gift' and m.claimed = false
+   where m.to_id = auth.uid() and m.kind in ('gift','wage') and m.claimed = false
   returning m.id, m.item $$;
 
 -- Xóa dữ liệu game của chính mình (tài khoản đăng nhập xóa ở Supabase → Authentication → Users).
@@ -286,10 +311,10 @@ language sql security definer set search_path = public as $$
   delete from public.profiles where id = auth.uid(); $$;
 
 revoke all on function public.send_friend_request(text), public.respond_friend_request(bigint, boolean),
-  public.remove_friend(uuid), public.block_user(uuid), public.check_pair(uuid), public.send_gift(uuid, text),
+  public.remove_friend(uuid), public.block_user(uuid), public.check_pair(uuid), public.send_gift(uuid, text), public.borrow_staff(uuid, text),
   public.send_note(uuid, text), public.send_like(uuid), public.claim_mail(bigint), public.claim_all_mail(),
   public.delete_my_data(), public.are_friends(uuid, uuid), public.is_blocked(uuid, uuid), public.gen_friend_code() from public, anon;
 grant execute on function public.send_friend_request(text), public.respond_friend_request(bigint, boolean),
-  public.remove_friend(uuid), public.block_user(uuid), public.send_gift(uuid, text),
+  public.remove_friend(uuid), public.block_user(uuid), public.send_gift(uuid, text), public.borrow_staff(uuid, text),
   public.send_note(uuid, text), public.send_like(uuid), public.claim_mail(bigint), public.claim_all_mail(),
   public.delete_my_data(), public.are_friends(uuid, uuid), public.is_blocked(uuid, uuid), public.gen_friend_code() to authenticated;

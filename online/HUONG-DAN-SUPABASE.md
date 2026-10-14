@@ -29,6 +29,8 @@ Cập nhật 08/10/2026. Giao diện Supabase, Google và Facebook có thể đ�
 
 Tệp này chạy lại được nhiều lần (khi có bản cập nhật), không xóa dữ liệu đã có.
 
+**Cập nhật 14/10/2026 (mượn nhân viên của bạn bè):** chạy lại toàn bộ `supabase-schema.sql` một lần. Bản này thêm loại thư `wage` (tiền công) và hàm `borrow_staff`. Chưa chạy lại thì trong game bấm Mượn nhân viên sẽ báo "Máy chủ chưa cập nhật tính năng mượn người".
+
 ## 3. Đăng nhập
 
 **Authentication → Sign In / Providers**

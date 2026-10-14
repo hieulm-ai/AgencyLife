@@ -14,7 +14,9 @@ const OL_ERR={not_logged_in:'Cần đăng nhập trước.',code_not_found:'Khô
  not_friends:'Chỉ tương tác được với bạn bè.',bad_gift:'Món quà không hợp lệ.',gift_done_today:'Hôm nay bạn đã tặng quà cho agency này.',bad_note:'Lời nhắn 1–140 ký tự.',
  note_limit:'Hôm nay đã gửi đủ 3 lời nhắn cho agency này.',like_done_today:'Hôm nay bạn đã thích văn phòng này.',not_claimable:'Thư này đã nhận rồi.',
  bad_login:'Email hoặc mật khẩu chưa đúng.',email_taken:'Email này đã có tài khoản.',weak_pw:'Mật khẩu cần ít nhất 6 ký tự.',bad_email:'Email chưa đúng dạng.',
- offline:'Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.',no_server:'Chưa kết nối máy chủ.'};
+ offline:'Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.',no_server:'Chưa kết nối máy chủ.',
+ borrow_done_today:'Hôm nay bạn đã mượn người của agency này.',borrow_limit:'Hôm nay bạn đã mượn đủ 3 lượt.',borrow_bad_staff:'Không mượn được người này (có thể bạn ấy vừa đổi đội).',
+ borrow_no_office:'Bạn này chưa lưu văn phòng lên tài khoản.',borrow_staff:'Máy chủ chưa cập nhật tính năng mượn người.'};
 const olEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const olToday=()=>new Date(Date.now()+7*3600e3).toISOString().slice(0,10);
 function olErrText(e){const m=String(e&&e.message||e||'');const k=Object.keys(OL_ERR).find(k=>m.includes(k));return k?OL_ERR[k]:(/fetch|network|Failed/i.test(m)?OL_ERR.offline:'Có lỗi: '+m.slice(0,80));}
@@ -73,7 +75,10 @@ function olMockBackend(){
  const botTick=d=>{let u;try{u=me();}catch(e){return;}
   for(const b of OL_BOTS){if(!isFriend(d,u,b.id))continue;
    if(!d.mail.some(m=>m.kind==='gift'&&m.from_id===b.id&&m.to_id===u&&m.day===olToday())){const g=olGiftsToday();addMail(d,{to_id:u,from_id:b.id,kind:'gift',item:g[(b.code.charCodeAt(4)+olToday().length)%g.length]});
-    addMail(d,{to_id:u,from_id:b.id,kind:'note',body:BOT_NOTES[(d.seq+b.level)%BOT_NOTES.length]});}}};
+    addMail(d,{to_id:u,from_id:b.id,kind:'note',body:BOT_NOTES[(d.seq+b.level)%BOT_NOTES.length]});}}
+  // Sao Mai mượn 1 người của bạn mỗi ngày (khi đã lưu văn phòng) để thử thư tiền công
+  const sm=OL_BOTS[0],gs=d.offices[u]&&d.offices[u].data&&d.offices[u].data.gs,pick=gs&&Array.isArray(gs.staffIds)?gs.staffIds.find(id=>id!==(gs.player&&gs.player.id)&&id!==MASCOT_ID&&STAFF_ROLE[id]):null;
+  if(pick&&isFriend(d,u,sm.id)&&!d.mail.some(m=>m.kind==='wage'&&m.from_id===sm.id&&m.to_id===u&&m.day===olToday()))addMail(d,{to_id:u,from_id:sm.id,kind:'wage',item:'wage_'+pick.toLowerCase()});};
  const prof=(d,id)=>d.profiles[id]?{...d.profiles[id]}:{id,agency:'(đã rời game)',code:'',level:1,likes:0};
  return {
   kind:'mock',
@@ -110,17 +115,23 @@ function olMockBackend(){
    if(!ok){r.status='declined';put(d);return 'declined';}if(isBlocked(d,r.from_id,u))fail('blocked');if(nFriends(d,u)>=50||nFriends(d,r.from_id)>=50)fail('friend_limit');accept(d,r);put(d);return 'accepted';},
   async removeFriend(id){const d=db(),u=me();d.friends=d.friends.filter(f=>!((f[0]===u&&f[1]===id)||(f[0]===id&&f[1]===u)));d.requests=d.requests.filter(r=>!((r.from_id===u&&r.to_id===id)||(r.from_id===id&&r.to_id===u)));put(d);},
   async block(id){const d=db(),u=me();if(id===u)fail('self');if(!d.blocks.some(b=>b[0]===u&&b[1]===id))d.blocks.push([u,id]);put(d);await this.removeFriend(id);
-   const d2=db();d2.mail=d2.mail.filter(m=>!(m.to_id===u&&m.from_id===id&&!(m.kind==='gift'&&!m.claimed)));put(d2);},
+   const d2=db();d2.mail=d2.mail.filter(m=>!(m.to_id===u&&m.from_id===id&&!((m.kind==='gift'||m.kind==='wage')&&!m.claimed)));put(d2);},
   async mail(){const d=db(),u=me();botTick(d);put(d);return d.mail.filter(m=>m.to_id===u).sort((a,b)=>b.id-a.id).slice(0,100).map(m=>({...m,from:prof(d,m.from_id)}));},
-  async sentToday(id){const d=db(),u=me(),t=olToday(),s=d.mail.filter(m=>m.from_id===u&&m.to_id===id&&m.day===t);return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length};},
+  async sentToday(id){const d=db(),u=me(),t=olToday(),s=d.mail.filter(m=>m.from_id===u&&m.to_id===id&&m.day===t);return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length,borrow:s.some(m=>m.kind==='wage')};},
+  async borrowStaff(owner,staff){const d=db(),u=pair(d,owner);if(!/^[A-Za-z0-9_]{1,34}$/.test(String(staff))||staff===MASCOT_ID)fail('borrow_bad_staff');
+   const o=d.offices[owner]&&d.offices[owner].data;if(!o)fail('borrow_no_office');const gs=o.gs||{};
+   if(!Array.isArray(gs.staffIds)||!gs.staffIds.includes(staff)||(gs.player&&gs.player.id)===staff)fail('borrow_bad_staff');
+   if(d.mail.filter(m=>m.kind==='wage'&&m.from_id===u&&m.day===olToday()).length>=3)fail('borrow_limit');
+   if(d.mail.some(m=>m.kind==='wage'&&m.from_id===u&&m.to_id===owner&&m.day===olToday()))fail('borrow_done_today');
+   const row=addMail(d,{to_id:owner,from_id:u,kind:'wage',item:'wage_'+staff.toLowerCase()});put(d);return row.id;},
   async sendGift(to,item){const d=db(),u=pair(d,to);if(![...OL_GIFT_DECOR,...OL_GIFT_RUBY].includes(item))fail('bad_gift');
    if(d.mail.some(m=>m.kind==='gift'&&m.from_id===u&&m.to_id===to&&m.day===olToday()))fail('gift_done_today');addMail(d,{to_id:to,from_id:u,kind:'gift',item});put(d);},
   async sendNote(to,body){const d=db(),u=pair(d,to),b=String(body??'').trim();if(b.length<1||b.length>140)fail('bad_note');
    if(d.mail.filter(m=>m.kind==='note'&&m.from_id===u&&m.to_id===to&&m.day===olToday()).length>=3)fail('note_limit');addMail(d,{to_id:to,from_id:u,kind:'note',body:b});put(d);},
   async sendLike(to){const d=db(),u=pair(d,to);if(d.mail.some(m=>m.kind==='like'&&m.from_id===u&&m.to_id===to&&m.day===olToday()))fail('like_done_today');
    addMail(d,{to_id:to,from_id:u,kind:'like'});if(d.profiles[to])d.profiles[to].likes++;put(d);},
-  async claim(id){const d=db(),u=me(),m=d.mail.find(m=>m.id===id&&m.to_id===u&&m.kind==='gift'&&!m.claimed);if(!m)fail('not_claimable');m.claimed=true;put(d);return m.item;},
-  async claimAll(){const d=db(),u=me(),out=[];for(const m of d.mail)if(m.to_id===u&&m.kind==='gift'&&!m.claimed){m.claimed=true;out.push({id:m.id,item:m.item});}put(d);return out;},
+  async claim(id){const d=db(),u=me(),m=d.mail.find(m=>m.id===id&&m.to_id===u&&(m.kind==='gift'||m.kind==='wage')&&!m.claimed);if(!m)fail('not_claimable');m.claimed=true;put(d);return m.item;},
+  async claimAll(){const d=db(),u=me(),out=[];for(const m of d.mail)if(m.to_id===u&&(m.kind==='gift'||m.kind==='wage')&&!m.claimed){m.claimed=true;out.push({id:m.id,item:m.item});}put(d);return out;},
   async deleteMail(id){const d=db(),u=me();d.mail=d.mail.filter(m=>!(m.id===id&&m.to_id===u));put(d);},
   async deleteMyData(){const d=db(),u=me();d.mail=d.mail.filter(m=>m.to_id!==u&&m.from_id!==u);d.friends=d.friends.filter(f=>f[0]!==u&&f[1]!==u);
    d.requests=d.requests.filter(r=>r.from_id!==u&&r.to_id!==u);d.blocks=d.blocks.filter(b=>b[0]!==u&&b[1]!==u);delete d.offices[u];delete d.saves[u];delete d.profiles[u];put(d);}
@@ -169,7 +180,8 @@ function olSupabaseBackend(cfg){
   async removeFriend(id){chk(await sb.rpc('remove_friend',{p_other:id}));},
   async block(id){chk(await sb.rpc('block_user',{p_other:id}));},
   async mail(){const rows=chk(await sb.from('mail').select('*').eq('to_id',me()).order('created_at',{ascending:false}).limit(100));const m=await profs(rows.map(r=>r.from_id));return rows.map(r=>({...r,from:m[r.from_id]}));},
-  async sentToday(id){const s=chk(await sb.from('mail').select('kind').eq('from_id',me()).eq('to_id',id).eq('day',olToday()));return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length};},
+  async sentToday(id){const s=chk(await sb.from('mail').select('kind').eq('from_id',me()).eq('to_id',id).eq('day',olToday()));return {gift:s.some(m=>m.kind==='gift'),like:s.some(m=>m.kind==='like'),notes:s.filter(m=>m.kind==='note').length,borrow:s.some(m=>m.kind==='wage')};},
+  async borrowStaff(owner,staff){return chk(await sb.rpc('borrow_staff',{p_owner:owner,p_staff:staff}));},
   async sendGift(to,item){chk(await sb.rpc('send_gift',{p_to:to,p_item:item}));},
   async sendNote(to,body){chk(await sb.rpc('send_note',{p_to:to,p_body:body}));},
   async sendLike(to){chk(await sb.rpc('send_like',{p_to:to}));},
@@ -260,8 +272,8 @@ async function olRefreshSocial(){
  updateOnlineBadges();
  if(hubKey==='friends'||hubKey==='news'){const p=hubPage();if(p==='pFriends')renderFriends();else if(p==='pRequests')renderRequests();else if(p==='pMail')renderMail();updateHubTabs();}
 }
-function olUnclaimed(){return OL.mail.filter(m=>m.kind==='gift'&&!m.claimed).length;}
-function olUnseenMail(){const seen=(olLS(OL_META_KEY)||{}).mailSeen||0;return OL.mail.filter(m=>m.id>seen&&!(m.kind==='gift'&&!m.claimed)).length+olUnclaimed();}
+function olUnclaimed(){return OL.mail.filter(m=>(m.kind==='gift'||m.kind==='wage')&&!m.claimed).length;}
+function olUnseenMail(){const seen=(olLS(OL_META_KEY)||{}).mailSeen||0;return OL.mail.filter(m=>m.id>seen&&!((m.kind==='gift'||m.kind==='wage')&&!m.claimed)).length+olUnclaimed();}
 function updateOnlineBadges(){
  const show=(id,v)=>{const b=document.getElementById(id);if(!b)return;b.textContent=v||'';b.style.display=v?'flex':'none';};
  show('friendBadge',OL.user?OL.req.incoming.length:0);
@@ -410,11 +422,29 @@ function renderFriends(){
  el.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>olFriendMenu(OL.friends.find(f=>f.id===b.dataset.more)));
 }
 function olFriendMenu(p){if(!p)return;
- olBox(`<h2>${olEsc(p.agency)}</h2><p class="hub-note">LV ${p.level||1} · ${p.jobs||0} job đã xong · ❤ ${p.likes||0}</p><div class="ol-menu"><button class="btn y" data-a="visit">Tham quan</button><button class="btn c" data-a="remove">Xóa bạn</button><button class="btn rd" data-a="block">Chặn</button></div><div class="ask-act"><button class="btn c" data-ol-close>Đóng</button></div>`,(el,close)=>{
+ olBox(`<h2>${olEsc(p.agency)}</h2><p class="hub-note">LV ${p.level||1} · ${p.jobs||0} job đã xong · ❤ ${p.likes||0}</p><div class="ol-menu"><button class="btn y" data-a="visit">Tham quan</button><button class="btn g" data-a="borrow">Mượn nhân viên</button><button class="btn c" data-a="remove">Xóa bạn</button><button class="btn rd" data-a="block">Chặn</button></div><div class="ask-act"><button class="btn c" data-ol-close>Đóng</button></div>`,(el,close)=>{
   el.querySelector('[data-a="visit"]').onclick=()=>{close();olVisit(p.id);};
+  el.querySelector('[data-a="borrow"]').onclick=()=>{close();olBorrowPick(p);};
   el.querySelector('[data-a="remove"]').onclick=async()=>{close();if(!await askConfirm({title:'Xóa bạn?',text:`Xóa ${p.agency} khỏi danh sách bạn. Hai bên không xem văn phòng và gửi quà cho nhau được nữa.`,ok:'Xóa bạn',danger:true}))return;try{await OL.be.removeFriend(p.id);toast('Đã xóa bạn','ok');olRefreshSocial();}catch(e){toast(olErrText(e),'err');}};
   el.querySelector('[data-a="block"]').onclick=async()=>{close();if(!await askConfirm({title:'Chặn agency này?',text:`${p.agency} sẽ không kết bạn, nhắn tin hay tặng quà cho bạn được. Lời nhắn cũ của họ bị xóa.`,ok:'Chặn',danger:true}))return;try{await OL.be.block(p.id);toast('Đã chặn','ok');olRefreshSocial();}catch(e){toast(olErrText(e),'err');}};
  });
+}
+// Mượn nhân viên của bạn (borrow.js): chọn từ văn phòng bạn đã lưu lên tài khoản.
+async function olBorrowPick(p){
+ if(!OL.user)return openLogin();
+ let data;try{data=await OL.be.getOffice(p.id);}catch(e){toast(olErrText(e),'err');return;}
+ const gs=data&&data.gs;if(!gs||!Array.isArray(gs.staffIds)){toast(OL_ERR.borrow_no_office,'err');return;}
+ const owner=gs.player&&gs.player.id,ids=[...new Set(gs.staffIds)].filter(id=>id!==owner&&id!==MASCOT_ID&&STAFF_ROLE[id]&&CHARS.some(c=>c.id===id));
+ const today=borrowList().find(b=>b.day===GS.day);
+ olBox(`<h2>Mượn nhân viên của ${olEsc(p.agency)}</h2><p class="hub-note">Người được mượn làm cho bạn tới hết ngày game hôm nay rồi về, không tính lương. ${olEsc(p.agency)} vẫn giữ người và nhận tiền công bằng 2 ngày lương. Mỗi ngày game mượn 1 người.</p>
+  ${today?`<p class="hub-note"><b>Hôm nay đã mượn ${olEsc(staffName(today.id))} từ ${olEsc(today.agency)}.</b></p>`:''}
+  <div class="ol-borrow">${ids.length?ids.map(id=>{const why=borrowBlock(id);return `<button class="ol-gift" data-borrow="${olEsc(id)}"${why?' disabled':''}>${staffAvatar(id)}<span><b>${olEsc(staffName(id))}</b><br><small>${olEsc(STAFF_ROLE[id])}${why?' · '+olEsc(why):''}</small></span></button>`;}).join(''):'<p class="hub-note">Văn phòng của bạn này chưa có nhân viên để mượn.</p>'}</div>
+  <p class="ol-err" id="olErr" role="alert"></p><div class="ask-act"><button class="btn c" data-ol-close>Đóng</button></div>`,(el,close)=>{
+  el.querySelectorAll('[data-borrow]').forEach(b=>b.onclick=async()=>{const id=b.dataset.borrow,why=borrowBlock(id),er=el.querySelector('#olErr');
+   if(why){er.textContent=why;return;}
+   el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=true);
+   try{await OL.be.borrowStaff(p.id,id);startBorrow(id,{id:p.id,agency:p.agency});close();toast(`${staffName(id)} từ ${p.agency} đang tới làm giúp`,'ok');olPush(true);}
+   catch(e){er.textContent=olErrText(e);el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=!!borrowBlock(x.dataset.borrow));}});});
 }
 function renderRequests(){
  const el=document.getElementById('requestsBody');if(!el)return;
@@ -429,6 +459,8 @@ function renderRequests(){
 
 // ---------- Hộp thư → Thư ----------
 function olGiveGift(item,from){
+ const w=typeof borrowIdFromItem==='function'?borrowIdFromItem(item):null;
+ if(w){const v=borrowWage(w);cash=Math.round((cash+v)*100)/100;GS.revTotal=(GS.revTotal||0)+v;if(typeof addOfficeNews==='function')addOfficeNews('staff',`Nhận ${fmt(v)} tiền công: ${from} mượn ${staffName(w)}`);return `${fmt(v)} tiền công`;}
  const r=/^ruby_(\d)$/.exec(item);
  if(r){GS.gems+=+r[1];return `${r[1]} ruby`;}
  if(FBY[item]&&addToStore(item,1,'reward',`Quà từ ${from}`))return `${FBY[item].name} (vào Kho)`;
@@ -443,9 +475,11 @@ function renderMail(){
  const n=olUnclaimed();
  const row=m=>{const who=olEsc(m.from.agency),when=olEsc(m.day||'');
   if(m.kind==='gift')return `<div class="ol-row ol-mail${m.claimed?' done':''}"><span class="ol-av">${olGiftIcon(m.item,30)}</span><span class="ol-who"><b>${who} tặng bạn ${olEsc(olGiftName(m.item))}</b><small>${when}${m.claimed?' · đã nhận':''}</small></span><span class="ol-act">${m.claimed?'':`<button class="btn g" data-claim="${m.id}">Nhận</button>`}</span></div>`;
+  if(m.kind==='wage'){const sid=typeof borrowIdFromItem==='function'?borrowIdFromItem(m.item):null,nm=sid?olEsc(staffName(sid)):'nhân viên';
+   return `<div class="ol-row ol-mail${m.claimed?' done':''}"><span class="ol-av">${UIIMG('coin',28)}</span><span class="ol-who"><b>${who} mượn ${nm} một ngày</b><small>${when} · tiền công ${sid?fmt(borrowWage(sid)):''}${m.claimed?' · đã nhận':''}</small></span><span class="ol-act">${m.claimed?'':`<button class="btn g" data-claim="${m.id}">Nhận</button>`}</span></div>`;}
   if(m.kind==='like')return `<div class="ol-row ol-mail"><span class="ol-av">${UIIMG('heart',28)}</span><span class="ol-who"><b>${who} đã thích văn phòng của bạn</b><small>${when}</small></span><span class="ol-act"><button class="btn c" data-del="${m.id}" aria-label="Xóa thư">✕</button></span></div>`;
   return `<div class="ol-row ol-mail"><span class="ol-av">${UIIMG('mail',28)}</span><span class="ol-who"><b>${who}</b><small>${when}</small><span class="ol-note"></span></span><span class="ol-act"><button class="btn c" data-del="${m.id}" aria-label="Xóa thư">✕</button></span></div>`;};
- el.innerHTML=`${n?`<div class="ol-claimall"><span>${n} quà chưa nhận</span><button class="btn g" id="olClaimAll">Nhận tất cả</button></div>`:''}
+ el.innerHTML=`${n?`<div class="ol-claimall"><span>${n} quà / tiền công chưa nhận</span><button class="btn g" id="olClaimAll">Nhận tất cả</button></div>`:''}
   ${OL.mail.length?OL.mail.map(row).join(''):'<p class="hub-note">Chưa có thư. Quà, lời nhắn và lượt thích của bạn bè sẽ đến đây.</p>'}`;
  // lời nhắn là nội dung người dùng viết: gán bằng textContent
  el.querySelectorAll('.ol-note').forEach((s,i)=>{const notes=OL.mail.filter(m=>m.kind==='note');s.textContent=notes[i]?notes[i].body:'';});
@@ -455,7 +489,7 @@ function renderMail(){
  el.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{try{await OL.be.deleteMail(+b.dataset.del);OL.mail=OL.mail.filter(x=>x.id!==+b.dataset.del);renderMail();updateOnlineBadges();}catch(e){toast(olErrText(e),'err');}});
  const ca=el.querySelector('#olClaimAll');if(ca)ca.onclick=async()=>{ca.disabled=true;
   try{const rows=await OL.be.claimAll();const got=[];for(const r of rows){const m=OL.mail.find(x=>x.id===r.id);if(m)m.claimed=true;const g=olGiveGift(r.item,m?m.from.agency:'bạn bè');if(g)got.push(g);}
-   hud();save();updateHubBadges();toast(got.length?`Đã nhận ${got.length} quà: ${got.join(', ')}`:'Không còn quà chưa nhận','ok');}catch(e){toast(olErrText(e),'err');}
+   hud();save();updateHubBadges();toast(got.length?`Đã nhận ${got.length} món: ${got.join(', ')}`:'Không còn quà chưa nhận','ok');}catch(e){toast(olErrText(e),'err');}
   renderMail();updateOnlineBadges();updateHubTabs();};
  updateOnlineBadges();
 }
