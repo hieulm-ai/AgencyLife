@@ -11,8 +11,8 @@ test('nút "Từ chối job" dùng khung đỏ riêng (.btn.rd) và ảnh khung 
  assert.ok(m,'có luật .btn.rd');assert.ok(fs.existsSync(path.join(root,'static',m[1])),'ảnh khung đỏ nằm trong source/static');
 });
 
-test('thanh dưới V15: 5 trung tâm + ô Gói VIP rộng; icon có chữ; chấm thông báo 30px nằm trên góc khung',()=>{
- assert.match(css,/#nav\{grid-template-columns:repeat\(5,minmax\(0,1fr\)\) 1\.7fr!important/,'5 ô vuông + nút VIP rộng');
+test('thanh dưới: 5 trung tâm (bỏ ô Gói VIP 14/10); icon có chữ; chấm thông báo 30px nằm trên góc khung',()=>{
+ assert.match(css,/#nav\{grid-template-columns:repeat\(5,minmax\(0,1fr\)\)!important/,'5 ô, không còn nút VIP');
  assert.match(css,/#nav \.nb:not\(\.crown-wide\) \.ic img\{width:58px!important;height:58px!important\}/);
  assert.match(css,/#nav \.nl\{/,'mỗi trung tâm có chữ dưới icon');
  const b=last(/#nav \.bdg,#topR \.bdg,#expand \.bdg\{min-width:(\d+)px!important;height:(\d+)px/);assert.ok(+b[1]>=30&&+b[2]>=30);
@@ -35,4 +35,12 @@ test('vòng tiến trình (V17): theo bước được giao, có icon bộ phậ
  assert.match(tpl,/col:on\?"#4DB33D":"#A89C82",ic:ROLE_IC\[t\.s\.role\]/);assert.match(tpl,/col:"#3E7FD9",ic:"people"/);
  assert.match(tpl,/const im=r\.ic&&ringIcon\(r\.ic\); if\(im\) c\.drawImage\(im,x-4\.5,y-4\.5,9,9\);/);
  assert.match(tpl,/if\(!closingOffice\) for\(const a of AG\) if\(!a\.emo&&!\(a\.state==="use"&&a\.useObj\)\) drawProgressRing\(g,a\);/);
+});
+test('rà soát 14/10: thẻ đầu game không đè bảng; điện thoại ngang có cột trái, dải trên một hàng; thông báo không che màn mở đầu',()=>{
+ assert.match(css,/body\.hub-open #earlyPlay\{right:calc\(min\(400px,100vw - 28px\) \+ 28px\)\}/,'máy tính: thẻ dời sang trái bảng');
+ assert.match(css,/body\.hub-open #earlyPlay\{--early-mini:1/,'màn hẹp: thẻ thu thành nút');
+ assert.match(css,/@media\(max-height:500px\) and \(orientation:landscape\)\{[^]*#nav\{left:max\(4px,env\(safe-area-inset-left\)\)!important[^]*flex-direction:column!important/,'5 trung tâm thành cột trái');
+ assert.match(css,/#wrap #hub,#wrap\.hud-stacked #hub\{top:46px!important/,'bảng nằm dưới dải trên');
+ assert.match(tpl,/if\(typeof introOpen!=="undefined"&&introOpen\)\{ toastQ\.push\(\[m,k\]\)/,'giữ thông báo khi màn mở đầu mở');
+ assert.match(tpl,/<div class="jsec" data-sec="offers"><div id="jOff" class="hub-list"><\/div><details/,'danh sách job trước phần giải thích');
 });

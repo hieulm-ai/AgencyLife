@@ -169,11 +169,11 @@ test('mặt nạ vùng: đủ tư thế (dáng có sẵn 7, dáng vẽ riêng 6)
   for(const r of ['1','2','3','4']){const [lo,mid,hi]=b.lum[r];assert.ok(lo<mid&&mid<hi,`${key} vùng ${r}`);}
  }
 });
-test('thanh dưới V15: 5 trung tâm dùng icon đã cắt sát, có chữ; ô Gói VIP giữ nguyên chỗ',()=>{
+test('thanh dưới: 5 trung tâm dùng icon đã cắt sát, có chữ; không còn ô Gói VIP (14/10: VIP vào Cửa hàng ruby)',()=>{
  const build=read('build.py');
  for(const [id,k,label] of [['bJobs','brief','Công việc'],['bStaff','people','Đội ngũ'],['bBuild','hammer','Xây dựng'],['bShop','shop','Cửa hàng'],['bAch','trophy','Thành tựu']])
   assert.match(src,new RegExp(`id="${id}"[^\\n]*data-ic="nav_${k}"[^\\n]*<span class="nl">${label}</span>`));
- assert.match(src,/id="bVip"[^\n]*data-ic="crown"[^\n]*Gói VIP/);
+ assert.doesNotMatch(src,/id="bVip"/);
  assert.match(build,/NAV_ICONS=\['brief','people','hammer','shop','trophy'\]/);
  assert.match(src,/Object\.assign\(window\.UIICON,__NAVICON__\)/);
 });

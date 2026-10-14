@@ -1,5 +1,5 @@
 // ---------- Hệ thống bảng UI (V15, 07/10/2026) ----------
-// Thanh dưới: 5 trung tâm (Công việc · Đội ngũ · Xây dựng · Cửa hàng · Thành tựu) + ô Gói VIP (báo "Tính năng sắp mở").
+// Thanh dưới: 5 trung tâm (Công việc · Đội ngũ · Xây dựng · Cửa hàng · Thành tựu). 14/10: bỏ ô Gói VIP, VIP nằm trong Cửa hàng → Cửa hàng ruby.
 // Góc trên phải: Hôm nay · Bảng tin · Hướng dẫn (guide.js) · Cài đặt. Dải trên: nhân sự, coin, ruby, đồng hồ (không có nút tốc độ).
 // Mọi bảng mở trong 1 ngăn phải dùng chung (#hub): 1 ngăn tại 1 lúc, tiêu đề cố định, tối đa 4 tab và nhớ tab lần trước, ✕ hoặc Esc để đóng.
 // Các trang bên trong giữ id cũ (#jobs, #staff, #cat, #pGem, #pQuest, #pToday, #pNews, #menu): trang đang xem có lớp .open như trước.
@@ -11,16 +11,15 @@ const HUBS={
   {id:'income',label:'Thu khác',page:'jobs',jtab:'income'}]},
  team:{title:'Đội ngũ',icon:'people',btn:'bStaff',tabs:[
   {id:'staff',label:'Đội',page:'staff',stab:'team',count:()=>AG.length},
-  {id:'hire',label:'Tuyển',page:'staff',stab:'hire'},
-  {id:'skins',label:'Đồ mặc',page:'pGem',gem:'skins'}]},
+  {id:'hire',label:'Tuyển',page:'staff',stab:'hire'}]},
  build:{title:'Xây dựng',icon:'hammer',btn:'bBuild',tabs:[
   {id:'furn',label:'Nội thất',page:'cat',tool:'furn'},
   {id:'walls',label:'Tường & sàn',page:'pBuild',tool:'wall'},
   {id:'move',label:'Di chuyển',page:'pMove',tool:'move'},
   {id:'land',label:'Mở rộng',page:'pExpand'}]},
  shop:{title:'Cửa hàng',icon:'shop',btn:'bShop',tabs:[
-  {id:'shop',label:'Cửa hàng',page:'pGem',gem:'shop'},
-  {id:'topup',label:'Nạp',page:'pTopup'},
+  {id:'shop',label:'Cửa hàng ruby',page:'pGem',gem:'shop'},   // 14/10: gom mọi thứ tiêu ruby (gói, đồ mặc, nạp ruby, VIP) về một chỗ
+  {id:'topup',label:'Nạp coin',page:'pTopup'},
   {id:'store',label:'Kho',page:'pStore',count:()=>storeTotal()||''}]},
  ach:{title:'Thành tựu',icon:'trophy',btn:'bAch',tabs:[
   {id:'quests',label:'Nhiệm vụ',page:'pQuest'},
@@ -39,7 +38,7 @@ function openHub(key,tabId,opts={}){
  if(hubKey===key&&!tabId&&!opts.keep){closeHub();return;}   // bấm lại nút đang mở để đóng
  if(hubKey&&hubKey!==key)leaveHub(hubKey);
  hubKey=key;
- const hub=document.getElementById('hub');hub.hidden=false;hub.setAttribute('aria-label',H.title);document.getElementById('wrap').classList.add('hub-open');
+ const hub=document.getElementById('hub');hub.hidden=false;hub.setAttribute('aria-label',H.title);document.getElementById('wrap').classList.add('hub-open');document.body.classList.add('hub-open');
  document.getElementById('hubTitle').textContent=H.title;document.getElementById('hubIc').innerHTML=UIIMG(H.icon,30);
  for(const [k,h] of Object.entries(HUBS)){const b=document.getElementById(h.btn);if(!b)continue;b.setAttribute('aria-expanded',String(k===key));if(b.classList.contains('nb'))b.setAttribute('aria-pressed',String(k===key));}
  document.getElementById('agentCard')?.classList.remove('open');
@@ -53,7 +52,7 @@ function leaveHub(key){
 function closeHub(){
  if(!hubKey)return;
  const key=hubKey;leaveHub(key);hubKey=null;hubTab=null;
- document.getElementById('hub').hidden=true;document.getElementById('wrap').classList.remove('hub-open');
+ document.getElementById('hub').hidden=true;document.getElementById('wrap').classList.remove('hub-open');document.body.classList.remove('hub-open');
  document.querySelectorAll('#hubBody>.hub-page').forEach(p=>p.classList.remove('open'));
  for(const h of Object.values(HUBS)){const b=document.getElementById(h.btn);if(!b)continue;b.setAttribute('aria-expanded','false');if(b.classList.contains('nb'))b.setAttribute('aria-pressed','false');}
  updateCtxBar();
@@ -150,15 +149,17 @@ function showUiNotice(){
 function askOpen(){return !document.getElementById('askBox').hidden;}
 function showSoon(){return askConfirm({title:'Tính năng sắp mở',text:'Gói VIP chưa mở trong bản chơi thử này.',ok:'Đã hiểu',cancel:null,icon:'crown'});}
 // Nạp (tab trong Cửa hàng). Bản chơi thử: chưa nối cổng thanh toán, bấm Nhận để thử luồng nạp.
+// Nạp coin (tab trong Cửa hàng); nạp ruby nằm trong Cửa hàng ruby. Bản chơi thử: chưa nối cổng thanh toán.
+const TOPUP_GEM=[[60,'Túi nhỏ'],[300,'Rương'],[980,'Kho báu']];
+function topupCard(kind,[v,n],tier){return `<div class="pack"><span class="ic">${UIIMG(kind==='gem'?'gem':'coin',36)}</span><span><b>${kind==='gem'?v+' 💎':fmt(v)}</b><br><small>${n}</small></span><button class="btn g" data-tp-kind="${kind}" data-tp="${v}" data-tier="${tier}">Mua</button></div>`;}
+function bindTopup(el){el.querySelectorAll('[data-tp]').forEach(b=>b.onclick=()=>openSupportDrink(b.dataset.tpKind,+b.dataset.tp,+b.dataset.tier));}
 function renderTopup(focus){
  const el=document.getElementById('topupBody');if(!el)return;
- const coin=[[Math.round(plotPrice()*0.2),'Túi coin'],[Math.round(plotPrice()*0.5),'Bao coin'],[plotPrice(),'Két coin']],gem=[[60,'Túi nhỏ'],[300,'Rương'],[980,'Kho báu']];
- const card=(kind,[v,n],tier)=>`<div class="pack"><span class="ic">${UIIMG(kind==='gem'?'gem':'coin',36)}</span><span><b>${kind==='gem'?v+' 💎':fmt(v)}</b><br><small>${n}</small></span><button class="btn g" data-tp-kind="${kind}" data-tp="${v}" data-tier="${tier}">Mua</button></div>`;
- el.innerHTML=gemify(`<p class="hub-note">Bản chơi thử: chưa kết nối cổng thanh toán. Chọn gói để mời NPH một cốc nước ☕. Tính năng sắp ra mắt.</p><div class="cg2" id="topCoin">Nạp coin</div>${coin.map((x,i)=>card('coin',x,i)).join('')}<div class="cg2" id="topGem">Nạp ruby</div>${gem.map((x,i)=>card('gem',x,i)).join('')}`);
- el.querySelectorAll('[data-tp]').forEach(b=>b.onclick=()=>openSupportDrink(b.dataset.tpKind,+b.dataset.tp,+b.dataset.tier));
- if(focus)el.querySelector(focus==='gem'?'#topGem':'#topCoin')?.scrollIntoView({block:'start'});
+ const coin=[[Math.round(plotPrice()*0.2),'Túi coin'],[Math.round(plotPrice()*0.5),'Bao coin'],[plotPrice(),'Két coin']];
+ el.innerHTML=gemify(`<p class="hub-note">Bản chơi thử: chưa kết nối cổng thanh toán. Chọn gói để mời NPH một cốc nước ☕. Nạp ruby ở tab Cửa hàng ruby.</p><div class="cg2" id="topCoin">Nạp coin</div>${coin.map((x,i)=>topupCard('coin',x,i)).join('')}`);
+ bindTopup(el);
 }
-function openTopup(kind){openHub('shop','topup',{keep:true,focus:kind==='gem'?'gem':'coin'});}
+function openTopup(kind){if(kind==='gem'){gemSub='topup';openHub('shop','shop',{keep:true});return;}openHub('shop','topup',{keep:true,focus:'coin'});}
 // Mở rộng (tab trong Xây dựng): giá khu tiếp theo, số dư và các khu liền kề mở được.
 function renderExpandPage(force){
  const el=document.getElementById('expandBody');if(!el)return;
@@ -174,7 +175,6 @@ function renderExpandPage(force){
  const byId=id=>document.getElementById(id);
  for(const [k,h] of Object.entries(HUBS))byId(h.btn)?.addEventListener('click',()=>openHub(k));
  byId('hubX').onclick=closeHub;
- byId('bVip').onclick=showSoon;
  byId('ctxDone').onclick=closeHub;
  byId('cashPlus').onclick=()=>openTopup('coin');byId('gemPlus').onclick=()=>openTopup('gem');
  byId('pKeep').onclick=()=>stashPend();

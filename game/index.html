@@ -474,7 +474,7 @@ button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:3p
 .ask-box .ask-text{margin:0;font-size:14px;line-height:1.5;color:#3A2414}
 .ask-act{display:flex;gap:10px;justify-content:center;width:100%;margin-top:4px}.ask-act .btn{min-width:120px;min-height:42px}.ask-act .btn[hidden]{display:none}
 /* Thanh dưới: 5 trung tâm có chữ + ô Gói VIP rộng */
-#nav{grid-template-columns:repeat(5,minmax(0,1fr)) 1.7fr!important;width:min(820px,calc(100% - 28px))}
+#nav{grid-template-columns:repeat(5,minmax(0,1fr))!important;width:min(700px,calc(100% - 28px))}   /* 14/10: bỏ ô Gói VIP */
 #nav .nb{height:96px}
 #nav .nb:not(.crown-wide){flex-direction:column!important;gap:0}
 #nav .nb:not(.crown-wide) .ic{flex:1;height:auto!important;min-height:0;transform:none}
@@ -737,6 +737,56 @@ html,body{width:100%;height:100%;overscroll-behavior:none}
 @media(max-height:500px) and (orientation:landscape){#intro .intro-opts{grid-template-columns:1fr 1fr;gap:10px}}
 @media(max-height:500px){#intro .intro-perk{font-size:11.5px;margin:0}}
 
+/* Cửa hàng ruby (14/10): một tab, chia nhóm bằng hàng nút nhỏ */
+.gem-subs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}.gem-subs .btn{flex:1 1 auto;min-height:34px;padding:4px 8px;font-size:12.5px}
+
+/* ---------- 14/10: rà soát giao diện ---------- */
+/* Thẻ việc đầu game không đè bảng: máy tính dời sang trái bảng; màn hẹp thu thành nút nhỏ (chạm để đóng bảng và chọn). */
+body.hub-open #earlyPlay{right:calc(min(400px,100vw - 28px) + 28px)}
+@media(max-width:1000px){body.hub-open #earlyPlay{right:calc(min(380px,50vw) + 22px)}}
+@media(max-width:1000px),(max-height:500px){
+ body.hub-open #earlyPlay{--early-mini:1;width:auto;max-width:200px;padding:6px 12px;gap:0;cursor:pointer;left:auto}
+ body.hub-open #earlyPlay>*:not(b){display:none!important}
+ body.hub-open #earlyPlay b{font-size:12px;white-space:nowrap}
+ body.hub-open #earlyPlay b::before{content:"👉 "}
+}
+/* Công việc: dòng năng lượng gộp vào một dòng có ⓘ */
+#jobs .en-row{margin:0 0 6px}#jobs .en-row>summary{font-size:13px}
+/* Xếp hạng: 4 nút chỉ số một hàng */
+.ol-rankby{flex-wrap:nowrap}.ol-rankby .btn{flex:1 1 0;min-width:0;padding:4px 4px;font-size:12px;white-space:nowrap}
+/* Thông báo ở màn đăng ký / màn chính: sát mép trên, không đè ô nhập */
+.title-view #toast{top:max(6px,env(safe-area-inset-top))!important;font-size:13px;padding:6px 14px}
+
+/* Điện thoại xoay ngang: văn phòng chiếm ≥ 80% màn hình.
+   Dải trên một hàng thấp; 5 trung tâm thành cột dọc bên trái; bảng mở bên phải nằm dưới dải trên. */
+@media(max-height:500px) and (orientation:landscape){
+ #co{transform:scale(.6)!important;transform-origin:top left!important;top:4px!important;left:max(4px,env(safe-area-inset-left))!important}
+ #topR{transform:scale(.72)!important;transform-origin:top right!important;top:4px!important;right:max(4px,env(safe-area-inset-right))!important}
+ #wrap #res,#wrap.hud-stacked #res,#wrap.hud-compact #res{top:6px!important}
+ #res .pill,#res .staff-pill{height:30px!important;padding-top:0!important;padding-bottom:0!important}#res .pill b{font-size:12px!important}#res .ic img{width:20px!important;height:20px!important}
+ #res .pill .plus{width:20px!important;height:20px!important;flex-basis:20px!important;font-size:14px!important}
+ #nav{left:max(4px,env(safe-area-inset-left))!important;right:auto!important;top:50px!important;bottom:auto!important;transform:none!important;width:58px!important;height:auto!important;display:flex!important;flex-direction:column!important;gap:4px!important}
+ #nav .nb{width:58px!important;height:50px!important;min-height:44px!important;padding:2px!important;border-radius:12px!important}
+ #nav .nb:not(.crown-wide) .ic img{width:24px!important;height:24px!important}
+ #nav .nl{font-size:9px!important;margin:0!important;line-height:1.1!important}
+ #nav .bdg{transform:scale(.7)}
+ #wrap #hub,#wrap.hud-stacked #hub{top:46px!important;bottom:6px!important;right:6px!important}
+ #earlyPlay{bottom:8px!important;right:8px!important}
+ #toast{top:46px!important}
+ #ctxbar{bottom:6px!important}
+ /* bảng: tab một hàng (vuốt ngang nếu dài), đầu bảng thấp để chừa chỗ nội dung */
+ #hub .hub-tabs{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}
+ #hub .hub-tabs .hub-tab{min-height:32px!important;padding:3px 9px!important;font-size:12px!important;white-space:nowrap;flex:0 0 auto}
+ #hub .hub-head{min-height:30px}#hub .hub-x{width:32px!important;height:32px!important}
+ #hub .hub-body .btn{min-height:34px}
+ /* thẻ việc đầu game: gọn hơn; khi mở bảng thì thành nút nhỏ cạnh cột trái */
+ #earlyPlay{width:250px!important;padding:6px 26px 6px 8px!important;gap:3px!important}
+ #earlyPlay .btn{min-height:30px!important;font-size:10.5px!important;padding:3px!important}
+ #earlyPlay small{font-size:10px!important}
+ body.hub-open #earlyPlay{left:calc(max(4px,env(safe-area-inset-left)) + 66px)!important;right:auto!important;width:auto!important;padding:5px 10px!important}
+ .ol-rankby .btn{font-size:11px!important;padding:2px!important}
+}
+
 body.booting #wrap{visibility:hidden}
 #boot[hidden],#titleScreen[hidden]{display:none!important}
 #boot{position:fixed;inset:0;z-index:5000;background:#f6e7c7;display:grid;place-items:center;text-align:center;color:#4a2a1a;padding:24px}
@@ -878,7 +928,7 @@ body.booting #wrap{visibility:hidden}
  <div class="hub-head"><span class="hub-ic" id="hubIc" aria-hidden="true"></span><h2 id="hubTitle">Công việc</h2><button id="hubX" class="hub-x" aria-label="Đóng bảng" title="Đóng (Esc)">✕</button></div>
  <div class="hub-tabs" id="hubTabs" role="tablist" aria-label="Mục trong bảng"></div>
  <div class="hub-body" id="hubBody">
-  <section id="jobs" class="hub-page" data-tab="offers" aria-label="Công việc"><p class="hub-note en-line">⚡ <span id="enJob">120/120</span> · Còn hôm nay: <span id="enDayLeft">200</span>⚡</p><details class="compact-details"><summary>Năng lượng ⓘ</summary><p class="hub-note">Hồi 1 năng lượng mỗi 90 giây, tối đa 120, kể cả khi nghỉ hoặc đọc hướng dẫn. Hạn mức dùng 200/ngày thật không đặt lại khi sang ngày mới trong game.</p></details><div id="jobList"></div></section>
+  <section id="jobs" class="hub-page" data-tab="offers" aria-label="Công việc"><details class="compact-details en-row"><summary><span class="en-line">⚡ <span id="enJob">120/120</span> · Còn hôm nay: <span id="enDayLeft">200</span>⚡</span> ⓘ</summary><p class="hub-note">Hồi 1 năng lượng mỗi 90 giây, tối đa 120, kể cả khi nghỉ hoặc đọc hướng dẫn. Hạn mức dùng 200/ngày thật không đặt lại khi sang ngày mới trong game.</p></details><div id="jobList"></div></section>
   <section id="staff" class="hub-page" data-tab="team" aria-label="Đội ngũ"><div id="staffList"></div></section>
   <section id="cat" class="hub-page" aria-label="Nội thất"><p class="hub-note">Chọn món rồi bấm lên sàn để xem vị trí → <b>Đồng ý</b> · <b>Từ chối</b> · <b>Xoay</b> (R hoặc chuột phải) · <b>Vào kho</b> để mua để dành.</p><div id="storePick" class="store-pick" hidden></div><div id="catList" role="listbox"></div></section>
   <section id="pBuild" class="hub-page" aria-label="Tường và sàn"><p class="hub-note">Chọn công cụ rồi kéo trên sàn. Kéo lên tường có sẵn, kể cả tường bao quanh, để thay bằng kiểu đang chọn. Phá: bấm vào tường hoặc món đồ để bán lại (hoàn 50%); tường bao quanh trở về tường kem.</p>
@@ -925,7 +975,6 @@ body.booting #wrap{visibility:hidden}
  <button class="pf nb" id="bBuild" aria-controls="hub" aria-expanded="false" aria-pressed="false"><span class="ic" data-ic="nav_hammer" data-s="62"></span><span class="nl">Xây dựng</span><span class="bdg" id="expBadge">!</span></button>
  <button class="pf nb" id="bShop" aria-controls="hub" aria-expanded="false" aria-pressed="false"><span class="ic" data-ic="nav_shop" data-s="62"></span><span class="nl">Cửa hàng</span><span class="bdg" id="storeBadge"></span></button>
  <button class="pf nb" id="bAch" aria-controls="hub" aria-expanded="false" aria-pressed="false"><span class="ic" data-ic="nav_trophy" data-s="62"></span><span class="nl">Thành tựu</span><span class="bdg" id="questBadge"></span></button>
- <button class="pf nb crown-wide" id="bVip" aria-haspopup="dialog"><span class="ic" data-ic="crown" data-s="62"></span><span class="nl">Gói VIP</span></button>
 </nav>
 <div id="agentCard" class="ov pf"></div>
 <div id="unlockBox" class="ov pf" role="dialog" aria-label="Mở rộng khu"></div>
@@ -1891,7 +1940,9 @@ function earlyRender(){
  const choices={brief:[['clear','brief','Rõ ràng'],['playful','palette','Vui nhộn']],idea:[['safe','pen','An toàn'],['bold','star','Táo bạo · +10% thưởng']],review:[['send','clip','Gửi khách'],['polish','palette','Chỉnh thêm · +5% thưởng']]};
  const title={brief:'Chọn brief',idea:'Chọn ý tưởng',review:'Duyệt sản phẩm'};
  box.innerHTML=`<button class="early-close" aria-label="Đóng hướng dẫn" title="Đóng">×</button><b>${j?title[kind]:'Agency đầu tiên của bạn'}</b><small>${j?olEsc(j.name):'Đón khách · Làm job · Nhận thưởng'}</small>${j?`${kind==='review'?`<div class="early-preview">${jobArtwork(j)}<span>${j.early.brief==='playful'?'Vui nhộn':'Rõ ràng'} · ${j.early.idea==='bold'?'Táo bạo':'An toàn'}</span></div>`:''}<div class="early-actions">${choices[kind].map(([value,icon,label])=>`<button class="btn c" data-choice="${value}">${UIIMG(icon,28)}${label}</button>`).join('')}</div><small>Tự chọn ${kind==='review'?'Gửi khách':kind==='idea'?'An toàn':'Rõ ràng'} sau ${Math.max(0,Math.ceil(EARLY_CHOICE_MIN-(earlyNow()-(j.early?.[kind+'At']??earlyNow()))))} phút game</small>`:''}<div class="early-actions"><button class="btn c" id="earlyWater" ${GS.offers.some(o=>!o.received&&!o.earlyWater)?'':'disabled'}>${UIIMG('coffee',20)}Mời nước</button><button class="btn c" id="earlyCheer" ${(GS.earlyCheerUntil||0)>earlyNow()?'disabled':''}>${UIIMG('heart',20)}Động viên</button><button class="btn c" id="earlyBuild">${UIIMG('chair',20)}Nội thất</button></div>`;
- box.querySelector('.early-close').onclick=()=>{earlyDismissed=true;box.remove();};
+ box.querySelector('.early-close').onclick=e=>{e.stopPropagation();earlyDismissed=true;box.remove();};
+ // Điện thoại: đang mở bảng thì thẻ thu thành nút nhỏ; chạm vào thì đóng bảng để chọn.
+ box.onclick=e=>{if(document.body.classList.contains('hub-open')&&getComputedStyle(box).getPropertyValue('--early-mini').trim()==='1'){e.preventDefault();e.stopPropagation();if(typeof closeHub==='function')closeHub();}};
  box.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>earlyChoose(j.id,kind,b.dataset.choice));
  box.querySelector('#earlyWater').onclick=earlyWater;box.querySelector('#earlyCheer').onclick=earlyCheer;box.querySelector('#earlyBuild').onclick=()=>document.getElementById('bBuild')?.click();
 }
@@ -2998,7 +3049,9 @@ function planFor(cells){ const occ=agentTiles(), ok=[], bad=[];
   return {ok,bad,cost}; }
 const fmt=n=>Math.abs(n)>=1000?(n/1000).toLocaleString("vi-VN",{maximumFractionDigits:2})+" tỷ":n.toLocaleString("vi-VN",{maximumFractionDigits:2})+" tr";
 function hud(){ document.getElementById("cash").textContent=fmt(Math.round(cash*100)/100); document.getElementById("cashPill").classList.toggle("warn",cash<0);  if(typeof renderRepChip==="function") renderRepChip(); }
-let tT; function toast(m,k){ const t=document.getElementById("toast"); t.innerHTML=gemify(String(m).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]))); t.className="ov pf show "+(k||""); clearTimeout(tT); tT=setTimeout(()=>t.className="ov pf",2200); }
+// Màn mở đầu đang mở: giữ thông báo lại, đóng màn rồi mới hiện (không che tiêu đề và thẻ chọn nhân vật).
+let tT, toastQ=[]; function flushToasts(){ const q=toastQ; toastQ=[]; q.forEach(([m,k],i)=>setTimeout(()=>toast(m,k),i*2400)); }
+function toast(m,k){ if(typeof introOpen!=="undefined"&&introOpen){ toastQ.push([m,k]); if(toastQ.length>4) toastQ.shift(); return; } const t=document.getElementById("toast"); t.innerHTML=gemify(String(m).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]))); t.className="ov pf show "+(k||""); clearTimeout(tT); tT=setTimeout(()=>t.className="ov pf",2200); }
 function commit(p){ if(!p.ok.length){ if(p.bad.length) toast(tool==="door"?"Cửa chỉ đặt được trên tường bạn đã xây":tool==="wall"&&selWall==="lancan"&&p.bad.some(([x,y])=>at(x,y)===3)?"Tường bao quanh không đổi thành lan can được":"Ô này không xây được","err"); return; }
   if(!UNLIM&&p.cost>cash+1e-9){ toast(`Không đủ tiền: cần ${fmt(p.cost)}, có ${fmt(cash)}`,"err"); return; }
   const before=p.ok.map(([x,y])=>{ const k=x+","+y; return [x,y,G[y][x],WS[k],DS[k],FL[k]]; });
@@ -3243,22 +3296,29 @@ function checkAch(){ for(const [k,t,f,r] of ACH) if(!GS.ach[k]&&f()){ GS.ach[k]=
 const STREAK=[5,5,10,10,15,15,30];
 function loginBonus(){ const d=today(); if(GS.lastLogin===d) return; const y=new Date(Date.now()-86400000).toISOString().slice(0,10);
   GS.streak=(GS.lastLogin===y)?(GS.streak%7)+1:1; GS.lastLogin=d; addGems(STREAK[GS.streak-1],`Đăng nhập ngày ${GS.streak}/7`); }
-let gemTab="shop";
+let gemTab="shop", gemSub="items";   // Cửa hàng ruby: items | skins | topup | vip
 // V15: nội dung ngăn #pGem theo tab của trung tâm đang mở — shop (Cửa hàng), skins (Đội ngũ → Trang phục),
 // earn (Thành tựu → Quà & Pass), achievements (Thành tựu → Thành tựu). Tiêu đề và tab do khung #hub lo.
 function renderGemShop(){ const el=document.getElementById("gemShop"); if(!el) return; ensureDQ();
   let body="";
-  if(gemTab==="shop"){ body=`<p class="hub-note"><b>${GS.gems}💎</b></p>`+renderSupportPacks()+`<div class="cg2">Dùng ngay</div>`+GEM_SHOP.map(it=>`<div class="pack">${UIIMG(({energy:'bolt',rush:'fast',chill:'coffee',newjobs:'brief',kol:'star'})[it.k]||'gift',36)}<span><b style="font-size:14px">${it.name}</b><br><span style="font-size:11.5px">${it.desc}${it.k==="kol"&&GS.kolDay===GS.day?" · <b>đang hiệu lực</b>":""}</span></span><button class="btn b" data-gem="${it.k}">${it.cost}💎</button></div>`).join("")
+  if(gemTab==="shop"){ const subs=[["items","Gói & vật phẩm"],["skins","Đồ mặc"],["topup","Nạp ruby"],["vip","VIP"]]; if(!subs.some(x=>x[0]===gemSub)) gemSub="items";
+    body=`<p class="hub-note gem-bal"><b>${GS.gems}💎</b></p><div class="gem-subs" role="tablist" aria-label="Cửa hàng ruby">${subs.map(([k,n])=>`<button class="btn ${k===gemSub?"y":"c"}" role="tab" aria-selected="${k===gemSub}" data-gsub="${k}">${n}</button>`).join("")}</div>`;
+    if(gemSub==="skins") body+=renderSkinShop();
+    else if(gemSub==="topup") body+=`<p class="hub-note">Bản chơi thử: chưa kết nối cổng thanh toán. Chọn gói để mời NPH một cốc nước ☕.</p>`+TOPUP_GEM.map((x,i)=>topupCard("gem",x,i)).join("");
+    else if(gemSub==="vip") body+=`<div class="pack" style="grid-template-columns:44px 1fr">${UIIMG("crown",40)}<span><b style="font-size:14px">Gói VIP</b><br><span style="font-size:12px">Chưa mở trong bản chơi thử này.</span></span></div>`;
+    else body+=renderSupportPacks()+`<div class="cg2">Dùng ngay</div>`+GEM_SHOP.map(it=>`<div class="pack">${UIIMG(({energy:'bolt',rush:'fast',chill:'coffee',newjobs:'brief',kol:'star'})[it.k]||'gift',36)}<span><b style="font-size:14px">${it.name}</b><br><span style="font-size:11.5px">${it.desc}${it.k==="kol"&&GS.kolDay===GS.day?" · <b>đang hiệu lực</b>":""}</span></span><button class="btn b" data-gem="${it.k}">${it.cost}💎</button></div>`).join("")
      +`<details class="compact-details"><summary>Vật phẩm đặc biệt ⓘ</summary><p class="hub-note">Mua tại Xây dựng › Nội thất › Đặc biệt (ruby).</p>`+GEM_SOON.map(([n,c,d])=>`<div class="pack" style="grid-template-columns:1fr auto"><span><b style="font-size:13px">${n}</b><br><span style="font-size:11px">${d}</span></span><b>${c}💎</b></div>`).join("")+`</details>`; }
   else if(gemTab==="achievements"){ body=renderReputation()+`<div class="cg2">Thành tựu của agency (1 lần)</div>`+ACH.map(([k,t,f,r])=>{ const item=ACH_ITEMS[k]&&FBY[ACH_ITEMS[k]]; return `<div class="pack ach${GS.ach[k]?" done":""}" style="grid-template-columns:1fr auto"><span>${GS.ach[k]?"✓ ":""}${t}${item?`<br><small>Quà: ${item.name} vào Kho</small>`:""}</span><b>${r}💎</b></div>`; }).join(""); }
   else if(gemTab==="skins"){ body=renderSkinShop(); }
   else { body=renderWeeklyPass()+`<div class="cg2">Đăng nhập liên tiếp (ngày ${GS.streak||0}/7)</div><div style="display:flex;gap:4px">${STREAK.map((v,i)=>`<div style="flex:1;text-align:center;padding:4px 0;border-radius:8px;border:2px solid ${i<GS.streak?"#6CC24A":"#EBD3A4"};background:${i<GS.streak?"#E3F6D6":"#FFFBEF"};font-family:var(--rf);font-size:12px;font-weight:800">N${i+1}<br>${v}💎</div>`).join("")}</div>`
-     +`<div class="cg2">Nguồn ruby khác</div><div style="font-size:12px;line-height:1.5">• Nhiệm vụ chính và nhiệm vụ hôm nay: tab Nhiệm vụ<br>• Thành tựu: tab Thành tựu<br>• Mở khu mới: +10💎<br>• Job VIP (khoảng 12% khách): +3–8💎<br>• Xong job trước hạn: +1💎<br>• Giải thưởng sáng tạo tuần: +20💎<br>• Nạp ruby: Cửa hàng → Nạp</div>`; }
+     +`<div class="cg2">Nguồn ruby khác</div><div style="font-size:12px;line-height:1.5">• Nhiệm vụ chính và nhiệm vụ hôm nay: tab Nhiệm vụ<br>• Thành tựu: tab Thành tựu<br>• Mở khu mới: +10💎<br>• Job VIP (khoảng 12% khách): +3–8💎<br>• Xong job trước hạn: +1💎<br>• Giải thưởng sáng tạo tuần: +20💎<br>• Nạp ruby: Cửa hàng → Cửa hàng ruby → Nạp ruby</div>`; }
   el.innerHTML=gemify(body);
   el.querySelectorAll("[data-support]").forEach(b=>b.onclick=()=>buySupportPack(b.dataset.support));
   el.querySelectorAll("[data-pass-week]").forEach(b=>b.onclick=()=>claimPassReward(+b.dataset.passWeek,+b.dataset.passIndex));
   el.querySelectorAll("[data-skin]").forEach(b=>b.onclick=()=>changeSkin(b.dataset.skin));
-  el.querySelectorAll("[data-gem]").forEach(b=>b.onclick=()=>useGem(b.dataset.gem)); }
+  el.querySelectorAll("[data-gem]").forEach(b=>b.onclick=()=>useGem(b.dataset.gem));
+  el.querySelectorAll("[data-gsub]").forEach(b=>b.onclick=()=>{gemSub=b.dataset.gsub;renderGemShop();});
+  if(typeof bindTopup==="function") bindTopup(el); }
 // Nhiệm vụ hôm nay (đổi mới theo ngày thật) — hiện trong Thành tựu → Nhiệm vụ.
 function renderDailyQuests(){ const el=document.getElementById("dqList"); if(!el) return; ensureDQ();
   const html=gemify(GS.dq.items.map(q=>`<div class="q${q.c?" done":""}"><span>${q.t}</span><span class="rw">${q.r}💎</span><div class="pbar"><i style="width:${Math.round(q.p/q.g*100)}%"></i><span>${q.p}/${q.g}</span></div><span></span></div>`).join(""));
@@ -3357,7 +3417,7 @@ function renderJobs(){ const el=document.getElementById("jobList"); if(!el) retu
   srcs.push(`<div class="job off"><div class="jt"><b>Bán template số</b><span class="num">${lvl()>=3?GS.templates+"/20 mẫu":"cấp 3"}</span></div><div class="jm">Mỗi job thiết kế xong tạo 1 mẫu; mỗi mẫu +${fmt(Math.round(0.5*M*10)/10)}/ngày</div></div>`);
   srcs.push(`<div class="job off"><div class="jt"><b>Giải thưởng sáng tạo</b><span class="num">${lvl()>=4?GS.weekDone+"/10 job":"cấp 4"}</span></div><div class="jm">Mỗi 7 ngày, xong ≥ 10 job: thưởng 25% giá khu kế tiếp</div></div>`);
   const srcHtml=srcs.map((html,i)=>html.replace('<div class="job off">',`<div class="job off income-card"><span class="income-icon">${UIIMG(['brief','book','shop','chart','trophy'][i],30)}</span>`).replace(/<div class="jm">(.*?)<\/div>/g,(_,text)=>text.startsWith('Мở')||text.startsWith('Mở')||text.startsWith('Cần')?`<div class="jm">${text}</div>`:`<details class="compact-details"><summary>Điều kiện ⓘ</summary><div class="jm">${text}</div></details>`)).join("");
-  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details><div id="jOff" class="hub-list"></div></div><div class="jsec" data-sec="active"><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Lễ tân (HR / Kế toán / Trợ lý) → Account → Content → Design. Giá trị job quyết định khối lượng công việc. Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
+  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><div id="jOff" class="hub-list"></div><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details></div><div class="jsec" data-sec="active"><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Lễ tân → Account (brief) → Planner (chia việc) → Content → Design. Giá trị job quyết định khối lượng công việc. Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
     el.addEventListener("click",e=>{ if(e.target.closest("[data-sort-deadline]")){sortJobsByDeadline();return;} const pause=e.target.closest("[data-pause-job]");if(pause){toggleJobPaused(+pause.dataset.pauseJob);return;} const decline=e.target.closest("[data-decline]");if(decline){const id=+decline.dataset.decline;const offer=GS.offers.find(j=>j.id===id);if(offer)askConfirm({title:`Từ chối ${offer.name}?`,text:"Khách sẽ ra về, không mất coin hay danh tiếng.",ok:"Từ chối job",danger:true}).then(ok=>{if(ok)declineOffer(id);});return;} const workplace=e.target.closest("[data-workplace]");if(workplace){fSel=workplace.dataset.workplace;fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt, chừa ô ghế và lối vào","ok");return;} const collect=e.target.closest("[data-collect]");if(collect){sendCollector(+collect.dataset.collect,collect.dataset.person);return;} const editor=e.target.closest("[data-team-edit]");if(editor){const id=+editor.dataset.teamEdit;teamEditorJob=teamEditorJob===id?null:id;renderJobs();return;} const team=e.target.closest("[data-team-job]");if(team){setJobStaff(+team.dataset.teamJob,team.dataset.teamId);return;} const priority=e.target.closest("[data-priority]");if(priority){prioritizeJob(+priority.dataset.priority);return;} if(e.target.closest("[data-reception]")){fSel="reception_counter";fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt quầy; chừa lối đi hai phía","ok");return;} const b=e.target.closest("[data-acc]"); if(b) acceptJob(+b.dataset.acc); const c2=e.target.closest("[data-src]"); if(c2&&c2.getAttribute("aria-disabled")!=="true") useSource(c2.dataset.src); }); }
   { const S=document.getElementById("jSrc"); if(S.dataset.sig!==srcHtml){ S.innerHTML=gemify(srcHtml); S.dataset.sig=srcHtml; } }
   document.getElementById("sortJobs").disabled=GS.jobs.length<2;
@@ -3466,7 +3526,7 @@ function picon(n,s){ const d=PICON[n]; if(!d) return ""; const pal=d[8]; let r="
   for(let y=0;y<8;y++) for(let x=0;x<8;x++){ const ch=d[y][x]; if(ch!==".") r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[ch]}"/>`; }
   return `<svg width="${s}" height="${s}" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`; }
 // ---------- Hệ thống bảng UI (V15, 07/10/2026) ----------
-// Thanh dưới: 5 trung tâm (Công việc · Đội ngũ · Xây dựng · Cửa hàng · Thành tựu) + ô Gói VIP (báo "Tính năng sắp mở").
+// Thanh dưới: 5 trung tâm (Công việc · Đội ngũ · Xây dựng · Cửa hàng · Thành tựu). 14/10: bỏ ô Gói VIP, VIP nằm trong Cửa hàng → Cửa hàng ruby.
 // Góc trên phải: Hôm nay · Bảng tin · Hướng dẫn (guide.js) · Cài đặt. Dải trên: nhân sự, coin, ruby, đồng hồ (không có nút tốc độ).
 // Mọi bảng mở trong 1 ngăn phải dùng chung (#hub): 1 ngăn tại 1 lúc, tiêu đề cố định, tối đa 4 tab và nhớ tab lần trước, ✕ hoặc Esc để đóng.
 // Các trang bên trong giữ id cũ (#jobs, #staff, #cat, #pGem, #pQuest, #pToday, #pNews, #menu): trang đang xem có lớp .open như trước.
@@ -3478,16 +3538,15 @@ const HUBS={
   {id:'income',label:'Thu khác',page:'jobs',jtab:'income'}]},
  team:{title:'Đội ngũ',icon:'people',btn:'bStaff',tabs:[
   {id:'staff',label:'Đội',page:'staff',stab:'team',count:()=>AG.length},
-  {id:'hire',label:'Tuyển',page:'staff',stab:'hire'},
-  {id:'skins',label:'Đồ mặc',page:'pGem',gem:'skins'}]},
+  {id:'hire',label:'Tuyển',page:'staff',stab:'hire'}]},
  build:{title:'Xây dựng',icon:'hammer',btn:'bBuild',tabs:[
   {id:'furn',label:'Nội thất',page:'cat',tool:'furn'},
   {id:'walls',label:'Tường & sàn',page:'pBuild',tool:'wall'},
   {id:'move',label:'Di chuyển',page:'pMove',tool:'move'},
   {id:'land',label:'Mở rộng',page:'pExpand'}]},
  shop:{title:'Cửa hàng',icon:'shop',btn:'bShop',tabs:[
-  {id:'shop',label:'Cửa hàng',page:'pGem',gem:'shop'},
-  {id:'topup',label:'Nạp',page:'pTopup'},
+  {id:'shop',label:'Cửa hàng ruby',page:'pGem',gem:'shop'},   // 14/10: gom mọi thứ tiêu ruby (gói, đồ mặc, nạp ruby, VIP) về một chỗ
+  {id:'topup',label:'Nạp coin',page:'pTopup'},
   {id:'store',label:'Kho',page:'pStore',count:()=>storeTotal()||''}]},
  ach:{title:'Thành tựu',icon:'trophy',btn:'bAch',tabs:[
   {id:'quests',label:'Nhiệm vụ',page:'pQuest'},
@@ -3506,7 +3565,7 @@ function openHub(key,tabId,opts={}){
  if(hubKey===key&&!tabId&&!opts.keep){closeHub();return;}   // bấm lại nút đang mở để đóng
  if(hubKey&&hubKey!==key)leaveHub(hubKey);
  hubKey=key;
- const hub=document.getElementById('hub');hub.hidden=false;hub.setAttribute('aria-label',H.title);document.getElementById('wrap').classList.add('hub-open');
+ const hub=document.getElementById('hub');hub.hidden=false;hub.setAttribute('aria-label',H.title);document.getElementById('wrap').classList.add('hub-open');document.body.classList.add('hub-open');
  document.getElementById('hubTitle').textContent=H.title;document.getElementById('hubIc').innerHTML=UIIMG(H.icon,30);
  for(const [k,h] of Object.entries(HUBS)){const b=document.getElementById(h.btn);if(!b)continue;b.setAttribute('aria-expanded',String(k===key));if(b.classList.contains('nb'))b.setAttribute('aria-pressed',String(k===key));}
  document.getElementById('agentCard')?.classList.remove('open');
@@ -3520,7 +3579,7 @@ function leaveHub(key){
 function closeHub(){
  if(!hubKey)return;
  const key=hubKey;leaveHub(key);hubKey=null;hubTab=null;
- document.getElementById('hub').hidden=true;document.getElementById('wrap').classList.remove('hub-open');
+ document.getElementById('hub').hidden=true;document.getElementById('wrap').classList.remove('hub-open');document.body.classList.remove('hub-open');
  document.querySelectorAll('#hubBody>.hub-page').forEach(p=>p.classList.remove('open'));
  for(const h of Object.values(HUBS)){const b=document.getElementById(h.btn);if(!b)continue;b.setAttribute('aria-expanded','false');if(b.classList.contains('nb'))b.setAttribute('aria-pressed','false');}
  updateCtxBar();
@@ -3617,15 +3676,17 @@ function showUiNotice(){
 function askOpen(){return !document.getElementById('askBox').hidden;}
 function showSoon(){return askConfirm({title:'Tính năng sắp mở',text:'Gói VIP chưa mở trong bản chơi thử này.',ok:'Đã hiểu',cancel:null,icon:'crown'});}
 // Nạp (tab trong Cửa hàng). Bản chơi thử: chưa nối cổng thanh toán, bấm Nhận để thử luồng nạp.
+// Nạp coin (tab trong Cửa hàng); nạp ruby nằm trong Cửa hàng ruby. Bản chơi thử: chưa nối cổng thanh toán.
+const TOPUP_GEM=[[60,'Túi nhỏ'],[300,'Rương'],[980,'Kho báu']];
+function topupCard(kind,[v,n],tier){return `<div class="pack"><span class="ic">${UIIMG(kind==='gem'?'gem':'coin',36)}</span><span><b>${kind==='gem'?v+' 💎':fmt(v)}</b><br><small>${n}</small></span><button class="btn g" data-tp-kind="${kind}" data-tp="${v}" data-tier="${tier}">Mua</button></div>`;}
+function bindTopup(el){el.querySelectorAll('[data-tp]').forEach(b=>b.onclick=()=>openSupportDrink(b.dataset.tpKind,+b.dataset.tp,+b.dataset.tier));}
 function renderTopup(focus){
  const el=document.getElementById('topupBody');if(!el)return;
- const coin=[[Math.round(plotPrice()*0.2),'Túi coin'],[Math.round(plotPrice()*0.5),'Bao coin'],[plotPrice(),'Két coin']],gem=[[60,'Túi nhỏ'],[300,'Rương'],[980,'Kho báu']];
- const card=(kind,[v,n],tier)=>`<div class="pack"><span class="ic">${UIIMG(kind==='gem'?'gem':'coin',36)}</span><span><b>${kind==='gem'?v+' 💎':fmt(v)}</b><br><small>${n}</small></span><button class="btn g" data-tp-kind="${kind}" data-tp="${v}" data-tier="${tier}">Mua</button></div>`;
- el.innerHTML=gemify(`<p class="hub-note">Bản chơi thử: chưa kết nối cổng thanh toán. Chọn gói để mời NPH một cốc nước ☕. Tính năng sắp ra mắt.</p><div class="cg2" id="topCoin">Nạp coin</div>${coin.map((x,i)=>card('coin',x,i)).join('')}<div class="cg2" id="topGem">Nạp ruby</div>${gem.map((x,i)=>card('gem',x,i)).join('')}`);
- el.querySelectorAll('[data-tp]').forEach(b=>b.onclick=()=>openSupportDrink(b.dataset.tpKind,+b.dataset.tp,+b.dataset.tier));
- if(focus)el.querySelector(focus==='gem'?'#topGem':'#topCoin')?.scrollIntoView({block:'start'});
+ const coin=[[Math.round(plotPrice()*0.2),'Túi coin'],[Math.round(plotPrice()*0.5),'Bao coin'],[plotPrice(),'Két coin']];
+ el.innerHTML=gemify(`<p class="hub-note">Bản chơi thử: chưa kết nối cổng thanh toán. Chọn gói để mời NPH một cốc nước ☕. Nạp ruby ở tab Cửa hàng ruby.</p><div class="cg2" id="topCoin">Nạp coin</div>${coin.map((x,i)=>topupCard('coin',x,i)).join('')}`);
+ bindTopup(el);
 }
-function openTopup(kind){openHub('shop','topup',{keep:true,focus:kind==='gem'?'gem':'coin'});}
+function openTopup(kind){if(kind==='gem'){gemSub='topup';openHub('shop','shop',{keep:true});return;}openHub('shop','topup',{keep:true,focus:'coin'});}
 // Mở rộng (tab trong Xây dựng): giá khu tiếp theo, số dư và các khu liền kề mở được.
 function renderExpandPage(force){
  const el=document.getElementById('expandBody');if(!el)return;
@@ -3641,7 +3702,6 @@ function renderExpandPage(force){
  const byId=id=>document.getElementById(id);
  for(const [k,h] of Object.entries(HUBS))byId(h.btn)?.addEventListener('click',()=>openHub(k));
  byId('hubX').onclick=closeHub;
- byId('bVip').onclick=showSoon;
  byId('ctxDone').onclick=closeHub;
  byId('cashPlus').onclick=()=>openTopup('coin');byId('gemPlus').onclick=()=>openTopup('gem');
  byId('pKeep').onclick=()=>stashPend();
@@ -4185,7 +4245,7 @@ async function creatorBase(key){
  return creatorCache[key]={w:c.width,h:c.height,px:x.getImageData(0,0,c.width,c.height).data,mask,lum:base.lum};
 }
 function openIntro(fresh){
- introFresh=!!fresh;introOpen=true;
+ introFresh=!!fresh;introOpen=true;document.getElementById("toast")?.classList.remove("show");   // thông báo đang hiện không che màn mở đầu
  const el=document.getElementById("intro");el.hidden=false;el.removeAttribute("inert");
  const look={base:"m",skin:0,hair:1,top:6,bottom:0},ids=presetIds();
  let sel=ids.includes(FOUNDER_ID)?FOUNDER_ID:ids[0],anim=0,sheet=null,raf=0,agencyDraft=GS.agencyName||"",picks=[];
@@ -4313,7 +4373,7 @@ function confirmIntro(choice){
  try{if(typeof sessionStorage!=='undefined')sessionStorage.setItem(SAVE+'.enter','1');}catch(e){}
  location.reload();return true;
 }
-function closeIntro(){introOpen=false;const el=document.getElementById("intro");el.hidden=true;el.setAttribute("inert","");}
+function closeIntro(){introOpen=false;const el=document.getElementById("intro");el.hidden=true;el.setAttribute("inert","");if(typeof flushToasts==="function")setTimeout(flushToasts,600);}
 
 // Hướng dẫn chơi trong game (07/10/2026, V13; cập nhật theo hệ thống bảng V15): 9 trang, mở từ màn mở đầu và biểu tượng Hướng dẫn ở góc trên phải.
 // Mọi con số trong trang lấy theo thông số đang chạy trong game (HIRE_COST, MEETING_MINUTES, EN_MAX…), không gõ tay.
@@ -4353,7 +4413,7 @@ function guidePages(){
    items:["Khách ngồi sofa chờ thì tới quầy nhận ngay; khách đã về sẽ quay lại xếp hàng.",
     "Job thường trả tiền khi xong. Job VIP <b>thanh toán sau</b> tạo công nợ: vào <b>Công việc → Bàn giao & công nợ</b>, cử nhân viên đi thu <b>trước 20:00</b> (30 phút game ở điểm hẹn, cộng thời gian đi lại).",
     "Xong job trước hạn được <b>+1 ruby</b>; job VIP còn thưởng thêm ruby.",
-    `Ruby (kim cương) dùng trong Cửa hàng; 1 ruby quy đổi ${RUBY_COIN} triệu coin khi tính giá nội thất.`],
+    `Ruby (kim cương): mọi thứ mua bằng ruby (gói hỗ trợ, đồ mặc, nạp ruby, VIP) nằm ở <b>Cửa hàng → Cửa hàng ruby</b>; 1 ruby quy đổi ${RUBY_COIN} triệu coin khi tính giá nội thất.`],
    tip:"Giữ quầy lễ tân có lối đi hai phía để bàn giao được sản phẩm."},
   {id:"build",icon:"hammer",title:"Xây văn phòng",lead:"Tự xây tường, đặt cửa và bày nội thất cho văn phòng.",
    items:["<b>Xây dựng → Nội thất</b>: chọn món → bấm lên sàn → <b>Đồng ý</b> / <b>Từ chối</b> / <b>Xoay</b> / <b>Vào kho</b> (mua để dành). Món đỏ lên là thiếu tiền hoặc chỗ không đặt được.",
@@ -4449,7 +4509,7 @@ const TOUR=[
  // V15: các bước sau mở lần lượt từng trung tâm ở thanh dưới; bảng vừa mở để nguyên cho người chơi nhìn tới khi chạm nút tiếp theo.
  {id:"staff",rect:()=>domRect("#bStaff"),text:"Chạm Đội ngũ: xem stress từng người, tuyển thêm, đổi trang phục.",tap:true,keepOpen:true},
  {id:"build",rect:()=>domRect("#bBuild"),text:"Chạm Xây dựng: mua nội thất, xây tường, di chuyển đồ, mở rộng khu đất.",tap:true,keepOpen:true},
- {id:"shop",rect:()=>domRect("#bShop"),text:"Chạm Cửa hàng: gói hỗ trợ, nạp, và Kho cất đồ chưa dùng.",tap:true,keepOpen:true},
+ {id:"shop",rect:()=>domRect("#bShop"),text:"Chạm Cửa hàng: Cửa hàng ruby (gói, đồ mặc, nạp ruby), nạp coin và Kho cất đồ chưa dùng.",tap:true,keepOpen:true},
  {id:"ach",rect:()=>domRect("#bAch"),text:"Chạm Thành tựu: nhiệm vụ, quà Pass tuần và thành tựu để nhận ruby.",tap:true,keepOpen:true},
  {id:"guide",rect:()=>domRect("#bGuide"),text:"Quên cách chơi? Biểu tượng Hướng dẫn luôn ở đây. Chạm để hoàn tất.",tap:true,swallow:true}];   // bảng đang mở được đóng khi kết thúc (endTour)
 function tourEls(){

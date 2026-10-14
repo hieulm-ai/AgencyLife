@@ -81,15 +81,17 @@ test('thanh dưới: 5 trung tâm, mỗi trung tâm ≤ 4 tab; Cửa hàng có t
  const bottom=['work','team','build','shop','ach'];
  assert.deepEqual(bottom.map(k=>H[k].title),['Công việc','Đội ngũ','Xây dựng','Cửa hàng','Thành tựu']);
  for(const k of Object.keys(H))assert.ok(H[k].tabs.length>=1&&H[k].tabs.length<=4,k);
- assert.deepEqual(Array.from(H.shop.tabs,t=>t.label),['Cửa hàng','Nạp','Kho']);
+ assert.deepEqual(Array.from(H.shop.tabs,t=>t.label),['Cửa hàng ruby','Nạp coin','Kho']);
+ assert.deepEqual(Array.from(H.team.tabs,t=>t.label),['Đội','Tuyển'],'Đồ mặc chuyển vào Cửa hàng ruby');
  assert.equal(H.ach.icon,'trophy');assert.ok(!JSON.stringify(H).includes('Phần thưởng'));
  assert.deepEqual(Array.from(H.build.tabs,t=>t.label),['Nội thất','Tường & sàn','Di chuyển','Mở rộng']);
  assert.match(src,/"trophy": "assets\/static\/2e4d243bdd2e7907f86ac50e\.png"/,'icon cúp mới');
  assert.ok(fs.existsSync(path.join(root,'static/2e4d243bdd2e7907f86ac50e.png')));
 });
-test('ô Gói VIP giữ nguyên chỗ, bấm vào báo "Tính năng sắp mở"',()=>{
- assert.match(src,/<button class="pf nb crown-wide" id="bVip"/);
- assert.match(hub,/byId\('bVip'\)\.onclick=showSoon;/);assert.match(hub,/title:'Tính năng sắp mở'/);
+test('Cửa hàng ruby gom gói, đồ mặc, nạp ruby và VIP; nút + ruby mở thẳng phần Nạp ruby',()=>{
+ assert.doesNotMatch(src,/id="bVip"/);
+ assert.match(src,/\[\["items","Gói & vật phẩm"\],\["skins","Đồ mặc"\],\["topup","Nạp ruby"\],\["vip","VIP"\]\]/);
+ assert.match(hub,/if\(kind==='gem'\)\{gemSub='topup';openHub\('shop','shop',\{keep:true\}\);return;\}/);
 });
 test('dải trên có đồng hồ, không có nút dừng hay tốc độ',()=>{
  const res=src.slice(src.indexOf('<div id="res"'),src.indexOf('<div id="topR"'));

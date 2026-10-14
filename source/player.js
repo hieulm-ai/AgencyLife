@@ -131,7 +131,7 @@ async function creatorBase(key){
  return creatorCache[key]={w:c.width,h:c.height,px:x.getImageData(0,0,c.width,c.height).data,mask,lum:base.lum};
 }
 function openIntro(fresh){
- introFresh=!!fresh;introOpen=true;
+ introFresh=!!fresh;introOpen=true;document.getElementById("toast")?.classList.remove("show");   // thông báo đang hiện không che màn mở đầu
  const el=document.getElementById("intro");el.hidden=false;el.removeAttribute("inert");
  const look={base:"m",skin:0,hair:1,top:6,bottom:0},ids=presetIds();
  let sel=ids.includes(FOUNDER_ID)?FOUNDER_ID:ids[0],anim=0,sheet=null,raf=0,agencyDraft=GS.agencyName||"",picks=[];
@@ -259,4 +259,4 @@ function confirmIntro(choice){
  try{if(typeof sessionStorage!=='undefined')sessionStorage.setItem(SAVE+'.enter','1');}catch(e){}
  location.reload();return true;
 }
-function closeIntro(){introOpen=false;const el=document.getElementById("intro");el.hidden=true;el.setAttribute("inert","");}
+function closeIntro(){introOpen=false;const el=document.getElementById("intro");el.hidden=true;el.setAttribute("inert","");if(typeof flushToasts==="function")setTimeout(flushToasts,600);}

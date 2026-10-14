@@ -36,7 +36,7 @@ function guidePages(){
    items:["Khách ngồi sofa chờ thì tới quầy nhận ngay; khách đã về sẽ quay lại xếp hàng.",
     "Job thường trả tiền khi xong. Job VIP <b>thanh toán sau</b> tạo công nợ: vào <b>Công việc → Bàn giao & công nợ</b>, cử nhân viên đi thu <b>trước 20:00</b> (30 phút game ở điểm hẹn, cộng thời gian đi lại).",
     "Xong job trước hạn được <b>+1 ruby</b>; job VIP còn thưởng thêm ruby.",
-    `Ruby (kim cương) dùng trong Cửa hàng; 1 ruby quy đổi ${RUBY_COIN} triệu coin khi tính giá nội thất.`],
+    `Ruby (kim cương): mọi thứ mua bằng ruby (gói hỗ trợ, đồ mặc, nạp ruby, VIP) nằm ở <b>Cửa hàng → Cửa hàng ruby</b>; 1 ruby quy đổi ${RUBY_COIN} triệu coin khi tính giá nội thất.`],
    tip:"Giữ quầy lễ tân có lối đi hai phía để bàn giao được sản phẩm."},
   {id:"build",icon:"hammer",title:"Xây văn phòng",lead:"Tự xây tường, đặt cửa và bày nội thất cho văn phòng.",
    items:["<b>Xây dựng → Nội thất</b>: chọn món → bấm lên sàn → <b>Đồng ý</b> / <b>Từ chối</b> / <b>Xoay</b> / <b>Vào kho</b> (mua để dành). Món đỏ lên là thiếu tiền hoặc chỗ không đặt được.",
@@ -132,7 +132,7 @@ const TOUR=[
  // V15: các bước sau mở lần lượt từng trung tâm ở thanh dưới; bảng vừa mở để nguyên cho người chơi nhìn tới khi chạm nút tiếp theo.
  {id:"staff",rect:()=>domRect("#bStaff"),text:"Chạm Đội ngũ: xem stress từng người, tuyển thêm, đổi trang phục.",tap:true,keepOpen:true},
  {id:"build",rect:()=>domRect("#bBuild"),text:"Chạm Xây dựng: mua nội thất, xây tường, di chuyển đồ, mở rộng khu đất.",tap:true,keepOpen:true},
- {id:"shop",rect:()=>domRect("#bShop"),text:"Chạm Cửa hàng: gói hỗ trợ, nạp, và Kho cất đồ chưa dùng.",tap:true,keepOpen:true},
+ {id:"shop",rect:()=>domRect("#bShop"),text:"Chạm Cửa hàng: Cửa hàng ruby (gói, đồ mặc, nạp ruby), nạp coin và Kho cất đồ chưa dùng.",tap:true,keepOpen:true},
  {id:"ach",rect:()=>domRect("#bAch"),text:"Chạm Thành tựu: nhiệm vụ, quà Pass tuần và thành tựu để nhận ruby.",tap:true,keepOpen:true},
  {id:"guide",rect:()=>domRect("#bGuide"),text:"Quên cách chơi? Biểu tượng Hướng dẫn luôn ở đây. Chạm để hoàn tất.",tap:true,swallow:true}];   // bảng đang mở được đóng khi kết thúc (endTour)
 function tourEls(){

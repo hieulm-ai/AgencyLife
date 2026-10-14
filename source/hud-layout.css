@@ -299,7 +299,7 @@
 .ask-box .ask-text{margin:0;font-size:14px;line-height:1.5;color:#3A2414}
 .ask-act{display:flex;gap:10px;justify-content:center;width:100%;margin-top:4px}.ask-act .btn{min-width:120px;min-height:42px}.ask-act .btn[hidden]{display:none}
 /* Thanh dưới: 5 trung tâm có chữ + ô Gói VIP rộng */
-#nav{grid-template-columns:repeat(5,minmax(0,1fr)) 1.7fr!important;width:min(820px,calc(100% - 28px))}
+#nav{grid-template-columns:repeat(5,minmax(0,1fr))!important;width:min(700px,calc(100% - 28px))}   /* 14/10: bỏ ô Gói VIP */
 #nav .nb{height:96px}
 #nav .nb:not(.crown-wide){flex-direction:column!important;gap:0}
 #nav .nb:not(.crown-wide) .ic{flex:1;height:auto!important;min-height:0;transform:none}
@@ -561,3 +561,53 @@ html,body{width:100%;height:100%;overscroll-behavior:none}
 @media(max-height:500px){#intro .intro-box{max-height:calc(100dvh - 16px);padding:8px 14px 10px;gap:6px}#intro h1{font-size:22px;margin:0}#intro .intro-head p{font-size:12px}#intro .intro-lead{font-size:13px;margin:0 0 2px}#intro .intro-opt{padding:8px 10px;gap:3px}#intro .intro-trio{height:72px}#intro .intro-trio .ic-spr{width:54px;height:72px;background-size:162px 144px;background-position:-54px 0}#intro .intro-opt b{font-size:15px}#intro .intro-opt small{font-size:11px}#intro .intro-help{margin:0}}
 @media(max-height:500px) and (orientation:landscape){#intro .intro-opts{grid-template-columns:1fr 1fr;gap:10px}}
 @media(max-height:500px){#intro .intro-perk{font-size:11.5px;margin:0}}
+
+/* Cửa hàng ruby (14/10): một tab, chia nhóm bằng hàng nút nhỏ */
+.gem-subs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}.gem-subs .btn{flex:1 1 auto;min-height:34px;padding:4px 8px;font-size:12.5px}
+
+/* ---------- 14/10: rà soát giao diện ---------- */
+/* Thẻ việc đầu game không đè bảng: máy tính dời sang trái bảng; màn hẹp thu thành nút nhỏ (chạm để đóng bảng và chọn). */
+body.hub-open #earlyPlay{right:calc(min(400px,100vw - 28px) + 28px)}
+@media(max-width:1000px){body.hub-open #earlyPlay{right:calc(min(380px,50vw) + 22px)}}
+@media(max-width:1000px),(max-height:500px){
+ body.hub-open #earlyPlay{--early-mini:1;width:auto;max-width:200px;padding:6px 12px;gap:0;cursor:pointer;left:auto}
+ body.hub-open #earlyPlay>*:not(b){display:none!important}
+ body.hub-open #earlyPlay b{font-size:12px;white-space:nowrap}
+ body.hub-open #earlyPlay b::before{content:"👉 "}
+}
+/* Công việc: dòng năng lượng gộp vào một dòng có ⓘ */
+#jobs .en-row{margin:0 0 6px}#jobs .en-row>summary{font-size:13px}
+/* Xếp hạng: 4 nút chỉ số một hàng */
+.ol-rankby{flex-wrap:nowrap}.ol-rankby .btn{flex:1 1 0;min-width:0;padding:4px 4px;font-size:12px;white-space:nowrap}
+/* Thông báo ở màn đăng ký / màn chính: sát mép trên, không đè ô nhập */
+.title-view #toast{top:max(6px,env(safe-area-inset-top))!important;font-size:13px;padding:6px 14px}
+
+/* Điện thoại xoay ngang: văn phòng chiếm ≥ 80% màn hình.
+   Dải trên một hàng thấp; 5 trung tâm thành cột dọc bên trái; bảng mở bên phải nằm dưới dải trên. */
+@media(max-height:500px) and (orientation:landscape){
+ #co{transform:scale(.6)!important;transform-origin:top left!important;top:4px!important;left:max(4px,env(safe-area-inset-left))!important}
+ #topR{transform:scale(.72)!important;transform-origin:top right!important;top:4px!important;right:max(4px,env(safe-area-inset-right))!important}
+ #wrap #res,#wrap.hud-stacked #res,#wrap.hud-compact #res{top:6px!important}
+ #res .pill,#res .staff-pill{height:30px!important;padding-top:0!important;padding-bottom:0!important}#res .pill b{font-size:12px!important}#res .ic img{width:20px!important;height:20px!important}
+ #res .pill .plus{width:20px!important;height:20px!important;flex-basis:20px!important;font-size:14px!important}
+ #nav{left:max(4px,env(safe-area-inset-left))!important;right:auto!important;top:50px!important;bottom:auto!important;transform:none!important;width:58px!important;height:auto!important;display:flex!important;flex-direction:column!important;gap:4px!important}
+ #nav .nb{width:58px!important;height:50px!important;min-height:44px!important;padding:2px!important;border-radius:12px!important}
+ #nav .nb:not(.crown-wide) .ic img{width:24px!important;height:24px!important}
+ #nav .nl{font-size:9px!important;margin:0!important;line-height:1.1!important}
+ #nav .bdg{transform:scale(.7)}
+ #wrap #hub,#wrap.hud-stacked #hub{top:46px!important;bottom:6px!important;right:6px!important}
+ #earlyPlay{bottom:8px!important;right:8px!important}
+ #toast{top:46px!important}
+ #ctxbar{bottom:6px!important}
+ /* bảng: tab một hàng (vuốt ngang nếu dài), đầu bảng thấp để chừa chỗ nội dung */
+ #hub .hub-tabs{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}
+ #hub .hub-tabs .hub-tab{min-height:32px!important;padding:3px 9px!important;font-size:12px!important;white-space:nowrap;flex:0 0 auto}
+ #hub .hub-head{min-height:30px}#hub .hub-x{width:32px!important;height:32px!important}
+ #hub .hub-body .btn{min-height:34px}
+ /* thẻ việc đầu game: gọn hơn; khi mở bảng thì thành nút nhỏ cạnh cột trái */
+ #earlyPlay{width:250px!important;padding:6px 26px 6px 8px!important;gap:3px!important}
+ #earlyPlay .btn{min-height:30px!important;font-size:10.5px!important;padding:3px!important}
+ #earlyPlay small{font-size:10px!important}
+ body.hub-open #earlyPlay{left:calc(max(4px,env(safe-area-inset-left)) + 66px)!important;right:auto!important;width:auto!important;padding:5px 10px!important}
+ .ol-rankby .btn{font-size:11px!important;padding:2px!important}
+}
