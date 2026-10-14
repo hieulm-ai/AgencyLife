@@ -375,6 +375,11 @@
 .ol-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .ol-who b{font-size:14px;color:#3A2414;overflow-wrap:anywhere}
 .ol-who small{font-size:12px;color:#8A5A2E}
+.ol-rankby{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.ol-rankby .btn{flex:1 1 auto;min-width:72px}
+.ol-rank{cursor:pointer}.ol-rank.me{background:#FFF3D9;border-color:#E9A63B;cursor:default}
+.ol-pos{flex:0 0 30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#F1E2C6;font:800 14px/1 var(--rf,var(--font));color:#5B2E10}
+.ol-pos.top1{background:#F6C445}.ol-pos.top2{background:#D9DEE6}.ol-pos.top3{background:#E3A97A}
+.ol-val{font:800 15px/1 var(--rf,var(--font));color:#3A2414;white-space:nowrap}
 .ol-note{font-size:13.5px;color:#3A2414;white-space:pre-wrap;overflow-wrap:anywhere}
 .ol-act{display:flex;gap:6px;align-items:center}.ol-act .btn{min-height:34px;padding:0 10px;font-size:13px}
 .ol-mail.done{opacity:.6}

@@ -270,7 +270,7 @@ async function olRefreshSocial(){
   OL.friends=f;OL.req=r;OL.mail=m;OL.status=VISIT?OL.status:'on';
  }catch(e){OL.status='offline';}
  updateOnlineBadges();
- if(hubKey==='friends'||hubKey==='news'){const p=hubPage();if(p==='pFriends')renderFriends();else if(p==='pRequests')renderRequests();else if(p==='pMail')renderMail();updateHubTabs();}
+ if(hubKey==='friends'||hubKey==='news'){const p=hubPage();if(p==='pFriends')renderFriends();else if(p==='pRequests')renderRequests();else if(p==='pRank')renderRank();else if(p==='pMail')renderMail();updateHubTabs();}
 }
 function olUnclaimed(){return OL.mail.filter(m=>(m.kind==='gift'||m.kind==='wage')&&!m.claimed).length;}
 function olUnseenMail(){const seen=(olLS(OL_META_KEY)||{}).mailSeen||0;return OL.mail.filter(m=>m.id>seen&&!((m.kind==='gift'||m.kind==='wage')&&!m.claimed)).length+olUnclaimed();}
@@ -445,6 +445,31 @@ async function olBorrowPick(p){
    el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=true);
    try{await OL.be.borrowStaff(p.id,id);startBorrow(id,{id:p.id,agency:p.agency});close();toast(`Đã mượn ${staffName(id)} từ ${p.agency} · −${fmt(borrowWage(id))}`,'ok');olPush(true);}
    catch(e){er.textContent=olErrText(e);el.querySelectorAll('[data-borrow]').forEach(x=>x.disabled=!!borrowBlock(x.dataset.borrow));}});});
+}
+// ---------- Xếp hạng bạn bè (14/10/2026, phạm vi bạn bè) ----------
+// Lấy từ hồ sơ có sẵn (profiles): mình + bạn bè. Số liệu do game của từng người gửi lên khi lưu tài khoản (tối đa 2 phút/lần),
+// nên chỉ xếp trong nhóm bạn và không gắn phần thưởng (xem claude/nghien-cuu-bang-xep-hang-14-10.md).
+const OL_RANK_BY=[{k:'rep',n:'Uy tín'},{k:'jobs',n:'Job xong'},{k:'likes',n:'Lượt thích'},{k:'level',n:'Cấp'}];
+function olRankRows(me,friends,by){
+ const rows=[...(me?[{...me,me:true}]:[]),...friends.filter(f=>f&&(!me||f.id!==me.id))].map(p=>({...p,v:Math.max(0,Number(p[by])||0)}));
+ rows.sort((a,b)=>b.v-a.v||(Number(b.level)||0)-(Number(a.level)||0)||(a.me?-1:b.me?1:String(a.agency).localeCompare(String(b.agency),'vi')));
+ let rank=0,prev=null;rows.forEach((r,i)=>{if(r.v!==prev){rank=i+1;prev=r.v;}r.rank=rank;});   // bằng điểm thì cùng hạng
+ return rows;
+}
+function renderRank(){
+ const el=document.getElementById('rankBody');if(!el)return;
+ if(!OL.user)return olNeedLogin(el);
+ const meta=olLS(OL_META_KEY)||{},by=OL_RANK_BY.some(x=>x.k===meta.rankBy)?meta.rankBy:'rep',name=OL_RANK_BY.find(x=>x.k===by).n;
+ // dòng của mình lấy số đang chơi (mới hơn bản đã gửi lên); lượt thích lấy từ máy chủ
+ const me={...(OL.profile||{}),...olProfileData(),id:OL.user.id,likes:OL.profile?OL.profile.likes||0:0};
+ const rows=olRankRows(me,OL.friends,by),fmtV=v=>by==='level'?'LV '+v:v.toLocaleString('vi-VN');
+ el.innerHTML=`<div class="ol-rankby" role="radiogroup" aria-label="Xếp theo">${OL_RANK_BY.map(x=>`<button class="btn ${x.k===by?'y':'c'}" role="radio" aria-checked="${x.k===by}" data-rank="${x.k}">${x.n}</button>`).join('')}</div>
+  <div class="cg2">Bạn và ${OL.friends.length} bạn · xếp theo ${name}</div>
+  ${rows.map(r=>`<div class="ol-row ol-rank${r.me?' me':''}"${r.me?'':` data-rmore="${olEsc(r.id)}" role="button" tabindex="0"`}><span class="ol-pos${r.rank<=3?' top'+r.rank:''}">${r.rank}</span><span class="ol-av">${olAvatar(r)}</span><span class="ol-who"><b>${olEsc(r.agency)}${r.me?' (bạn)':''}</b><small>LV ${r.level||1}</small></span><span class="ol-val">${fmtV(r.v)}</span></div>`).join('')}
+  ${OL.friends.length?'':'<p class="hub-note">Kết bạn để so tài với agency khác.</p>'}
+  <p class="hub-note">Số liệu cập nhật khi mỗi agency lưu lên tài khoản. Chỉ xếp trong nhóm bạn bè.</p>`;
+ el.querySelectorAll('[data-rank]').forEach(b=>b.onclick=()=>{olLS(OL_META_KEY,{...(olLS(OL_META_KEY)||{}),rankBy:b.dataset.rank});renderRank();});
+ el.querySelectorAll('[data-rmore]').forEach(r=>{const go=()=>olFriendMenu(OL.friends.find(f=>f.id===r.dataset.rmore));r.onclick=go;r.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
 }
 function renderRequests(){
  const el=document.getElementById('requestsBody');if(!el)return;

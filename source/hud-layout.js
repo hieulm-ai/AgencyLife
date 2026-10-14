@@ -27,7 +27,7 @@ const HUBS={
   {id:'pass',label:'Quà & Pass',page:'pGem',gem:'earn',count:()=>passClaimable()||''},
   {id:'ach',label:'Thành tựu',page:'pGem',gem:'achievements'}]},
  today:{title:'Hôm nay',icon:'chart',btn:'bToday',tabs:[{id:'today',page:'pToday'}]},
- friends:{title:'Bạn bè',icon:'friends',btn:'bFriends',tabs:[{id:'friends',label:'Bạn bè',page:'pFriends',count:()=>OL.user?OL.friends.length:''},{id:'requests',label:'Lời mời',page:'pRequests',count:()=>OL.user&&OL.req.incoming.length||''}]},
+ friends:{title:'Bạn bè',icon:'friends',btn:'bFriends',tabs:[{id:'friends',label:'Bạn bè',page:'pFriends',count:()=>OL.user?OL.friends.length:''},{id:'requests',label:'Lời mời',page:'pRequests',count:()=>OL.user&&OL.req.incoming.length||''},{id:'rank',label:'Xếp hạng',page:'pRank'}]},
  news:{title:'Hộp thư',icon:'mail',btn:'bMail',tabs:[{id:'mail',label:'Thư',page:'pMail',count:()=>OL.user&&olUnclaimed()||''},{id:'news',label:'Bảng tin',page:'pNews'}]},
  settings:{title:'Cài đặt',icon:'gear',btn:'bMenu',tabs:[{id:'settings',page:'menu'}]}};
 const BUILD_TOOLS=['furn','wall','door','window','floor','erase','move'], WALL_TOOLS=['wall','door','window','floor','erase'];
@@ -93,6 +93,7 @@ function showHubTab(id,opts={}){
  else if(page==='pNews')renderOfficeNews();
  else if(page==='pFriends'){renderFriends();olRefreshSocial();}
  else if(page==='pRequests')renderRequests();
+ else if(page==='pRank'){renderRank();olRefreshSocial();}
  else if(page==='pMail'){renderMail();olRefreshSocial();}
  else if(page==='menu'){olRenderAccount();try{document.getElementById('bUndoImport').hidden=!localStorage.getItem(SAVE+'.before-import');}catch(e){document.getElementById('bUndoImport').hidden=true;}}
  else if(page==='pToday')updatePanels();

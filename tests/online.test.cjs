@@ -8,7 +8,7 @@ function setup(){
  const c={localStorage:ls,sessionStorage:ls,N:64,SAVE:'t',VISIT:null,FBY:{potted_plant:{name:'Cây'},bookshelf:{name:'Tủ sách'}},FIMG:{},CHARS:[],GS:{},
   document:{getElementById:()=>null,querySelector:()=>null,body:{classList:{add(){}}},hidden:false},setInterval(){},setTimeout(){},clearTimeout(){},
   UIIMG:()=>'',toast(){},console,btoa:s=>Buffer.from(s,'binary').toString('base64'),unescape,encodeURIComponent,Date,Math,JSON,Promise,Error,Object,Array,String,Set};
- vm.createContext(c);vm.runInContext(ol.replace('__ONLINE_CFG__','null')+';this.olMockBackend=olMockBackend;this.olGiftsToday=olGiftsToday;this.OL_BOTS=OL_BOTS;this.OL_GIFT_DECOR=OL_GIFT_DECOR;this.OL_GIFT_RUBY=OL_GIFT_RUBY;this.olErrText=olErrText;',c);
+ vm.createContext(c);vm.runInContext(ol.replace('__ONLINE_CFG__','null')+';this.olMockBackend=olMockBackend;this.olGiftsToday=olGiftsToday;this.OL_BOTS=OL_BOTS;this.OL_GIFT_DECOR=OL_GIFT_DECOR;this.OL_GIFT_RUBY=OL_GIFT_RUBY;this.olErrText=olErrText;this.olRankRows=olRankRows;',c);
  return c;
 }
 const rej=async(p,code)=>{await assert.rejects(p,e=>e.message===code,code);};
@@ -71,6 +71,15 @@ test('máy chủ thử: mượn nhân viên của bạn — chỉ người có t
  assert.equal(w.item,'wage_13_ab');assert.equal(w.from_id,sm.id);
  assert.equal(await be.claim(w.id),'wage_13_ab');await rej(be.claim(w.id),'not_claimable');
  assert.equal((await be.mail()).filter(m=>m.kind==='wage').length,1,'mỗi ngày Sao Mai mượn 1 lần');
+});
+test('xếp hạng bạn bè: gồm mình, không trùng, bằng điểm cùng hạng, số lạ coi là 0',()=>{
+ const c=setup(),me={id:'m',agency:'Tôi',level:2,rep:50,jobs:9,likes:1};
+ const fr=[{id:'a',agency:'An',level:3,rep:80,jobs:3,likes:5},{id:'b',agency:'Bình',level:1,rep:50,jobs:20,likes:0},{id:'m',agency:'Tôi (cũ)',rep:1},{id:'c',agency:'Cúc',level:1,rep:'x'}];
+ const J=x=>JSON.parse(JSON.stringify(x)),r=J(c.olRankRows(me,fr,'rep'));
+ assert.deepEqual(r.map(x=>[x.id,x.rank,x.v]),[['a',1,80],['m',2,50],['b',2,50],['c',4,0]]);
+ assert.equal(r.filter(x=>x.me).length,1);
+ assert.deepEqual(J(c.olRankRows(me,fr,'jobs').map(x=>x.id).slice(0,2)),['b','m']);
+ assert.deepEqual(J(c.olRankRows(me,[],'likes').map(x=>x.rank)),[1]);
 });
 test('quà hằng ngày: 3 đồ trang trí + 1 gói ruby, cố định trong ngày, đồng bộ với SQL',()=>{
  const c=setup();
