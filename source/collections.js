@@ -18,6 +18,8 @@ function payJob(j){
  else {cash+=amount;GS.revToday+=amount;GS.revTotal+=amount;toast(`Xong ${j.name} · +${fmt(amount)}`,'ok');}
  return amount;
 }
+// V17: Kế toán thu nhanh hơn (20 thay 30 phút game). Nhân vật chính gốc Kế toán lo giấy tờ ở quầy nên ai đi thu cũng nhanh hơn (thông số thử).
+function collectMinutes(a){const m=(a&&a.role==='Kế toán'?20:30)*(typeof perkVal==='function'?perkVal('collect'):1);return Math.round(m*10)/10;}
 function sendCollector(id,staffId){
  const debt=receivables().find(d=>d.id===id),a=AG.find(a=>CHARS[a.ci].id===staffId);
  if(!debt||!a||closingOffice||GS.min>=CLOSE_MIN-60)return;
@@ -25,7 +27,7 @@ function sendCollector(id,staffId){
  const from=a.state==='sit'&&a.acc?a.acc:[Math.round(a.x),Math.round(a.y)],p=bfs(from,ENTRY);
  if(!p){toast('Không có đường ra cửa để thu tiền','err');return;}
  [a.x,a.y]=from;if(a.useObj){BUSY.delete(a.useObj);a.useObj=null;}
- a.seat=null;a.react=null;a.state='collect';a.collection={id,phase:'out',remaining:a.role==='Kế toán'?20:30};   // V17: Kế toán thu nhanh hơn (20 thay 30 phút game)a.path=[...p.slice(1),OUTSIDE_ENTRY,streetExit(a)];
+ a.seat=null;a.react=null;a.state='collect';a.collection={id,phase:'out',remaining:collectMinutes(a)};a.path=[...p.slice(1),OUTSIDE_ENTRY,streetExit(a)];
  renderJobs();save();
 }
 function stepCollector(a,dt){

@@ -78,10 +78,21 @@ function assignStages(){
   busy.delete(j.who); j.who=CHARS[spec.ci].id; busy.add(j.who); startPass(cur,j,spec);
  }
 }
-function stageRate(a,role){ const base=workerRate(a); if(base<=0) return 0; return base*WORK_SPEED*MATCH_F[roleMatch(a,role)]*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1); }
+// Nhân vật chính gốc Account: cả đội làm bước Brief nhanh hơn (thông số thử).
+function perkStage(role){ const m=typeof perkVal==='function'?perkVal('stage',null):null; return m&&m[role]||1; }
+function stageRate(a,role){ const base=workerRate(a); if(base<=0) return 0; return base*WORK_SPEED*MATCH_F[roleMatch(a,role)]*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1)*perkStage(role); }
+// Nhân vật chính có nghề sản xuất: lúc quầy vắng khách thì phụ một tay bước đúng nghề, nửa tốc độ, không cộng stress.
+// Chỉ phụ job đã có người đang làm bước đó (hoàn tất bước vẫn do người đó cầm hồ sơ đi tiếp).
+function founderHelpRate(role){
+ const p=typeof founderPerk==='function'?founderPerk():null; if(!p||p.help!==role) return 0;
+ const f=AG.find(a=>a.founder&&!a.mascot); if(!f||f.receptionUid!=null||f.handover||f.pass||(typeof deskReady==='function'&&!deskReady(f))) return 0;
+ if(typeof VIS!=='undefined'&&VIS.some(v=>v.state==='wait'||v.state==='pickup')) return 0;
+ const t=TRACK_OF[STAFF_ROLE[GS.player.id]]||{spec:[],near:[]};
+ return FOUNDER_HELP*WORK_SPEED*MATCH_F[t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'];
+}
 function stagePotentialRate(a,role){
  if(!a||a.mascot||a.founder||!hasWorkSeat(a))return 0;
- return WORK_SPEED*MATCH_F[roleMatch(a,role)]*(a.stress>75?.6:1)*(seatKind(a)==='ergo_chair'?1.2:1)*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1);
+ return WORK_SPEED*MATCH_F[roleMatch(a,role)]*(a.stress>75?.6:1)*(seatKind(a)==='ergo_chair'?1.2:1)*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1)*perkStage(role);
 }
 function estimateStageHours(j,pool){
  ensureStages(j);let hours=0;
@@ -94,8 +105,10 @@ function estimateStageHours(j,pool){
 function advanceJobWork(h){
  if(closingOffice) return;
  assignStages();
+ let helped=false;
  for(const j of GS.jobs){ const s=j.stg[j.cur]; if(!s||!j.who||!jobReady(j)) continue; const a=staffById(j.who); if(!a) continue;
-  const r=stageRate(a,s.role)*((GS.earlyBoostUntil||0)>GS.day*1440+GS.min?1.15:1); if(r<=0) continue;
+  let r=stageRate(a,s.role)*((GS.earlyBoostUntil||0)>GS.day*1440+GS.min?1.15:1); if(r<=0) continue;
+  if(!helped){ const hr=founderHelpRate(s.role); if(hr>0){ r+=hr; helped=true; } }
   const before=s.done; s.done=Math.min(s.need,s.done+r*h);
   if(typeof trackQuality==='function') trackQuality(j,a,s.role,s.done-before);
   if(s.done>=s.need-1e-9){ s.done=s.need; const prev=j.who; a.sitT=0; j.who=null; ensureStages(j); if(j.cur<j.stg.length) j.handoff=prev; if(typeof maybeRevision==='function') maybeRevision(j,s.k); }

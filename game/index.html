@@ -310,6 +310,7 @@ button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:3p
 #intro .intro-trio{display:flex;align-items:flex-end;gap:2px;height:96px}
 #intro .intro-plus{font:800 34px/1 var(--font);color:#5DBB3F;align-self:center;margin-left:6px}
 .ic-spr{display:block;width:72px;height:96px;background-size:216px 192px;background-position:-72px 0;background-repeat:no-repeat}
+#intro .intro-perk{margin:2px 0 0;text-align:center;font-size:13px;line-height:1.35;color:#5a3a1e}
 #intro .intro-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;max-height:46vh;overflow:auto;padding:4px}
 #intro .intro-char{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border:3px solid #E2C391;border-radius:12px;background:#FFF9EC}
 #intro .intro-char b{font-size:13px}#intro .intro-char small{font-size:11px;color:#8A5A2E}
@@ -725,6 +726,7 @@ html,body{width:100%;height:100%;overscroll-behavior:none}
 /* Điện thoại ngang: thu gọn hộp chọn nhân vật để nút hướng dẫn không bị khuất */
 @media(max-height:500px){#intro .intro-box{max-height:calc(100dvh - 16px);padding:8px 14px 10px;gap:6px}#intro h1{font-size:22px;margin:0}#intro .intro-head p{font-size:12px}#intro .intro-lead{font-size:13px;margin:0 0 2px}#intro .intro-opt{padding:8px 10px;gap:3px}#intro .intro-trio{height:72px}#intro .intro-trio .ic-spr{width:54px;height:72px;background-size:162px 144px;background-position:-54px 0}#intro .intro-opt b{font-size:15px}#intro .intro-opt small{font-size:11px}#intro .intro-help{margin:0}}
 @media(max-height:500px) and (orientation:landscape){#intro .intro-opts{grid-template-columns:1fr 1fr;gap:10px}}
+@media(max-height:500px){#intro .intro-perk{font-size:11.5px;margin:0}}
 
 body.booting #wrap{visibility:hidden}
 #boot[hidden],#titleScreen[hidden]{display:none!important}
@@ -1468,6 +1470,7 @@ function agentTiles(){ const s=new Set(); for(const a of [...AG,...VIS]){ if(a.a
 const CUSTS=window.CUSTS||[]; const CUIMG=CUSTS.map(c=>Object.assign(bootImage(),{src:c.src}));
 const JOB_CUST={"Thiết kế logo":[3,7],"Bộ ấn phẩm Tết":[4,0],"Kế hoạch truyền thông":[0,3,6],"Quản lý fanpage 1 tuần":[5,7],"Chụp ảnh sản phẩm":[1,4],"Quay video TikTok":[2,5],"Podcast thương hiệu":[6],"TVC 15 giây":[6,0],"Livestream bán hàng":[1,2],"Pitch khách hàng lớn":[0,6]};
 const PATIENCE_MIN=240;   // khách chờ tối đa 4 giờ game (4 phút thật) rồi bỏ về
+function patienceMin(){return Math.round(PATIENCE_MIN*(typeof perkVal==='function'?perkVal('patience'):1));}   // nhân vật chính gốc Trợ lý: khách chờ lâu hơn
 let VIS=[], visId=1;
 const EMO=window.EMOTES||{};   // biểu tượng cảm xúc trên đầu khách (Higgsfield); thiếu thì dùng icon UI
 const EMO_FALL={happy:"heart",angry:"fire",wait:"clock",star:"star",money:"coin",job:"brief",sad:"clock",done:"star"};   // dự phòng khi thiếu ảnh biểu tượng
@@ -1709,10 +1712,21 @@ function assignStages(){
   busy.delete(j.who); j.who=CHARS[spec.ci].id; busy.add(j.who); startPass(cur,j,spec);
  }
 }
-function stageRate(a,role){ const base=workerRate(a); if(base<=0) return 0; return base*WORK_SPEED*MATCH_F[roleMatch(a,role)]*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1); }
+// Nhân vật chính gốc Account: cả đội làm bước Brief nhanh hơn (thông số thử).
+function perkStage(role){ const m=typeof perkVal==='function'?perkVal('stage',null):null; return m&&m[role]||1; }
+function stageRate(a,role){ const base=workerRate(a); if(base<=0) return 0; return base*WORK_SPEED*MATCH_F[roleMatch(a,role)]*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1)*perkStage(role); }
+// Nhân vật chính có nghề sản xuất: lúc quầy vắng khách thì phụ một tay bước đúng nghề, nửa tốc độ, không cộng stress.
+// Chỉ phụ job đã có người đang làm bước đó (hoàn tất bước vẫn do người đó cầm hồ sơ đi tiếp).
+function founderHelpRate(role){
+ const p=typeof founderPerk==='function'?founderPerk():null; if(!p||p.help!==role) return 0;
+ const f=AG.find(a=>a.founder&&!a.mascot); if(!f||f.receptionUid!=null||f.handover||f.pass||(typeof deskReady==='function'&&!deskReady(f))) return 0;
+ if(typeof VIS!=='undefined'&&VIS.some(v=>v.state==='wait'||v.state==='pickup')) return 0;
+ const t=TRACK_OF[STAFF_ROLE[GS.player.id]]||{spec:[],near:[]};
+ return FOUNDER_HELP*WORK_SPEED*MATCH_F[t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'];
+}
 function stagePotentialRate(a,role){
  if(!a||a.mascot||a.founder||!hasWorkSeat(a))return 0;
- return WORK_SPEED*MATCH_F[roleMatch(a,role)]*(a.stress>75?.6:1)*(seatKind(a)==='ergo_chair'?1.2:1)*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1);
+ return WORK_SPEED*MATCH_F[roleMatch(a,role)]*(a.stress>75?.6:1)*(seatKind(a)==='ergo_chair'?1.2:1)*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1)*perkStage(role);
 }
 function estimateStageHours(j,pool){
  ensureStages(j);let hours=0;
@@ -1725,8 +1739,10 @@ function estimateStageHours(j,pool){
 function advanceJobWork(h){
  if(closingOffice) return;
  assignStages();
+ let helped=false;
  for(const j of GS.jobs){ const s=j.stg[j.cur]; if(!s||!j.who||!jobReady(j)) continue; const a=staffById(j.who); if(!a) continue;
-  const r=stageRate(a,s.role)*((GS.earlyBoostUntil||0)>GS.day*1440+GS.min?1.15:1); if(r<=0) continue;
+  let r=stageRate(a,s.role)*((GS.earlyBoostUntil||0)>GS.day*1440+GS.min?1.15:1); if(r<=0) continue;
+  if(!helped){ const hr=founderHelpRate(s.role); if(hr>0){ r+=hr; helped=true; } }
   const before=s.done; s.done=Math.min(s.need,s.done+r*h);
   if(typeof trackQuality==='function') trackQuality(j,a,s.role,s.done-before);
   if(s.done>=s.need-1e-9){ s.done=s.need; const prev=j.who; a.sitT=0; j.who=null; ensureStages(j); if(j.cur<j.stg.length) j.handoff=prev; if(typeof maybeRevision==='function') maybeRevision(j,s.k); }
@@ -2381,6 +2397,8 @@ function payJob(j){
  else {cash+=amount;GS.revToday+=amount;GS.revTotal+=amount;toast(`Xong ${j.name} · +${fmt(amount)}`,'ok');}
  return amount;
 }
+// V17: Kế toán thu nhanh hơn (20 thay 30 phút game). Nhân vật chính gốc Kế toán lo giấy tờ ở quầy nên ai đi thu cũng nhanh hơn (thông số thử).
+function collectMinutes(a){const m=(a&&a.role==='Kế toán'?20:30)*(typeof perkVal==='function'?perkVal('collect'):1);return Math.round(m*10)/10;}
 function sendCollector(id,staffId){
  const debt=receivables().find(d=>d.id===id),a=AG.find(a=>CHARS[a.ci].id===staffId);
  if(!debt||!a||closingOffice||GS.min>=CLOSE_MIN-60)return;
@@ -2388,7 +2406,7 @@ function sendCollector(id,staffId){
  const from=a.state==='sit'&&a.acc?a.acc:[Math.round(a.x),Math.round(a.y)],p=bfs(from,ENTRY);
  if(!p){toast('Không có đường ra cửa để thu tiền','err');return;}
  [a.x,a.y]=from;if(a.useObj){BUSY.delete(a.useObj);a.useObj=null;}
- a.seat=null;a.react=null;a.state='collect';a.collection={id,phase:'out',remaining:a.role==='Kế toán'?20:30};   // V17: Kế toán thu nhanh hơn (20 thay 30 phút game)a.path=[...p.slice(1),OUTSIDE_ENTRY,streetExit(a)];
+ a.seat=null;a.react=null;a.state='collect';a.collection={id,phase:'out',remaining:collectMinutes(a)};a.path=[...p.slice(1),OUTSIDE_ENTRY,streetExit(a)];
  renderJobs();save();
 }
 function stepCollector(a,dt){
@@ -2586,7 +2604,7 @@ function stepVisitors(dt,gm){
   if(!closingOffice){for(const j of [...(GS.pickups||[])])if(!VIS.some(v=>v.jobId===j.id)){spawnVisitor("pickup",j);}}
   const expiredAbsent=GS.offers.filter(j=>j.visitorDeparted&&Number.isFinite(j.expire)&&j.expire<=GS.day*1440+GS.min);
   if(expiredAbsent.length){GS.offers=GS.offers.filter(j=>!expiredAbsent.includes(j));fillOffers();renderJobs();}
-  for(const j of closingOffice?[]:GS.offers){ if(j.cust==null) j.cust=custFor(j.name); if(j.expire==null) j.expire=GS.day*1440+GS.min+PATIENCE_MIN; if(!j.visitorDeparted&&!VIS.some(v=>v.jobId===j.id)) spawnVisitor("offer",j); }
+  for(const j of closingOffice?[]:GS.offers){ if(j.cust==null) j.cust=custFor(j.name); if(j.expire==null) j.expire=GS.day*1440+GS.min+patienceMin(); if(!j.visitorDeparted&&!VIS.some(v=>v.jobId===j.id)) spawnVisitor("offer",j); }
   if(!closingOffice)updateQueue(dt);   // dồn hàng chờ ở quầy
   for(const v of VIS){
     if(v.kind==="offer"&&v.state!=="leave"){
@@ -2617,7 +2635,7 @@ function drawVisitor(c,v){ const im=CUIMG[v.ci]; if(!im||!im.complete||!im.natur
   c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill();
   c.imageSmoothingEnabled=true; c.imageSmoothingQuality="high"; c.drawImage(im,col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.imageSmoothingEnabled=false; c.restore();
   // thanh kiên nhẫn khi đang chờ
-  if(v.kind==="offer"&&v.state!=="leave"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j&&!j.received){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/PATIENCE_MIN));
+  if(v.kind==="offer"&&v.state!=="leave"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j&&!j.received){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/patienceMin()));
     c.fillStyle="#3A2414"; c.fillRect(Math.round(sx-9),Math.round(sy-37),18,4); c.fillStyle=r>0.5?"#6CC24A":r>0.25?"#FFC93C":"#F04E3E"; c.fillRect(Math.round(sx-8),Math.round(sy-36),Math.round(16*r),2); } }
   if(v.emo)drawStatusChat(c,sx,sy,v.emo.k); }
 function drawStatusChat(c,sx,sy,kind){
@@ -3088,8 +3106,9 @@ function mkOffer(){
  const small=Math.random()<.7;
  const pool=small?JOB_TPL.filter(t=>!t[4].length):JOB_TPL;
  const t=pool[Math.floor(Math.random()*pool.length)],k=.85+Math.random()*.3;
- const reward=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
- const need=Math.max(2,Math.round(reward*.18*100)/100),vip=!small&&Math.random()<.12;
+ const base=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
+ const reward=Math.round(base*(typeof perkVal==='function'?perkVal('offer'):1)*10)/10;   // nhân vật chính gốc Sale: khách trả cao hơn, khối lượng việc theo giá gốc
+ const need=Math.max(2,Math.round(base*.18*100)/100),vip=!small&&Math.random()<.12;
  return {invoice:vip,vip,gem:vip?3+Math.floor(Math.random()*6):0,id:GS.nextJob++,name:(vip?'⭐ ':'')+t[0],need,reward,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8)),flowVersion:2,onboardingPace:1};
 }
 function fillOffers(){ while(GS.offers.length<jobCapacity()) GS.offers.push(typeof applyRepeat==="function"?applyRepeat(mkOffer()):mkOffer());
@@ -3260,7 +3279,7 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
     if(a.state==="burn"){ a.burnT-=gm; if(a.burnT<=0){ a.state="wander"; a.stress=55; a.wait=0.5; assignSeats(); } continue; }
     const k=seatKind(a);
     // Chỉ tích stress khi thật sự có việc; ngồi chờ việc được nghỉ như đi lại.
-    if(isWorking(a)&&hasWorkFor(a)){ workers++; const ergo=k==="ergo_chair"; eff+=(a.stress>75?0.6:1)*(ergo?1.2:1); a.stress+=8*h*(ergo?0.7:1); }
+    if(isWorking(a)&&hasWorkFor(a)){ workers++; const ergo=k==="ergo_chair"; eff+=(a.stress>75?0.6:1)*(ergo?1.2:1); a.stress+=8*h*(ergo?0.7:1)*(typeof perkVal==='function'?perkVal('stress'):1); }
     else if(isWorking(a)) a.stress-=1.5*h;
     else if(k==="sofa_blue") a.stress-=14*h; else if(k==="meeting_table"||k==="round_table") a.stress+=1*h; else a.stress-=(a.autoBreak&&a.path.length?18:1.5)*h;
     a.stress-=(AURA.cat*2+AURA.aqua*3)*h; for(const t of AURA.trees) if(Math.abs(a.x-t[0])<=3&&Math.abs(a.y-t[1])<=3){ a.stress-=1*h; break; }
@@ -3812,6 +3831,24 @@ const STAFF_NAME={'01_Huy':'Huy','02_Luwon':'Luwon','03_Pali':'Pali','04_Tamny':
 const STAFF_ROLE={'01_Huy':'Design','02_Luwon':'Design','03_Pali':'Account','04_Tamny':'Kế toán','06_Vu_a_Vu':'Sale','07_Hao_Hao':'HR','08_Nganh':'Trợ lý','09_Vit_Vang':'Linh vật','10_Con_LT':'Account','11_Juice':'Design','12_ADM':'Planner','13_AB':'Content','14_HM':'AI Designer','15_CongB':'Editor','trinh_lac_corrected_v2':'Account'};
 const MASCOT_ID='09_Vit_Vang', MASCOT_RADIUS=3, MASCOT_RELIEF=6;   // linh vật: không làm job; giảm 6 stress/giờ game cho người trong bán kính 3 ô (thông số thử)
 let pendingDismiss=null;
+// Thế mạnh của nhân vật chính theo nghề gốc (14/10/2026). Nhân vật chính luôn đứng quầy lễ tân; nghề gốc chỉ cho thêm lợi thế.
+// Mọi con số là thông số thử, cần chơi thử để cân bằng. Nhân vật tự tạo không có nghề gốc nên không có thế mạnh.
+const FOUNDER_PERK={
+ 'Sale':{t:'Khách trả giá cao hơn 10% (khối lượng việc giữ nguyên)',offer:1.1},
+ 'Account':{t:'Bước Brief làm nhanh hơn 1/3',stage:{acc:1.33}},
+ 'Kế toán':{t:'Đi thu công nợ nhanh hơn 1/3',collect:.67},
+ 'HR':{t:'Cả đội tăng stress chậm hơn 15%, tuyển người rẻ hơn 15%',stress:.85,hire:.85},
+ 'Trợ lý':{t:'Khách chịu chờ lâu hơn 25% trước khi bỏ về',patience:1.25},
+ 'Design':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ)',help:'des'},
+ 'AI Designer':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ)',help:'des'},
+ 'Editor':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ, gần chuyên môn)',help:'des'},
+ 'Content':{t:'Quầy vắng khách thì phụ bước Content (nửa tốc độ)',help:'con'},
+ 'Planner':{t:'Quầy vắng khách thì phụ bước Chia việc (nửa tốc độ)',help:'plan'}};
+const FOUNDER_HELP=.5;
+function founderPerk(id){const pid=id||(typeof GS!=='undefined'&&GS.player&&GS.player.id);return pid&&FOUNDER_PERK[STAFF_ROLE[pid]]||null;}
+// fillOffers() đầu trang chạy trước khi khối staff.js khai báo xong hằng số: lúc đó coi như chưa có thế mạnh.
+function perkVal(k,d=1){try{const p=founderPerk();return p&&p[k]!=null?p[k]:d;}catch(e){return d;}}
+function hireCost(){return Math.round(HIRE_COST*perkVal('hire')*10)/10;}
 function staffName(id){if(id===FOUNDER_ID&&GS.player?.name)return GS.player.name;if(id==='P_custom')return 'Bạn';return STAFF_NAME[id]||id.replace(/^\d+_/,'').replace(/_corrected_v2/,'').replace(/_/g,' ');}
 // Nhân vật của người chơi luôn là lễ tân (đứng quầy, nhận khách, giao việc cho Account).
 function roleOf(id){if(id==='P_custom'||(id===FOUNDER_ID&&typeof GS!=='undefined'&&GS.player))return 'Lễ tân';return STAFF_ROLE[id]||'';}
@@ -3837,16 +3874,16 @@ function hireStaff(id){
  if(typeof bootEnsure==='function')bootEnsure(CHARS.find(c=>c.id===id));
  const ci=CHARS.findIndex(c=>c.id===id);
  if(ci<0||id===MASCOT_ID||AG.some(a=>a.ci===ci))return;
- if(cash<HIRE_COST){toast(`Cần ${HIRE_COST} tr để tuyển ${staffName(id)}`,'err');return;}
+ const cost=hireCost();if(cash<cost){toast(`Cần ${cost} tr để tuyển ${staffName(id)}`,'err');return;}
  // Người mới đi bộ từ đầu vỉa hè vào cửa chính như ngày đầu đi làm.
- cash=Math.round((cash-HIRE_COST)*100)/100;
+ cash=Math.round((cash-cost)*100)/100;
  if(typeof starCandidate==='function'&&GS.starPick&&GS.starPick.id===id&&GS.starPick.day===GS.day){GS.stars=GS.stars||{};GS.stars[id]=1;}   // ứng viên nổi bật giữ hệ số làm nhanh
  const a=tagStaff({x:ENTRY[0],y:ENTRY[1],ci,path:[],dir:'NE',t:0,wait:.3,seat:null,state:'wander',sitT:0,roam:0,stress:0});
  startArrival(a,.3);   // đi bộ từ đầu vỉa hè vào văn phòng
  AG.push(a);
- pendingDismiss=null;addOfficeNews("staff",`Đã tuyển ${staffName(id)} · ${HIRE_COST} tr`);commitRoster();hud();
+ pendingDismiss=null;addOfficeNews("staff",`Đã tuyển ${staffName(id)} · ${cost} tr`);commitRoster();hud();
  if(!a.mascot&&!a.seat)toast(`Đã tuyển ${staffName(id)} · chưa có bàn trống: đặt thêm bàn hoặc mở khu mới`,'err');
- else toast(`Đã tuyển ${staffName(id)} · −${HIRE_COST} tr`,'ok');
+ else toast(`Đã tuyển ${staffName(id)} · −${cost} tr`,'ok');
 }
 function dismissStaff(id){
  if(id===FOUNDER_ID||id===MASCOT_ID)return;   // nhân vật của bạn và linh vật luôn ở lại
@@ -3885,7 +3922,7 @@ function renderStaff(){
  for(const c of [...free].sort((p,q)=>(q.id===starId)-(p.id===starId))){
   const star=c.id===starId;   // V17: có HR trong đội → 1 ứng viên làm rất tốt được làm nổi bật mỗi ngày
   const card=document.createElement('div');card.className='pack'+(star?' star-cand':'');card.style.gridTemplateColumns='48px minmax(0,1fr) auto';
-  const name=document.createElement('span');const title=document.createElement('b');title.textContent=staffName(c.id);const sub=document.createElement('small');sub.style.cssText='display:block;font-size:11px';sub.textContent=c.id===MASCOT_ID?'Linh vật · không làm job, giảm stress người xung quanh':roleOf(c.id)+(typeof salaryRate==='function'?` · Lương ${fmt(salaryRate(c.id,star))}/ngày`:'')+(star?' · ⭐ Ứng viên nổi bật · làm nhanh hơn 20%':'');name.append(title,sub);const b=document.createElement('button');b.className='btn g';b.textContent=`Tuyển · ${HIRE_COST} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${HIRE_COST} tr`);b.onclick=()=>hireStaff(c.id);card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
+  const name=document.createElement('span');const title=document.createElement('b');title.textContent=staffName(c.id);const sub=document.createElement('small');sub.style.cssText='display:block;font-size:11px';sub.textContent=c.id===MASCOT_ID?'Linh vật · không làm job, giảm stress người xung quanh':roleOf(c.id)+(typeof salaryRate==='function'?` · Lương ${fmt(salaryRate(c.id,star))}/ngày`:'')+(star?' · ⭐ Ứng viên nổi bật · làm nhanh hơn 20%':'');name.append(title,sub);const b=document.createElement('button');b.className='btn g';b.textContent=`Tuyển · ${hireCost()} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${hireCost()} tr`);b.onclick=()=>hireStaff(c.id);card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
  }
 }
 
@@ -4121,10 +4158,11 @@ function openIntro(fresh){
  }
  function preset(){
   stopAnim();
-  body.innerHTML=`<p class="intro-lead">${step(1)}Chọn nhân vật của bạn rồi đặt tên agency.</p><div class="intro-grid" role="listbox" aria-label="Nhân vật có sẵn">${ids.map(id=>`<button class="intro-char" role="option" data-id="${id}" aria-selected="${id===sel}">${spriteCell(id)}<b></b><small>${roleOf(id)}</small></button>`).join("")}</div>${nameRow()}${actions()}`;
+  body.innerHTML=`<p class="intro-lead">${step(1)}Chọn nhân vật của bạn rồi đặt tên agency.</p><div class="intro-grid" role="listbox" aria-label="Nhân vật có sẵn">${ids.map(id=>`<button class="intro-char" role="option" data-id="${id}" aria-selected="${id===sel}">${spriteCell(id)}<b></b><small>${roleOf(id)}</small></button>`).join("")}</div><p class="intro-perk" id="introPerk" aria-live="polite"></p>${nameRow()}${actions()}`;
   body.querySelectorAll(".intro-char").forEach(b=>{b.querySelector("b").textContent=baseName(b.dataset.id);});
   const inp=body.querySelector("#introName");inp.value=agencyDraft;inp.oninput=()=>{agencyDraft=inp.value;};
-  body.querySelectorAll(".intro-char").forEach(b=>b.onclick=()=>{sel=b.dataset.id;body.querySelectorAll(".intro-char").forEach(x=>x.setAttribute("aria-selected",String(x===b)));});
+  const perkEl=body.querySelector("#introPerk"),showPerk=()=>{const pk=founderPerk(sel);perkEl.innerHTML=`<b>Thế mạnh (${STAFF_ROLE[sel]||""}):</b> `;perkEl.append(pk?pk.t:"Chưa có");};showPerk();
+ body.querySelectorAll(".intro-char").forEach(b=>b.onclick=()=>{sel=b.dataset.id;body.querySelectorAll(".intro-char").forEach(x=>x.setAttribute("aria-selected",String(x===b)));showPerk();});
   body.querySelector("#introBack").onclick=choose;
   body.querySelector("#introGo").onclick=()=>next({kind:"preset",id:sel,agency:inp.value});
   inp.onkeydown=e=>{if(e.key==="Enter")body.querySelector("#introGo").click();};
@@ -4213,8 +4251,9 @@ function guidePages(){
   {id:"reception",icon:"brief",title:"Đón khách ở quầy lễ tân",lead:"HR, Kế toán và Trợ lý luân phiên tiếp khách; người chơi hỗ trợ khi thiếu người.",
    items:["Khách xếp hàng trước quầy; bạn tiếp từng người khoảng <b>2 giây</b> để nhận brief.",
     "Mở <b>Công việc</b> (cặp hồ sơ) → tab <b>Khách chờ</b> để <b>Nhận job</b> hoặc <b>Từ chối job</b>. Từ chối không mất danh tiếng.",
-    `Nhận job tốn <b>năng lượng ⚡</b> (bằng nửa số giờ công). Khách chỉ chờ tối đa <b>${h(PATIENCE_MIN)}</b> trước khi bạn nhận.`,
-    "Nhận xong, bạn mang brief tới <b>Account</b> gần nhất rồi về quầy. Job bắt đầu làm ngay, không chờ giao xong."],
+    `Nhận job tốn <b>năng lượng ⚡</b> (bằng nửa số giờ công). Khách chỉ chờ tối đa <b>${h(typeof patienceMin==='function'?patienceMin():PATIENCE_MIN)}</b> trước khi bạn nhận.`,
+    "Nhận xong, bạn mang brief tới <b>Account</b> gần nhất rồi về quầy. Job bắt đầu làm ngay, không chờ giao xong.",
+    (()=>{const pk=typeof founderPerk==="function"&&founderPerk();return pk?`Thế mạnh của bạn theo nghề gốc <b>${STAFF_ROLE[GS.player.id]}</b>: ${pk.t}.`:"Nhân vật chọn sẵn có thế mạnh theo nghề gốc (Sale, Account, HR…); nhân vật tự tạo thì không.";})()],
    tip:"Khách tới khi bạn đang đi giao việc sẽ đứng chờ ở quầy."},
   {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua Account → Planner → Content → Design; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
    items:["<b>Brief</b> (Account) → <b>Chia việc</b> (Planner – Đốc Giám) → <b>Sáng tạo</b> (Content) → <b>Sản xuất</b> (Design). Chưa có Planner thì Account hoặc Content chia việc thay, chậm hơn.",
@@ -4225,7 +4264,7 @@ function guidePages(){
     "Tạm dừng sản xuất không dừng hạn giao. Qua ngày hạn mà chưa xong là trễ hạn."],
    tip:"Có HR trong đội: mỗi ngày Tuyển dụng có 1 ứng viên nổi bật làm nhanh hơn 20%. Kế toán đi thu công nợ nhanh hơn."},
   {id:"staff",icon:"people",title:"Nhân sự và stress",lead:"Đội làm việc càng lâu càng mệt; giữ stress thấp để làm nhanh.",
-   items:[`Tuyển thêm trong <b>Đội ngũ → Tuyển dụng</b>: <b>${HIRE_COST} triệu/người</b>, cần có bàn trống.`,
+   items:[`Tuyển thêm trong <b>Đội ngũ → Tuyển dụng</b>: <b>${typeof hireCost==='function'?hireCost():HIRE_COST} triệu/người</b>, cần có bàn trống.`,
     "Stress trên <b>75</b>: làm chậm còn 60% và tự đi nghỉ; xuống <b>55</b> thì quay lại bàn.",
     "Stress <b>100</b>: nhân viên <b>bốc cháy</b>, nghỉ 90 phút game.",
     "Bấm vào nhân viên → <b>Cho nghỉ</b> (−25 stress, chờ 30 phút game mới cho nghỉ tiếp). Mỗi đêm cả đội giảm 25 stress.",

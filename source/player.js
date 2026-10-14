@@ -183,10 +183,11 @@ function openIntro(fresh){
  }
  function preset(){
   stopAnim();
-  body.innerHTML=`<p class="intro-lead">${step(1)}Chọn nhân vật của bạn rồi đặt tên agency.</p><div class="intro-grid" role="listbox" aria-label="Nhân vật có sẵn">${ids.map(id=>`<button class="intro-char" role="option" data-id="${id}" aria-selected="${id===sel}">${spriteCell(id)}<b></b><small>${roleOf(id)}</small></button>`).join("")}</div>${nameRow()}${actions()}`;
+  body.innerHTML=`<p class="intro-lead">${step(1)}Chọn nhân vật của bạn rồi đặt tên agency.</p><div class="intro-grid" role="listbox" aria-label="Nhân vật có sẵn">${ids.map(id=>`<button class="intro-char" role="option" data-id="${id}" aria-selected="${id===sel}">${spriteCell(id)}<b></b><small>${roleOf(id)}</small></button>`).join("")}</div><p class="intro-perk" id="introPerk" aria-live="polite"></p>${nameRow()}${actions()}`;
   body.querySelectorAll(".intro-char").forEach(b=>{b.querySelector("b").textContent=baseName(b.dataset.id);});
   const inp=body.querySelector("#introName");inp.value=agencyDraft;inp.oninput=()=>{agencyDraft=inp.value;};
-  body.querySelectorAll(".intro-char").forEach(b=>b.onclick=()=>{sel=b.dataset.id;body.querySelectorAll(".intro-char").forEach(x=>x.setAttribute("aria-selected",String(x===b)));});
+  const perkEl=body.querySelector("#introPerk"),showPerk=()=>{const pk=founderPerk(sel);perkEl.innerHTML=`<b>Thế mạnh (${STAFF_ROLE[sel]||""}):</b> `;perkEl.append(pk?pk.t:"Chưa có");};showPerk();
+ body.querySelectorAll(".intro-char").forEach(b=>b.onclick=()=>{sel=b.dataset.id;body.querySelectorAll(".intro-char").forEach(x=>x.setAttribute("aria-selected",String(x===b)));showPerk();});
   body.querySelector("#introBack").onclick=choose;
   body.querySelector("#introGo").onclick=()=>next({kind:"preset",id:sel,agency:inp.value});
   inp.onkeydown=e=>{if(e.key==="Enter")body.querySelector("#introGo").click();};

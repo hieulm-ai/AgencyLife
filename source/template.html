@@ -737,6 +737,7 @@ function agentTiles(){ const s=new Set(); for(const a of [...AG,...VIS]){ if(a.a
 const CUSTS=window.CUSTS||[]; const CUIMG=CUSTS.map(c=>Object.assign(bootImage(),{src:c.src}));
 const JOB_CUST={"Thiết kế logo":[3,7],"Bộ ấn phẩm Tết":[4,0],"Kế hoạch truyền thông":[0,3,6],"Quản lý fanpage 1 tuần":[5,7],"Chụp ảnh sản phẩm":[1,4],"Quay video TikTok":[2,5],"Podcast thương hiệu":[6],"TVC 15 giây":[6,0],"Livestream bán hàng":[1,2],"Pitch khách hàng lớn":[0,6]};
 const PATIENCE_MIN=240;   // khách chờ tối đa 4 giờ game (4 phút thật) rồi bỏ về
+function patienceMin(){return Math.round(PATIENCE_MIN*(typeof perkVal==='function'?perkVal('patience'):1));}   // nhân vật chính gốc Trợ lý: khách chờ lâu hơn
 let VIS=[], visId=1;
 const EMO=window.EMOTES||{};   // biểu tượng cảm xúc trên đầu khách (Higgsfield); thiếu thì dùng icon UI
 const EMO_FALL={happy:"heart",angry:"fire",wait:"clock",star:"star",money:"coin",job:"brief",sad:"clock",done:"star"};   // dự phòng khi thiếu ảnh biểu tượng
@@ -808,7 +809,7 @@ function stepVisitors(dt,gm){
   if(!closingOffice){for(const j of [...(GS.pickups||[])])if(!VIS.some(v=>v.jobId===j.id)){spawnVisitor("pickup",j);}}
   const expiredAbsent=GS.offers.filter(j=>j.visitorDeparted&&Number.isFinite(j.expire)&&j.expire<=GS.day*1440+GS.min);
   if(expiredAbsent.length){GS.offers=GS.offers.filter(j=>!expiredAbsent.includes(j));fillOffers();renderJobs();}
-  for(const j of closingOffice?[]:GS.offers){ if(j.cust==null) j.cust=custFor(j.name); if(j.expire==null) j.expire=GS.day*1440+GS.min+PATIENCE_MIN; if(!j.visitorDeparted&&!VIS.some(v=>v.jobId===j.id)) spawnVisitor("offer",j); }
+  for(const j of closingOffice?[]:GS.offers){ if(j.cust==null) j.cust=custFor(j.name); if(j.expire==null) j.expire=GS.day*1440+GS.min+patienceMin(); if(!j.visitorDeparted&&!VIS.some(v=>v.jobId===j.id)) spawnVisitor("offer",j); }
   if(!closingOffice)updateQueue(dt);   // dồn hàng chờ ở quầy
   for(const v of VIS){
     if(v.kind==="offer"&&v.state!=="leave"){
@@ -839,7 +840,7 @@ function drawVisitor(c,v){ const im=CUIMG[v.ci]; if(!im||!im.complete||!im.natur
   c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill();
   c.imageSmoothingEnabled=true; c.imageSmoothingQuality="high"; c.drawImage(im,col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.imageSmoothingEnabled=false; c.restore();
   // thanh kiên nhẫn khi đang chờ
-  if(v.kind==="offer"&&v.state!=="leave"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j&&!j.received){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/PATIENCE_MIN));
+  if(v.kind==="offer"&&v.state!=="leave"){ const j=GS.offers.find(o=>o.id===v.jobId); if(j&&!j.received){ const r=Math.max(0,Math.min(1,(j.expire-(GS.day*1440+GS.min))/patienceMin()));
     c.fillStyle="#3A2414"; c.fillRect(Math.round(sx-9),Math.round(sy-37),18,4); c.fillStyle=r>0.5?"#6CC24A":r>0.25?"#FFC93C":"#F04E3E"; c.fillRect(Math.round(sx-8),Math.round(sy-36),Math.round(16*r),2); } }
   if(v.emo)drawStatusChat(c,sx,sy,v.emo.k); }
 function drawStatusChat(c,sx,sy,kind){
@@ -1310,8 +1311,9 @@ function mkOffer(){
  const small=Math.random()<.7;
  const pool=small?JOB_TPL.filter(t=>!t[4].length):JOB_TPL;
  const t=pool[Math.floor(Math.random()*pool.length)],k=.85+Math.random()*.3;
- const reward=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
- const need=Math.max(2,Math.round(reward*.18*100)/100),vip=!small&&Math.random()<.12;
+ const base=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
+ const reward=Math.round(base*(typeof perkVal==='function'?perkVal('offer'):1)*10)/10;   // nhân vật chính gốc Sale: khách trả cao hơn, khối lượng việc theo giá gốc
+ const need=Math.max(2,Math.round(base*.18*100)/100),vip=!small&&Math.random()<.12;
  return {invoice:vip,vip,gem:vip?3+Math.floor(Math.random()*6):0,id:GS.nextJob++,name:(vip?'⭐ ':'')+t[0],need,reward,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8)),flowVersion:2,onboardingPace:1};
 }
 function fillOffers(){ while(GS.offers.length<jobCapacity()) GS.offers.push(typeof applyRepeat==="function"?applyRepeat(mkOffer()):mkOffer());
@@ -1482,7 +1484,7 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
     if(a.state==="burn"){ a.burnT-=gm; if(a.burnT<=0){ a.state="wander"; a.stress=55; a.wait=0.5; assignSeats(); } continue; }
     const k=seatKind(a);
     // Chỉ tích stress khi thật sự có việc; ngồi chờ việc được nghỉ như đi lại.
-    if(isWorking(a)&&hasWorkFor(a)){ workers++; const ergo=k==="ergo_chair"; eff+=(a.stress>75?0.6:1)*(ergo?1.2:1); a.stress+=8*h*(ergo?0.7:1); }
+    if(isWorking(a)&&hasWorkFor(a)){ workers++; const ergo=k==="ergo_chair"; eff+=(a.stress>75?0.6:1)*(ergo?1.2:1); a.stress+=8*h*(ergo?0.7:1)*(typeof perkVal==='function'?perkVal('stress'):1); }
     else if(isWorking(a)) a.stress-=1.5*h;
     else if(k==="sofa_blue") a.stress-=14*h; else if(k==="meeting_table"||k==="round_table") a.stress+=1*h; else a.stress-=(a.autoBreak&&a.path.length?18:1.5)*h;
     a.stress-=(AURA.cat*2+AURA.aqua*3)*h; for(const t of AURA.trees) if(Math.abs(a.x-t[0])<=3&&Math.abs(a.y-t[1])<=3){ a.stress-=1*h; break; }
