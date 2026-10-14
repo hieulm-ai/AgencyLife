@@ -288,7 +288,8 @@ const CHAR_BASE_SRC=Object.fromEntries(CHARS.map(c=>[c.id,c.src]));
 const SPR={fw:24,fh:32,rows:{front:0,back:1}};
 const IMGS=CHARS.map(c=>{ const i=bootImage(); i.src=c.src; return i; });
 const SIMGS=CHARS.map(c=>{ if(!c.sit) return null; const i=bootImage(); i.src=c.sit; return i; });
-const UIMGS=CHARS.map(c=>{ if(!c.use) return null; const i=bootImage(); i.src=c.use; return i; });   // sheet dùng đồ 48×64: hàng 0 SW, hàng 1 NW, 2 khung vươn tay   // sheet ngồi 48×64: hàng 0 mặt trước SW, hàng 1 lưng NW; 2 khung gõ phím
+const UIMGS=CHARS.map(c=>{ if(!c.use) return null; const i=bootImage(); i.src=c.use; return i; });
+const CAMIMGS=CHARS.map(c=>{ if(!c.cam) return null; const i=bootImage(); i.src=c.cam; return i; });   // 15/10: tư thế cầm máy quay (Quay phim), 2×2 khung 96×128   // sheet dùng đồ 48×64: hàng 0 SW, hàng 1 NW, 2 khung vươn tay   // sheet ngồi 48×64: hàng 0 mặt trước SW, hàng 1 lưng NW; 2 khung gõ phím
 // ô: -1 ngoài, 0 sàn, 1 tường người chơi, 2 cửa, 3 vỏ nhà, 4 cửa kính
 const G=[...Array(N)].map(()=>Array(N).fill(-1));
 for(let y=1;y<=57;y++) for(let x=1;x<=62;x++) G[y][x]=-2;   // −2: đất chưa mở; tường vỏ nhà tự dựng quanh phần đã mở (rebuildShell)
@@ -314,10 +315,13 @@ const SPEEDS=[0,1,2,4], GAME_MIN_PER_SEC=1;   // 1 giây thật = 1 phút game �
 const lvl=()=>UNLOCKED.size, lvlMul=()=>5*Math.pow(1.45,lvl()-1);   // mô phỏng 03/10: ×5 thay ×6
 // Năng lượng: giới hạn tiến độ mỗi ngày thật để người chơi 30 phút–3 giờ/ngày mất khoảng 3–5 tuần mở hết khu (số căn theo ước tính, xem bảng)
 const EN_MAX=120, EN_REGEN_S=90, EN_DAY_CAP=200;   // trần năng lượng được DÙNG mỗi ngày thật   // hồi 1 điểm mỗi 90 giây thật, kể cả khi tắt game
-const JOB_TPL=[ // tên, giờ công, thưởng (tr), hạn (ngày), đồ bắt buộc
+const JOB_TPL=[ // tên, giờ công, thưởng (tr), hạn (ngày), đồ bắt buộc, [cấp agency tối thiểu]
  ["Thiết kế logo",16,8,3,[]],["Bộ ấn phẩm Tết",30,15,4,[]],["Kế hoạch truyền thông",36,20,4,["whiteboard"]],["Quản lý fanpage 1 tuần",40,18,5,[]],
  ["Chụp ảnh sản phẩm",20,11,3,["softbox"]],["Quay video TikTok",24,13,3,["camera_tripod"]],["Podcast thương hiệu",28,16,4,["sound_booth"]],
- ["TVC 15 giây",80,48,6,["green_screen","camera_tripod","editing_workstation"]],["Livestream bán hàng",22,12,2,["camera_tripod","softbox"]],["Pitch khách hàng lớn",18,14,2,["meeting_table"]]];
+ ["TVC 15 giây",80,48,6,["green_screen","camera_tripod","editing_workstation"]],["Livestream bán hàng",22,12,2,["camera_tripod","softbox"]],["Pitch khách hàng lớn",18,14,2,["meeting_table"]],
+ // 15/10/2026: nhóm Video & Hậu kỳ (cần Editor / Quay phim). Giờ công, thưởng, hạn là thông số thử.
+ ["Dựng video sự kiện",26,14,3,["editing_workstation"]],["Series Reels 5 clip",34,19,4,["camera_tripod"]],
+ ["Phim giới thiệu doanh nghiệp 60s",60,34,5,["camera_tripod","editing_workstation"],2],["Video review sản phẩm",22,12,3,["camera_tripod","softbox"]]];
 const ITEM_NAME={whiteboard:"bảng trắng",softbox:"đèn softbox",camera_tripod:"máy quay",sound_booth:"phòng thu",green_screen:"phông xanh",editing_workstation:"bàn dựng phim",meeting_table:"bàn họp"};
 const WORKSEAT=new Set(["office_chair_blue","ergo_chair","dual_monitor_desk","editing_workstation"]);
 const RELIEF={premium_coffee:30,cat_house:12,aquarium:10,water_dispenser:10,pantry_counter:16,coffee_table:8,bookshelf:6,potted_plant:4,decorative_blue_mark:3,sound_booth:-2};
@@ -717,13 +721,13 @@ function assignSeats(){ SEATS=[]; const liftedU=typeof pend!=="undefined"&&pend&
   const free=SEATS.filter(z=>!used.has(z.key)&&!objOf(z.uid).guest).sort((p,q)=>rank(p)-rank(q));
   // Bàn riêng lưu theo ID nhân viên (GS.homeSeats): ai có bàn còn trống thì về đúng bàn đó trước.
   const homes=(typeof GS!=="undefined"&&GS.homeSeats)||{}, sid=a=>typeof CHARS!=="undefined"?CHARS[a.ci]?.id:a.ci;
-  const needs=AG.filter(a=>!(a.mascot||a.autoBreak||a.collection||a.state==="burn"||a.seat||!SIMGS[a.ci]||a.receptionUid!=null||frontDesk(a)||a.state==="leaving"||a.state==="arrive"||a.away));
+  const needs=AG.filter(a=>!(a.mascot||a.autoBreak||a.collection||a.state==="burn"||a.state==="shoot"||a.state==="toShoot"||a.seat||!SIMGS[a.ci]||a.receptionUid!=null||frontDesk(a)||a.state==="leaving"||a.state==="arrive"||a.away));
   const claimed=new Set(AG.filter(a=>!frontDesk(a)).map(a=>homes[sid(a)]).filter(u=>u!=null));
   const take=(a,z)=>{ free.splice(free.indexOf(z),1); a.seat=z; used.add(z.key); if(a.useObj){ BUSY.delete(a.useObj); a.useObj=null; } a.state="toSeat"; a.path=[]; a.wait=0; };
   for(const a of needs){ const z=free.find(z=>z.uid===homes[sid(a)]); if(z) take(a,z); }
   for(const a of needs){ if(a.seat) continue; const z=free.find(z=>!claimed.has(z.uid))||free[0]; if(!z) break; take(a,z); }
   if(typeof GS!=="undefined"){ GS.homeSeats=GS.homeSeats||{}; for(const a of AG){ const o=a.seat&&objOf(a.seat.uid); if(o&&WORKSEAT.has(o.id)) GS.homeSeats[sid(a)]=o.uid; } }
-  for(const [uid,a] of [...BUSY]) if(!OBJS.find(o=>o.uid===uid)){ BUSY.delete(uid); a.useObj=null; if(a.state==="use"||a.state==="toUse") a.state="wander"; } }
+  for(const [uid,a] of [...BUSY]) if(!OBJS.find(o=>o.uid===uid)){ BUSY.delete(uid); a.useObj=null; if(a.state==="use"||a.state==="toUse"||a.state==="shoot"||a.state==="toShoot") a.state="wander"; } }
 function rebuild(){ rebuildLock(); for(const k in WS){ const [x,y]=k.split(",").map(Number), v=at(x,y); if(v!==1&&v!==2&&v!==3) delete WS[k]; }   // kiểu của tường vỏ cũ bỏ đi khi khu đó đã mở thành sàn
   rebuildOcc(); paintFloor(); computeReach(); buildDoors(); WALLS=[]; for(let y=0;y<N;y++) for(let x=0;x<N;x++) if(isWall(G[y][x])) WALLS.push([x,y]); assignSeats(); }
 // ---------- nhân vật ----------
@@ -902,6 +906,7 @@ function stepAgents(dt){ if(dt<=0)return; for(const a of AG){
     if(d>1e-3) a.dir = Math.abs(dx)>=Math.abs(dy) ? (dx>0?"SE":"NW") : (dy>0?"SW":"NE");
     if(d<=sp){ a.x=tx; a.y=ty; a.path.shift(); } else { a.x+=dx/d*sp; a.y+=dy/d*sp; } a.t+=dt; }
   else {
+    if(typeof stepShoot==="function"&&stepShoot(a,dt,here0(a))) continue;   // 15/10: bước Quay / Thu âm làm tại máy quay, đèn, phòng thu
     if(a.state==="sit"){ a.t+=dt;if(a.meetingJob!=null)continue;if(!a.autoBreak&&isWorking(a)&&hasWorkFor(a)){a.sitT=Math.max(a.sitT,2);continue;}/* có việc thì ngồi lại bàn */a.sitT-=dt; if(a.sitT<=0){ a.state="wander"; if(a.acc){ a.x=a.acc[0]; a.y=a.acc[1]; } a.roam=1+Math.floor(Math.random()*2); a.wait=0.3; } continue; }
     const here=[Math.round(a.x),Math.round(a.y)];
     if(a.seat && a.state==="toSeat"){ const acc=accessOf(a.seat);
@@ -954,6 +959,9 @@ function drawAgent0(c,a){
     c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill();
     c.drawImage(IMGS[a.ci],96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore();
     drawFlame(c,sx,sy-30,a.t); return; }
+  if(a.state==="shoot"&&a.useObj&&(CAMIMGS[a.ci]||UIMGS[a.ci])){ const o=OBJS.find(b=>b.uid===a.useObj), cam=CAMIMGS[a.ci]&&o&&o.id!=="sound_booth", img=cam?CAMIMGS[a.ci]:UIMGS[a.ci];
+    const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.t*(cam?1.5:2.5))%2;
+    c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill(); c.drawImage(img,col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore(); return; }
   if(a.state==="use"&&a.useObj&&UIMGS[a.ci]){ const o=OBJS.find(b=>b.uid===a.useObj); if(o&&USE[o.id].pose==="use"){ const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.useT*2.5)%2;
     c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill(); c.drawImage(UIMGS[a.ci],col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore(); return; } }
   if(a.state==="sit"&&a.seat&&SIMGS[a.ci]){ const z=a.seat, [sx,sy]=z.sx!=null?[z.sx,z.sy+3]:iso(z.px,z.py), back=!isFront(z.face), flip=(z.face==="NE"||z.face==="SE"), col=Math.floor(a.t*3)%2;
@@ -995,7 +1003,7 @@ function placeCheck(p){ if(!p) return {ok:false}; if(p.mode==="buy") return fChe
 // Người đang ngồi/dùng món bị nhấc lên: đứng dậy, đi ra ô trống gần nhất; sau khi đặt xong được xếp lại chỗ ngồi.
 function standUp(uids){ for(const a of AG){ let moved=false;
     if(a.seat&&uids.has(a.seat.uid)){ if(a.state==="sit"&&a.acc) [a.x,a.y]=a.acc; a.seat=null; if(a.state==="sit"||a.state==="toSeat"){ a.state="wander"; a.path=[]; } moved=true; }
-    if(a.useObj!=null&&uids.has(a.useObj)){ BUSY.delete(a.useObj); a.useObj=null; if(a.state==="use"||a.state==="toUse") a.state="wander"; a.path=[]; moved=true; }
+    if(a.useObj!=null&&uids.has(a.useObj)){ BUSY.delete(a.useObj); a.useObj=null; if(a.state==="use"||a.state==="toUse"||a.state==="shoot"||a.state==="toShoot") a.state="wander"; a.path=[]; moved=true; }
     if(moved) a.wait=0.4; } }
 function unstick(){ for(const a of [...AG,...VIS]){ if(a.away||a.gone) continue; const x0=Math.round(a.x), y0=Math.round(a.y); if(!blocked(x0,y0)||y0>ENTRY[1]) continue;
     for(let r=1;r<8;r++){ let done=false; for(let dy=-r;dy<=r&&!done;dy++) for(let dx=-r;dx<=r;dx++){ if(Math.max(Math.abs(dx),Math.abs(dy))!==r||blocked(x0+dx,y0+dy)) continue; a.x=x0+dx; a.y=y0+dy; a.path=[]; done=true; break; } if(done) break; } } }
@@ -1311,7 +1319,8 @@ for(const a of AG){ if(a.stress==null) a.stress=10+Math.random()*25; }
 const hasItem=id=>OBJS.some(o=>o.id===id);
 function mkOffer(){
  const small=Math.random()<.7;
- const pool=small?JOB_TPL.filter(t=>!t[4].length):JOB_TPL;
+ const lv=typeof lvl==='function'?lvl():1, open=JOB_TPL.filter(t=>!(t[5]>lv));   // job lớn mở theo cấp agency
+ const pool=small?open.filter(t=>!t[4].length):open;
  const t=pool[Math.floor(Math.random()*pool.length)],k=.85+Math.random()*.3;
  const base=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
  const reward=Math.round(base*(typeof perkVal==='function'?perkVal('offer'):1)*10)/10;   // nhân vật chính gốc Sale: khách trả cao hơn, khối lượng việc theo giá gốc
@@ -1400,7 +1409,7 @@ function prioritizeJob(id){
   const [job]=GS.jobs.splice(index,1);GS.jobs.unshift(job);
   renderJobs();save();toast(`Ưu tiên: ${job.name}`,"ok");
 }
-function isWorking(a){ if(a.state!=="sit"||!a.seat) return false; const o=OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
+function isWorking(a){ if(a.state==="shoot") return typeof shootingAt==="function"&&!!shootingAt(a); if(a.state!=="sit"||!a.seat) return false; const o=OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
 function seatKind(a){ if(a.state!=="sit"||!a.seat) return null; const o=OBJS.find(b=>b.uid===a.seat.uid); return o?o.id:null; }
 let gameAcc=0;
 const GEM_SHOP=[ // dùng ngay được trong bản thử
@@ -1642,6 +1651,7 @@ function frame(){ clampCam(); renderGround(); g.setTransform(1,0,0,1,0,0); g.cle
   for(const uid of SEAT_COMPOSITES.keys())if(!OBJS.some(o=>o.uid===uid))SEAT_COMPOSITES.delete(uid);
   for(const P of PLOTS){ const [id,,x0,y0,x1,y1]=P; if(UNLOCKED.has(id)) continue; const [cx,cy]=iso((x0+x1+1)/2,(y0+y1+1)/2); drawLock(g,cx,cy-10,canUnlock(P)); }
   for(const a of AG) if(a.state==="use"&&a.useObj){ const o=OBJS.find(b=>b.uid===a.useObj); if(!o) continue; const U=USE[o.id]; if(U.fx) drawFx(g,o,U.fx,a.useT,a.useT/U.t); drawBubble(g,a,U.icon); }
+  for(const a of AG) if(a.state==="shoot"&&a.useObj){ const o=OBJS.find(b=>b.uid===a.useObj), U=o&&USE[o.id]; if(U&&U.fx) drawFx(g,o,U.fx,a.t%U.t,(a.t%U.t)/U.t); }   // đèn ghi hình nhấp nháy khi đang quay
   if(!closingOffice) for(const a of AG) if(!a.emo&&!(a.state==="use"&&a.useObj)) drawProgressRing(g,a);   // vòng tiến trình; nhường chỗ cho biểu tượng cảm xúc và bong bóng đang dùng đồ
   drawStaffSpeech(g);
   for(const a of AG) if(a.emo&&!a.away){ g.imageSmoothingEnabled=true; drawAgentEmo(g,a); g.imageSmoothingEnabled=false; } }   // biểu tượng giao việc vẽ trên cùng (người đang ngồi được vẽ cùng ghế)

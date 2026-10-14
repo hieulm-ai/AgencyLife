@@ -4274,6 +4274,28 @@
      "burn": "hd_burn.png (128×176/khung)",
      "note": "bản 4× dùng trong game, vẽ thu về khung 24×32 để giữ nét khi phóng to"
     }
+   },
+   "16_Khoa": {
+    "portrait": "portrait_48x64.png",
+    "source": "Higgsfield gpt_image_2_5 15/10/2026 — Quay phim, scripts/prepare_new_chars.py",
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png",
+     "cam": "hd_cam.png (chỉ Quay phim)"
+    }
+   },
+   "17_Linh": {
+    "portrait": "portrait_48x64.png",
+    "source": "Higgsfield gpt_image_2_5 15/10/2026 — Âm thanh, scripts/prepare_new_chars.py",
+    "hd": {
+     "walk": "hd_walk.png (96×128/khung)",
+     "sit": "hd_sit.png",
+     "use": "hd_use.png",
+     "burn": "hd_burn.png",
+     "cam": "hd_cam.png (chỉ Quay phim)"
+    }
    }
   }
  },

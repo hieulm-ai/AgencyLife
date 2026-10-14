@@ -143,6 +143,8 @@ for c in sorted(B['characters']):
         if os.path.exists(rp): e[rk]=webp(rp)
     q=f'{ASSETS}/characters/{c}/hd_use.png'
     if os.path.exists(q): e['use']=webp(q)
+    q=f'{ASSETS}/characters/{c}/hd_cam.png'   # 15/10/2026: tư thế cầm máy quay (Quay phim)
+    if os.path.exists(q): e['cam']=webp(q)
     e['sitScale']=sitting_scale(ASSETS/'characters'/c)
     e['portrait']=webp(ASSETS/'characters'/c/'portrait_48x64.png')
     CH.append(e)

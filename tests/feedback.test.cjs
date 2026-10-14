@@ -16,9 +16,9 @@ function setup(ids='APDCEK'){
 const job=(id,name,need,extra={})=>({id,name,need,work:0,due:5,req:[],cust:1,...extra});
 function runAll(c,j,maxSteps=2000){ c.ensureStages(j); for(let i=0;i<maxSteps&&j.cur<j.stg.length;i++){ if(c.fbPending(j)) c.resolveRevision(j,'talk',0); c.advanceJobWork(.5); } }
 test('chất lượng: cả đội đúng chuyên môn → 5★; thiếu Design (người trái nghề làm) → thấp hơn',()=>{
- let c=setup(),j=job(1,'Quay video TikTok',20);c.GS.jobs=[j];runAll(c,j);
+ let c=setup(),j=job(1,'Quản lý fanpage 1 tuần',20);c.GS.jobs=[j];runAll(c,j);
  assert.equal(j.cur,4);assert.ok(Math.abs(c.jobQuality(j)-1)<1e-9);assert.equal(c.jobStars(j),5);
- c=setup('ACK');j=job(1,'Quay video TikTok',20);c.GS.jobs=[j];runAll(c,j);
+ c=setup('ACK');j=job(1,'Quản lý fanpage 1 tuần',20);c.GS.jobs=[j];runAll(c,j);
  assert.ok(c.jobQuality(j)<.95,'bước Design do người khác làm');assert.ok(c.jobStars(j)<5);
  const q=c.ensureStages(job(3,'x',10));assert.equal(c.jobQuality(q),.75,'job cũ chưa có dữ liệu = mức trung bình');
 });

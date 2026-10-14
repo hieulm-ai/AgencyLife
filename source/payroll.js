@@ -1,5 +1,5 @@
 // Trial daily rates in million coin. Featured staff earn a 20% premium.
-const SALARY_RATE={'Account':2,'Design':2.5,'Content':2,'Planner':3,'AI Designer':3.5,'Editor':3,'Kế toán':2,'Sale':2,'HR':2,'Trợ lý':1.5};
+const SALARY_RATE={'Account':2,'Design':2.5,'Content':2,'Planner':3,'AI Designer':3.5,'Editor':3,'Quay phim':3,'Âm thanh':2.5,'Kế toán':2,'Sale':2,'HR':2,'Trợ lý':1.5};
 function salaryRate(id,featured=!!GS.stars?.[id]){return id===FOUNDER_ID||id===MASCOT_ID||(typeof isBorrowed==='function'&&isBorrowed(id))?0:Math.round((SALARY_RATE[roleOf(id)]||2)*(featured?1.2:1)*100)/100;}
 // Người mượn của bạn bè: tên agency do người chơi khác đặt nên thoát HTML.
 function salaryLabel(id){const lent=typeof borrowedInfo==='function'&&borrowedInfo(id);if(lent)return `Mượn từ ${String(lent.agency).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')} · về cuối ngày`;return salaryRate(id)?`${GS.stars?.[id]?'★ · ':''}${fmt(salaryRate(id))}/ngày`:'Miễn lương';}

@@ -4,8 +4,8 @@ const DEFAULT_FOUNDER='01_Huy';
 let FOUNDER_ID=DEFAULT_FOUNDER;   // nhân vật của người chơi: mặc định Huy, đổi ở màn mở đầu (player.js)
 // Tên nhân vật cố định theo bản deploy v4 (V1); Huy, Luwon, Pali, Tamny theo danh sách cập nhật sau đó.
 // 07/10/2026: thử đổi sang tên chung (V11–V12) rồi trả lại tên cũ theo yêu cầu (V13).
-const STAFF_NAME={'01_Huy':'Huy','02_Luwon':'Luwon','03_Pali':'Pali','04_Tamny':'Tamny','06_Vu_a_Vu':'Vũ à Vũ','07_Hao_Hao':'Hảo Hảo','08_Nganh':'Ngánh','09_Vit_Vang':'Vịt Vàng','10_Con_LT':'Con LT','11_Juice':'Juice','12_ADM':'ADM','13_AB':'AB','14_HM':'HM','15_CongB':'CongB','trinh_lac_corrected_v2':'Trinh và Lạc'};
-const STAFF_ROLE={'01_Huy':'Design','02_Luwon':'Design','03_Pali':'Account','04_Tamny':'Kế toán','06_Vu_a_Vu':'Sale','07_Hao_Hao':'HR','08_Nganh':'Trợ lý','09_Vit_Vang':'Linh vật','10_Con_LT':'Account','11_Juice':'Design','12_ADM':'Planner','13_AB':'Content','14_HM':'AI Designer','15_CongB':'Editor','trinh_lac_corrected_v2':'Account'};
+const STAFF_NAME={'01_Huy':'Huy','02_Luwon':'Luwon','03_Pali':'Pali','04_Tamny':'Tamny','06_Vu_a_Vu':'Vũ à Vũ','07_Hao_Hao':'Hảo Hảo','08_Nganh':'Ngánh','09_Vit_Vang':'Vịt Vàng','10_Con_LT':'Con LT','11_Juice':'Juice','12_ADM':'ADM','13_AB':'AB','14_HM':'HM','15_CongB':'CongB','16_Khoa':'Khoa','17_Linh':'Linh','trinh_lac_corrected_v2':'Trinh và Lạc'};
+const STAFF_ROLE={'01_Huy':'Design','02_Luwon':'Design','03_Pali':'Account','04_Tamny':'Kế toán','06_Vu_a_Vu':'Sale','07_Hao_Hao':'HR','08_Nganh':'Trợ lý','09_Vit_Vang':'Linh vật','10_Con_LT':'Account','11_Juice':'Design','12_ADM':'Planner','13_AB':'Content','14_HM':'AI Designer','15_CongB':'Editor','16_Khoa':'Quay phim','17_Linh':'Âm thanh','trinh_lac_corrected_v2':'Account'};
 const MASCOT_ID='09_Vit_Vang', MASCOT_RADIUS=3, MASCOT_RELIEF=6;   // linh vật: không làm job; giảm 6 stress/giờ game cho người trong bán kính 3 ô (thông số thử)
 let pendingDismiss=null;
 // Thế mạnh của nhân vật chính theo nghề gốc (14/10/2026). Nhân vật chính luôn đứng quầy lễ tân; nghề gốc chỉ cho thêm lợi thế.
@@ -18,7 +18,9 @@ const FOUNDER_PERK={
  'Trợ lý':{t:'Khách chịu chờ lâu hơn 25% trước khi bỏ về',patience:1.25},
  'Design':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ)',help:'des'},
  'AI Designer':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ)',help:'des'},
- 'Editor':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ, gần chuyên môn)',help:'des'},
+ 'Editor':{t:'Quầy vắng khách thì phụ bước Dựng (nửa tốc độ)',help:'edit'},
+ 'Quay phim':{t:'Quầy vắng khách thì phụ bước Dựng (nửa tốc độ)',help:'edit'},
+ 'Âm thanh':{t:'Quầy vắng khách thì phụ bước Thu âm (nửa tốc độ)',help:'snd'},
  'Content':{t:'Quầy vắng khách thì phụ bước Content (nửa tốc độ)',help:'con'},
  'Planner':{t:'Quầy vắng khách thì phụ bước Chia việc (nửa tốc độ)',help:'plan'}};
 const FOUNDER_HELP=.5;

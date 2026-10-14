@@ -8,15 +8,28 @@
 // Tổng giờ công của job không đổi; chỉ chia lại tỉ lệ giữa các bước.
 const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.18},{k:'plan',role:'plan',n:'Planner',split:.1},{k:'creative',role:'con',n:'Content',split:.32},{k:'prod',role:'des',n:'Design',split:.4}];
 function stageIndex(j,k){ const i=Array.isArray(j&&j.stg)?j.stg.findIndex(s=>s&&s.k===k):-1; return i<0?STAGE_DEF.findIndex(s=>s.k===k):i; }
-const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'coin'};
-const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',fin:'Kế toán'};
-// Bước Sáng tạo / Sản xuất theo loại job (tên mẫu job, bỏ dấu ⭐ VIP).
-const JOB_FLOW={'Thiết kế logo':['des','des'],'Bộ ấn phẩm Tết':['des','des'],'Kế hoạch truyền thông':['con','con'],'Quản lý fanpage 1 tuần':['con','des'],
- 'Chụp ảnh sản phẩm':['des','edit'],'Quay video TikTok':['con','edit'],'Podcast thương hiệu':['con','edit'],'TVC 15 giây':['des','edit'],
- 'Livestream bán hàng':['con','edit'],'Pitch khách hàng lớn':['con','des']};
+const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',cam:'clapper',snd:'clapper',fin:'coin'};
+const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',cam:'Quay phim',snd:'Âm thanh',fin:'Kế toán'};
+// 15/10/2026: job video/âm thanh có luồng riêng (chủ dự án chốt A+B, có bước Quay). Mỗi bước: [khóa, bộ phận, tỉ lệ giờ công, đồ phải đứng làm tại chỗ].
+// Bước 'shoot' (Quay / Thu âm) làm tại máy quay, đèn softbox hoặc phòng thu; các bước khác làm ở bàn. Tỉ lệ là thông số thử.
+const VIDEO_FLOW=(cr,at)=>[['brief','acc',.15],['plan','plan',.08],['creative',cr,.22],['shoot','cam',.2,at],['prod','edit',.35]];
+const JOB_STAGES={
+ 'Quay video TikTok':VIDEO_FLOW('con',['camera_tripod']),
+ 'Livestream bán hàng':VIDEO_FLOW('con',['camera_tripod']),
+ 'TVC 15 giây':VIDEO_FLOW('des',['camera_tripod']),
+ 'Chụp ảnh sản phẩm':VIDEO_FLOW('des',['softbox','camera_tripod']),
+ 'Series Reels 5 clip':VIDEO_FLOW('con',['camera_tripod']),
+ 'Phim giới thiệu doanh nghiệp 60s':VIDEO_FLOW('con',['camera_tripod']),
+ 'Video review sản phẩm':VIDEO_FLOW('con',['camera_tripod']),
+ 'Podcast thương hiệu':[['brief','acc',.15],['plan','plan',.08],['creative','con',.22],['shoot','snd',.2,['sound_booth']],['prod','edit',.35]],
+ 'Dựng video sự kiện':[['brief','acc',.15],['plan','plan',.1],['creative','con',.15],['prod','edit',.6]]};   // khách gửi sẵn cảnh quay
+function jobKey(j){ return String(j&&j.name||'').replace(/^⭐ /,''); }
+function stageDefs(j){ return JOB_STAGES[jobKey(j)]||STAGE_DEF.map(s=>[s.k,s.role,s.split]); }
+function stageAt(j,s){ const d=stageDefs(j).find(x=>x[0]===s.k); return d&&d[3]||null; }
+function stepName(j,i){ const s=j&&j.stg&&j.stg[i]; return s?(s.k==='shoot'?(s.role==='snd'?'Thu âm':'Quay'):s.k==='prod'&&s.role==='edit'?'Dựng':ROLE_LABEL[s.role]):''; }
 // Chuyên môn theo chức danh: spec = đúng nghề, near = gần nghề.
 const TRACK_OF={'Account':{spec:['acc'],near:['plan']},'Sale':{spec:['acc'],near:[]},'Design':{spec:['des'],near:[]},'AI Designer':{spec:['des'],near:['edit','con']},
- 'Content':{spec:['con'],near:['plan']},'Editor':{spec:['edit'],near:['des']},'Planner':{spec:['plan'],near:['des','con','acc']},'Kế toán':{spec:['fin'],near:['acc']},
+ 'Content':{spec:['con'],near:['plan']},'Editor':{spec:['edit'],near:['des','cam','snd']},'Quay phim':{spec:['cam','edit'],near:['des']},'Âm thanh':{spec:['snd'],near:['edit','cam']},'Planner':{spec:['plan'],near:['des','con','acc']},'Kế toán':{spec:['fin'],near:['acc']},
  'HR':{spec:[],near:['acc','fin']},'Trợ lý':{spec:[],near:['acc','con','fin']}};
 const MATCH_F={spec:1.35,near:1,off:.6}, MATCH_N={spec:'Đúng chuyên môn',near:'Gần chuyên môn',off:'Trái nghề'};
 const STAR_F=1.2;   // ứng viên nổi bật (HR giới thiệu) làm nhanh hơn 20% — thông số thử
@@ -24,8 +37,8 @@ const WORK_SPEED=12; // Đo với 3 người làm job; lễ tân và linh vật 
 function jobCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
 const PASS_GIVEUP=30, PASS_TALK=2.2;
 function roleMatch(a,role){ const t=TRACK_OF[a&&a.role]||{spec:[],near:[]}; return t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'; }
-function jobFlow(j){ return JOB_FLOW[String(j&&j.name||'').replace(/^⭐ /,'')]||['des','des']; }
-function buildStages(j){ const [cr,pr]=jobFlow(j); return STAGE_DEF.map(s=>({k:s.k,role:s.role,need:Math.round(j.need*s.split*100)/100,done:0})); }
+function buildStages(j){ return stageDefs(j).map(([k,role,split])=>({k,role,need:Math.round(j.need*split*100)/100,done:0})); }
+function stagesMatch(j){ const d=stageDefs(j); return Array.isArray(j.stg)&&j.stg.length===d.length&&j.stg.every((s,i)=>s&&s.k===d[i][0]&&s.role===d[i][1]&&Number.isFinite(s.need)&&Number.isFinite(s.done)); }
 // Bản lưu cũ chưa có bước: dựng bước và rải giờ công đã làm từ bước đầu.
 function applyOnboardingPace(j){
  if(j.onboardingPace!=null)return j;
@@ -43,12 +56,40 @@ function ensureStages(j){
   j.need=Math.max(2,Math.round(j.reward*.18*100)/100);j.work=j.need*progress;
   delete j.stg;delete j.who;delete j.handoff;j.passing=false;j.flowVersion=2;
  }
- if(!Array.isArray(j.stg)||j.stg.length!==STAGE_DEF.length||j.stg.some(s=>!s||!Number.isFinite(s.need)||!Number.isFinite(s.done))){
+ if(!stagesMatch(j)){
+  if(Array.isArray(j.stg)){ j.who=null; delete j.handoff; }   // bản lưu cũ: luồng của loại job đã đổi → dựng lại, rải giờ công đã làm từ bước đầu
   j.stg=buildStages(j);const sum=j.stg.slice(0,-1).reduce((n,s)=>n+s.need,0);j.stg[j.stg.length-1].need=Math.max(0,Math.round((j.need-sum)*100)/100);
   let left=Math.max(0,Math.min(j.need,j.work||0));for(const s of j.stg){const t=Math.min(s.need,left);s.done=t;left-=t;}
  }
  let c=j.stg.findIndex(s=>s.done<s.need-1e-9);j.cur=c<0?j.stg.length:c;
  return j;
+}
+// ----- 15/10: bước Quay / Thu âm làm tại máy quay, đèn softbox hoặc phòng thu (không ngồi bàn) -----
+// Không có đồ (hoặc không tới được) thì làm ở bàn như bước thường để job không bị kẹt.
+const STATION_RETRY=20;
+function here0(a){ return [Math.round(a.x),Math.round(a.y)]; }
+function stationFor(a){
+ if(!a||a.autoBreak||a.mascot||typeof OBJS==='undefined') return null; const t=agentTask(a); if(!t||!jobReady(t.j)) return null;
+ const at=stageAt(t.j,t.s); if(!at) return null;
+ const mine=a.useObj!=null&&OBJS.find(o=>o.uid===a.useObj&&at.includes(o.id)&&BUSY.get(o.uid)===a); if(mine) return mine;
+ for(const id of at){ const o=OBJS.find(o=>o.id===id&&!BUSY.has(o.uid)); if(o) return o; } return null;
+}
+function shootingAt(a){ const o=a&&a.state==='shoot'&&a.useObj!=null&&OBJS.find(b=>b.uid===a.useObj); return o&&BUSY.get(o.uid)===a?o:null; }
+function releaseStation(a){ if(a.useObj!=null&&BUSY.get(a.useObj)===a) BUSY.delete(a.useObj); a.useObj=null; if(a.state==='shoot'||a.state==='toShoot'){ a.state='wander'; a.wait=.2; a.path=[]; } }
+function nearObj(here,o){ const [w,d]=FBY[o.id].views[o.rot].fp; return ((here[0]===o.gx-1||here[0]===o.gx+w)&&here[1]>=o.gy&&here[1]<o.gy+d)||((here[1]===o.gy-1||here[1]===o.gy+d)&&here[0]>=o.gx&&here[0]<o.gx+w); }
+function stepShoot(a,dt,here){
+ if(a.state==='shoot'){ const st=stationFor(a); if(!st||st.uid!==a.useObj){ releaseStation(a); return false; } a.t+=dt; return true; }
+ if((a.shootRetry||0)>0){ a.shootRetry-=dt; if(a.state==='toShoot') releaseStation(a); return false; }
+ const st=stationFor(a); if(!st){ if(a.state==='toShoot') releaseStation(a); return false; }
+ if(a.state==='toShoot'&&a.useObj===st.uid){
+  if(nearObj(here,st)){ a.state='shoot'; a.t=0; a.dir=faceToward(a,st); return true; }
+  releaseStation(a); a.shootRetry=STATION_RETRY; return false;   // không tới được: làm ở bàn một lúc rồi thử lại
+ }
+ const sp=useSpot(st); const p=sp&&bfs(here,sp,true); if(!p){ a.shootRetry=STATION_RETRY; return false; }
+ if(a.state==='sit'&&a.acc)[a.x,a.y]=a.acc;
+ if(a.useObj!=null&&a.useObj!==st.uid&&BUSY.get(a.useObj)===a) BUSY.delete(a.useObj);
+ a.useObj=st.uid; BUSY.set(st.uid,a); a.state='toShoot'; a.react=null; a.path=p.slice(1); a.wait=0;
+ return true;
 }
 function staffById(id){ return id?AG.find(a=>CHARS[a.ci].id===id)||null:null; }
 function canTakeTask(a){ return !!a&&!a.mascot&&!a.away&&!a.autoBreak&&!a.collection&&!a.handover&&!a.pass&&a.state!=='burn'&&a.state!=='leaving'&&a.state!=='arrive'&&a.meetingJob==null&&a.receptionUid==null&&!(typeof deskBound==='function'&&deskBound(a)); }
@@ -147,7 +188,7 @@ function stepPass(a,dt){
 }
 function stageNews(j,from,to,remote){
  const s=j.stg&&j.stg[j.cur]; if(!s||!to) return;
- const fn=from?staffName(CHARS[from.ci].id):'Planner', tn=staffName(CHARS[to.ci].id), step=STAGE_DEF[j.cur].n;
+ const fn=from?staffName(CHARS[from.ci].id):'Planner', tn=staffName(CHARS[to.ci].id), step=stepName(j,j.cur);
  if(typeof addOfficeNews==='function') addOfficeNews('job',`${fn} chuyển «${j.name}» cho ${tn} (${ROLE_LABEL[s.role]}) · bước ${step}${remote?' qua tin nhắn':''}`);
 }
 // Lễ tân giao brief xong: Account nhận luôn bước Brief.
@@ -157,17 +198,17 @@ function stageIcon(k){ const src=window.UIICON&&window.UIICON[k]; return src?`<i
 function stageChips(j){ ensureStages(j);
  return `<div class="stg-row">${j.stg.map((s,i)=>{ const a=i===j.cur&&staffById(j.who), m=a?roleMatch(a,s.role):null;
   const st=i<j.cur?'done':i===j.cur?'cur':'next';
-  return `<span class="stg ${st}" title="${STAGE_DEF[i].n} · ${ROLE_LABEL[s.role]}${a?' · '+staffName(CHARS[a.ci].id)+' · '+MATCH_N[m]:''}">${stageIcon(ROLE_IC[s.role])}<b>${STAGE_DEF[i].n}</b>${st==='done'?'<i>✓</i>':st==='cur'?`<i>${Math.floor(s.done/s.need*100)}%</i>`:''}</span>`; }).join('')}</div>`;
+  return `<span class="stg ${st}" title="${stepName(j,i)} · ${ROLE_LABEL[s.role]}${a?' · '+staffName(CHARS[a.ci].id)+' · '+MATCH_N[m]:''}">${stageIcon(ROLE_IC[s.role])}<b>${stepName(j,i)}</b>${st==='done'?'<i>✓</i>':st==='cur'?`<i>${Math.floor(s.done/s.need*100)}%</i>`:''}</span>`; }).join('')}</div>`;
 }
 function stageLine(j){ ensureStages(j); const s=j.stg[j.cur]; if(!s) return 'Đã xong các bước';
- const a=staffById(j.who), step=STAGE_DEF[j.cur].n, role=ROLE_LABEL[s.role];
+ const a=staffById(j.who), step=stepName(j,j.cur), role=ROLE_LABEL[s.role];
  if(j.paused) return `Bước ${step} (${role}) · đang tạm dừng`;
  if(typeof fbPending==='function'&&fbPending(j)) return `Khách góp ý · chờ bạn chọn cách xử lý (Danh tiếng)`;
  if(briefPending(j)) return `Chờ lễ tân mang brief tới Account`;
  if(meetingPending(j)) return `Chờ họp chốt yêu cầu xong`;
  if(j.passing) return `${a?staffName(CHARS[a.ci].id):role} đang nhận hồ sơ · bước ${step}`;
  if(!a) return `Bước ${step} · chờ ${role} rảnh`;
- const m=roleMatch(a,s.role); return `Bước ${step} · ${staffName(CHARS[a.ci].id)} (${a.role||'nhân viên'}) · ${MATCH_N[m]}${m==='off'?' · làm chậm':''}${isWorking(a)?'':' · đang về bàn'}`;
+ const m=roleMatch(a,s.role); return `Bước ${step} · ${staffName(CHARS[a.ci].id)} (${a.role||'nhân viên'}) · ${MATCH_N[m]}${m==='off'?' · làm chậm':''}${isWorking(a)?'':a.state==='toShoot'?' · đang tới chỗ quay':' · đang về bàn'}`;
 }
 // ----- HR giới thiệu ứng viên nổi bật (mỗi ngày game 1 người) -----
 function starCandidate(free){

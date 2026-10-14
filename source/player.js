@@ -223,8 +223,8 @@ function openIntro(fresh){
 // Đội khởi đầu: nhân vật của bạn (lễ tân) + 2 đồng hành bắt buộc gồm 1 Account (nhận job lễ tân giao) và 1 nhân sự sản xuất, + Vịt Vàng.
 const COMPANION_SLOTS=[
  {key:"account",label:"Account",roles:["Account"],why:"nhận job từ lễ tân, theo khách"},
- {key:"maker",label:"nhân sự sản xuất",roles:["Design","AI Designer","Content","Editor"],why:"làm ra sản phẩm"}];
-const ROLE_ORDER=["Account","Design","AI Designer","Content","Editor"];
+ {key:"maker",label:"nhân sự sản xuất",roles:["Design","AI Designer","Content","Editor","Quay phim"],why:"làm ra sản phẩm"}];
+const ROLE_ORDER=["Account","Design","AI Designer","Content","Editor","Quay phim","Âm thanh"];
 function slotText(s){return s.roles.length===1&&s.roles[0]===s.label?s.label:`${s.label} (${s.roles.join(", ")})`;}
 function companionSlot(id){return COMPANION_SLOTS.find(s=>s.roles.includes(STAFF_ROLE[id]))||null;}
 function companionPool(playerId){

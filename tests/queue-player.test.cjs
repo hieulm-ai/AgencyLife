@@ -102,7 +102,7 @@ test('2 nhân vật đồng hành: bắt buộc 1 Account + 1 nhân sự sản x
  assert.equal(c.companionCheck(['03_Pali','06_Vu_a_Vu']).ok,false,'Sale không phải nhân sự sản xuất');
  assert.equal(c.companionCheck(['03_Pali']).ok,false);assert.equal(c.companionCheck([]).ok,false);assert.equal(c.companionCheck(undefined).ok,false);
  assert.match(c.companionMessage(['13_AB','15_CongB']),/Cần chọn 1 Account thì mới khởi đầu được/);
- assert.match(c.companionMessage([]),/Đã chọn 0\/2 · Cần chọn 1 Account và 1 nhân sự sản xuất \(Design, AI Designer, Content, Editor\) thì mới khởi đầu được/);
+ assert.match(c.companionMessage([]),/Đã chọn 0\/2 · Cần chọn 1 Account và 1 nhân sự sản xuất \(Design, AI Designer, Content, Editor, Quay phim\) thì mới khởi đầu được/);
  assert.match(c.companionMessage(['03_Pali','02_Luwon']),/Đủ chức vụ/);
  const pool=Array.from(c.companionPool('02_Luwon'));
  assert.ok(!pool.includes('02_Luwon')&&!pool.includes('09_Vit_Vang'),'không có nhân vật của bạn và linh vật');

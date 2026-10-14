@@ -15,7 +15,7 @@ function setup(ids='ACDEK'){
 const job=(id,name,need,extra={})=>({id,name,need,work:0,due:5,req:[],...extra});
 const who=(c,j)=>j.who;
 test('dựng 4 bước (có Chia việc của Planner), tổng giờ công đúng bằng job; bản lưu cũ rải giờ công đã làm từ bước đầu',()=>{
- const c=setup(),j=c.ensureStages(job(1,'Quay video TikTok',24));
+ const c=setup(),j=c.ensureStages(job(1,'Quản lý fanpage 1 tuần',24));
  assert.deepEqual(Array.from(j.stg,s=>s.k),['brief','plan','creative','prod']);
  assert.deepEqual(Array.from(j.stg,s=>s.role),['acc','plan','con','des']);
  assert.ok(Math.abs(j.stg.reduce((n,s)=>n+s.need,0)-24)<1e-9);
@@ -23,7 +23,7 @@ test('dựng 4 bước (có Chia việc của Planner), tổng giờ công đún
  assert.equal(old.stg[3].role,'des');assert.equal(old.cur,2);assert.ok(Math.abs(old.stg[0].done-3.6)<1e-9);assert.ok(Math.abs(old.stg[1].done-2)<1e-9);assert.ok(Math.abs(old.stg[2].done-1.4)<1e-9);assert.equal(old.stg[3].done,0);
 });
 test('mỗi bước giao cho người đúng chuyên môn; người làm đúng nghề nhanh ×1,35',()=>{
- const c=setup('APCDEK'),j=job(1,'Quay video TikTok',100);c.GS.jobs=[j];
+ const c=setup('APCDEK'),j=job(1,'Quản lý fanpage 1 tuần',100);c.GS.jobs=[j];
  c.advanceJobWork(1);assert.equal(j.who,'A');assert.ok(Math.abs(j.stg[0].done-1.35*12)<1e-9);
  j.stg[0].done=j.stg[0].need-0.1;c.advanceJobWork(1);assert.equal(j.cur,1);assert.equal(j.handoff,'A');
  c.advanceJobWork(0);assert.equal(j.who,'P');assert.equal(j.passing,true,'Account mang hồ sơ sang bàn Planner');assert.equal(c.AG[0].pass.to,'P');
@@ -31,7 +31,7 @@ test('mỗi bước giao cho người đúng chuyên môn; người làm đúng 
  c.endPass(c.AG[0]);c.advanceJobWork(1);assert.ok(j.stg[1].done>before);
 });
 test('thiếu bộ phận thì người khác làm thay, chậm hơn (gần nghề ×1, trái nghề ×0,6)',()=>{
- const c=setup('ADK'),j=job(1,'Quay video TikTok',100);c.GS.jobs=[j];c.ensureStages(j);
+ const c=setup('ADK'),j=job(1,'Quản lý fanpage 1 tuần',100);c.GS.jobs=[j];c.ensureStages(j);
  c.advanceJobWork(1);assert.equal(j.who,'A','chưa có Planner: Account chia việc thay');
  for(let i=0;i<2;i++)j.stg[i].done=j.stg[i].need;j.who=null;c.ensureStages(j);   // tới bước Sáng tạo (Content)
  c.advanceJobWork(1);assert.ok(j.who,'vẫn có người làm thay');assert.ok(Math.abs(j.stg[2].done-0.6*12)<1e-9,'không ai gần nghề Content: ×0,6');
@@ -122,4 +122,41 @@ test('Đốc Giám (Planner) làm bước Chia việc đúng chuyên môn; chọ
  c.advanceJobWork(.5);assert.equal(j.who,'P');assert.ok(Math.abs(j.stg[1].done-1.35*12*.5)<1e-9,'Planner đúng chuyên môn ×1,35');
  j.stg[1].done=j.stg[1].need;j.who=null;c.ensureStages(j);assert.equal(j.stg[j.cur].k,'creative');
  assert.equal(c.jobReady(j),false,'tới Sáng tạo thì chờ chọn ý tưởng');j.early.idea='safe';assert.equal(c.jobReady(j),true);
+});
+// 15/10/2026: job video có bước Quay (máy quay) và Dựng (Editor); Podcast có Thu âm; Dựng video sự kiện không có Quay.
+test('luồng theo loại job: video 5 bước, podcast thu âm, dựng sự kiện 4 bước; bản lưu cũ dựng lại bước và rải giờ công',()=>{
+ const c=setup(),J=x=>JSON.parse(JSON.stringify(x));
+ const v=c.ensureStages(job(1,'Quay video TikTok',100));
+ assert.deepEqual(J(v.stg.map(s=>[s.k,s.role])),[['brief','acc'],['plan','plan'],['creative','con'],['shoot','cam'],['prod','edit']]);
+ assert.ok(Math.abs(v.stg.reduce((n,s)=>n+s.need,0)-100)<1e-6,'tổng giờ công giữ nguyên');
+ assert.deepEqual(J(c.ensureStages(job(2,'⭐ Podcast thương hiệu',50)).stg.map(s=>s.role)),['acc','plan','con','snd','edit']);
+ const ev=c.ensureStages(job(3,'Dựng video sự kiện',100));assert.deepEqual(J(ev.stg.map(s=>s.k)),['brief','plan','creative','prod']);assert.equal(ev.stg[3].need,60);
+ assert.deepEqual(J(c.ensureStages(job(4,'Thiết kế logo',20)).stg.map(s=>s.role)),['acc','plan','con','des'],'job thường giữ nguyên');
+ // bản lưu cũ: job video còn 4 bước kiểu cũ, đã làm 30 giờ công
+ const old=job(5,'TVC 15 giây',100,{flowVersion:2,work:30,who:'D',stg:[{k:'brief',role:'acc',need:18,done:18},{k:'plan',role:'plan',need:10,done:10},{k:'creative',role:'con',need:32,done:2},{k:'prod',role:'des',need:40,done:0}]});
+ c.ensureStages(old);assert.equal(old.stg.length,5);assert.equal(old.stg[2].role,'des','TVC: storyboard do Design');assert.equal(old.who,null);
+ assert.ok(Math.abs(old.stg.reduce((n,s)=>n+s.done,0)-30)<1e-6,'giữ 30 giờ công đã làm');
+ assert.equal(c.stepName(old,3),'Quay');assert.equal(c.stepName(old,4),'Dựng');
+});
+test('Quay phim đúng nghề cả Quay và Dựng; Editor gần nghề Quay; Design trái nghề Dựng',()=>{
+ const c=setup(),r=(role,st)=>c.roleMatch({role},st);
+ assert.equal(r('Quay phim','cam'),'spec');assert.equal(r('Quay phim','edit'),'spec');
+ assert.equal(r('Editor','edit'),'spec');assert.equal(r('Editor','cam'),'near');assert.equal(r('Editor','snd'),'near');
+ assert.equal(r('Âm thanh','snd'),'spec');assert.equal(r('Design','edit'),'off');
+});
+test('bước Quay: người làm đi tới máy quay, đứng quay mới tính giờ công; xong bước thì trả máy',()=>{
+ const c=setup('AE');c.OBJS.push({uid:9,id:'camera_tripod',gx:5,gy:5,rot:0});
+ c.FBY={camera_tripod:{views:[{fp:[1,1]}]}};c.useSpot=()=>[4,5];c.bfs=(a,b)=>[a,b];c.faceToward=()=>'SE';
+ const j=c.ensureStages(job(1,'Quay video TikTok',100));c.GS.jobs=[j];
+ for(const s of j.stg.slice(0,3))s.done=s.need;c.ensureStages(j);assert.equal(j.stg[j.cur].k,'shoot');
+ const e=c.AG[1];j.who='E';
+ assert.equal(c.stepShoot(e,.1,[1,0]),true);assert.equal(e.state,'toShoot');assert.equal(c.BUSY.get(9),e);
+ e.path=[];assert.equal(c.stepShoot(e,.1,[4,5]),true);assert.equal(e.state,'shoot');assert.ok(c.shootingAt(e),'đứng tại máy quay');
+ j.stg[3].done=j.stg[3].need;c.ensureStages(j);j.who='E';   // sang bước Dựng (làm ở bàn)
+ assert.equal(c.stepShoot(e,.1,[4,5]),false);assert.equal(e.state,'wander');assert.equal(c.BUSY.has(9),false,'trả máy quay');
+});
+test('không có máy quay thì bước Quay làm ở bàn như bước thường',()=>{
+ const c=setup('AE');c.FBY={};c.useSpot=()=>null;c.bfs=()=>null;
+ const j=c.ensureStages(job(1,'Quay video TikTok',100));c.GS.jobs=[j];for(const s of j.stg.slice(0,3))s.done=s.need;c.ensureStages(j);j.who='E';
+ assert.equal(c.stepShoot(c.AG[1],.1,[1,0]),false);assert.equal(c.AG[1].state,'sit');
 });
