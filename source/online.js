@@ -309,7 +309,7 @@ function openLogin(){
  el.querySelector('#loginFacebook').onclick=async()=>{try{if(!OL.be)throw Error('no_server');await OL.be.signInOAuth('facebook');}catch(e){el.querySelector('#guestError').textContent=olErrText(e);}};
  });
 }
-function openEmailLogin(){
+function openEmailLogin(onDone){
  if(!OL.be){toast(OL_ERR.no_server,'err');return;}
  const mock=OL.be.kind==='mock';
  olBox(`<h2>Đăng nhập</h2><p class="hub-note">${olEsc(olServerLabel())}. Đăng nhập để lưu tiến độ lên tài khoản, kết bạn, tham quan và tặng quà. Không đăng nhập vẫn chơi bình thường.</p>
@@ -322,7 +322,7 @@ function openEmailLogin(){
  (el,close)=>{
   const err=m=>{el.querySelector('#olErr').textContent=m;};
   const run=async fn=>{err('');el.querySelectorAll('button').forEach(b=>b.disabled=true);
-   try{const u=await fn();if(u&&u.redirect)return;if(u&&u.pending){err('Đã gửi email xác nhận. Mở email, bấm liên kết rồi đăng nhập lại.');return;}close();await olOnAuth(u);}
+   try{const u=await fn();if(u&&u.redirect)return;if(u&&u.pending){err('Đã gửi email xác nhận. Mở email, bấm liên kết rồi đăng nhập lại.');return;}close();await olOnAuth(u);if(typeof onDone==='function')onDone(u);}
    catch(e){err(olErrText(e));}finally{el.querySelectorAll('button').forEach(b=>b.disabled=false);}};
   const email=()=>el.querySelector('#olEmail').value.trim(),pw=()=>el.querySelector('#olPw').value;
   el.querySelector('#olIn').onclick=()=>run(()=>OL.be.signIn(email(),pw()));
@@ -330,6 +330,33 @@ function openEmailLogin(){
   el.querySelector('#olPw').onkeydown=e=>{if(e.key==='Enter')el.querySelector('#olIn').click();};
   el.querySelectorAll('[data-oauth]').forEach(b=>b.onclick=()=>run(()=>OL.be.signInOAuth(b.dataset.oauth)));
  });
+}
+// ---------- màn đăng ký khi người chơi mới bấm Bắt đầu ----------
+const SIGNUP_FLAG='.signup';
+function titleSignedIn(){try{return !!(OL.user||olLS(GUEST_SESSION));}catch(e){return false;}}
+function signupMark(on){try{if(on)sessionStorage.setItem(SAVE+SIGNUP_FLAG,'1');else sessionStorage.removeItem(SAVE+SIGNUP_FLAG);}catch(e){}}
+function signupErr(e){const t=olErrText(e),m=String(e&&e.message||'');return t.startsWith('Có lỗi: ')&&/[à-ỹ]/i.test(m)?m:t;}
+function closeSignup(){const box=document.getElementById('titleAuth');if(box)box.hidden=true;document.getElementById('titleScreen')?.classList.remove('auth-open');document.getElementById('titlePlay')?.focus();}
+function openSignup(){
+ const box=document.getElementById('titleAuth');if(!box){enterOffice();return;}
+ document.getElementById('titleScreen').classList.add('auth-open');box.hidden=false;
+ const $=id=>box.querySelector('#'+id),name=$('suName'),pw=$('suPw'),err=$('suErr'),go=$('suGo'),sw=$('suSwitch');let mode='create';
+ const setMode=m=>{mode=m;$('suTitle').textContent=m==='create'?'Tạo tài khoản':'Đăng nhập';go.textContent=m==='create'?'Tạo tài khoản và vào chơi':'Đăng nhập và vào chơi';
+  sw.textContent=m==='create'?'Đã có tài khoản? Đăng nhập':'Chưa có tài khoản? Tạo mới';pw.autocomplete=m==='create'?'new-password':'current-password';err.textContent='';};
+ const busy=v=>box.querySelectorAll('button,input').forEach(x=>x.disabled=v);
+ setMode('create');
+ $('suNote').textContent=OL.be?'Tài khoản nền tảng giúp lưu tiến độ online và chơi trên máy khác.':'Cần kết nối mạng để đăng nhập bằng nền tảng khác.';
+ $('suForm').onsubmit=async ev=>{ev.preventDefault();err.textContent='';busy(true);signupMark(true);
+  // guestLogin tải lại trang khi thành công; cờ signup giúp vào thẳng bước chọn nhân vật sau khi tải lại.
+  try{await guestLogin(name.value,pw.value,mode==='create');}catch(e){signupMark(false);err.textContent=signupErr(e);busy(false);}};
+ sw.onclick=()=>setMode(mode==='create'?'login':'create');
+ box.querySelectorAll('[data-su-oauth]').forEach(b=>b.onclick=async()=>{err.textContent='';
+  try{if(!OL.be)throw Error('no_server');signupMark(true);const u=await OL.be.signInOAuth(b.dataset.suOauth);
+   if(u&&!u.redirect){signupMark(false);closeSignup();await olOnAuth(u);enterOffice();}}catch(e){signupMark(false);err.textContent=signupErr(e);}});
+ box.querySelector('[data-su-email]').onclick=()=>{if(!OL.be){err.textContent=OL_ERR.no_server;return;}openEmailLogin(()=>{closeSignup();enterOffice();});};
+ box.querySelector('[data-su-back]').onclick=closeSignup;
+ box.onkeydown=e=>{if(e.key==='Escape'&&document.getElementById('olBox')?.hidden!==false){e.preventDefault();closeSignup();}};
+ setTimeout(()=>name.focus(),30);
 }
 async function olLogout(){
  if(!await askConfirm({title:'Đăng xuất?',text:'Tiến độ vẫn giữ trên máy này và trên tài khoản. Đăng nhập lại để tiếp tục lưu lên tài khoản.',ok:'Đăng xuất',icon:'people'}))return;

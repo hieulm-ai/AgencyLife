@@ -247,6 +247,10 @@ s=s.replace('__OUTDOOR_SHEET__',webp(ASSETS/'outdoor_v2/sheet.png'))
 s=s.replace('__MODERN_OUTDOOR__',webp(ASSETS/'outdoor_v2/modern-grass.png'))
 # Keep the supplied GIF bytes, frames, timing and speech bubble intact.
 s=s.replace('__BOOT_ART__',webp(ASSETS/'loading/agency-team-v25.png',lossless=False))
+# Màn nền: 3 lớp tách rời (nền phong cảnh, nhóm nhân vật, logo) để bố cục co giãn theo màn hình.
+s=s.replace('__TITLE_BG__',webp(ASSETS/'title/background.png',lossless=False))
+s=s.replace('__TITLE_CHARS__',webp(ASSETS/'title/characters.png',lossless=False))
+s=s.replace('__TITLE_LOGO__',webp(ASSETS/'title/logo.png',lossless=False))
 loading_gif=ASSETS/'loading/vu-a-vu-transparent.gif'
 loading_still=Image.open(loading_gif).convert('RGBA')
 s=s.replace('__BOOT_VU_GIF__',export_bytes(loading_gif.read_bytes(),'gif')).replace('__BOOT_VU_STILL__',webp(loading_still))

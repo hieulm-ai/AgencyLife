@@ -16,9 +16,17 @@ function titleContext(player){
  const els=new Map();const el=id=>{if(!els.has(id))els.set(id,{hidden:false,focus(){},click(){this.clicked=true;}});return els.get(id);};
  const classes=new Set();const c={titleOpen:true,guideOpen:false,VISIT:false,hadSave:!!player,GS:{player,day:7},cash:120,OL:{be:null},SAVE:'qa',document:{getElementById:el,body:{classList:{add:x=>classes.add(x),remove:x=>classes.delete(x)}}},sessionStorage:{getItem:()=>null,removeItem(){}},agencyName:()=> 'Test Agency',lvl:()=>2,fmt:x=>String(x),closeHub(){},closeGuide(){},openIntro:x=>{c.intro=x;},setTimeout:f=>{c.welcome=f;},maybeStartTour:()=>false,showUiNotice:()=>false,offerGuide(){},openGuide(){},openHub(){},openLogin(){}};vm.createContext(c);vm.runInContext(read('title.js'),c);return {c,el,classes};
 }
-test('continue and fresh entry use correct flow; new-game delegates backup confirmation',()=>{
- let {c,el,classes}=titleContext({id:'Huy'});c.openTitle();assert.equal(el('titlePlay').textContent,'Chơi tiếp');assert.equal(classes.has('title-view'),true);el('titleNew').onclick();assert.equal(el('bNewGame').clicked,true);el('titlePlay').onclick();assert.equal(c.titleOpen,false);assert.equal(el('titleScreen').hidden,true);
- ({c,el}=titleContext(null));c.openTitle();assert.equal(el('titlePlay').textContent,'Bắt đầu');assert.equal(el('titleNew').hidden,true);el('titlePlay').onclick();assert.equal(c.intro,true);
+test('continue and fresh entry use correct flow; title has no new-game button',()=>{
+ let {c,el,classes}=titleContext({id:'Huy'});c.openTitle();assert.equal(el('titlePlay').textContent,'Chơi tiếp');assert.equal(classes.has('title-view'),true);el('titlePlay').onclick();assert.equal(c.titleOpen,false);assert.equal(el('titleScreen').hidden,true);
+ ({c,el}=titleContext(null));c.openTitle();assert.equal(el('titlePlay').textContent,'Bắt đầu');el('titlePlay').onclick();assert.equal(c.intro,true);
+ assert.doesNotMatch(read('template.html'),/id="titleNew"|id="titleSummary"/);
+});
+test('new player without account gets sign-up boxes; signed-in or returning players skip them',()=>{
+ let {c,el}=titleContext(null);c.titleSignedIn=()=>false;c.openSignup=()=>{c.signup=true;};c.openTitle();el('titlePlay').onclick();assert.equal(c.signup,true);assert.equal(c.intro,undefined);
+ ({c,el}=titleContext(null));c.titleSignedIn=()=>true;c.openSignup=()=>{c.signup=true;};c.openTitle();el('titlePlay').onclick();assert.equal(c.signup,undefined);assert.equal(c.intro,true);
+ ({c,el}=titleContext({id:'Huy'}));c.titleSignedIn=()=>false;c.openSignup=()=>{c.signup=true;};c.openTitle();el('titlePlay').onclick();assert.equal(c.signup,undefined);assert.equal(c.titleOpen,false);
+ const html=read('template.html');for(const id of ['suName','suPw','suGo','suSwitch'])assert.match(html,new RegExp('id="'+id+'"'));
+ assert.match(html,/data-su-oauth="facebook"/);assert.match(html,/data-su-email/);
 });
 
 test('activating loaded assets preserves repaint callbacks and avoids duplicate requests',async()=>{
