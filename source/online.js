@@ -345,8 +345,7 @@ function openSignup(){
   sw.textContent=m==='create'?'Đã có tài khoản? Đăng nhập':'Chưa có tài khoản? Tạo mới';pw.autocomplete=m==='create'?'new-password':'current-password';err.textContent='';};
  const busy=v=>box.querySelectorAll('button,input').forEach(x=>x.disabled=v);
  setMode('create');
- $('suNote').textContent=OL.be?'Tài khoản nền tảng giúp lưu tiến độ online và chơi trên máy khác.':'Cần kết nối mạng để đăng nhập bằng nền tảng khác.';
- $('suForm').onsubmit=async ev=>{ev.preventDefault();err.textContent='';busy(true);signupMark(true);
+  $('suForm').onsubmit=async ev=>{ev.preventDefault();err.textContent='';busy(true);signupMark(true);
   // guestLogin tải lại trang khi thành công; cờ signup giúp vào thẳng bước chọn nhân vật sau khi tải lại.
   try{await guestLogin(name.value,pw.value,mode==='create');}catch(e){signupMark(false);err.textContent=signupErr(e);busy(false);}};
  sw.onclick=()=>setMode(mode==='create'?'login':'create');
