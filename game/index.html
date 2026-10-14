@@ -1635,7 +1635,10 @@ function meetingLabel(j){
 // Planner = Đốc Giám (ADM). Thiếu bộ phận thì người khác làm chậm hơn. Xong mỗi bước, người làm cầm hồ sơ sang bàn người làm bước kế.
 // j.stg = [{k, role, need, done}], j.cur = bước đang làm, j.who = id người đang làm bước đó, j.handoff = id người vừa xong (chờ chuyển hồ sơ),
 // j.passing = đang chuyển hồ sơ (bước kế chưa làm). j.work = tổng giờ công các bước (giữ cho giao diện, thanh toán và bản lưu cũ).
-const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.2},{k:'creative',role:'con',n:'Content',split:.35},{k:'prod',role:'des',n:'Design',split:.45}];
+// 14/10/2026: thêm lại bước Chia việc (Planner = Đốc Giám) theo quy trình đã chốt. Thiếu Planner thì Account/Content làm thay (gần chuyên môn ×1).
+// Tổng giờ công của job không đổi; chỉ chia lại tỉ lệ giữa các bước.
+const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.18},{k:'plan',role:'plan',n:'Planner',split:.1},{k:'creative',role:'con',n:'Content',split:.32},{k:'prod',role:'des',n:'Design',split:.4}];
+function stageIndex(j,k){ const i=Array.isArray(j&&j.stg)?j.stg.findIndex(s=>s&&s.k===k):-1; return i<0?STAGE_DEF.findIndex(s=>s.k===k):i; }
 const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'coin'};
 const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',fin:'Kế toán'};
 // Bước Sáng tạo / Sản xuất theo loại job (tên mẫu job, bỏ dấu ⭐ VIP).
@@ -1682,7 +1685,7 @@ function staffById(id){ return id?AG.find(a=>CHARS[a.ci].id===id)||null:null; }
 function canTakeTask(a){ return !!a&&!a.mascot&&!a.away&&!a.autoBreak&&!a.collection&&!a.handover&&!a.pass&&a.state!=='burn'&&a.state!=='leaving'&&a.state!=='arrive'&&a.meetingJob==null&&a.receptionUid==null&&!(typeof deskBound==='function'&&deskBound(a)); }
 function hasWorkSeat(a){ const o=a&&a.seat&&OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
 function briefPending(j){ return (typeof handoverQueue!=='undefined'&&handoverQueue.includes(j.id))||AG.some(a=>a.handover?.jobId===j.id); }
-function jobReady(j){ return !(j.early&&j.cur===1&&!j.early.idea)&&!j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
+function jobReady(j){ return !(j.early&&j.cur===stageIndex(j,'creative')&&!j.early.idea)&&!j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
 function inTeam(j,id){ return !Array.isArray(j.staff)||j.staff.includes(id); }
 // Việc của 1 người: bước đang được giao cho người đó.
 function agentTask(a){ if(!a) return null; const id=CHARS[a.ci].id; for(const j of GS.jobs){ ensureStages(j); const s=j.stg[j.cur]; if(s&&j.who===id) return {j,s}; } return null; }
@@ -1793,6 +1796,8 @@ function starCandidate(free){
 }
 
 // First three completed jobs teach decisions without stopping office simulation.
+// Chọn ý tưởng mở khi job tới bước Sáng tạo (sau Brief và Chia việc).
+function atCreative(j){ const i=Array.isArray(j&&j.stg)?j.stg.findIndex(s=>s&&s.k==='creative'):-1; return j.cur>=(i<0?2:i); }
 const EARLY_CHOICE_MIN=20;
 function earlyNow(){return GS.day*1440+GS.min;}
 function earlyEligible(){return GS.day<=3&&(GS.done||0)<3;}
@@ -1807,7 +1812,7 @@ function earlyChoose(id,kind,value){
   if(!GS.jobs.includes(j)){delete e.brief;return;}
   toast(value==='playful'?'Khách thích phong cách vui nhộn!':'Khách đã chốt brief rõ ràng!','ok');
  }else if(kind==='idea'){
-  if(!GS.jobs.includes(j)||j.cur<1)return;
+  if(!GS.jobs.includes(j)||!atCreative(j))return;
   e.idea=value;
   if(value==='bold'){j.reward=Math.round(j.reward*1.1*10)/10;const s=j.stg.find(s=>s.k==='creative');if(s){const add=s.need*.15;s.need+=add;j.need+=add;}}
  }else if(kind==='review'){
@@ -1845,7 +1850,7 @@ function earlyTick(){
  }
  for(const j of GS.jobs){
   if(!j.early&&earlyEligible())earlyState(j);if(!j.early)continue;
-  if(j.cur>=1&&earlyPending(j,'idea')&&now-j.early.ideaAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'idea','safe');
+  if(atCreative(j)&&earlyPending(j,'idea')&&now-j.early.ideaAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'idea','safe');
   if(j.work>=j.need-1e-6&&earlyPending(j,'review')&&now-j.early.reviewAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'review','send');
  }
  if(Math.floor(now)!==earlyPaintAt){earlyPaintAt=Math.floor(now);earlyRender();}
@@ -1855,7 +1860,7 @@ function earlyRender(){
  if(!earlyEligible()&&!GS.jobs.some(j=>j.early&&!j.early.review))return;
  let box=document.getElementById('earlyPlay');if(!box){box=document.createElement('section');box.id='earlyPlay';box.className='pf';box.setAttribute('aria-label','Việc đầu tiên');document.body.append(box);}
  let j=GS.jobs.find(j=>j.early&&!j.early.review&&j.work>=j.need-1e-6),kind='review';
- if(!j){j=GS.jobs.find(j=>j.early&&!j.early.idea&&j.cur>=1);kind='idea';}
+ if(!j){j=GS.jobs.find(j=>j.early&&!j.early.idea&&atCreative(j));kind='idea';}
  if(!j){j=GS.offers.find(j=>j.received&&!j.early?.brief&&!missingReq(j).length);kind='brief';}
  const choices={brief:[['clear','brief','Rõ ràng'],['playful','palette','Vui nhộn']],idea:[['safe','pen','An toàn'],['bold','star','Táo bạo · +10% thưởng']],review:[['send','clip','Gửi khách'],['polish','palette','Chỉnh thêm · +5% thưởng']]};
  const title={brief:'Chọn brief',idea:'Chọn ý tưởng',review:'Duyệt sản phẩm'};
@@ -4211,8 +4216,8 @@ function guidePages(){
     `Nhận job tốn <b>năng lượng ⚡</b> (bằng nửa số giờ công). Khách chỉ chờ tối đa <b>${h(PATIENCE_MIN)}</b> trước khi bạn nhận.`,
     "Nhận xong, bạn mang brief tới <b>Account</b> gần nhất rồi về quầy. Job bắt đầu làm ngay, không chờ giao xong."],
    tip:"Khách tới khi bạn đang đi giao việc sẽ đứng chờ ở quầy."},
-  {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua Account → Content → Design; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
-   items:["<b>Brief</b> (Account) → <b>Chia việc</b> (Planner) → <b>Sáng tạo</b> → <b>Sản xuất</b> (Design / Content / Editor tùy loại job) → <b>Bàn giao</b> (Account) → <b>Hoá đơn</b> (Kế toán).",
+  {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua Account → Planner → Content → Design; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
+   items:["<b>Brief</b> (Account) → <b>Chia việc</b> (Planner – Đốc Giám) → <b>Sáng tạo</b> (Content) → <b>Sản xuất</b> (Design). Chưa có Planner thì Account hoặc Content chia việc thay, chậm hơn.",
     "Đúng chuyên môn làm nhanh ×1,35; gần chuyên môn ×1; trái nghề ×0,6. Thiếu bộ phận thì người khác làm thay. Vòng trên đầu nhân vật: icon bộ phận + tiến độ bước.",
     `Làm tối đa <b>${jobCapacity()} job</b> cùng lúc; tuyển thêm người làm job sẽ tăng số chỗ nhận việc. Trong <b>Công việc → Đang làm</b>: <b>Ưu tiên làm trước</b>, <b>Phân công nhân sự</b>, <b>Xếp theo hạn giao</b>.`,
     `Job từ <b>60 giờ công</b> hoặc cần bàn họp: khách và 1 nhân viên họp <b>${h(MEETING_MINUTES)}</b> ở bàn họp rồi mới làm.`,

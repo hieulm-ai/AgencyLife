@@ -4,7 +4,10 @@
 // Planner = Đốc Giám (ADM). Thiếu bộ phận thì người khác làm chậm hơn. Xong mỗi bước, người làm cầm hồ sơ sang bàn người làm bước kế.
 // j.stg = [{k, role, need, done}], j.cur = bước đang làm, j.who = id người đang làm bước đó, j.handoff = id người vừa xong (chờ chuyển hồ sơ),
 // j.passing = đang chuyển hồ sơ (bước kế chưa làm). j.work = tổng giờ công các bước (giữ cho giao diện, thanh toán và bản lưu cũ).
-const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.2},{k:'creative',role:'con',n:'Content',split:.35},{k:'prod',role:'des',n:'Design',split:.45}];
+// 14/10/2026: thêm lại bước Chia việc (Planner = Đốc Giám) theo quy trình đã chốt. Thiếu Planner thì Account/Content làm thay (gần chuyên môn ×1).
+// Tổng giờ công của job không đổi; chỉ chia lại tỉ lệ giữa các bước.
+const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.18},{k:'plan',role:'plan',n:'Planner',split:.1},{k:'creative',role:'con',n:'Content',split:.32},{k:'prod',role:'des',n:'Design',split:.4}];
+function stageIndex(j,k){ const i=Array.isArray(j&&j.stg)?j.stg.findIndex(s=>s&&s.k===k):-1; return i<0?STAGE_DEF.findIndex(s=>s.k===k):i; }
 const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'coin'};
 const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',fin:'Kế toán'};
 // Bước Sáng tạo / Sản xuất theo loại job (tên mẫu job, bỏ dấu ⭐ VIP).
@@ -51,7 +54,7 @@ function staffById(id){ return id?AG.find(a=>CHARS[a.ci].id===id)||null:null; }
 function canTakeTask(a){ return !!a&&!a.mascot&&!a.away&&!a.autoBreak&&!a.collection&&!a.handover&&!a.pass&&a.state!=='burn'&&a.state!=='leaving'&&a.state!=='arrive'&&a.meetingJob==null&&a.receptionUid==null&&!(typeof deskBound==='function'&&deskBound(a)); }
 function hasWorkSeat(a){ const o=a&&a.seat&&OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
 function briefPending(j){ return (typeof handoverQueue!=='undefined'&&handoverQueue.includes(j.id))||AG.some(a=>a.handover?.jobId===j.id); }
-function jobReady(j){ return !(j.early&&j.cur===1&&!j.early.idea)&&!j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
+function jobReady(j){ return !(j.early&&j.cur===stageIndex(j,'creative')&&!j.early.idea)&&!j.paused&&!meetingPending(j)&&!j.passing&&!briefPending(j)&&!(typeof fbPending==='function'&&fbPending(j)); }
 function inTeam(j,id){ return !Array.isArray(j.staff)||j.staff.includes(id); }
 // Việc của 1 người: bước đang được giao cho người đó.
 function agentTask(a){ if(!a) return null; const id=CHARS[a.ci].id; for(const j of GS.jobs){ ensureStages(j); const s=j.stg[j.cur]; if(s&&j.who===id) return {j,s}; } return null; }

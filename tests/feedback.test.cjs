@@ -17,7 +17,7 @@ const job=(id,name,need,extra={})=>({id,name,need,work:0,due:5,req:[],cust:1,...
 function runAll(c,j,maxSteps=2000){ c.ensureStages(j); for(let i=0;i<maxSteps&&j.cur<j.stg.length;i++){ if(c.fbPending(j)) c.resolveRevision(j,'talk',0); c.advanceJobWork(.5); } }
 test('chất lượng: cả đội đúng chuyên môn → 5★; thiếu Design (người trái nghề làm) → thấp hơn',()=>{
  let c=setup(),j=job(1,'Quay video TikTok',20);c.GS.jobs=[j];runAll(c,j);
- assert.equal(j.cur,3);assert.ok(Math.abs(c.jobQuality(j)-1)<1e-9);assert.equal(c.jobStars(j),5);
+ assert.equal(j.cur,4);assert.ok(Math.abs(c.jobQuality(j)-1)<1e-9);assert.equal(c.jobStars(j),5);
  c=setup('ACK');j=job(1,'Quay video TikTok',20);c.GS.jobs=[j];runAll(c,j);
  assert.ok(c.jobQuality(j)<.95,'bước Design do người khác làm');assert.ok(c.jobStars(j)<5);
  const q=c.ensureStages(job(3,'x',10));assert.equal(c.jobQuality(q),.75,'job cũ chưa có dữ liệu = mức trung bình');
@@ -34,9 +34,9 @@ test('góp ý sau Sản xuất: job dừng tới khi chọn; Sửa kỹ thêm 25
  assert.equal(c.maybeRevision(j,'prod',.99),false);assert.equal(j.fb.done,true);assert.equal(c.maybeRevision(j,'prod',0),false,'mỗi job tối đa 1 lần');
  delete j.fb;assert.equal(c.maybeRevision(j,'prod',0),true);assert.ok(c.fbPending(j));assert.equal(c.jobReady(j),false);
  assert.match(c.stageLine(j),/Khách góp ý/);
- const need=j.need,prod=j.stg[2].need;j.stg.forEach((s,i)=>{if(i<=3)s.done=s.need;});c.ensureStages(j);assert.equal(j.cur,3);
- c.resolveRevision(j,'fix');assert.ok(Math.abs(j.stg[2].need-prod*1.25)<.01);assert.ok(Math.abs(j.need-need-(j.stg[2].need-prod))<1e-9);
- assert.equal(j.cur,2,'quay lại bước Sản xuất');assert.equal(j.fbMod,.1);assert.equal(c.fbPending(j),false);assert.equal(c.jobReady(j),true);
+ const need=j.need,prod=j.stg[3].need;j.stg.forEach((s,i)=>{if(i<=3)s.done=s.need;});c.ensureStages(j);assert.equal(j.cur,4);
+ c.resolveRevision(j,'fix');assert.ok(Math.abs(j.stg[3].need-prod*1.25)<.01);assert.ok(Math.abs(j.need-need-(j.stg[3].need-prod))<1e-9);
+ assert.equal(j.cur,3,'quay lại bước Sản xuất');assert.equal(j.fbMod,.1);assert.equal(c.fbPending(j),false);assert.equal(c.jobReady(j),true);
  const k=c.ensureStages(job(2,'Thiết kế logo',20));c.GS.jobs.push(k);c.maybeRevision(k,'prod',0);k.fb.at-=120;c.tickRevisions();
  assert.equal(k.fb.kind,'auto');assert.equal(k.fbMod,0);
 });

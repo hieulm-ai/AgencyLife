@@ -1,4 +1,6 @@
 // First three completed jobs teach decisions without stopping office simulation.
+// Chọn ý tưởng mở khi job tới bước Sáng tạo (sau Brief và Chia việc).
+function atCreative(j){ const i=Array.isArray(j&&j.stg)?j.stg.findIndex(s=>s&&s.k==='creative'):-1; return j.cur>=(i<0?2:i); }
 const EARLY_CHOICE_MIN=20;
 function earlyNow(){return GS.day*1440+GS.min;}
 function earlyEligible(){return GS.day<=3&&(GS.done||0)<3;}
@@ -13,7 +15,7 @@ function earlyChoose(id,kind,value){
   if(!GS.jobs.includes(j)){delete e.brief;return;}
   toast(value==='playful'?'Khách thích phong cách vui nhộn!':'Khách đã chốt brief rõ ràng!','ok');
  }else if(kind==='idea'){
-  if(!GS.jobs.includes(j)||j.cur<1)return;
+  if(!GS.jobs.includes(j)||!atCreative(j))return;
   e.idea=value;
   if(value==='bold'){j.reward=Math.round(j.reward*1.1*10)/10;const s=j.stg.find(s=>s.k==='creative');if(s){const add=s.need*.15;s.need+=add;j.need+=add;}}
  }else if(kind==='review'){
@@ -51,7 +53,7 @@ function earlyTick(){
  }
  for(const j of GS.jobs){
   if(!j.early&&earlyEligible())earlyState(j);if(!j.early)continue;
-  if(j.cur>=1&&earlyPending(j,'idea')&&now-j.early.ideaAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'idea','safe');
+  if(atCreative(j)&&earlyPending(j,'idea')&&now-j.early.ideaAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'idea','safe');
   if(j.work>=j.need-1e-6&&earlyPending(j,'review')&&now-j.early.reviewAt>=EARLY_CHOICE_MIN)earlyChoose(j.id,'review','send');
  }
  if(Math.floor(now)!==earlyPaintAt){earlyPaintAt=Math.floor(now);earlyRender();}
@@ -61,7 +63,7 @@ function earlyRender(){
  if(!earlyEligible()&&!GS.jobs.some(j=>j.early&&!j.early.review))return;
  let box=document.getElementById('earlyPlay');if(!box){box=document.createElement('section');box.id='earlyPlay';box.className='pf';box.setAttribute('aria-label','Việc đầu tiên');document.body.append(box);}
  let j=GS.jobs.find(j=>j.early&&!j.early.review&&j.work>=j.need-1e-6),kind='review';
- if(!j){j=GS.jobs.find(j=>j.early&&!j.early.idea&&j.cur>=1);kind='idea';}
+ if(!j){j=GS.jobs.find(j=>j.early&&!j.early.idea&&atCreative(j));kind='idea';}
  if(!j){j=GS.offers.find(j=>j.received&&!j.early?.brief&&!missingReq(j).length);kind='brief';}
  const choices={brief:[['clear','brief','Rõ ràng'],['playful','palette','Vui nhộn']],idea:[['safe','pen','An toàn'],['bold','star','Táo bạo · +10% thưởng']],review:[['send','clip','Gửi khách'],['polish','palette','Chỉnh thêm · +5% thưởng']]};
  const title={brief:'Chọn brief',idea:'Chọn ý tưởng',review:'Duyệt sản phẩm'};
