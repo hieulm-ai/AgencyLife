@@ -261,7 +261,7 @@ __BOOT_CSS__
 <div id="toast" class="ov pf" role="status" aria-live="polite"></div><div id="playerCard" class="ov pf" role="dialog" aria-label="Nhân vật của bạn"></div>
 <div id="intro" hidden inert role="dialog" aria-modal="true" aria-labelledby="introTitle"><div class="intro-box pf"><div class="intro-head"><h1 id="introTitle">AGENCY'S LIFE TYCOON</h1><p>Mở văn phòng agency của riêng bạn</p></div><div class="intro-body"></div></div></div><div id="tip"></div>
 <div id="placeBar" class="ov" role="group" aria-label="Xác nhận vị trí vật phẩm" hidden><div id="placeWhy"></div><div class="pbtns"><button id="pOk" class="pb ok" aria-label="Đồng ý"><b>✓</b><small>Đồng ý</small></button><button id="pNo" class="pb no" aria-label="Từ chối"><b>✕</b><small>Từ chối</small></button><button id="pRot" class="pb rot" aria-label="Xoay vật phẩm"><b>⟳</b><small>Xoay</small></button><button id="pKeep" class="pb keep" aria-label="Cất vào kho"><b class="ic" data-ic="box" data-s="24"></b><small>Cất kho</small></button></div></div>
-<div id="repBox" hidden role="dialog" aria-modal="true" aria-label="Danh tiếng"><div class="ask-box pf ol-box rep-box"><div class="rep-body"></div></div></div>
+<div id="repBox" hidden role="dialog" aria-modal="true" aria-label="Danh tiếng"><div class="ask-box pf ol-box rep-box"><button class="hub-x rep-x" id="repX" aria-label="Đóng" title="Đóng (Esc)">✕</button><div class="rep-body"></div></div></div>
 <div id="olBox" hidden role="dialog" aria-modal="true" aria-label="Online"><div class="ask-box pf ol-box"><div class="ol-body"></div></div></div>
 <div id="visitBar" class="ov pf" hidden role="toolbar" aria-label="Đang tham quan"><span class="vb-ic"></span><span class="vb-txt"><small>Đang tham quan</small><b class="vb-name"></b><small class="vb-sub"></small></span><button class="vb-b" data-vb="like"><b>❤</b><small>Thích</small></button><button class="vb-b" data-vb="note"><b>✉</b><small>Lời nhắn</small></button><button class="vb-b" data-vb="gift"><b>🎁</b><small>Tặng quà</small></button><button class="btn g vb-home" data-vb="home">Về văn phòng</button></div>
 <div id="askBox" hidden role="alertdialog" aria-modal="true" aria-labelledby="askTitle" aria-describedby="askText"><div class="ask-box pf"><div class="ask-ic" id="askIc" aria-hidden="true"></div><h2 id="askTitle"></h2><div id="askText" class="ask-text"></div><div class="ask-act"><button class="btn c" id="askNo">Hủy</button><button class="btn g" id="askYes">Đồng ý</button></div></div></div>
@@ -1837,7 +1837,7 @@ if(!hadSave&&!GS.player) GS.introPending=true;
 initGuideButton();
 __TITLE__
 bootStart();   // ván mới: hướng dẫn chạm; bản lưu cũ chưa xem: gợi ý
-document.getElementById("repChip").onclick=()=>openRep(); document.getElementById("repBox").addEventListener("keydown",e=>{ if(e.key==="Escape") closeRep(); });
+document.getElementById("repChip").onclick=()=>openRep(); document.getElementById("repX").onclick=()=>closeRep(); document.getElementById("repBox").addEventListener("click",e=>{ if(e.target.id==="repBox") closeRep(); }); document.getElementById("repBox").addEventListener("keydown",e=>{ if(e.key==="Escape") closeRep(); });
 { const av=document.querySelector("#co .av"); av.setAttribute("role","button"); av.tabIndex=0; av.onclick=openPlayerCard; av.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openPlayerCard(); } }; }
 // Khung nhìn có thể có kích thước 0 lúc mới tải (ví dụ trong khung xem trước); theo dõi kích thước để dựng lại canvas
 try{ new ResizeObserver(()=>fit()).observe(wrap); }catch(e){}

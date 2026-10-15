@@ -435,6 +435,9 @@ body.visiting #co{display:none!important}
 body.visiting #repChip{display:none}
 #repBox{position:fixed;inset:0;z-index:111;display:grid;place-items:center;padding:16px;background:rgba(40,24,12,.45)}
 #repBox[hidden]{display:none}
+/* 15/10: nút ✕ luôn ở góc trên phải bảng Danh tiếng / hội thoại đánh giá, kể cả khi cuộn */
+.rep-x{position:sticky;top:0;align-self:flex-end;flex:none;z-index:3;margin-bottom:-38px}
+.rep-body h2{padding:0 44px}.rep-body .rv-dlg{padding-right:44px}
 .rep-body{display:flex;flex-direction:column;gap:8px}.rep-body h2{text-align:center}
 .rep-top{display:flex;flex-direction:column;gap:4px;padding:10px;background:#FFF3D9;border:2px solid #E0B78B;border-radius:10px;color:#5B2E10}
 .rep-top b{font-size:17px}.rep-top small{font-size:12px;color:#8A5A2E}
