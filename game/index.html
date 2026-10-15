@@ -786,6 +786,19 @@ body.hub-open #earlyPlay{right:calc(min(400px,100vw - 28px) + 28px)}
  body.hub-open #earlyPlay{left:calc(max(4px,env(safe-area-inset-left)) + 66px)!important;right:auto!important;width:auto!important;padding:5px 10px!important}
  .ol-rankby .btn{font-size:11px!important;padding:2px!important}
 }
+/* 15/10: bảng nổi không chồng lên nhau — đang mở hộp thoại (vắng mặt, xác nhận, bạn bè, thẻ nhân viên) thì ẩn thẻ việc đầu game */
+body:has(#unlockBox.open) #earlyPlay,body:has(#askBox:not([hidden])) #earlyPlay,body:has(#olBox:not([hidden])) #earlyPlay,body:has(#agentCard.open) #earlyPlay,body:has(#guide:not([hidden])) #earlyPlay,body:has(#intro:not([hidden])) #earlyPlay{display:none!important}
+@media(max-height:500px) and (orientation:landscape){
+ #unlockBox{left:calc(50% + 31px)!important;max-height:calc(100dvh - 60px);overflow:auto;padding:10px!important;gap:6px!important}
+ #unlockBox .ph{font-size:15px}#unlockBox .row{font-size:13px;padding:6px 10px}
+ #earlyPlay{max-height:calc(100dvh - 60px);overflow:auto}
+}
+/* 15/10/2026: ảnh đại diện vẽ sẵn (đầu + vai, vuông) — thay cách cắt khung đứng từ sheet đi bộ */
+.staff-avatar.av-img img{position:static;width:100%;height:100%;left:auto;object-fit:cover;image-rendering:auto}
+.skin-card>.staff-avatar.av-img img{width:100%;height:100%}
+#co .av.av-img img{position:absolute;inset:0;width:100%!important;height:100%!important;left:0!important;top:0!important;margin:0;object-fit:cover;image-rendering:auto}
+#playerCard .pc-face.av-img{width:56px;height:56px;border-radius:12px;background-size:cover;background-position:center;background-color:#f6f2ec}
+.ol-av i.av-img{background-size:cover;background-position:center}
 
 body.booting #wrap{visibility:hidden}
 #boot[hidden],#titleScreen[hidden]{display:none!important}
@@ -1068,19 +1081,22 @@ async function bootStart(){
 
 function bootEnsure(value){const paths=bootPaths(value);return bootPool(paths,async path=>{await bootLoad(path);await bootActivate(new Set([path]));},3).catch(()=>toast("Một số hình ảnh chưa tải được. Hãy thử lại khi kết nối ổn định.","err"));}
 
-const CHARS=[{"id": "01_Huy", "src": "assets/generated/47dad755268df77d4881f079.webp", "sit": "assets/generated/46c7b88397edc83ba1e7bcbb.webp", "burn": "assets/generated/da76d6a7cb2cf40d925590d5.webp", "chairBlue": "assets/generated/53edfb832d9b2c79372b9235.webp", "chairErgo": "assets/generated/bfd1cf71e60031a5f7096c55.webp", "talk": "assets/generated/28d9cf95fd2fdb4217083b85.webp", "cele": "assets/generated/3214a666ef088a39f8c614bd.webp", "sad": "assets/generated/f7670d8edb462ef87a6019ae.webp", "use": "assets/generated/3c493003cc021641d435581a.webp", "sitScale": 1.0, "portrait": "assets/generated/4372dbb02e5dfb2189af8fa1.webp"}, {"id": "02_Luwon", "src": "assets/generated/ea6d75d3e4259bb499111485.webp", "sit": "assets/generated/3578124fb9ed132c87f82a30.webp", "burn": "assets/generated/9ca07322cb4c4ac99d870767.webp", "chairBlue": "assets/generated/fbe75f8b607df10a367d8468.webp", "chairErgo": "assets/generated/97ec76f323eec553043b73df.webp", "talk": "assets/generated/9c66ff41254c538868335127.webp", "cele": "assets/generated/2917c0fb3e1c61365d2bb4a2.webp", "sad": "assets/generated/77a4a2c651e100012ca8c8c4.webp", "use": "assets/generated/9508525aa4fc78014f797088.webp", "sitScale": 1.3131, "portrait": "assets/generated/bcb68dd3b70689a7a9be74c2.webp"}, {"id": "03_Pali", "src": "assets/generated/e5b6918fd6b845461790e9da.webp", "sit": "assets/generated/b5bc2b2fb503b9825db7e026.webp", "burn": "assets/generated/18f97dad1a1bd4dc34c38ebe.webp", "chairBlue": "assets/generated/7cebd0a0ad90be684cf9e5de.webp", "chairErgo": "assets/generated/ee9af855f6346b0d5123ed25.webp", "talk": "assets/generated/48070e1c3313ae881597999a.webp", "cele": "assets/generated/127a9383f43fe1ad32a08ca3.webp", "sad": "assets/generated/3eaa40ee289a1cd6f3e4bfdc.webp", "use": "assets/generated/dee89c50c8acb3db4895779c.webp", "sitScale": 1.2211, "portrait": "assets/generated/eef30f7d91a9f372e18c77b0.webp"}, {"id": "04_Tamny", "src": "assets/generated/b43ae805d57481fbc6031821.webp", "sit": "assets/generated/73d1d2bc1a62d3fe8389dad3.webp", "burn": "assets/generated/303efad188dc51755680a7ae.webp", "chairBlue": "assets/generated/fc6f23615fd249db8ea6245a.webp", "chairErgo": "assets/generated/d9cdf28ccfb85b0c8263423d.webp", "talk": "assets/generated/beb3a6e38101b1d6e975adb5.webp", "cele": "assets/generated/88ba2080f39b1aaae65eaaee.webp", "sad": "assets/generated/e7fd25e8a2d5bb3b2ba17836.webp", "use": "assets/generated/3ea68ccf96683d30905bc5a9.webp", "sitScale": 1.3263, "portrait": "assets/generated/6a04bc3ebd650c0ec357e764.webp"}, {"id": "06_Vu_a_Vu", "src": "assets/generated/00b7ccbbccf435b446798ea4.webp", "sit": "assets/generated/7593857dd3c3f00b6f597c19.webp", "burn": "assets/generated/e85855ed363d4704849fed2e.webp", "chairBlue": "assets/generated/cd9302df02cc11d81b01c758.webp", "chairErgo": "assets/generated/538d4b5370cad6b19a004b67.webp", "talk": "assets/generated/04fa739776fc5acca3fb6058.webp", "cele": "assets/generated/09753bdbb9a49681fe5d9386.webp", "sad": "assets/generated/93e670236ce36ef744141919.webp", "use": "assets/generated/d4c2799b64174dc0f8714d64.webp", "sitScale": 1.215, "portrait": "assets/generated/b2e281f54ef7c86000df5df9.webp"}, {"id": "07_Hao_Hao", "src": "assets/generated/6050cc68c555b2cba31e6818.webp", "sit": "assets/generated/60e5cdc36dfe17148ed34cfb.webp", "burn": "assets/generated/5e8b91606a9bcff321610585.webp", "chairBlue": "assets/generated/d42f9e765d63a674b0f7a9fa.webp", "chairErgo": "assets/generated/28afec9daa12102d69a08a30.webp", "talk": "assets/generated/0896f8cd691d704ac84793fb.webp", "cele": "assets/generated/eb6e9a94d5ef996176c9a9d4.webp", "sad": "assets/generated/3ddd1c571991a65c64374330.webp", "use": "assets/generated/83a7b6f9a7568bede497ff0f.webp", "sitScale": 1.4091, "portrait": "assets/generated/9fb4c6e4d55791f42d1098d5.webp"}, {"id": "08_Nganh", "src": "assets/generated/afaa5864307b4099f473cfab.webp", "sit": "assets/generated/1c298d1ed7950d6777dabfc7.webp", "burn": "assets/generated/6f1467f52762df5463b82a16.webp", "chairBlue": "assets/generated/0312bc8dee8c2725d4a5e260.webp", "chairErgo": "assets/generated/d2083c9234026cd5104ee4e0.webp", "talk": "assets/generated/e24319048d469a7aa0c637c6.webp", "cele": "assets/generated/85301d9626490a4485c0290c.webp", "sad": "assets/generated/9da27dc324bb6429625536ea.webp", "use": "assets/generated/d5a9f28d3e57f9edf1f62f8a.webp", "sitScale": 1.3565, "portrait": "assets/generated/440d665cf66f1747d5c46065.webp"}, {"id": "09_Vit_Vang", "src": "assets/generated/d2d0f974918de05183ddda70.webp", "sit": "assets/generated/82a03970e822deadbc8121e8.webp", "burn": "assets/generated/19b28ee3859da86dd1997069.webp", "chairBlue": "assets/generated/33e38dcfc775f902d95876e7.webp", "chairErgo": "assets/generated/d6253f208f5967287547f28f.webp", "talk": "assets/generated/114d14ec16e006dfded0fae2.webp", "cele": "assets/generated/0c2a8227e2e342faba48a3e2.webp", "sad": "assets/generated/75f6344fcf9a75045f722ae3.webp", "use": "assets/generated/22a456e9ed845bce4f63a61d.webp", "sitScale": 1.2586, "portrait": "assets/generated/e2c0e562251c793046b92541.webp"}, {"id": "10_Con_LT", "src": "assets/generated/e753d640734ee56ade3f679c.webp", "sit": "assets/generated/8096c4015e023b56b11887e7.webp", "burn": "assets/generated/f9d5f707630be446314d34da.webp", "chairBlue": "assets/generated/b1235ef11006f86ae6655bf7.webp", "chairErgo": "assets/generated/e76bf3e0c8612b58225b0b3c.webp", "talk": "assets/generated/b1fef4140d375ba58c7301ec.webp", "cele": "assets/generated/ee85dfc719a9564adead6df9.webp", "sad": "assets/generated/fd041ca37232c83ad3192728.webp", "use": "assets/generated/fb3bffe2ae7847a6475d0524.webp", "sitScale": 1.3714, "portrait": "assets/generated/f3907aca614c0a859807b147.webp"}, {"id": "11_Juice", "src": "assets/generated/b69555750983a5b77ed17782.webp", "sit": "assets/generated/bddc18ffed57c6635fede00e.webp", "burn": "assets/generated/1bf753b3f0b601a9332d6854.webp", "chairBlue": "assets/generated/fe7375be2e8865c4d65ab447.webp", "chairErgo": "assets/generated/fcb1cb570f5c327bd0fcd0f2.webp", "talk": "assets/generated/c7042e8319278a712a5e2641.webp", "cele": "assets/generated/c15862e7c43aa70abad5b2a4.webp", "sad": "assets/generated/e3856868b05d518957d36ca7.webp", "use": "assets/generated/3b5212b51b9d8db8bfe02ac3.webp", "sitScale": 1.3448, "portrait": "assets/generated/ed43ec75ce37ab354ac66b59.webp"}, {"id": "12_ADM", "src": "assets/generated/6262c7a2678f3b6c32f7fa1d.webp", "sit": "assets/generated/967f4084531827c07916e623.webp", "burn": "assets/generated/31b7b12d07ffd6c6eea5d957.webp", "chairBlue": "assets/generated/bf56c86c3c8e6a5e5c050edb.webp", "chairErgo": "assets/generated/9f048f5b929d2523cd2980cb.webp", "talk": "assets/generated/d4799cfb0c419e25cbaaadb1.webp", "cele": "assets/generated/d3ee04c2e681d208276d255b.webp", "sad": "assets/generated/41a0ee543016b501bd74ffde.webp", "use": "assets/generated/1bd4a50110888aa863d83628.webp", "sitScale": 1.3333, "portrait": "assets/generated/1e146c31c7c2d375cdbcd58e.webp"}, {"id": "13_AB", "src": "assets/generated/cee1c1e7bf32a6757e8f7457.webp", "sit": "assets/generated/f7407a89351963f0318f0329.webp", "burn": "assets/generated/2769e67ecc648dcc37487260.webp", "chairBlue": "assets/generated/46d7ca3d6604efc52bfce409.webp", "chairErgo": "assets/generated/e77c154f5840b2b51f4e9687.webp", "talk": "assets/generated/3891a2b4103b5608ee98418a.webp", "cele": "assets/generated/07336a499461a765c1d9bed8.webp", "sad": "assets/generated/0487a6b271b594d118f4fddf.webp", "use": "assets/generated/8839b7c5f3b9bc34156e0035.webp", "sitScale": 1.3535, "portrait": "assets/generated/6339289988c3cb0215b99813.webp"}, {"id": "14_HM", "src": "assets/generated/37c9486ea930ecb143d18b3d.webp", "sit": "assets/generated/c55c887e7a4307d9fbcd9f86.webp", "burn": "assets/generated/77ec799bf34e76ea4171c347.webp", "chairBlue": "assets/generated/2b1f1f799dff56531e2a1a33.webp", "chairErgo": "assets/generated/b5d07e1385daad20fb40f6c0.webp", "talk": "assets/generated/4bd7d4095d5603a84d4c70cf.webp", "cele": "assets/generated/3dc2ecd5576be871f8b60913.webp", "sad": "assets/generated/302295d611b7a92dbb367a99.webp", "use": "assets/generated/64a1563547d926bb330c1418.webp", "sitScale": 1.2692, "portrait": "assets/generated/cf33109d85c62dd93815972b.webp"}, {"id": "15_CongB", "src": "assets/generated/1b3f88603fe8f73963317317.webp", "sit": "assets/generated/83c4e6021ff1905881239bd6.webp", "burn": "assets/generated/91329627a3e3d878de1f2175.webp", "chairBlue": "assets/generated/f3aea4f6968e02aae30be48d.webp", "chairErgo": "assets/generated/d91d1c623c1b7a7cbd596892.webp", "talk": "assets/generated/1085555521e75e0dc47f253e.webp", "cele": "assets/generated/a43f28640a01b354beb4bcc1.webp", "sad": "assets/generated/9454105ae01d3b994596b22d.webp", "use": "assets/generated/3411cc20ce8e5e77d073e244.webp", "sitScale": 1.3131, "portrait": "assets/generated/d68c4e91a45d589952f3d610.webp"}, {"id": "trinh_lac_corrected_v2", "src": "assets/generated/c9a0f66c49403179feba2cf4.webp", "sit": "assets/generated/984d6e8c89f507da7a591c63.webp", "burn": "assets/generated/aac8790544a9f31f046914ad.webp", "chairBlue": "assets/generated/a9eb24ea4905127e9f7073ed.webp", "chairErgo": "assets/generated/d6b37cb57cf0f74bc89b6ea1.webp", "talk": "assets/generated/98bec19e3f4040df8c116a89.webp", "cele": "assets/generated/e2bbfd6c88dc5d937d6226e9.webp", "sad": "assets/generated/dea5d53fd872dda1490e275b.webp", "use": "assets/generated/63cb893a0ba5053313c1e424.webp", "sitScale": 1.156, "portrait": "assets/generated/106969ec11b04d54caea2114.webp"}];   // 15 nhân vật, sheet 72×64: hàng 0 mặt trước chéo trái-xuống (SW), hàng 1 lưng chéo trái-lên (NW); hướng phải = lật gương
+const CHARS=[{"id": "01_Huy", "src": "assets/generated/47dad755268df77d4881f079.webp", "sit": "assets/generated/46c7b88397edc83ba1e7bcbb.webp", "burn": "assets/generated/da76d6a7cb2cf40d925590d5.webp", "chairBlue": "assets/generated/53edfb832d9b2c79372b9235.webp", "chairErgo": "assets/generated/bfd1cf71e60031a5f7096c55.webp", "talk": "assets/generated/28d9cf95fd2fdb4217083b85.webp", "cele": "assets/generated/3214a666ef088a39f8c614bd.webp", "sad": "assets/generated/f7670d8edb462ef87a6019ae.webp", "use": "assets/generated/3c493003cc021641d435581a.webp", "sitScale": 1.0, "portrait": "assets/generated/4372dbb02e5dfb2189af8fa1.webp", "avatar": "assets/generated/9021c6d9776d2bef1161cb93.webp"}, {"id": "02_Luwon", "src": "assets/generated/ea6d75d3e4259bb499111485.webp", "sit": "assets/generated/3578124fb9ed132c87f82a30.webp", "burn": "assets/generated/9ca07322cb4c4ac99d870767.webp", "chairBlue": "assets/generated/fbe75f8b607df10a367d8468.webp", "chairErgo": "assets/generated/97ec76f323eec553043b73df.webp", "talk": "assets/generated/9c66ff41254c538868335127.webp", "cele": "assets/generated/2917c0fb3e1c61365d2bb4a2.webp", "sad": "assets/generated/77a4a2c651e100012ca8c8c4.webp", "use": "assets/generated/9508525aa4fc78014f797088.webp", "sitScale": 1.3131, "portrait": "assets/generated/bcb68dd3b70689a7a9be74c2.webp", "avatar": "assets/generated/e1f8e515f081b8a486878103.webp"}, {"id": "03_Pali", "src": "assets/generated/e5b6918fd6b845461790e9da.webp", "sit": "assets/generated/b5bc2b2fb503b9825db7e026.webp", "burn": "assets/generated/18f97dad1a1bd4dc34c38ebe.webp", "chairBlue": "assets/generated/7cebd0a0ad90be684cf9e5de.webp", "chairErgo": "assets/generated/ee9af855f6346b0d5123ed25.webp", "talk": "assets/generated/48070e1c3313ae881597999a.webp", "cele": "assets/generated/127a9383f43fe1ad32a08ca3.webp", "sad": "assets/generated/3eaa40ee289a1cd6f3e4bfdc.webp", "use": "assets/generated/dee89c50c8acb3db4895779c.webp", "sitScale": 1.2211, "portrait": "assets/generated/eef30f7d91a9f372e18c77b0.webp", "avatar": "assets/generated/b6364ef9b53e61ca64eae5ce.webp"}, {"id": "04_Tamny", "src": "assets/generated/b43ae805d57481fbc6031821.webp", "sit": "assets/generated/73d1d2bc1a62d3fe8389dad3.webp", "burn": "assets/generated/303efad188dc51755680a7ae.webp", "chairBlue": "assets/generated/fc6f23615fd249db8ea6245a.webp", "chairErgo": "assets/generated/d9cdf28ccfb85b0c8263423d.webp", "talk": "assets/generated/beb3a6e38101b1d6e975adb5.webp", "cele": "assets/generated/88ba2080f39b1aaae65eaaee.webp", "sad": "assets/generated/e7fd25e8a2d5bb3b2ba17836.webp", "use": "assets/generated/3ea68ccf96683d30905bc5a9.webp", "sitScale": 1.3263, "portrait": "assets/generated/6a04bc3ebd650c0ec357e764.webp", "avatar": "assets/generated/27cd705f0747754c605f1339.webp"}, {"id": "06_Vu_a_Vu", "src": "assets/generated/00b7ccbbccf435b446798ea4.webp", "sit": "assets/generated/7593857dd3c3f00b6f597c19.webp", "burn": "assets/generated/e85855ed363d4704849fed2e.webp", "chairBlue": "assets/generated/cd9302df02cc11d81b01c758.webp", "chairErgo": "assets/generated/538d4b5370cad6b19a004b67.webp", "talk": "assets/generated/04fa739776fc5acca3fb6058.webp", "cele": "assets/generated/09753bdbb9a49681fe5d9386.webp", "sad": "assets/generated/93e670236ce36ef744141919.webp", "use": "assets/generated/d4c2799b64174dc0f8714d64.webp", "sitScale": 1.215, "portrait": "assets/generated/b2e281f54ef7c86000df5df9.webp", "avatar": "assets/generated/50a2d57294b826d98d9ce53a.webp"}, {"id": "07_Hao_Hao", "src": "assets/generated/6050cc68c555b2cba31e6818.webp", "sit": "assets/generated/60e5cdc36dfe17148ed34cfb.webp", "burn": "assets/generated/5e8b91606a9bcff321610585.webp", "chairBlue": "assets/generated/d42f9e765d63a674b0f7a9fa.webp", "chairErgo": "assets/generated/28afec9daa12102d69a08a30.webp", "talk": "assets/generated/0896f8cd691d704ac84793fb.webp", "cele": "assets/generated/eb6e9a94d5ef996176c9a9d4.webp", "sad": "assets/generated/3ddd1c571991a65c64374330.webp", "use": "assets/generated/83a7b6f9a7568bede497ff0f.webp", "sitScale": 1.4091, "portrait": "assets/generated/9fb4c6e4d55791f42d1098d5.webp", "avatar": "assets/generated/b47723dca5dc7b76aac4aa39.webp"}, {"id": "08_Nganh", "src": "assets/generated/afaa5864307b4099f473cfab.webp", "sit": "assets/generated/1c298d1ed7950d6777dabfc7.webp", "burn": "assets/generated/6f1467f52762df5463b82a16.webp", "chairBlue": "assets/generated/0312bc8dee8c2725d4a5e260.webp", "chairErgo": "assets/generated/d2083c9234026cd5104ee4e0.webp", "talk": "assets/generated/e24319048d469a7aa0c637c6.webp", "cele": "assets/generated/85301d9626490a4485c0290c.webp", "sad": "assets/generated/9da27dc324bb6429625536ea.webp", "use": "assets/generated/d5a9f28d3e57f9edf1f62f8a.webp", "sitScale": 1.3565, "portrait": "assets/generated/440d665cf66f1747d5c46065.webp", "avatar": "assets/generated/2b9c42dfa02c7c232447a2b1.webp"}, {"id": "09_Vit_Vang", "src": "assets/generated/d2d0f974918de05183ddda70.webp", "sit": "assets/generated/82a03970e822deadbc8121e8.webp", "burn": "assets/generated/19b28ee3859da86dd1997069.webp", "chairBlue": "assets/generated/33e38dcfc775f902d95876e7.webp", "chairErgo": "assets/generated/d6253f208f5967287547f28f.webp", "talk": "assets/generated/114d14ec16e006dfded0fae2.webp", "cele": "assets/generated/0c2a8227e2e342faba48a3e2.webp", "sad": "assets/generated/75f6344fcf9a75045f722ae3.webp", "use": "assets/generated/22a456e9ed845bce4f63a61d.webp", "sitScale": 1.2586, "portrait": "assets/generated/e2c0e562251c793046b92541.webp", "avatar": "assets/generated/8bfcbbad0adf1437d247192e.webp"}, {"id": "10_Con_LT", "src": "assets/generated/e753d640734ee56ade3f679c.webp", "sit": "assets/generated/8096c4015e023b56b11887e7.webp", "burn": "assets/generated/f9d5f707630be446314d34da.webp", "chairBlue": "assets/generated/b1235ef11006f86ae6655bf7.webp", "chairErgo": "assets/generated/e76bf3e0c8612b58225b0b3c.webp", "talk": "assets/generated/b1fef4140d375ba58c7301ec.webp", "cele": "assets/generated/ee85dfc719a9564adead6df9.webp", "sad": "assets/generated/fd041ca37232c83ad3192728.webp", "use": "assets/generated/fb3bffe2ae7847a6475d0524.webp", "sitScale": 1.3714, "portrait": "assets/generated/f3907aca614c0a859807b147.webp", "avatar": "assets/generated/85a6c47ee6a25f374a9befdb.webp"}, {"id": "11_Juice", "src": "assets/generated/b69555750983a5b77ed17782.webp", "sit": "assets/generated/bddc18ffed57c6635fede00e.webp", "burn": "assets/generated/1bf753b3f0b601a9332d6854.webp", "chairBlue": "assets/generated/fe7375be2e8865c4d65ab447.webp", "chairErgo": "assets/generated/fcb1cb570f5c327bd0fcd0f2.webp", "talk": "assets/generated/c7042e8319278a712a5e2641.webp", "cele": "assets/generated/c15862e7c43aa70abad5b2a4.webp", "sad": "assets/generated/e3856868b05d518957d36ca7.webp", "use": "assets/generated/3b5212b51b9d8db8bfe02ac3.webp", "sitScale": 1.3448, "portrait": "assets/generated/ed43ec75ce37ab354ac66b59.webp", "avatar": "assets/generated/7a6510f22fd450a30a4cd9c1.webp"}, {"id": "12_ADM", "src": "assets/generated/6262c7a2678f3b6c32f7fa1d.webp", "sit": "assets/generated/967f4084531827c07916e623.webp", "burn": "assets/generated/31b7b12d07ffd6c6eea5d957.webp", "chairBlue": "assets/generated/bf56c86c3c8e6a5e5c050edb.webp", "chairErgo": "assets/generated/9f048f5b929d2523cd2980cb.webp", "talk": "assets/generated/d4799cfb0c419e25cbaaadb1.webp", "cele": "assets/generated/d3ee04c2e681d208276d255b.webp", "sad": "assets/generated/41a0ee543016b501bd74ffde.webp", "use": "assets/generated/1bd4a50110888aa863d83628.webp", "sitScale": 1.3333, "portrait": "assets/generated/1e146c31c7c2d375cdbcd58e.webp", "avatar": "assets/generated/0aa5b47383cff30adb60345a.webp"}, {"id": "13_AB", "src": "assets/generated/cee1c1e7bf32a6757e8f7457.webp", "sit": "assets/generated/f7407a89351963f0318f0329.webp", "burn": "assets/generated/2769e67ecc648dcc37487260.webp", "chairBlue": "assets/generated/46d7ca3d6604efc52bfce409.webp", "chairErgo": "assets/generated/e77c154f5840b2b51f4e9687.webp", "talk": "assets/generated/3891a2b4103b5608ee98418a.webp", "cele": "assets/generated/07336a499461a765c1d9bed8.webp", "sad": "assets/generated/0487a6b271b594d118f4fddf.webp", "use": "assets/generated/8839b7c5f3b9bc34156e0035.webp", "sitScale": 1.3535, "portrait": "assets/generated/6339289988c3cb0215b99813.webp", "avatar": "assets/generated/1cac140c10e218f27268b2bb.webp"}, {"id": "14_HM", "src": "assets/generated/37c9486ea930ecb143d18b3d.webp", "sit": "assets/generated/c55c887e7a4307d9fbcd9f86.webp", "burn": "assets/generated/77ec799bf34e76ea4171c347.webp", "chairBlue": "assets/generated/2b1f1f799dff56531e2a1a33.webp", "chairErgo": "assets/generated/b5d07e1385daad20fb40f6c0.webp", "talk": "assets/generated/4bd7d4095d5603a84d4c70cf.webp", "cele": "assets/generated/3dc2ecd5576be871f8b60913.webp", "sad": "assets/generated/302295d611b7a92dbb367a99.webp", "use": "assets/generated/64a1563547d926bb330c1418.webp", "sitScale": 1.2692, "portrait": "assets/generated/cf33109d85c62dd93815972b.webp", "avatar": "assets/generated/ef4017713f43c938785479a7.webp"}, {"id": "15_CongB", "src": "assets/generated/1b3f88603fe8f73963317317.webp", "sit": "assets/generated/83c4e6021ff1905881239bd6.webp", "burn": "assets/generated/91329627a3e3d878de1f2175.webp", "chairBlue": "assets/generated/f3aea4f6968e02aae30be48d.webp", "chairErgo": "assets/generated/d91d1c623c1b7a7cbd596892.webp", "talk": "assets/generated/1085555521e75e0dc47f253e.webp", "cele": "assets/generated/a43f28640a01b354beb4bcc1.webp", "sad": "assets/generated/9454105ae01d3b994596b22d.webp", "use": "assets/generated/3411cc20ce8e5e77d073e244.webp", "sitScale": 1.3131, "portrait": "assets/generated/d68c4e91a45d589952f3d610.webp", "avatar": "assets/generated/576b632f1fe8f8112d55c884.webp"}, {"id": "16_Min", "src": "assets/generated/b5ecbb1b6d5ef08c54d37c90.webp", "sit": "assets/generated/79999fae8f85570c2d7c09c4.webp", "burn": "assets/generated/d8f13c4cb4265ce351a10332.webp", "chairBlue": "assets/generated/0e7b4790e93ab2363df431e8.webp", "chairErgo": "assets/generated/e7066500c9b08e1416a317bb.webp", "talk": "assets/generated/b4f5719e943906ae212f19af.webp", "cele": "assets/generated/847e9cb8b27829e3fe7d2da5.webp", "sad": "assets/generated/a988b7459501fb9f2b25dcd3.webp", "use": "assets/generated/a6cc422282a024bbe50956db.webp", "cam": "assets/generated/b832406fdc1911803fcbb0d2.webp", "sitScale": 0.9023, "portrait": "assets/generated/ea23550c47e7bf8650300cec.webp", "avatar": "assets/generated/ed36ce34cd1230757b7d2fa7.webp"}, {"id": "17_Liu", "src": "assets/generated/7fc6db4500822469bf4e41cd.webp", "sit": "assets/generated/ff73a5e36447ff3b691acd70.webp", "burn": "assets/generated/3fafab485b20258911fcada5.webp", "chairBlue": "assets/generated/b286818894000a6f12ed88b0.webp", "chairErgo": "assets/generated/60ff5c42e239cca3b1819166.webp", "talk": "assets/generated/98394d4551dbdc82b21d4e2d.webp", "cele": "assets/generated/6bab5124ec213af6a9e10904.webp", "sad": "assets/generated/120cd7d4dbcbaa370ed2e7bd.webp", "use": "assets/generated/6a762767690382796a49fba7.webp", "sitScale": 0.9302, "portrait": "assets/generated/12d13ad05f78d61f506d52d5.webp", "avatar": "assets/generated/db53777f0ec2af2927179c65.webp"}, {"id": "trinh_lac_corrected_v2", "src": "assets/generated/c9a0f66c49403179feba2cf4.webp", "sit": "assets/generated/984d6e8c89f507da7a591c63.webp", "burn": "assets/generated/aac8790544a9f31f046914ad.webp", "chairBlue": "assets/generated/a9eb24ea4905127e9f7073ed.webp", "chairErgo": "assets/generated/d6b37cb57cf0f74bc89b6ea1.webp", "talk": "assets/generated/98bec19e3f4040df8c116a89.webp", "cele": "assets/generated/e2bbfd6c88dc5d937d6226e9.webp", "sad": "assets/generated/dea5d53fd872dda1490e275b.webp", "use": "assets/generated/63cb893a0ba5053313c1e424.webp", "sitScale": 1.156, "portrait": "assets/generated/106969ec11b04d54caea2114.webp", "avatar": "assets/generated/ded7a7b137d9f86befe7b5e7.webp"}];   // 15 nhân vật, sheet 72×64: hàng 0 mặt trước chéo trái-xuống (SW), hàng 1 lưng chéo trái-lên (NW); hướng phải = lật gương
 const CREATOR={"scale": 50, "bases": {"m": {"char": "15_CongB", "lum": {"1": [89.5, 207.3, 219.1], "2": [25.3, 48.2, 64.5], "3": [135.5, 236.6, 255.0], "4": [21.5, 40.8, 83.2]}, "masks": {"walk": "assets/generated/a01edb83e1fa6e0b57e01bbd.webp", "sit": "assets/generated/71c18a78e4a9bd697e7a59e7.webp", "use": "assets/generated/b5c52923ac334a359bcb857b.webp", "talk": "assets/generated/15e16734e72bc349a7c56f5a.webp", "cele": "assets/generated/f6fe91b0a4266eeb71762c05.webp", "sad": "assets/generated/a388b00523749a4b334b0a67.webp", "burn": "assets/generated/7bd37c9414b40ff5bdeb3ebd.webp"}}, "f": {"char": "07_Hao_Hao", "lum": {"1": [92.8, 210.5, 222.7], "2": [23.3, 47.8, 61.1], "3": [56.5, 207.9, 242.1], "4": [66.9, 167.3, 197.5]}, "masks": {"walk": "assets/generated/7b4d7d2fa2068cfe8e3758f0.webp", "sit": "assets/generated/13e1ad27020b659a1ad6f16c.webp", "use": "assets/generated/99850a3e25ac2c62839ac674.webp", "talk": "assets/generated/bd04579abb207131fb160956.webp", "cele": "assets/generated/707f34e5f14f5fdab299963a.webp", "sad": "assets/generated/6f023c2ce63961f7cf4af8f5.webp", "burn": "assets/generated/90a11d2d0af2cd7a74513026.webp"}}, "m2": {"char": "C_short_m", "lum": {"1": [116.9, 202.2, 213.0], "2": [24.2, 50.9, 63.6], "3": [37.8, 91.8, 101.8], "4": [26.7, 77.2, 90.9]}, "masks": {"walk": "assets/generated/e9c56980968bbca3b010d914.webp", "sit": "assets/generated/36a6fe119d7f222b54ac238e.webp", "use": "assets/generated/0114fe551777f16fbe13064f.webp", "talk": "assets/generated/bfb9ad8fcb2e54722b48d3c8.webp", "cele": "assets/generated/f3d7c8941d2266c6c45c91aa.webp", "sad": "assets/generated/3775c20691f5d4612635b92f.webp"}, "sheets": {"src": "assets/generated/55116681863f6f6836c1ad99.webp", "sit": "assets/generated/009e35fd558db5eb141fda4d.webp", "use": "assets/generated/a5694013b6c4e6d40ea874b3.webp", "talk": "assets/generated/4e5f7698ecae8775f781d330.webp", "cele": "assets/generated/ae92106460e70b0ab21760e6.webp", "sad": "assets/generated/7b47e00db5fde674d4b80714.webp"}, "sitScale": 0.8923}, "f2": {"char": "C_short_f", "lum": {"1": [102.6, 205.4, 216.4], "2": [22.2, 49.2, 61.4], "3": [38.6, 95.2, 106.5], "4": [39.3, 102.0, 114.7]}, "masks": {"walk": "assets/generated/0170c19524b8aba86782b55b.webp", "sit": "assets/generated/12311dac94cf73f546c05407.webp", "use": "assets/generated/b056687cc3f777a24b242132.webp", "talk": "assets/generated/39807717b0bea64815b1af58.webp", "cele": "assets/generated/de68b6df0111e631b48f9352.webp", "sad": "assets/generated/a3269b0f3d361d11e1391f43.webp"}, "sheets": {"src": "assets/generated/563a30a11fed55fb5621a905.webp", "sit": "assets/generated/58a4bf3f3ce4676d47f795c3.webp", "use": "assets/generated/fc4663a469e462a96b4730d1.webp", "talk": "assets/generated/ad6c7990368cea44d4a58e33.webp", "cele": "assets/generated/c49433068f1ac3d58ef66e0a.webp", "sad": "assets/generated/c86e3e62e1273438c3d64688.webp"}, "sitScale": 0.9919}}};   // dáng gốc + mặt nạ vùng cho "Tự tạo nhân vật" (player.js)
 // Nhân vật tự tạo của người chơi là một nhân vật thêm "P_custom": dùng ảnh của dáng gốc, đổi màu ngay sau khi tải (player.js).
 const PLAYER_BOOT=(()=>{ try{ const o=JSON.parse((VISIT?VISIT.raw:localStorage.getItem(SAVE))||"null"), p=o&&o.gs&&o.gs.player; return p&&p.kind==="custom"&&p.look&&CREATOR.bases[p.look.base]?p:null; }catch(e){ return null; } })();
 if(PLAYER_BOOT){ const B=CREATOR.bases[PLAYER_BOOT.look.base], b=B.sheets?{id:B.char,...B.sheets,sitScale:B.sitScale}:CHARS.find(c=>c.id===B.char); if(b) CHARS.push({...b,id:"P_custom",custom:true,chairBlue:null,chairErgo:null}); }
 // Ảnh đại diện (portrait) cố định theo nhân vật gốc: không đổi theo trang phục đang mặc.
 const CHAR_PORTRAITS=Object.fromEntries(CHARS.filter(c=>!c.custom).map(c=>[c.id,c.portrait]));
-function staffAvatar(id){ const c=CHARS.find(c=>c.id===id); const src=c?.custom?c.src:CHAR_BASE_SRC[id]; return `<span class="staff-avatar" aria-hidden="true"><img src="${src}" alt=""></span>`; }
+// Ảnh đại diện (15/10/2026): dùng ảnh vẽ sẵn c.avatar nếu có; nhân vật tự tạo vẫn cắt từ sheet đã đổi màu.
+function charAvatar(id){ const c=CHARS.find(c=>c.id===id); return c&&!c.custom&&c.avatar?c.avatar:''; }
+function staffAvatar(id){ const av=charAvatar(id); if(av)return `<span class="staff-avatar av-img" aria-hidden="true"><img src="${av}" alt=""></span>`; const c=CHARS.find(c=>c.id===id); const src=c?.custom?c.src:CHAR_BASE_SRC[id]; return `<span class="staff-avatar" aria-hidden="true"><img src="${src}" alt=""></span>`; }
 const CHAR_BASE_SRC=Object.fromEntries(CHARS.map(c=>[c.id,c.src]));
 const SPR={fw:24,fh:32,rows:{front:0,back:1}};
 const IMGS=CHARS.map(c=>{ const i=bootImage(); i.src=c.src; return i; });
 const SIMGS=CHARS.map(c=>{ if(!c.sit) return null; const i=bootImage(); i.src=c.sit; return i; });
-const UIMGS=CHARS.map(c=>{ if(!c.use) return null; const i=bootImage(); i.src=c.use; return i; });   // sheet dùng đồ 48×64: hàng 0 SW, hàng 1 NW, 2 khung vươn tay   // sheet ngồi 48×64: hàng 0 mặt trước SW, hàng 1 lưng NW; 2 khung gõ phím
+const UIMGS=CHARS.map(c=>{ if(!c.use) return null; const i=bootImage(); i.src=c.use; return i; });
+const CAMIMGS=CHARS.map(c=>{ if(!c.cam) return null; const i=bootImage(); i.src=c.cam; return i; });   // 15/10: tư thế cầm máy quay (Quay phim), 2×2 khung 96×128   // sheet dùng đồ 48×64: hàng 0 SW, hàng 1 NW, 2 khung vươn tay   // sheet ngồi 48×64: hàng 0 mặt trước SW, hàng 1 lưng NW; 2 khung gõ phím
 // ô: -1 ngoài, 0 sàn, 1 tường người chơi, 2 cửa, 3 vỏ nhà, 4 cửa kính
 const G=[...Array(N)].map(()=>Array(N).fill(-1));
 for(let y=1;y<=57;y++) for(let x=1;x<=62;x++) G[y][x]=-2;   // −2: đất chưa mở; tường vỏ nhà tự dựng quanh phần đã mở (rebuildShell)
@@ -1106,10 +1122,13 @@ const SPEEDS=[0,1,2,4], GAME_MIN_PER_SEC=1;   // 1 giây thật = 1 phút game �
 const lvl=()=>UNLOCKED.size, lvlMul=()=>5*Math.pow(1.45,lvl()-1);   // mô phỏng 03/10: ×5 thay ×6
 // Năng lượng: giới hạn tiến độ mỗi ngày thật để người chơi 30 phút–3 giờ/ngày mất khoảng 3–5 tuần mở hết khu (số căn theo ước tính, xem bảng)
 const EN_MAX=120, EN_REGEN_S=90, EN_DAY_CAP=200;   // trần năng lượng được DÙNG mỗi ngày thật   // hồi 1 điểm mỗi 90 giây thật, kể cả khi tắt game
-const JOB_TPL=[ // tên, giờ công, thưởng (tr), hạn (ngày), đồ bắt buộc
+const JOB_TPL=[ // tên, giờ công, thưởng (tr), hạn (ngày), đồ bắt buộc, [cấp agency tối thiểu]
  ["Thiết kế logo",16,8,3,[]],["Bộ ấn phẩm Tết",30,15,4,[]],["Kế hoạch truyền thông",36,20,4,["whiteboard"]],["Quản lý fanpage 1 tuần",40,18,5,[]],
  ["Chụp ảnh sản phẩm",20,11,3,["softbox"]],["Quay video TikTok",24,13,3,["camera_tripod"]],["Podcast thương hiệu",28,16,4,["sound_booth"]],
- ["TVC 15 giây",80,48,6,["green_screen","camera_tripod","editing_workstation"]],["Livestream bán hàng",22,12,2,["camera_tripod","softbox"]],["Pitch khách hàng lớn",18,14,2,["meeting_table"]]];
+ ["TVC 15 giây",80,48,6,["green_screen","camera_tripod","editing_workstation"]],["Livestream bán hàng",22,12,2,["camera_tripod","softbox"]],["Pitch khách hàng lớn",18,14,2,["meeting_table"]],
+ // 15/10/2026: nhóm Video & Hậu kỳ (cần Editor / Quay phim). Giờ công, thưởng, hạn là thông số thử.
+ ["Dựng video sự kiện",26,14,3,["editing_workstation"]],["Series Reels 5 clip",34,19,4,["camera_tripod"]],
+ ["Phim giới thiệu doanh nghiệp 60s",60,34,5,["camera_tripod","editing_workstation"],2],["Video review sản phẩm",22,12,3,["camera_tripod","softbox"]]];
 const ITEM_NAME={whiteboard:"bảng trắng",softbox:"đèn softbox",camera_tripod:"máy quay",sound_booth:"phòng thu",green_screen:"phông xanh",editing_workstation:"bàn dựng phim",meeting_table:"bàn họp"};
 const WORKSEAT=new Set(["office_chair_blue","ergo_chair","dual_monitor_desk","editing_workstation"]);
 const RELIEF={premium_coffee:30,cat_house:12,aquarium:10,water_dispenser:10,pantry_counter:16,coffee_table:8,bookshelf:6,potted_plant:4,decorative_blue_mark:3,sound_booth:-2};
@@ -1509,13 +1528,13 @@ function assignSeats(){ SEATS=[]; const liftedU=typeof pend!=="undefined"&&pend&
   const free=SEATS.filter(z=>!used.has(z.key)&&!objOf(z.uid).guest).sort((p,q)=>rank(p)-rank(q));
   // Bàn riêng lưu theo ID nhân viên (GS.homeSeats): ai có bàn còn trống thì về đúng bàn đó trước.
   const homes=(typeof GS!=="undefined"&&GS.homeSeats)||{}, sid=a=>typeof CHARS!=="undefined"?CHARS[a.ci]?.id:a.ci;
-  const needs=AG.filter(a=>!(a.mascot||a.autoBreak||a.collection||a.state==="burn"||a.seat||!SIMGS[a.ci]||a.receptionUid!=null||frontDesk(a)||a.state==="leaving"||a.state==="arrive"||a.away));
+  const needs=AG.filter(a=>!(a.mascot||a.autoBreak||a.collection||a.state==="burn"||a.state==="shoot"||a.state==="toShoot"||a.seat||!SIMGS[a.ci]||a.receptionUid!=null||frontDesk(a)||a.state==="leaving"||a.state==="arrive"||a.away));
   const claimed=new Set(AG.filter(a=>!frontDesk(a)).map(a=>homes[sid(a)]).filter(u=>u!=null));
   const take=(a,z)=>{ free.splice(free.indexOf(z),1); a.seat=z; used.add(z.key); if(a.useObj){ BUSY.delete(a.useObj); a.useObj=null; } a.state="toSeat"; a.path=[]; a.wait=0; };
   for(const a of needs){ const z=free.find(z=>z.uid===homes[sid(a)]); if(z) take(a,z); }
   for(const a of needs){ if(a.seat) continue; const z=free.find(z=>!claimed.has(z.uid))||free[0]; if(!z) break; take(a,z); }
   if(typeof GS!=="undefined"){ GS.homeSeats=GS.homeSeats||{}; for(const a of AG){ const o=a.seat&&objOf(a.seat.uid); if(o&&WORKSEAT.has(o.id)) GS.homeSeats[sid(a)]=o.uid; } }
-  for(const [uid,a] of [...BUSY]) if(!OBJS.find(o=>o.uid===uid)){ BUSY.delete(uid); a.useObj=null; if(a.state==="use"||a.state==="toUse") a.state="wander"; } }
+  for(const [uid,a] of [...BUSY]) if(!OBJS.find(o=>o.uid===uid)){ BUSY.delete(uid); a.useObj=null; if(a.state==="use"||a.state==="toUse"||a.state==="shoot"||a.state==="toShoot") a.state="wander"; } }
 function rebuild(){ rebuildLock(); for(const k in WS){ const [x,y]=k.split(",").map(Number), v=at(x,y); if(v!==1&&v!==2&&v!==3) delete WS[k]; }   // kiểu của tường vỏ cũ bỏ đi khi khu đó đã mở thành sàn
   rebuildOcc(); paintFloor(); computeReach(); buildDoors(); WALLS=[]; for(let y=0;y<N;y++) for(let x=0;x<N;x++) if(isWall(G[y][x])) WALLS.push([x,y]); assignSeats(); }
 // ---------- nhân vật ----------
@@ -1701,15 +1720,28 @@ function meetingLabel(j){
 // Tổng giờ công của job không đổi; chỉ chia lại tỉ lệ giữa các bước.
 const STAGE_DEF=[{k:'brief',role:'acc',n:'Account',split:.18},{k:'plan',role:'plan',n:'Planner',split:.1},{k:'creative',role:'con',n:'Content',split:.32},{k:'prod',role:'des',n:'Design',split:.4}];
 function stageIndex(j,k){ const i=Array.isArray(j&&j.stg)?j.stg.findIndex(s=>s&&s.k===k):-1; return i<0?STAGE_DEF.findIndex(s=>s.k===k):i; }
-const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',fin:'coin'};
-const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',fin:'Kế toán'};
-// Bước Sáng tạo / Sản xuất theo loại job (tên mẫu job, bỏ dấu ⭐ VIP).
-const JOB_FLOW={'Thiết kế logo':['des','des'],'Bộ ấn phẩm Tết':['des','des'],'Kế hoạch truyền thông':['con','con'],'Quản lý fanpage 1 tuần':['con','des'],
- 'Chụp ảnh sản phẩm':['des','edit'],'Quay video TikTok':['con','edit'],'Podcast thương hiệu':['con','edit'],'TVC 15 giây':['des','edit'],
- 'Livestream bán hàng':['con','edit'],'Pitch khách hàng lớn':['con','des']};
+const ROLE_IC={acc:'brief',plan:'calendar',des:'palette',con:'pen',edit:'clapper',cam:'clapper',snd:'clapper',fin:'coin'};
+const ROLE_LABEL={acc:'Account',plan:'Planner',des:'Design',con:'Content',edit:'Editor',cam:'Quay phim',snd:'Âm thanh',fin:'Kế toán'};
+// 15/10/2026: job video/âm thanh có luồng riêng (chủ dự án chốt A+B, có bước Quay). Mỗi bước: [khóa, bộ phận, tỉ lệ giờ công, đồ phải đứng làm tại chỗ].
+// Bước 'shoot' (Quay / Thu âm) làm tại máy quay, đèn softbox hoặc phòng thu; các bước khác làm ở bàn. Tỉ lệ là thông số thử.
+const VIDEO_FLOW=(cr,at)=>[['brief','acc',.15],['plan','plan',.08],['creative',cr,.22],['shoot','cam',.2,at],['prod','edit',.35]];
+const JOB_STAGES={
+ 'Quay video TikTok':VIDEO_FLOW('con',['camera_tripod']),
+ 'Livestream bán hàng':VIDEO_FLOW('con',['camera_tripod']),
+ 'TVC 15 giây':VIDEO_FLOW('des',['camera_tripod']),
+ 'Chụp ảnh sản phẩm':VIDEO_FLOW('des',['softbox','camera_tripod']),
+ 'Series Reels 5 clip':VIDEO_FLOW('con',['camera_tripod']),
+ 'Phim giới thiệu doanh nghiệp 60s':VIDEO_FLOW('con',['camera_tripod']),
+ 'Video review sản phẩm':VIDEO_FLOW('con',['camera_tripod']),
+ 'Podcast thương hiệu':[['brief','acc',.15],['plan','plan',.08],['creative','con',.22],['shoot','snd',.2,['sound_booth']],['prod','edit',.35]],
+ 'Dựng video sự kiện':[['brief','acc',.15],['plan','plan',.1],['creative','con',.15],['prod','edit',.6]]};   // khách gửi sẵn cảnh quay
+function jobKey(j){ return String(j&&j.name||'').replace(/^⭐ /,''); }
+function stageDefs(j){ return JOB_STAGES[jobKey(j)]||STAGE_DEF.map(s=>[s.k,s.role,s.split]); }
+function stageAt(j,s){ const d=stageDefs(j).find(x=>x[0]===s.k); return d&&d[3]||null; }
+function stepName(j,i){ const s=j&&j.stg&&j.stg[i]; return s?(s.k==='shoot'?(s.role==='snd'?'Thu âm':'Quay'):s.k==='prod'&&s.role==='edit'?'Dựng':ROLE_LABEL[s.role]):''; }
 // Chuyên môn theo chức danh: spec = đúng nghề, near = gần nghề.
 const TRACK_OF={'Account':{spec:['acc'],near:['plan']},'Sale':{spec:['acc'],near:[]},'Design':{spec:['des'],near:[]},'AI Designer':{spec:['des'],near:['edit','con']},
- 'Content':{spec:['con'],near:['plan']},'Editor':{spec:['edit'],near:['des']},'Planner':{spec:['plan'],near:['des','con','acc']},'Kế toán':{spec:['fin'],near:['acc']},
+ 'Content':{spec:['con'],near:['plan']},'Editor':{spec:['edit'],near:['des','cam','snd']},'Quay phim':{spec:['cam','edit'],near:['des']},'Âm thanh':{spec:['snd'],near:['edit','cam']},'Planner':{spec:['plan'],near:['des','con','acc']},'Kế toán':{spec:['fin'],near:['acc']},
  'HR':{spec:[],near:['acc','fin']},'Trợ lý':{spec:[],near:['acc','con','fin']}};
 const MATCH_F={spec:1.35,near:1,off:.6}, MATCH_N={spec:'Đúng chuyên môn',near:'Gần chuyên môn',off:'Trái nghề'};
 const STAR_F=1.2;   // ứng viên nổi bật (HR giới thiệu) làm nhanh hơn 20% — thông số thử
@@ -1717,8 +1749,8 @@ const WORK_SPEED=12; // Đo với 3 người làm job; lễ tân và linh vật 
 function jobCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
 const PASS_GIVEUP=30, PASS_TALK=2.2;
 function roleMatch(a,role){ const t=TRACK_OF[a&&a.role]||{spec:[],near:[]}; return t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'; }
-function jobFlow(j){ return JOB_FLOW[String(j&&j.name||'').replace(/^⭐ /,'')]||['des','des']; }
-function buildStages(j){ const [cr,pr]=jobFlow(j); return STAGE_DEF.map(s=>({k:s.k,role:s.role,need:Math.round(j.need*s.split*100)/100,done:0})); }
+function buildStages(j){ return stageDefs(j).map(([k,role,split])=>({k,role,need:Math.round(j.need*split*100)/100,done:0})); }
+function stagesMatch(j){ const d=stageDefs(j); return Array.isArray(j.stg)&&j.stg.length===d.length&&j.stg.every((s,i)=>s&&s.k===d[i][0]&&s.role===d[i][1]&&Number.isFinite(s.need)&&Number.isFinite(s.done)); }
 // Bản lưu cũ chưa có bước: dựng bước và rải giờ công đã làm từ bước đầu.
 function applyOnboardingPace(j){
  if(j.onboardingPace!=null)return j;
@@ -1736,12 +1768,40 @@ function ensureStages(j){
   j.need=Math.max(2,Math.round(j.reward*.18*100)/100);j.work=j.need*progress;
   delete j.stg;delete j.who;delete j.handoff;j.passing=false;j.flowVersion=2;
  }
- if(!Array.isArray(j.stg)||j.stg.length!==STAGE_DEF.length||j.stg.some(s=>!s||!Number.isFinite(s.need)||!Number.isFinite(s.done))){
+ if(!stagesMatch(j)){
+  if(Array.isArray(j.stg)){ j.who=null; delete j.handoff; }   // bản lưu cũ: luồng của loại job đã đổi → dựng lại, rải giờ công đã làm từ bước đầu
   j.stg=buildStages(j);const sum=j.stg.slice(0,-1).reduce((n,s)=>n+s.need,0);j.stg[j.stg.length-1].need=Math.max(0,Math.round((j.need-sum)*100)/100);
   let left=Math.max(0,Math.min(j.need,j.work||0));for(const s of j.stg){const t=Math.min(s.need,left);s.done=t;left-=t;}
  }
  let c=j.stg.findIndex(s=>s.done<s.need-1e-9);j.cur=c<0?j.stg.length:c;
  return j;
+}
+// ----- 15/10: bước Quay / Thu âm làm tại máy quay, đèn softbox hoặc phòng thu (không ngồi bàn) -----
+// Không có đồ (hoặc không tới được) thì làm ở bàn như bước thường để job không bị kẹt.
+const STATION_RETRY=20;
+function here0(a){ return [Math.round(a.x),Math.round(a.y)]; }
+function stationFor(a){
+ if(!a||a.autoBreak||a.mascot||typeof OBJS==='undefined') return null; const t=agentTask(a); if(!t||!jobReady(t.j)) return null;
+ const at=stageAt(t.j,t.s); if(!at) return null;
+ const mine=a.useObj!=null&&OBJS.find(o=>o.uid===a.useObj&&at.includes(o.id)&&BUSY.get(o.uid)===a); if(mine) return mine;
+ for(const id of at){ const o=OBJS.find(o=>o.id===id&&!BUSY.has(o.uid)); if(o) return o; } return null;
+}
+function shootingAt(a){ const o=a&&a.state==='shoot'&&a.useObj!=null&&OBJS.find(b=>b.uid===a.useObj); return o&&BUSY.get(o.uid)===a?o:null; }
+function releaseStation(a){ if(a.useObj!=null&&BUSY.get(a.useObj)===a) BUSY.delete(a.useObj); a.useObj=null; if(a.state==='shoot'||a.state==='toShoot'){ a.state='wander'; a.wait=.2; a.path=[]; } }
+function nearObj(here,o){ const [w,d]=FBY[o.id].views[o.rot].fp; return ((here[0]===o.gx-1||here[0]===o.gx+w)&&here[1]>=o.gy&&here[1]<o.gy+d)||((here[1]===o.gy-1||here[1]===o.gy+d)&&here[0]>=o.gx&&here[0]<o.gx+w); }
+function stepShoot(a,dt,here){
+ if(a.state==='shoot'){ const st=stationFor(a); if(!st||st.uid!==a.useObj){ releaseStation(a); return false; } a.t+=dt; return true; }
+ if((a.shootRetry||0)>0){ a.shootRetry-=dt; if(a.state==='toShoot') releaseStation(a); return false; }
+ const st=stationFor(a); if(!st){ if(a.state==='toShoot') releaseStation(a); return false; }
+ if(a.state==='toShoot'&&a.useObj===st.uid){
+  if(nearObj(here,st)){ a.state='shoot'; a.t=0; a.dir=faceToward(a,st); return true; }
+  releaseStation(a); a.shootRetry=STATION_RETRY; return false;   // không tới được: làm ở bàn một lúc rồi thử lại
+ }
+ const sp=useSpot(st); const p=sp&&bfs(here,sp,true); if(!p){ a.shootRetry=STATION_RETRY; return false; }
+ if(a.state==='sit'&&a.acc)[a.x,a.y]=a.acc;
+ if(a.useObj!=null&&a.useObj!==st.uid&&BUSY.get(a.useObj)===a) BUSY.delete(a.useObj);
+ a.useObj=st.uid; BUSY.set(st.uid,a); a.state='toShoot'; a.react=null; a.path=p.slice(1); a.wait=0;
+ return true;
 }
 function staffById(id){ return id?AG.find(a=>CHARS[a.ci].id===id)||null:null; }
 function canTakeTask(a){ return !!a&&!a.mascot&&!a.away&&!a.autoBreak&&!a.collection&&!a.handover&&!a.pass&&a.state!=='burn'&&a.state!=='leaving'&&a.state!=='arrive'&&a.meetingJob==null&&a.receptionUid==null&&!(typeof deskBound==='function'&&deskBound(a)); }
@@ -1840,7 +1900,7 @@ function stepPass(a,dt){
 }
 function stageNews(j,from,to,remote){
  const s=j.stg&&j.stg[j.cur]; if(!s||!to) return;
- const fn=from?staffName(CHARS[from.ci].id):'Planner', tn=staffName(CHARS[to.ci].id), step=STAGE_DEF[j.cur].n;
+ const fn=from?staffName(CHARS[from.ci].id):'Planner', tn=staffName(CHARS[to.ci].id), step=stepName(j,j.cur);
  if(typeof addOfficeNews==='function') addOfficeNews('job',`${fn} chuyển «${j.name}» cho ${tn} (${ROLE_LABEL[s.role]}) · bước ${step}${remote?' qua tin nhắn':''}`);
 }
 // Lễ tân giao brief xong: Account nhận luôn bước Brief.
@@ -1850,17 +1910,17 @@ function stageIcon(k){ const src=window.UIICON&&window.UIICON[k]; return src?`<i
 function stageChips(j){ ensureStages(j);
  return `<div class="stg-row">${j.stg.map((s,i)=>{ const a=i===j.cur&&staffById(j.who), m=a?roleMatch(a,s.role):null;
   const st=i<j.cur?'done':i===j.cur?'cur':'next';
-  return `<span class="stg ${st}" title="${STAGE_DEF[i].n} · ${ROLE_LABEL[s.role]}${a?' · '+staffName(CHARS[a.ci].id)+' · '+MATCH_N[m]:''}">${stageIcon(ROLE_IC[s.role])}<b>${STAGE_DEF[i].n}</b>${st==='done'?'<i>✓</i>':st==='cur'?`<i>${Math.floor(s.done/s.need*100)}%</i>`:''}</span>`; }).join('')}</div>`;
+  return `<span class="stg ${st}" title="${stepName(j,i)} · ${ROLE_LABEL[s.role]}${a?' · '+staffName(CHARS[a.ci].id)+' · '+MATCH_N[m]:''}">${stageIcon(ROLE_IC[s.role])}<b>${stepName(j,i)}</b>${st==='done'?'<i>✓</i>':st==='cur'?`<i>${Math.floor(s.done/s.need*100)}%</i>`:''}</span>`; }).join('')}</div>`;
 }
 function stageLine(j){ ensureStages(j); const s=j.stg[j.cur]; if(!s) return 'Đã xong các bước';
- const a=staffById(j.who), step=STAGE_DEF[j.cur].n, role=ROLE_LABEL[s.role];
+ const a=staffById(j.who), step=stepName(j,j.cur), role=ROLE_LABEL[s.role];
  if(j.paused) return `Bước ${step} (${role}) · đang tạm dừng`;
  if(typeof fbPending==='function'&&fbPending(j)) return `Khách góp ý · chờ bạn chọn cách xử lý (Danh tiếng)`;
  if(briefPending(j)) return `Chờ lễ tân mang brief tới Account`;
  if(meetingPending(j)) return `Chờ họp chốt yêu cầu xong`;
  if(j.passing) return `${a?staffName(CHARS[a.ci].id):role} đang nhận hồ sơ · bước ${step}`;
  if(!a) return `Bước ${step} · chờ ${role} rảnh`;
- const m=roleMatch(a,s.role); return `Bước ${step} · ${staffName(CHARS[a.ci].id)} (${a.role||'nhân viên'}) · ${MATCH_N[m]}${m==='off'?' · làm chậm':''}${isWorking(a)?'':' · đang về bàn'}`;
+ const m=roleMatch(a,s.role); return `Bước ${step} · ${staffName(CHARS[a.ci].id)} (${a.role||'nhân viên'}) · ${MATCH_N[m]}${m==='off'?' · làm chậm':''}${isWorking(a)?'':a.state==='toShoot'?' · đang tới chỗ quay':' · đang về bàn'}`;
 }
 // ----- HR giới thiệu ứng viên nổi bật (mỗi ngày game 1 người) -----
 function starCandidate(free){
@@ -2758,6 +2818,7 @@ function stepAgents(dt){ if(dt<=0)return; for(const a of AG){
     if(d>1e-3) a.dir = Math.abs(dx)>=Math.abs(dy) ? (dx>0?"SE":"NW") : (dy>0?"SW":"NE");
     if(d<=sp){ a.x=tx; a.y=ty; a.path.shift(); } else { a.x+=dx/d*sp; a.y+=dy/d*sp; } a.t+=dt; }
   else {
+    if(typeof stepShoot==="function"&&stepShoot(a,dt,here0(a))) continue;   // 15/10: bước Quay / Thu âm làm tại máy quay, đèn, phòng thu
     if(a.state==="sit"){ a.t+=dt;if(a.meetingJob!=null)continue;if(!a.autoBreak&&isWorking(a)&&hasWorkFor(a)){a.sitT=Math.max(a.sitT,2);continue;}/* có việc thì ngồi lại bàn */a.sitT-=dt; if(a.sitT<=0){ a.state="wander"; if(a.acc){ a.x=a.acc[0]; a.y=a.acc[1]; } a.roam=1+Math.floor(Math.random()*2); a.wait=0.3; } continue; }
     const here=[Math.round(a.x),Math.round(a.y)];
     if(a.seat && a.state==="toSeat"){ const acc=accessOf(a.seat);
@@ -2810,6 +2871,9 @@ function drawAgent0(c,a){
     c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill();
     c.drawImage(IMGS[a.ci],96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore();
     drawFlame(c,sx,sy-30,a.t); return; }
+  if(a.state==="shoot"&&a.useObj&&(CAMIMGS[a.ci]||UIMGS[a.ci])){ const o=OBJS.find(b=>b.uid===a.useObj), cam=CAMIMGS[a.ci]&&o&&o.id!=="sound_booth", img=cam?CAMIMGS[a.ci]:UIMGS[a.ci];
+    const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.t*(cam?1.5:2.5))%2;
+    c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill(); c.drawImage(img,col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore(); return; }
   if(a.state==="use"&&a.useObj&&UIMGS[a.ci]){ const o=OBJS.find(b=>b.uid===a.useObj); if(o&&USE[o.id].pose==="use"){ const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.useT*2.5)%2;
     c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill(); c.drawImage(UIMGS[a.ci],col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore(); return; } }
   if(a.state==="sit"&&a.seat&&SIMGS[a.ci]){ const z=a.seat, [sx,sy]=z.sx!=null?[z.sx,z.sy+3]:iso(z.px,z.py), back=!isFront(z.face), flip=(z.face==="NE"||z.face==="SE"), col=Math.floor(a.t*3)%2;
@@ -2851,7 +2915,7 @@ function placeCheck(p){ if(!p) return {ok:false}; if(p.mode==="buy") return fChe
 // Người đang ngồi/dùng món bị nhấc lên: đứng dậy, đi ra ô trống gần nhất; sau khi đặt xong được xếp lại chỗ ngồi.
 function standUp(uids){ for(const a of AG){ let moved=false;
     if(a.seat&&uids.has(a.seat.uid)){ if(a.state==="sit"&&a.acc) [a.x,a.y]=a.acc; a.seat=null; if(a.state==="sit"||a.state==="toSeat"){ a.state="wander"; a.path=[]; } moved=true; }
-    if(a.useObj!=null&&uids.has(a.useObj)){ BUSY.delete(a.useObj); a.useObj=null; if(a.state==="use"||a.state==="toUse") a.state="wander"; a.path=[]; moved=true; }
+    if(a.useObj!=null&&uids.has(a.useObj)){ BUSY.delete(a.useObj); a.useObj=null; if(a.state==="use"||a.state==="toUse"||a.state==="shoot"||a.state==="toShoot") a.state="wander"; a.path=[]; moved=true; }
     if(moved) a.wait=0.4; } }
 function unstick(){ for(const a of [...AG,...VIS]){ if(a.away||a.gone) continue; const x0=Math.round(a.x), y0=Math.round(a.y); if(!blocked(x0,y0)||y0>ENTRY[1]) continue;
     for(let r=1;r<8;r++){ let done=false; for(let dy=-r;dy<=r&&!done;dy++) for(let dx=-r;dx<=r;dx++){ if(Math.max(Math.abs(dx),Math.abs(dy))!==r||blocked(x0+dx,y0+dy)) continue; a.x=x0+dx; a.y=y0+dy; a.path=[]; done=true; break; } if(done) break; } } }
@@ -3167,7 +3231,8 @@ for(const a of AG){ if(a.stress==null) a.stress=10+Math.random()*25; }
 const hasItem=id=>OBJS.some(o=>o.id===id);
 function mkOffer(){
  const small=Math.random()<.7;
- const pool=small?JOB_TPL.filter(t=>!t[4].length):JOB_TPL;
+ const lv=typeof lvl==='function'?lvl():1, open=JOB_TPL.filter(t=>!(t[5]>lv));   // job lớn mở theo cấp agency
+ const pool=small?open.filter(t=>!t[4].length):open;
  const t=pool[Math.floor(Math.random()*pool.length)],k=.85+Math.random()*.3;
  const base=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
  const reward=Math.round(base*(typeof perkVal==='function'?perkVal('offer'):1)*10)/10;   // nhân vật chính gốc Sale: khách trả cao hơn, khối lượng việc theo giá gốc
@@ -3256,7 +3321,7 @@ function prioritizeJob(id){
   const [job]=GS.jobs.splice(index,1);GS.jobs.unshift(job);
   renderJobs();save();toast(`Ưu tiên: ${job.name}`,"ok");
 }
-function isWorking(a){ if(a.state!=="sit"||!a.seat) return false; const o=OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
+function isWorking(a){ if(a.state==="shoot") return typeof shootingAt==="function"&&!!shootingAt(a); if(a.state!=="sit"||!a.seat) return false; const o=OBJS.find(b=>b.uid===a.seat.uid); return !!o&&WORKSEAT.has(o.id); }
 function seatKind(a){ if(a.state!=="sit"||!a.seat) return null; const o=OBJS.find(b=>b.uid===a.seat.uid); return o?o.id:null; }
 let gameAcc=0;
 const GEM_SHOP=[ // dùng ngay được trong bản thử
@@ -3498,6 +3563,7 @@ function frame(){ clampCam(); renderGround(); g.setTransform(1,0,0,1,0,0); g.cle
   for(const uid of SEAT_COMPOSITES.keys())if(!OBJS.some(o=>o.uid===uid))SEAT_COMPOSITES.delete(uid);
   for(const P of PLOTS){ const [id,,x0,y0,x1,y1]=P; if(UNLOCKED.has(id)) continue; const [cx,cy]=iso((x0+x1+1)/2,(y0+y1+1)/2); drawLock(g,cx,cy-10,canUnlock(P)); }
   for(const a of AG) if(a.state==="use"&&a.useObj){ const o=OBJS.find(b=>b.uid===a.useObj); if(!o) continue; const U=USE[o.id]; if(U.fx) drawFx(g,o,U.fx,a.useT,a.useT/U.t); drawBubble(g,a,U.icon); }
+  for(const a of AG) if(a.state==="shoot"&&a.useObj){ const o=OBJS.find(b=>b.uid===a.useObj), U=o&&USE[o.id]; if(U&&U.fx) drawFx(g,o,U.fx,a.t%U.t,(a.t%U.t)/U.t); }   // đèn ghi hình nhấp nháy khi đang quay
   if(!closingOffice) for(const a of AG) if(!a.emo&&!(a.state==="use"&&a.useObj)) drawProgressRing(g,a);   // vòng tiến trình; nhường chỗ cho biểu tượng cảm xúc và bong bóng đang dùng đồ
   drawStaffSpeech(g);
   for(const a of AG) if(a.emo&&!a.away){ g.imageSmoothingEnabled=true; drawAgentEmo(g,a); g.imageSmoothingEnabled=false; } }   // biểu tượng giao việc vẽ trên cùng (người đang ngồi được vẽ cùng ghế)
@@ -3733,7 +3799,7 @@ function openSupportDrink(kind,value,tier){
 const ICMAP={brick:"brick",hammer:"hammer",chair:"chair"};
 document.querySelectorAll("[data-ic]").forEach(e=>{ const n=e.dataset.ic, sz=+e.dataset.s||24, src=window.UIICON&&window.UIICON[n];
   e.innerHTML = src ? `<img src="${src}" alt="" width="${sz}" height="${sz}" style="object-fit:contain">` : picon(n,sz); });
-document.getElementById("coImg").src=CHARS.find(c=>c.id==="01_Huy").src;
+{ const h=CHARS.find(c=>c.id==="01_Huy"); const im=document.getElementById("coImg"); im.src=h.avatar||h.src; im.closest(".av").classList.toggle("av-img",!!h.avatar); }
 const $id=x=>document.getElementById(x);
 async function toggleFullscreen(){
  try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}
@@ -3898,8 +3964,8 @@ const DEFAULT_FOUNDER='01_Huy';
 let FOUNDER_ID=DEFAULT_FOUNDER;   // nhân vật của người chơi: mặc định Huy, đổi ở màn mở đầu (player.js)
 // Tên nhân vật cố định theo bản deploy v4 (V1); Huy, Luwon, Pali, Tamny theo danh sách cập nhật sau đó.
 // 07/10/2026: thử đổi sang tên chung (V11–V12) rồi trả lại tên cũ theo yêu cầu (V13).
-const STAFF_NAME={'01_Huy':'Huy','02_Luwon':'Luwon','03_Pali':'Pali','04_Tamny':'Tamny','06_Vu_a_Vu':'Vũ à Vũ','07_Hao_Hao':'Hảo Hảo','08_Nganh':'Ngánh','09_Vit_Vang':'Vịt Vàng','10_Con_LT':'Con LT','11_Juice':'Juice','12_ADM':'ADM','13_AB':'AB','14_HM':'HM','15_CongB':'CongB','trinh_lac_corrected_v2':'Trinh và Lạc'};
-const STAFF_ROLE={'01_Huy':'Design','02_Luwon':'Design','03_Pali':'Account','04_Tamny':'Kế toán','06_Vu_a_Vu':'Sale','07_Hao_Hao':'HR','08_Nganh':'Trợ lý','09_Vit_Vang':'Linh vật','10_Con_LT':'Account','11_Juice':'Design','12_ADM':'Planner','13_AB':'Content','14_HM':'AI Designer','15_CongB':'Editor','trinh_lac_corrected_v2':'Account'};
+const STAFF_NAME={'01_Huy':'Huy','02_Luwon':'Luwon','03_Pali':'Pali','04_Tamny':'Tamny','06_Vu_a_Vu':'Vũ à Vũ','07_Hao_Hao':'Hảo Hảo','08_Nganh':'Ngánh','09_Vit_Vang':'Vịt Vàng','10_Con_LT':'Con LT','11_Juice':'Juice','12_ADM':'ADM','13_AB':'AB','14_HM':'HM','15_CongB':'CongB','16_Min':'Min','17_Liu':'Liu','trinh_lac_corrected_v2':'Trinh và Lạc'};
+const STAFF_ROLE={'01_Huy':'Design','02_Luwon':'Design','03_Pali':'Account','04_Tamny':'Kế toán','06_Vu_a_Vu':'Sale','07_Hao_Hao':'HR','08_Nganh':'Trợ lý','09_Vit_Vang':'Linh vật','10_Con_LT':'Account','11_Juice':'Design','12_ADM':'Planner','13_AB':'Content','14_HM':'AI Designer','15_CongB':'Editor','16_Min':'Quay phim','17_Liu':'Âm thanh','trinh_lac_corrected_v2':'Account'};
 const MASCOT_ID='09_Vit_Vang', MASCOT_RADIUS=3, MASCOT_RELIEF=6;   // linh vật: không làm job; giảm 6 stress/giờ game cho người trong bán kính 3 ô (thông số thử)
 let pendingDismiss=null;
 // Thế mạnh của nhân vật chính theo nghề gốc (14/10/2026). Nhân vật chính luôn đứng quầy lễ tân; nghề gốc chỉ cho thêm lợi thế.
@@ -3912,7 +3978,9 @@ const FOUNDER_PERK={
  'Trợ lý':{t:'Khách chịu chờ lâu hơn 25% trước khi bỏ về',patience:1.25},
  'Design':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ)',help:'des'},
  'AI Designer':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ)',help:'des'},
- 'Editor':{t:'Quầy vắng khách thì phụ bước Design (nửa tốc độ, gần chuyên môn)',help:'des'},
+ 'Editor':{t:'Quầy vắng khách thì phụ bước Dựng (nửa tốc độ)',help:'edit'},
+ 'Quay phim':{t:'Quầy vắng khách thì phụ bước Dựng (nửa tốc độ)',help:'edit'},
+ 'Âm thanh':{t:'Quầy vắng khách thì phụ bước Thu âm (nửa tốc độ)',help:'snd'},
  'Content':{t:'Quầy vắng khách thì phụ bước Content (nửa tốc độ)',help:'con'},
  'Planner':{t:'Quầy vắng khách thì phụ bước Chia việc (nửa tốc độ)',help:'plan'}};
 const FOUNDER_HELP=.5;
@@ -4018,7 +4086,7 @@ function restStaff(a){
 function restCooldown(a){return Math.max(0,Math.ceil((GS.staffRestUntil?.[CHARS[a.ci].id]||0)-(GS.day*1440+GS.min)));}
 
 // Trial daily rates in million coin. Featured staff earn a 20% premium.
-const SALARY_RATE={'Account':2,'Design':2.5,'Content':2,'Planner':3,'AI Designer':3.5,'Editor':3,'Kế toán':2,'Sale':2,'HR':2,'Trợ lý':1.5};
+const SALARY_RATE={'Account':2,'Design':2.5,'Content':2,'Planner':3,'AI Designer':3.5,'Editor':3,'Quay phim':3,'Âm thanh':2.5,'Kế toán':2,'Sale':2,'HR':2,'Trợ lý':1.5};
 function salaryRate(id,featured=!!GS.stars?.[id]){return id===FOUNDER_ID||id===MASCOT_ID||(typeof isBorrowed==='function'&&isBorrowed(id))?0:Math.round((SALARY_RATE[roleOf(id)]||2)*(featured?1.2:1)*100)/100;}
 // Người mượn của bạn bè: tên agency do người chơi khác đặt nên thoát HTML.
 function salaryLabel(id){const lent=typeof borrowedInfo==='function'&&borrowedInfo(id);if(lent)return `Mượn từ ${String(lent.agency).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')} · về cuối ngày`;return salaryRate(id)?`${GS.stars?.[id]?'★ · ':''}${fmt(salaryRate(id))}/ngày`:'Miễn lương';}
@@ -4199,7 +4267,8 @@ async function applyCustomLook(){
 }
 function updatePlayerAvatar(){
  const ch=CHARS.find(c=>c.id===FOUNDER_ID),img=document.getElementById("coImg"),av=document.querySelector("#co .av"),nm=document.querySelector("#co .nm");
- if(ch&&img)img.src=ch.custom?ch.src:(typeof CHAR_BASE_SRC!=="undefined"&&CHAR_BASE_SRC[ch.id])||ch.src;   // portrait cố định; nhân vật tự tạo dùng ảnh đã đổi màu
+ const avs=ch&&typeof charAvatar==="function"?charAvatar(ch.id):"";   // 15/10: ảnh đại diện vẽ sẵn; nhân vật tự tạo dùng ảnh đã đổi màu
+ if(ch&&img){img.src=avs||(ch.custom?ch.src:(typeof CHAR_BASE_SRC!=="undefined"&&CHAR_BASE_SRC[ch.id])||ch.src);if(av)av.classList.toggle("av-img",!!avs);}
  if(nm){nm.textContent=agencyName();nm.title=agencyName();}
  if(av){const t=`Agency của bạn: ${agencyName()} · bấm để đổi tên agency`;av.title=t;av.setAttribute("aria-label",t);}
  const day=document.querySelector("#dayTransition .day-copy > span");if(day)day.textContent=agencyName().toUpperCase();
@@ -4220,7 +4289,7 @@ function openPlayerCard(){
   <label class="pc-lab">Tên agency<input id="pcName" maxlength="${AGENCY_NAME_MAX}" autocomplete="off"></label>
   <small class="pc-note">Nhân vật của bạn đứng ở quầy lễ tân, nhận khách và mang job tới giao cho Account. Tên các nhân sự khác giữ nguyên.</small>
   <div class="pc-act"><button class="btn c" id="pcNo">Hủy</button><button class="btn g" id="pcOk">Lưu tên</button></div>`;
- if(ch)box.querySelector(".pc-face").style.backgroundImage=`url("${ch.src}")`;
+ if(ch){const f=box.querySelector(".pc-face"),a=typeof charAvatar==="function"?charAvatar(ch.id):"";f.style.backgroundImage=`url("${a||ch.src}")`;f.classList.toggle("av-img",!!a);}
  box.querySelector(".pc-name").textContent=agencyName();
  box.querySelector(".pc-who").textContent=staffName(FOUNDER_ID);
  const inp=box.querySelector("#pcName");inp.value=GS.agencyName||"";inp.placeholder="Ví dụ: Sao Mai Agency";
@@ -4337,8 +4406,8 @@ function openIntro(fresh){
 // Đội khởi đầu: nhân vật của bạn (lễ tân) + 2 đồng hành bắt buộc gồm 1 Account (nhận job lễ tân giao) và 1 nhân sự sản xuất, + Vịt Vàng.
 const COMPANION_SLOTS=[
  {key:"account",label:"Account",roles:["Account"],why:"nhận job từ lễ tân, theo khách"},
- {key:"maker",label:"nhân sự sản xuất",roles:["Design","AI Designer","Content","Editor"],why:"làm ra sản phẩm"}];
-const ROLE_ORDER=["Account","Design","AI Designer","Content","Editor"];
+ {key:"maker",label:"nhân sự sản xuất",roles:["Design","AI Designer","Content","Editor","Quay phim"],why:"làm ra sản phẩm"}];
+const ROLE_ORDER=["Account","Design","AI Designer","Content","Editor","Quay phim","Âm thanh"];
 function slotText(s){return s.roles.length===1&&s.roles[0]===s.label?s.label:`${s.label} (${s.roles.join(", ")})`;}
 function companionSlot(id){return COMPANION_SLOTS.find(s=>s.roles.includes(STAFF_ROLE[id]))||null;}
 function companionPool(playerId){
@@ -4396,6 +4465,8 @@ function guidePages(){
    tip:"Khách tới khi bạn đang đi giao việc sẽ đứng chờ ở quầy."},
   {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua Account → Planner → Content → Design; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
    items:["<b>Brief</b> (Account) → <b>Chia việc</b> (Planner – Đốc Giám) → <b>Sáng tạo</b> (Content) → <b>Sản xuất</b> (Design). Chưa có Planner thì Account hoặc Content chia việc thay, chậm hơn.",
+    "<b>Job video</b> (TikTok, Reels, TVC, Livestream, review, phim doanh nghiệp, chụp ảnh): thêm bước <b>Quay</b> tại máy quay (hoặc đèn softbox) và bước cuối là <b>Dựng</b> (Editor). <b>Podcast</b>: bước <b>Thu âm</b> tại phòng thu (Âm thanh). <b>Dựng video sự kiện</b>: khách gửi sẵn cảnh quay, Editor làm phần lớn.",
+    "<b>Quay phim</b> (Min) vừa quay vừa dựng đúng nghề; <b>Âm thanh</b> (Liu) thu âm; <b>Editor</b> dựng, quay/thu âm ở mức gần nghề. Không có máy quay hay phòng thu thì bước đó làm ở bàn.",
     "Đúng chuyên môn làm nhanh ×1,35; gần chuyên môn ×1; trái nghề ×0,6. Thiếu bộ phận thì người khác làm thay. Vòng trên đầu nhân vật: icon bộ phận + tiến độ bước.",
     `Làm tối đa <b>${jobCapacity()} job</b> cùng lúc; tuyển thêm người làm job sẽ tăng số chỗ nhận việc. Trong <b>Công việc → Đang làm</b>: <b>Ưu tiên làm trước</b>, <b>Phân công nhân sự</b>, <b>Xếp theo hạn giao</b>.`,
     `Job từ <b>60 giờ công</b> hoặc cần bàn họp: khách và 1 nhân viên họp <b>${h(MEETING_MINUTES)}</b> ở bàn họp rồi mới làm.`,
@@ -5235,7 +5306,7 @@ function olRenderAccount(){
 function olNeedLogin(el){el.innerHTML=`<p class="hub-note">${OL.be?'Đăng nhập để kết bạn, tham quan văn phòng của bạn bè và tặng quà.':'Bản này chưa kết nối máy chủ. Vào Cài đặt → Tài khoản để bật máy chủ thử.'}</p>${OL.be?'<button class="btn g" data-ol-login>Đăng nhập</button>':'<button class="btn b" data-ol-set>Mở Cài đặt</button>'}`;
  el.querySelector('[data-ol-login]')?.addEventListener('click',openLogin);el.querySelector('[data-ol-set]')?.addEventListener('click',()=>openHub('settings'));}
 function olFriendRow(p,acts){return `<div class="ol-row"><span class="ol-av">${olAvatar(p)}</span><span class="ol-who"><b>${olEsc(p.agency)}</b><small>LV ${p.level||1} · ❤ ${p.likes||0}${p.code?' · '+olEsc(p.code):''}</small></span><span class="ol-act">${acts}</span></div>`;}
-function olAvatar(p){const id=p&&p.look&&p.look.player,c=CHARS.find(c=>c.id===id&&!c.custom);return c?`<i style="background-image:url('${CHAR_BASE_SRC[c.id]||c.src}')"></i>`:UIIMG('people',28);}
+function olAvatar(p){const id=p&&p.look&&p.look.player,c=CHARS.find(c=>c.id===id&&!c.custom);return c?(c.avatar?`<i class="av-img" style="background-image:url('${c.avatar}')"></i>`:`<i style="background-image:url('${CHAR_BASE_SRC[c.id]||c.src}')"></i>`):UIIMG('people',28);}
 function renderFriends(){
  const el=document.getElementById('friendsBody');if(!el)return;
  if(!OL.user)return olNeedLogin(el);

@@ -20,7 +20,7 @@ function guidePages(){
   {id:"work",icon:"clock",title:"Làm job",lead:"Mỗi job đi qua Account → Planner → Content → Design; xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế.",
    items:["<b>Brief</b> (Account) → <b>Chia việc</b> (Planner – Đốc Giám) → <b>Sáng tạo</b> (Content) → <b>Sản xuất</b> (Design). Chưa có Planner thì Account hoặc Content chia việc thay, chậm hơn.",
     "<b>Job video</b> (TikTok, Reels, TVC, Livestream, review, phim doanh nghiệp, chụp ảnh): thêm bước <b>Quay</b> tại máy quay (hoặc đèn softbox) và bước cuối là <b>Dựng</b> (Editor). <b>Podcast</b>: bước <b>Thu âm</b> tại phòng thu (Âm thanh). <b>Dựng video sự kiện</b>: khách gửi sẵn cảnh quay, Editor làm phần lớn.",
-    "<b>Quay phim</b> (Khoa) vừa quay vừa dựng đúng nghề; <b>Âm thanh</b> (Linh) thu âm; <b>Editor</b> dựng, quay/thu âm ở mức gần nghề. Không có máy quay hay phòng thu thì bước đó làm ở bàn.",
+    "<b>Quay phim</b> (Min) vừa quay vừa dựng đúng nghề; <b>Âm thanh</b> (Liu) thu âm; <b>Editor</b> dựng, quay/thu âm ở mức gần nghề. Không có máy quay hay phòng thu thì bước đó làm ở bàn.",
     "Đúng chuyên môn làm nhanh ×1,35; gần chuyên môn ×1; trái nghề ×0,6. Thiếu bộ phận thì người khác làm thay. Vòng trên đầu nhân vật: icon bộ phận + tiến độ bước.",
     `Làm tối đa <b>${jobCapacity()} job</b> cùng lúc; tuyển thêm người làm job sẽ tăng số chỗ nhận việc. Trong <b>Công việc → Đang làm</b>: <b>Ưu tiên làm trước</b>, <b>Phân công nhân sự</b>, <b>Xếp theo hạn giao</b>.`,
     `Job từ <b>60 giờ công</b> hoặc cần bàn họp: khách và 1 nhân viên họp <b>${h(MEETING_MINUTES)}</b> ở bàn họp rồi mới làm.`,

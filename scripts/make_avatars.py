@@ -3,7 +3,7 @@
 Nguồn: assets/characters/<id>/ref_hires.png (512×768, nền sáng hoặc nền trong).
   06–15: bộ hồ sơ nhân vật NV01–NV10 v2 chủ dự án gửi 15/10.
   01–04, trinh_lac, 16_Min, 17_Liu: vẽ bổ sung bằng Higgsfield theo cùng phong cách.
-Ra: assets/characters/<id>/avatar_128.png (128×128, nền trong).
+Ra: assets/characters/<id>/avatar.png (96×96, nền trong).
 Chạy: python3 -I scripts/make_avatars.py
 """
 from pathlib import Path
@@ -24,7 +24,7 @@ def foreground(im):
     return d > 36
 
 
-def avatar(src, out, size=128):
+def avatar(src, out, size=96):
     im = Image.open(src).convert('RGBA')
     fg = foreground(im)
     ys, xs = np.where(fg)
@@ -45,5 +45,5 @@ if __name__ == '__main__':
     for d in sorted(CH.iterdir()):
         src = d / 'ref_hires.png'
         if src.exists():
-            avatar(src, d / 'avatar_128.png')
+            avatar(src, d / 'avatar.png')
             print(d.name, 'ok')

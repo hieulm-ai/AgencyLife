@@ -403,7 +403,7 @@ function olRenderAccount(){
 function olNeedLogin(el){el.innerHTML=`<p class="hub-note">${OL.be?'Đăng nhập để kết bạn, tham quan văn phòng của bạn bè và tặng quà.':'Bản này chưa kết nối máy chủ. Vào Cài đặt → Tài khoản để bật máy chủ thử.'}</p>${OL.be?'<button class="btn g" data-ol-login>Đăng nhập</button>':'<button class="btn b" data-ol-set>Mở Cài đặt</button>'}`;
  el.querySelector('[data-ol-login]')?.addEventListener('click',openLogin);el.querySelector('[data-ol-set]')?.addEventListener('click',()=>openHub('settings'));}
 function olFriendRow(p,acts){return `<div class="ol-row"><span class="ol-av">${olAvatar(p)}</span><span class="ol-who"><b>${olEsc(p.agency)}</b><small>LV ${p.level||1} · ❤ ${p.likes||0}${p.code?' · '+olEsc(p.code):''}</small></span><span class="ol-act">${acts}</span></div>`;}
-function olAvatar(p){const id=p&&p.look&&p.look.player,c=CHARS.find(c=>c.id===id&&!c.custom);return c?`<i style="background-image:url('${CHAR_BASE_SRC[c.id]||c.src}')"></i>`:UIIMG('people',28);}
+function olAvatar(p){const id=p&&p.look&&p.look.player,c=CHARS.find(c=>c.id===id&&!c.custom);return c?(c.avatar?`<i class="av-img" style="background-image:url('${c.avatar}')"></i>`:`<i style="background-image:url('${CHAR_BASE_SRC[c.id]||c.src}')"></i>`):UIIMG('people',28);}
 function renderFriends(){
  const el=document.getElementById('friendsBody');if(!el)return;
  if(!OL.user)return olNeedLogin(el);

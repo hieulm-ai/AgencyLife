@@ -85,7 +85,8 @@ async function applyCustomLook(){
 }
 function updatePlayerAvatar(){
  const ch=CHARS.find(c=>c.id===FOUNDER_ID),img=document.getElementById("coImg"),av=document.querySelector("#co .av"),nm=document.querySelector("#co .nm");
- if(ch&&img)img.src=ch.custom?ch.src:(typeof CHAR_BASE_SRC!=="undefined"&&CHAR_BASE_SRC[ch.id])||ch.src;   // portrait cố định; nhân vật tự tạo dùng ảnh đã đổi màu
+ const avs=ch&&typeof charAvatar==="function"?charAvatar(ch.id):"";   // 15/10: ảnh đại diện vẽ sẵn; nhân vật tự tạo dùng ảnh đã đổi màu
+ if(ch&&img){img.src=avs||(ch.custom?ch.src:(typeof CHAR_BASE_SRC!=="undefined"&&CHAR_BASE_SRC[ch.id])||ch.src);if(av)av.classList.toggle("av-img",!!avs);}
  if(nm){nm.textContent=agencyName();nm.title=agencyName();}
  if(av){const t=`Agency của bạn: ${agencyName()} · bấm để đổi tên agency`;av.title=t;av.setAttribute("aria-label",t);}
  const day=document.querySelector("#dayTransition .day-copy > span");if(day)day.textContent=agencyName().toUpperCase();
@@ -106,7 +107,7 @@ function openPlayerCard(){
   <label class="pc-lab">Tên agency<input id="pcName" maxlength="${AGENCY_NAME_MAX}" autocomplete="off"></label>
   <small class="pc-note">Nhân vật của bạn đứng ở quầy lễ tân, nhận khách và mang job tới giao cho Account. Tên các nhân sự khác giữ nguyên.</small>
   <div class="pc-act"><button class="btn c" id="pcNo">Hủy</button><button class="btn g" id="pcOk">Lưu tên</button></div>`;
- if(ch)box.querySelector(".pc-face").style.backgroundImage=`url("${ch.src}")`;
+ if(ch){const f=box.querySelector(".pc-face"),a=typeof charAvatar==="function"?charAvatar(ch.id):"";f.style.backgroundImage=`url("${a||ch.src}")`;f.classList.toggle("av-img",!!a);}
  box.querySelector(".pc-name").textContent=agencyName();
  box.querySelector(".pc-who").textContent=staffName(FOUNDER_ID);
  const inp=box.querySelector("#pcName");inp.value=GS.agencyName||"";inp.placeholder="Ví dụ: Sao Mai Agency";

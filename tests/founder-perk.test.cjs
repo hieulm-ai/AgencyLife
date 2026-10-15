@@ -9,7 +9,7 @@ test('mỗi nghề gốc có đúng một thế mạnh; nhân vật tự tạo v
  assert.equal(staffCtx('04_Tamny').perkVal('collect'),.67);
  const hr=staffCtx('07_Hao_Hao');assert.equal(hr.perkVal('stress'),.85);assert.equal(hr.hireCost(),17);
  assert.equal(staffCtx('08_Nganh').perkVal('patience'),1.25);
- for(const [id,role] of [['01_Huy','des'],['14_HM','des'],['15_CongB','edit'],['16_Khoa','edit'],['17_Linh','snd'],['13_AB','con'],['12_ADM','plan']])assert.equal(staffCtx(id).founderPerk().help,role,id);
+ for(const [id,role] of [['01_Huy','des'],['14_HM','des'],['15_CongB','edit'],['16_Min','edit'],['17_Liu','snd'],['13_AB','con'],['12_ADM','plan']])assert.equal(staffCtx(id).founderPerk().help,role,id);
  for(const c of [staffCtx('P_custom'),staffCtx(null)]){assert.equal(c.founderPerk(),null);assert.equal(c.perkVal('offer'),1);assert.equal(c.hireCost(),20);}
  const sale=staffCtx('06_Vu_a_Vu');assert.equal(sale.perkVal('stress'),1,'thế mạnh khác nghề không áp dụng');
 });

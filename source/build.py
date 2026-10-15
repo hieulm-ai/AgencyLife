@@ -147,6 +147,8 @@ for c in sorted(B['characters']):
     if os.path.exists(q): e['cam']=webp(q)
     e['sitScale']=sitting_scale(ASSETS/'characters'/c)
     e['portrait']=webp(ASSETS/'characters'/c/'portrait_48x64.png')
+    q=f'{ASSETS}/characters/{c}/avatar.png'   # 15/10/2026: ảnh đại diện vẽ tay 96×96 (đầu + vai)
+    if os.path.exists(q): e['avatar']=webp(q, lossless=False)
     CH.append(e)
 # Màn "Tự tạo nhân vật": mặt nạ vùng (da/tóc/áo/quần) của các dáng gốc, tạo bằng scripts/creator_masks.py.
 _cl=json.loads((ASSETS/'creator/layout.json').read_text())

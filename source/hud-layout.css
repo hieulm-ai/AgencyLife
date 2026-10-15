@@ -611,3 +611,16 @@ body.hub-open #earlyPlay{right:calc(min(400px,100vw - 28px) + 28px)}
  body.hub-open #earlyPlay{left:calc(max(4px,env(safe-area-inset-left)) + 66px)!important;right:auto!important;width:auto!important;padding:5px 10px!important}
  .ol-rankby .btn{font-size:11px!important;padding:2px!important}
 }
+/* 15/10: bảng nổi không chồng lên nhau — đang mở hộp thoại (vắng mặt, xác nhận, bạn bè, thẻ nhân viên) thì ẩn thẻ việc đầu game */
+body:has(#unlockBox.open) #earlyPlay,body:has(#askBox:not([hidden])) #earlyPlay,body:has(#olBox:not([hidden])) #earlyPlay,body:has(#agentCard.open) #earlyPlay,body:has(#guide:not([hidden])) #earlyPlay,body:has(#intro:not([hidden])) #earlyPlay{display:none!important}
+@media(max-height:500px) and (orientation:landscape){
+ #unlockBox{left:calc(50% + 31px)!important;max-height:calc(100dvh - 60px);overflow:auto;padding:10px!important;gap:6px!important}
+ #unlockBox .ph{font-size:15px}#unlockBox .row{font-size:13px;padding:6px 10px}
+ #earlyPlay{max-height:calc(100dvh - 60px);overflow:auto}
+}
+/* 15/10/2026: ảnh đại diện vẽ sẵn (đầu + vai, vuông) — thay cách cắt khung đứng từ sheet đi bộ */
+.staff-avatar.av-img img{position:static;width:100%;height:100%;left:auto;object-fit:cover;image-rendering:auto}
+.skin-card>.staff-avatar.av-img img{width:100%;height:100%}
+#co .av.av-img img{position:absolute;inset:0;width:100%!important;height:100%!important;left:0!important;top:0!important;margin:0;object-fit:cover;image-rendering:auto}
+#playerCard .pc-face.av-img{width:56px;height:56px;border-radius:12px;background-size:cover;background-position:center;background-color:#f6f2ec}
+.ol-av i.av-img{background-size:cover;background-position:center}

@@ -283,7 +283,9 @@ const PLAYER_BOOT=(()=>{ try{ const o=JSON.parse((VISIT?VISIT.raw:localStorage.g
 if(PLAYER_BOOT){ const B=CREATOR.bases[PLAYER_BOOT.look.base], b=B.sheets?{id:B.char,...B.sheets,sitScale:B.sitScale}:CHARS.find(c=>c.id===B.char); if(b) CHARS.push({...b,id:"P_custom",custom:true,chairBlue:null,chairErgo:null}); }
 // Ảnh đại diện (portrait) cố định theo nhân vật gốc: không đổi theo trang phục đang mặc.
 const CHAR_PORTRAITS=Object.fromEntries(CHARS.filter(c=>!c.custom).map(c=>[c.id,c.portrait]));
-function staffAvatar(id){ const c=CHARS.find(c=>c.id===id); const src=c?.custom?c.src:CHAR_BASE_SRC[id]; return `<span class="staff-avatar" aria-hidden="true"><img src="${src}" alt=""></span>`; }
+// Ảnh đại diện (15/10/2026): dùng ảnh vẽ sẵn c.avatar nếu có; nhân vật tự tạo vẫn cắt từ sheet đã đổi màu.
+function charAvatar(id){ const c=CHARS.find(c=>c.id===id); return c&&!c.custom&&c.avatar?c.avatar:''; }
+function staffAvatar(id){ const av=charAvatar(id); if(av)return `<span class="staff-avatar av-img" aria-hidden="true"><img src="${av}" alt=""></span>`; const c=CHARS.find(c=>c.id===id); const src=c?.custom?c.src:CHAR_BASE_SRC[id]; return `<span class="staff-avatar" aria-hidden="true"><img src="${src}" alt=""></span>`; }
 const CHAR_BASE_SRC=Object.fromEntries(CHARS.map(c=>[c.id,c.src]));
 const SPR={fw:24,fh:32,rows:{front:0,back:1}};
 const IMGS=CHARS.map(c=>{ const i=bootImage(); i.src=c.src; return i; });
@@ -1683,7 +1685,7 @@ __HUD_LAYOUT__
 const ICMAP={brick:"brick",hammer:"hammer",chair:"chair"};
 document.querySelectorAll("[data-ic]").forEach(e=>{ const n=e.dataset.ic, sz=+e.dataset.s||24, src=window.UIICON&&window.UIICON[n];
   e.innerHTML = src ? `<img src="${src}" alt="" width="${sz}" height="${sz}" style="object-fit:contain">` : picon(n,sz); });
-document.getElementById("coImg").src=CHARS.find(c=>c.id==="01_Huy").src;
+{ const h=CHARS.find(c=>c.id==="01_Huy"); const im=document.getElementById("coImg"); im.src=h.avatar||h.src; im.closest(".av").classList.toggle("av-img",!!h.avatar); }
 const $id=x=>document.getElementById(x);
 async function toggleFullscreen(){
  try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}

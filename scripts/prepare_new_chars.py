@@ -1,4 +1,4 @@
-"""Thêm 2 nhân vật mới (15/10/2026): 16_Khoa (Quay phim) và 17_Linh (Âm thanh).
+"""Thêm 2 nhân vật mới (15/10/2026): 16_Min (Quay phim) và 17_Liu (Âm thanh).
 
 Nguồn: Higgsfield gpt_image_2_5 (high, 2k, nền trong), đã thu nhỏ 1/2, nằm ở assets/characters/<id>/src/:
   <tên>_walk_raw.png        3×2  đi bộ trước/sau
@@ -6,7 +6,7 @@ Nguồn: Higgsfield gpt_image_2_5 (high, 2k, nền trong), đã thu nhỏ 1/2, n
   <tên>_burn_raw.png        2×2  bốc hỏa trước/sau
   <tên>_chair_blue_raw.png  2×2  ngồi ghế xanh 4 góc
   <tên>_chair_ergo_raw.png  2×2  ngồi ghế công thái học 4 góc
-  khoa_cam_raw.png          2×2  cầm máy quay trước/sau (chỉ Khoa) → hd_cam.png
+  min_cam_raw.png          2×2  cầm máy quay trước/sau (chỉ Min) → hd_cam.png
 Bố cục lấy theo bộ hình Huy (assets/characters/01_Huy/src_v2). Cỡ đầu lấy theo một nhân vật cùng giới.
 Chạy: python3 -I scripts/prepare_new_chars.py  rồi python3 source/build.py
 """
@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 from prepare_skins import clean, cells, head_width, fit_cell, atlas  # noqa: E402
 
 CH = ROOT / 'assets/characters'
-CHARS = {'16_Khoa': ('khoa', '15_CongB'), '17_Linh': ('linh', '07_Hao_Hao')}
+CHARS = {'16_Min': ('min', '15_CongB'), '17_Liu': ('liu', '07_Hao_Hao')}
 ACTIONS = {'sit': [0, 1, 4, 5], 'use': [2, 3, 6, 7], 'talk': [8, 9, 12, 13], 'cele': [10, 10, 14, 14], 'sad': [11, 11, 15, 15]}
 STANDING = [2, 3, 6, 7, 8, 9, 12, 13]
 
