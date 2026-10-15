@@ -103,11 +103,11 @@ function askZoneFn(id,change){
 // Nhãn công năng trên bản đồ: hiện khi đang ở chế độ Xây dựng.
 function drawZoneLabels(c){
  const exp=document.getElementById('pExpand');if((typeof tool==='undefined'||tool==='pan')&&!(exp&&exp.classList.contains('open')))return;
- c.save();c.font='bold 9px sans-serif';c.textAlign='center';c.textBaseline='middle';
+ c.save();c.font='bold 11px sans-serif';c.textAlign='center';c.textBaseline='middle';
  for(const p of PLOTS){if(!UNLOCKED.has(p[0])||!p[0])continue;const z=zoneFn(p[0]);const t=z?z.n:`${p[1]} · chưa chọn công năng`;
   const [cx,cy]=iso((p[2]+p[4]+1)/2,(p[3]+p[5]+1)/2);const w=c.measureText(t).width+12;
   c.fillStyle=z?'rgba(255,246,227,.92)':'rgba(255,255,255,.75)';c.strokeStyle='#6B3512';c.lineWidth=1;
-  c.beginPath();c.roundRect?c.roundRect(cx-w/2,cy-8,w,16,8):c.rect(cx-w/2,cy-8,w,16);c.fill();c.stroke();
+  c.beginPath();c.roundRect?c.roundRect(cx-w/2,cy-9,w,18,9):c.rect(cx-w/2,cy-9,w,18);c.fill();c.stroke();
   c.fillStyle='#4A2A12';c.fillText(t,cx,cy+.5);}
  c.restore();
 }
