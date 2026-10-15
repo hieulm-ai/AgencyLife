@@ -107,3 +107,33 @@ body.booting #wrap{visibility:hidden}
 #titleScreen .title-auth-icon:hover{transform:translateY(-2px)}#titleScreen .title-auth-icon:disabled{opacity:.6;cursor:default;transform:none}
 #titleScreen .title-auth-icon:focus-visible{outline:3px solid #f5c542;outline-offset:2px}
 @media(max-height:500px) and (orientation:landscape){#titleScreen .title-auth-icon{width:42px;height:42px;border-radius:12px}#titleScreen .title-auth-icon svg{width:22px;height:22px}#titleScreen .title-auth-icons{gap:10px}}
+/* ===== 15/10/2026: màn loading dùng cùng 3 lớp ảnh với màn chính (nền phủ kín + nhóm nhân vật + logo),
+   thanh tải và Vũ à Vũ căn giữa dưới logo — không còn dải màu trống ở điện thoại ngang ===== */
+#boot{--chars-h:min(46vh,calc((100vw - 32px) * .565));background:#7cc4e6!important;display:block!important;padding:0!important;overflow:hidden}
+#boot .boot-art{display:none!important}
+#boot .boot-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 62%;z-index:0}
+#boot::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 45%,rgba(24,58,26,.45))}
+#boot .boot-stage{position:absolute;left:0;right:0;top:0;bottom:118px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(6px,2vh,20px) 16px 0;box-sizing:border-box;pointer-events:none}
+#boot .boot-chars{flex:none;height:var(--chars-h);width:auto;max-width:100%;filter:drop-shadow(0 6px 14px rgba(0,0,0,.18))}
+#boot .boot-logo{flex:none;width:min(calc(var(--chars-h) * 1.25),80vw,600px);height:auto;margin-top:calc(var(--chars-h) * -.2);filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+#boot .boot-card{position:absolute!important;left:50%!important;right:auto!important;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom))!important;width:min(460px,calc(100% - 40px))!important;height:108px!important;min-height:0!important;z-index:3;color:#fff;text-shadow:0 1px 4px #163b21}
+#boot .boot-track{position:absolute;left:0;right:0;bottom:44px;width:100%!important;transform:none;padding-top:0!important;margin:0}
+#boot .boot-runway{position:absolute;left:28px!important;right:28px!important;top:auto!important;bottom:16px;height:64px!important}
+#boot .boot-runner{width:44px!important;bottom:0}
+#boot #bootProgress{display:block;width:100%;height:14px;appearance:none;-webkit-appearance:none;border:2px solid #fff;border-radius:999px;background:rgba(40,70,40,.35);overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#boot #bootProgress::-webkit-progress-bar{background:rgba(40,70,40,.35);border-radius:999px}
+#boot #bootProgress::-webkit-progress-value{background:linear-gradient(#ffd75a,#f3a71c);border-radius:999px}
+#boot #bootProgress::-moz-progress-bar{background:linear-gradient(#ffd75a,#f3a71c);border-radius:999px}
+#boot #bootStatus{position:absolute;left:0;right:0;bottom:18px!important;font-size:14px!important;font-weight:800}
+#boot .boot-tip{position:absolute;left:0;right:0;bottom:0!important;display:block!important;font-size:11.5px!important;opacity:.95}
+#boot .boot-version{display:none!important}
+@media(max-height:500px) and (orientation:landscape){
+ #boot{--chars-h:min(52vh,calc((100vw - 32px) * .5))}
+ #boot .boot-stage{bottom:92px}
+ #boot .boot-card{height:86px!important;width:min(420px,calc(100% - 40px))!important}
+ #boot .boot-track{bottom:36px}#boot .boot-runway{height:52px!important;bottom:13px}#boot .boot-runner{width:34px!important}
+ #boot #bootStatus{bottom:14px!important;font-size:12.5px!important}#boot .boot-tip{display:none!important}
+}
+@media(orientation:portrait){#boot{--chars-h:min(40vh,calc((100vw - 24px) * .565))}}
+#boot .boot-runway{height:96px!important}#boot .boot-runner{width:64px!important}
+@media(max-height:500px) and (orientation:landscape){#boot .boot-stage{bottom:104px}#boot .boot-card{height:98px!important}#boot .boot-runway{height:66px!important}#boot .boot-runner{width:44px!important}}

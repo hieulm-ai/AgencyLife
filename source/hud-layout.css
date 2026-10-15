@@ -689,3 +689,8 @@ body:has(#tour:not([hidden])) #earlyPlay{display:none!important}
 #unlockBox .lvup-list{display:grid;gap:4px;max-height:40dvh;overflow:auto}
 #unlockBox:has(.zfn-grid){width:min(420px,calc(100vw - 24px))}
 @media(max-height:500px) and (orientation:landscape){.zfn-grid{grid-template-columns:repeat(3,1fr);max-height:calc(100dvh - 150px)}#unlockBox:has(.zfn-grid){width:min(560px,calc(100vw - 100px))}}
+/* 15/10/2026: nốt thông báo đỏ nằm đè lên góc ô (không tách rời khỏi nút) */
+#topR .bdg{top:-7px!important;right:-7px!important;min-width:22px!important;height:22px!important;font-size:12px!important;line-height:22px!important;padding:0 4px!important}
+#nav .nb:not(.crown-wide) .bdg,#nav .crown-wide .bdg,#nav #expand .bdg{top:-9px!important;right:-9px!important;min-width:26px!important;height:26px!important;font-size:14px!important;line-height:26px!important;padding:0 4px!important}
+@media(max-width:1000px){#nav .nb:not(.crown-wide) .bdg,#nav .crown-wide .bdg{top:-7px!important;right:-7px!important;min-width:22px!important;height:22px!important;font-size:12px!important}}
+@media(max-height:500px) and (orientation:landscape){#nav .bdg{transform:none!important;top:-6px!important;right:-6px!important;min-width:18px!important;height:18px!important;font-size:11px!important;line-height:18px!important;border-width:1.5px!important}}
