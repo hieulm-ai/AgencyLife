@@ -624,3 +624,56 @@ body:has(#unlockBox.open) #earlyPlay,body:has(#askBox:not([hidden])) #earlyPlay,
 #co .av.av-img img{position:absolute;inset:0;width:100%!important;height:100%!important;left:0!important;top:0!important;margin:0;object-fit:cover;image-rendering:auto}
 #playerCard .pc-face.av-img{width:56px;height:56px;border-radius:12px;background-size:cover;background-position:center;background-color:#f6f2ec}
 .ol-av i.av-img{background-size:cover;background-position:center}
+
+/* ---------- 15/10/2026 (2): điều chỉnh theo ảnh chụp điện thoại ---------- */
+/* Ảnh minh họa job trong thẻ việc đầu game: dùng chung kích thước atlas với bảng Công việc (trước đây bị trống) */
+.job-avatar{background-size:500% 200%;background-repeat:no-repeat;background-color:#fff6e2;image-rendering:pixelated}
+
+/* Hướng dẫn chạm: vịt vàng nói chuyện ở góc dưới màn hình (ảnh vịt lớn bên trái, bóng thoại ngang) */
+#tour .tbub{position:fixed;display:grid;grid-template-columns:86px minmax(0,1fr) auto;grid-template-areas:"duck say act";align-items:center;column-gap:10px;row-gap:6px;
+ padding:10px 12px 10px 8px;border:3px solid #6B3512;border-radius:20px;background:linear-gradient(#FFF6E3,#FFE3BC);box-shadow:0 4px 0 #6B3512,0 10px 22px rgba(40,20,6,.35);font-size:14px;line-height:1.4;overflow:visible}
+#tour .tbub .duck-guide{grid-area:duck;align-self:end;width:86px;height:100px;margin:-44px 0 -6px;background-size:86px auto;background-position:center bottom;filter:drop-shadow(0 3px 0 rgba(107,53,18,.35))}
+#tour .tbub::before{content:"";position:absolute;left:84px;top:50%;width:14px;height:14px;margin-top:-7px;background:#FFF0D6;border-left:3px solid #6B3512;border-bottom:3px solid #6B3512;transform:rotate(45deg);display:none}
+#tour .tsay{grid-area:say;display:grid;gap:2px;background:#FFFDF6;border:2px solid #E7C48F;border-radius:14px;padding:7px 10px}
+#tour .tcount{font-size:11px;font-weight:800;color:#B0662A;letter-spacing:.02em}
+#tour .ttext{margin:0;font-weight:800;color:#3A2414;font-size:14px}
+#tour .tact{grid-area:act;display:flex;flex-direction:column;justify-content:center;gap:6px}#tour .tact .btn{min-height:30px;min-width:76px;padding:3px 12px;font-size:12.5px}
+@media(max-height:500px) and (orientation:landscape){
+ #tour .tbub{grid-template-columns:66px minmax(0,1fr) auto;padding:7px 10px 7px 6px;column-gap:8px;border-radius:16px}
+ #tour .tbub .duck-guide{width:66px;height:78px;margin:-34px 0 -4px;background-size:66px auto}
+ #tour .tsay{padding:5px 8px}#tour .ttext{font-size:12.5px}#tour .tcount{font-size:10px}
+ #tour .tact .btn{min-height:28px;min-width:64px;font-size:11.5px}
+}
+
+/* Điện thoại xoay ngang: cột trái tách khỏi thẻ agency; nút góc phải và các ô chỉ số lớn hơn, cân với bản máy tính */
+@media(max-height:500px) and (orientation:landscape){
+ #nav{top:66px!important}
+ #topR{transform:scale(.88)!important}
+ #res .pill,#res .staff-pill{height:36px!important;border-radius:14px!important}
+ #res .pill b{font-size:14px!important}
+ #res .ic img{width:24px!important;height:24px!important}
+ #res .pill .plus{width:24px!important;height:24px!important;flex-basis:24px!important;font-size:17px!important}
+ #wrap #hub,#wrap.hud-stacked #hub{top:52px!important}
+ #toast{top:52px!important}
+ /* Thẻ "Duyệt sản phẩm / Chọn ý tưởng": gọn, không tràn mép phải */
+ #earlyPlay{width:236px!important;max-height:calc(100dvh - 70px)}
+ #earlyPlay>b{font-size:14px}
+ #earlyPlay .early-preview{gap:8px}#earlyPlay .early-preview .job-art{width:40px;height:40px;border-radius:9px}#earlyPlay .early-preview .job-art img{width:32px;height:32px}
+ #earlyPlay .early-preview span:not(.job-art){font-size:12px}
+ #earlyPlay .early-actions{gap:4px}
+ #earlyPlay .early-actions .btn{min-width:0;flex:1 1 0;min-height:30px!important;font-size:10.5px!important;line-height:1.15}
+ #earlyPlay .early-actions .btn img{width:20px!important;height:20px!important}
+}
+/* Máy tính / màn lớn: thẻ duyệt sản phẩm cũng gọn lại */
+#earlyPlay .early-preview .job-art{width:48px;height:48px}#earlyPlay .early-preview .job-art img{width:40px;height:40px}
+#earlyPlay .early-actions .btn{min-width:0}
+#earlyPlay>*{min-width:0}#earlyPlay .early-actions .btn{min-width:0!important;flex:1 1 0!important;white-space:normal}
+body:has(#tour:not([hidden])) #earlyPlay{display:none!important}
+@media(max-height:500px) and (orientation:landscape){#earlyPlay{gap:3px!important}#earlyPlay small{font-size:9.5px!important;line-height:1.2}#earlyPlay .early-actions .btn{min-height:28px!important;padding:2px 3px!important}}
+@media(max-height:500px) and (orientation:landscape){#earlyPlay{width:280px!important}#earlyPlay .early-preview .job-art{width:34px;height:34px}#earlyPlay .early-preview .job-art img{width:28px;height:28px}#earlyPlay .early-actions .btn img{width:18px!important;height:18px!important}#earlyPlay .early-actions .btn{gap:3px!important}}
+@media(max-height:500px) and (orientation:landscape){#earlyPlay .btn{border-width:6px!important;border-image-width:6px!important}}
+/* Điện thoại ngang hẹp (≤ 640px, vd. iPhone SE): dải chỉ số xuống hàng thứ hai, bên phải cột trái, để không đè thẻ agency và nút góc phải */
+@media(max-height:500px) and (orientation:landscape) and (max-width:640px){
+ #wrap #res,#wrap.hud-stacked #res,#wrap.hud-compact #res{top:56px!important;left:74px!important;right:auto!important;transform:none!important;justify-content:flex-start}
+ #topR{transform:scale(.78)!important}
+}
