@@ -207,6 +207,11 @@ s=s.replace('__NEWS__',(SOURCE / 'news.js').read_text())
 s=s.replace('__AMBIENCE__',(SOURCE / 'ambience.js').read_text())
 s=s.replace('__DAYLIGHT__',(SOURCE / 'daylight.js').read_text())
 _olcfg=ROOT/'online'/'config.json'   # V16: cấu hình Supabase (url + anonKey); không có thì online tắt, vẫn bật được máy chủ thử
+# 15/10/2026: theo dõi lượt truy cập + lỗi (ẩn danh) — script riêng trong <head> để bắt cả lỗi lúc khởi động.
+import subprocess as _sp, datetime as _dt
+_ver=_dt.datetime.now(_dt.timezone(_dt.timedelta(hours=7))).strftime('%y%m%d-%H%M')   # phiên bản = giờ build (giờ VN)
+_tmcfg=json.loads(_olcfg.read_text()) if _olcfg.exists() else None
+s=s.replace('__TELEMETRY__',(SOURCE/'telemetry.js').read_text().replace('__TM_CFG__',json.dumps({'url':_tmcfg['url'],'anonKey':_tmcfg['anonKey']} if _tmcfg else None)).replace('__BUILD_VER__',_ver))
 s=s.replace('__ONLINE__',(SOURCE / 'online.js').read_text().replace('__ONLINE_CFG__',json.dumps(json.loads(_olcfg.read_text())) if _olcfg.exists() else 'null'))
 import base64 as _b
 s=s.replace('__DAY_TRANSITION__',(SOURCE / 'day-transition.js').read_text())

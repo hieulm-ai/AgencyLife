@@ -318,3 +318,38 @@ grant execute on function public.send_friend_request(text), public.respond_frien
   public.remove_friend(uuid), public.block_user(uuid), public.send_gift(uuid, text), public.borrow_staff(uuid, text),
   public.send_note(uuid, text), public.send_like(uuid), public.claim_mail(bigint), public.claim_all_mail(),
   public.delete_my_data(), public.are_friends(uuid, uuid), public.is_blocked(uuid, uuid), public.gen_friend_code() to authenticated;
+
+-- Cập nhật 15/10/2026: theo dõi lượt truy cập + lỗi cho open beta (ẩn danh, chỉ ghi; xem trong SQL Editor)
+create table if not exists public.telemetry (
+  id bigint generated always as identity primary key,
+  at timestamptz not null default now(),
+  kind text not null check (kind in ('visit','error')),
+  host text check (char_length(host) <= 60),
+  platform text check (char_length(platform) <= 20),
+  browser text check (char_length(browser) <= 20),
+  standalone boolean not null default false,
+  device text check (char_length(device) <= 40),
+  ver text check (char_length(ver) <= 20),
+  screen text check (char_length(screen) <= 20),
+  msg text check (char_length(msg) <= 300),
+  src text check (char_length(src) <= 200)
+);
+create index if not exists telemetry_at_idx on public.telemetry (at desc);
+create index if not exists telemetry_device_at_idx on public.telemetry (device, at desc);
+alter table public.telemetry enable row level security;
+drop policy if exists telemetry_insert on public.telemetry;
+create policy telemetry_insert on public.telemetry for insert to anon, authenticated with check (true);
+revoke all on public.telemetry from anon, authenticated;
+grant insert (kind, host, platform, browser, standalone, device, ver, screen, msg, src) on public.telemetry to anon, authenticated;
+-- Chống ghi tràn: mỗi thiết bị tối đa 20 dòng / 10 phút; bảng giữ 90 ngày.
+create or replace function public.telemetry_guard() returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  if (select count(*) from public.telemetry where device = new.device and at > now() - interval '10 minutes') >= 20 then
+    return null;
+  end if;
+  if random() < 0.01 then delete from public.telemetry where at < now() - interval '90 days'; end if;
+  return new;
+end $$;
+revoke all on function public.telemetry_guard() from public, anon, authenticated;
+drop trigger if exists telemetry_guard on public.telemetry;
+create trigger telemetry_guard before insert on public.telemetry for each row execute function public.telemetry_guard();
