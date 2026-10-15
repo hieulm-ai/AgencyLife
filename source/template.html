@@ -314,16 +314,16 @@ let UNLIM=false; let LAST_SEEN=0;   // chế độ thử: cho phép tiêu quá s
 const GS={enUse:null,midRefresh:0,gems:20,questClaimed:{},lastLogin:"",streak:0,dq:null,ach:{},ws:0,kolDay:-1,gemEarned:0,day:1,min:480,speed:1,jobs:[],offers:[],done:0,revToday:0,revTotal:0,nextJob:1,failed:0,energy:120,enT:0,retainers:[],templates:0,wsDay:0,weekDone:0,passToday:0,lvlRev:{}};
 const SPEEDS=[0,1,2,4], GAME_MIN_PER_SEC=1;   // 1 giây thật = 1 phút game ở 1× → một ngày 8:00–21:00 = 13 phút thật
 // Bảng đã duyệt: thưởng job × 6 × 1,45^(cấp−1); cấp = số khu đã mở
-const lvl=()=>UNLOCKED.size, lvlMul=()=>5*Math.pow(1.45,lvl()-1);   // mô phỏng 03/10: ×5 thay ×6
+const lvl=()=>UNLOCKED.size, lvlMul=()=>5*Math.pow(1.45,lvl()-1);   // mô phỏng 03/10: ×5 thay ×6. 15/10: lvl() = số khu (hệ số kinh tế); cấp agency để mở nội dung là agencyLevel() (agency-level.js)
 // Năng lượng: giới hạn tiến độ mỗi ngày thật để người chơi 30 phút–3 giờ/ngày mất khoảng 3–5 tuần mở hết khu (số căn theo ước tính, xem bảng)
 const EN_MAX=120, EN_REGEN_S=90, EN_DAY_CAP=200;   // trần năng lượng được DÙNG mỗi ngày thật   // hồi 1 điểm mỗi 90 giây thật, kể cả khi tắt game
-const JOB_TPL=[ // tên, giờ công, thưởng (tr), hạn (ngày), đồ bắt buộc, [cấp agency tối thiểu]
+const JOB_TPL=[ // tên, giờ công, thưởng (tr), hạn (ngày), đồ bắt buộc · cấp mở job: JOB_LV (agency-level.js)
  ["Thiết kế logo",16,8,3,[]],["Bộ ấn phẩm Tết",30,15,4,[]],["Kế hoạch truyền thông",36,20,4,["whiteboard"]],["Quản lý fanpage 1 tuần",40,18,5,[]],
  ["Chụp ảnh sản phẩm",20,11,3,["softbox"]],["Quay video TikTok",24,13,3,["camera_tripod"]],["Podcast thương hiệu",28,16,4,["sound_booth"]],
  ["TVC 15 giây",80,48,6,["green_screen","camera_tripod","editing_workstation"]],["Livestream bán hàng",22,12,2,["camera_tripod","softbox"]],["Pitch khách hàng lớn",18,14,2,["meeting_table"]],
  // 15/10/2026: nhóm Video & Hậu kỳ (cần Editor / Quay phim). Giờ công, thưởng, hạn là thông số thử.
  ["Dựng video sự kiện",26,14,3,["editing_workstation"]],["Series Reels 5 clip",34,19,4,["camera_tripod"]],
- ["Phim giới thiệu doanh nghiệp 60s",60,34,5,["camera_tripod","editing_workstation"],2],["Video review sản phẩm",22,12,3,["camera_tripod","softbox"]]];
+ ["Phim giới thiệu doanh nghiệp 60s",60,34,5,["camera_tripod","editing_workstation"]],["Video review sản phẩm",22,12,3,["camera_tripod","softbox"]]];
 const ITEM_NAME={whiteboard:"bảng trắng",softbox:"đèn softbox",camera_tripod:"máy quay",sound_booth:"phòng thu",green_screen:"phông xanh",editing_workstation:"bàn dựng phim",meeting_table:"bàn họp"};
 const WORKSEAT=new Set(["office_chair_blue","ergo_chair","dual_monitor_desk","editing_workstation"]);
 const RELIEF={premium_coffee:30,cat_house:12,aquarium:10,water_dispenser:10,pantry_counter:16,coffee_table:8,bookshelf:6,potted_plant:4,decorative_blue_mark:3,sound_booth:-2};
@@ -915,7 +915,7 @@ function stepAgents(dt){ if(dt<=0)return; for(const a of AG){
       if(acc && here[0]===acc[0] && here[1]===acc[1]){ a.acc=acc; a.state="sit"; { const so=OBJS.find(b=>b.uid===a.seat.uid); a.sitT=(so&&WORKSEAT.has(so.id))?45+Math.random()*40:10+Math.random()*14; } a.t=0; continue; } }
     if(a.state==="use"){ a.useT+=dt; a.t+=dt; const o=OBJS.find(b=>b.uid===a.useObj);
       const present=o&&[o.gx,o.gy,o.rot].join(',')===a.usePose;
-      if(!present||a.useT>=USE[o.id].t){if(present)a.stress=Math.max(0,Math.min(100,a.stress-(RELIEF[o.id]||2)));BUSY.delete(a.useObj);a.useObj=null;a.usePose=null;a.state="wander";a.wait=0.4;}continue; }
+      if(!present||a.useT>=USE[o.id].t){if(present)a.stress=Math.max(0,Math.min(100,a.stress-(RELIEF[o.id]||2)*(typeof zoneReliefF==="function"?zoneReliefF(o):1)));BUSY.delete(a.useObj);a.useObj=null;a.usePose=null;a.state="wander";a.wait=0.4;}continue; }
     if(a.state==="toUse"){ const o=OBJS.find(b=>b.uid===a.useObj); if(!o){ BUSY.delete(a.useObj); a.useObj=null; a.state="wander"; }
       else { const [w,d]=FBY[o.id].views[o.rot].fp; const near=((here[0]===o.gx-1||here[0]===o.gx+w)&&here[1]>=o.gy&&here[1]<o.gy+d)||((here[1]===o.gy-1||here[1]===o.gy+d)&&here[0]>=o.gx&&here[0]<o.gx+w);
         if(near){ a.state="use"; a.useT=0;a.usePose=[o.gx,o.gy,o.rot].join(','); a.dir=faceToward(a,o); continue; } } }
@@ -1069,6 +1069,7 @@ function buildCatalog(){ const el=document.getElementById("catList"); el.innerHT
   for(const f of FURN){ if(f.group!==g){ g=f.group; const h=document.createElement("div"); h.className="cg"; h.textContent=g; el.appendChild(h); }
     const b=document.createElement("button"); b.className="ci"; b.setAttribute("role","option"); b.dataset.id=f.id;
     b.innerHTML=`<span class="th"><img alt="" src="${f.views[0].src}"></span><span><span class="nm">${f.name}</span><br><span class="mt">${f.views[0].fp[0]}×${f.views[0].fp[1]} ô${f.layer==="floor"?" · không chặn":""}</span></span><span class="pr">${f.gem?f.gem+"💎":fmt(f.price)}</span>`;
+    const lockLv=typeof itemMinLv==="function"?itemMinLv(f.id):1, locked=typeof agencyLevel==="function"&&agencyLevel()<lockLv; if(locked){ b.classList.add("lk"); b.setAttribute("aria-disabled","true"); b.querySelector(".pr").textContent=`🔒 Cấp ${lockLv}`; b.onclick=()=>toast(`${f.name} mở ở cấp agency ${lockLv}`,"err"); b.innerHTML=gemify(b.innerHTML); el.appendChild(b); continue; }
     b.onclick=()=>{ bootEnsure(f.views);fSel=f.id; fRot=0; storePick=null; renderStorePick(); if(pend&&pend.mode==="buy"){ pend=null; renderPendBar(); } document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===f.id)); updateCtxBar(); };
     b.innerHTML=gemify(b.innerHTML); el.appendChild(b); } }
 // ---------- tương tác với đồ dùng ----------
@@ -1321,7 +1322,7 @@ for(const a of AG){ if(a.stress==null) a.stress=10+Math.random()*25; }
 const hasItem=id=>OBJS.some(o=>o.id===id);
 function mkOffer(){
  const small=Math.random()<.7;
- const lv=typeof lvl==='function'?lvl():1, open=JOB_TPL.filter(t=>!(t[5]>lv));   // job lớn mở theo cấp agency
+ const lv=typeof agencyLevel==='function'?agencyLevel():1, open=JOB_TPL.filter(t=>(typeof jobMinLv==='function'?jobMinLv(t[0]):1)<=lv);   // job mở theo cấp agency (XP)
  const pool=small?open.filter(t=>!t[4].length):open;
  const t=pool[Math.floor(Math.random()*pool.length)],k=.85+Math.random()*.3;
  const base=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
@@ -1443,9 +1444,9 @@ function addGems(n,why){ GS.gems+=n; GS.gemEarned+=n; toast(`${why} · +${n}💎
 const DQ_TPL=[["job","Hoàn thành 3 job",3,8],["ws","Mở 1 lớp workshop",1,5],["rest","Cho nhân viên nghỉ 2 lần",2,5],["place","Đặt 2 món nội thất",2,5],["energy","Dùng 60 năng lượng",60,10],["early","Xong 1 job trước hạn",1,6]];
 function today(){ return new Date().toISOString().slice(0,10); }
 function ensureDQ(){ if(GS.dq&&GS.dq.date===today()) return; const pool=[...DQ_TPL].sort(()=>Math.random()-0.5).slice(0,3); GS.dq={date:today(),items:pool.map(([k,t,g,r])=>({k,t,g,r,p:0,c:0}))}; }
-function dq(k,n=1){ ensureDQ(); for(const q of GS.dq.items) if(q.k===k&&!q.c){ q.p=Math.min(q.g,q.p+n); if(q.p>=q.g){ q.c=1; addGems(q.r,`Nhiệm vụ ngày "${q.t}"`); } } }
+function dq(k,n=1){ ensureDQ(); for(const q of GS.dq.items) if(q.k===k&&!q.c){ q.p=Math.min(q.g,q.p+n); if(q.p>=q.g){ q.c=1; addGems(q.r,`Nhiệm vụ ngày "${q.t}"`); if(typeof addXP==="function") addXP(10); } } }
 const ACH=[["jobs10","Hoàn thành 10 job",()=>GS.done>=10,10],["jobs50","Hoàn thành 50 job",()=>GS.done>=50,25],["jobs200","Hoàn thành 200 job",()=>GS.done>=200,60],
- ["lv2","Mở khu đầu tiên",()=>UNLOCKED.size>=2,15],["lv6","Đạt cấp 6",()=>UNLOCKED.size>=6,40],["lv12","Mở hết 12 khu",()=>UNLOCKED.size>=12,100],
+ ["lv2","Mở khu đầu tiên",()=>UNLOCKED.size>=2,15],["lv6","Đạt cấp 6",()=>typeof agencyLevel==="function"&&agencyLevel()>=6,40],["lv15","Đạt cấp 15",()=>typeof agencyLevel==="function"&&agencyLevel()>=15,80],["lv12","Mở hết 12 khu",()=>UNLOCKED.size>=12,100],
  ["rev1","Tổng doanh thu 1 tỷ",()=>GS.revTotal>=1000,10],["rev100","Tổng doanh thu 100 tỷ",()=>GS.revTotal>=100000,50],["ws10","Mở 10 lớp workshop",()=>GS.ws>=10,15]];
 function checkAch(){ for(const [k,t,f,r] of ACH) if(!GS.ach[k]&&f()){ GS.ach[k]=1; addGems(r,`Thành tựu "${t}"`); } grantAchItems(); }
 const STREAK=[5,5,10,10,15,15,30];
@@ -1512,17 +1513,17 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
     a.stress=Math.max(0,Math.min(100,a.stress));
     if(a.stress>=100){ a.state="burn"; a.burnT=90; a.path=[]; if(a.useObj){ BUSY.delete(a.useObj); a.useObj=null; } toast(`${staffName(CHARS[a.ci].id)} bốc cháy vì quá tải!`,"err"); }
   }
-  if(!closingOffice&&lvl()>=3&&hasItem("green_screen")&&hasItem("camera_tripod")&&hasItem("softbox")&&!GS.jobs.some(j=>j.req.includes("camera_tripod"))){ const inc=0.4*lvlMul()*h; cash+=inc; GS.passToday+=inc; GS.revToday+=inc; GS.revTotal=(GS.revTotal||0)+inc; }
+  if(!closingOffice&&(typeof featureOpen==="function"?featureOpen("studioRent"):lvl()>=3)&&hasItem("green_screen")&&hasItem("camera_tripod")&&hasItem("softbox")&&!GS.jobs.some(j=>j.req.includes("camera_tripod"))){ const inc=0.4*lvlMul()*h; cash+=inc; GS.passToday+=inc; GS.revToday+=inc; GS.revTotal=(GS.revTotal||0)+inc; }
   if(typeof tickRevisions==="function") tickRevisions(); advanceJobWork(h); if(typeof earlyTick==="function")earlyTick();
   for(const j of [...GS.jobs]) if(j.work>=j.need-1e-6&&!fbPending(j)&&(typeof earlyReviewReady!=="function"||earlyReviewReady(j))){ finishJobVisitor(j); for(const a of AG) if(!a.collection&&!a.handover&&a.state!=="burn"&&a.state!=="sit"&&a.state!=="use") startReact(a,"cele",2.6); GS.jobs=GS.jobs.filter(x=>x!==j); payJob(j); if(j.vip&&j.gem) addGems(j.gem,`Job VIP "${j.name}"`); if(GS.day<j.due){ addGems(1,"Xong job trước hạn"); dq("early"); } dq("job");
-    GS.done++; recordReputation(j,true,typeof reviewJob==="function"?reviewJob(j):0); advanceWeeklyPass(); GS.weekDone++; GS.lvlRev[lvl()]=(GS.lvlRev[lvl()]||0)+j.reward; if(lvl()>=3&&/Thiết kế|ấn phẩm|logo/i.test(j.name)) GS.templates=Math.min(20,GS.templates+1); hud(); save(); }
+    GS.done++; const stars=typeof reviewJob==="function"?reviewJob(j):0; recordReputation(j,true,stars); if(typeof addXP==="function") addXP(jobXP(j,stars)); advanceWeeklyPass(); GS.weekDone++; GS.lvlRev[lvl()]=(GS.lvlRev[lvl()]||0)+j.reward; if((typeof featureOpen==="function"?featureOpen("templates"):lvl()>=3)&&/Thiết kế|ấn phẩm|logo/i.test(j.name)) GS.templates=Math.min(20,GS.templates+1); hud(); save(); }
   for(const [minute,bit] of [[630,2],[780,1],[960,4]])if(GS.min>=minute&&!((GS.midRefresh||0)&bit)){ GS.midRefresh=(GS.midRefresh||0)|bit; fillOffers(); renderJobs(); }   // Bổ sung chỗ trống, không đuổi khách đang còn kiên nhẫn.
   if(GS.min>=CLOSE_MIN){ // Tan làm lúc 21:00, chờ đội ngũ đi ra vỉa hè.
     closingElapsed+=gdt;if(!AG.every(a=>a.away)&&closingElapsed<60)return;
     GS.midRefresh=0;
     let pas=0; for(const r of GS.retainers){ pas+=r.daily; r.left--; } GS.retainers=GS.retainers.filter(r=>r.left>0);
-    if(lvl()>=3) pas+=GS.templates*0.5*lvlMul(); cash+=pas; GS.passToday+=pas; GS.revToday+=pas; GS.revTotal=(GS.revTotal||0)+pas;
-    let award=0; if(GS.day%7===0){ if(lvl()>=4&&GS.weekDone>=10){ award=Math.round(0.25*plotPrice()); cash+=award; GS.revTotal=(GS.revTotal||0)+award; addGems(20,"Giải thưởng sáng tạo tuần"); } GS.weekDone=0; }
+    if((typeof featureOpen==="function"?featureOpen("templates"):lvl()>=3)) pas+=GS.templates*0.5*lvlMul(); cash+=pas; GS.passToday+=pas; GS.revToday+=pas; GS.revTotal=(GS.revTotal||0)+pas;
+    let award=0; if(GS.day%7===0){ if((typeof featureOpen==="function"?featureOpen("award"):lvl()>=4)&&GS.weekDone>=10){ award=Math.round(0.25*plotPrice()); cash+=award; GS.revTotal=(GS.revTotal||0)+award; addGems(20,"Giải thưởng sáng tạo tuần"); } GS.weekDone=0; }
     const payroll=typeof settlePayroll==="function"?settlePayroll():null;
     GS.lastDayReport=captureDayReport(award);if(payroll)GS.lastDayReport.payroll=payroll;hud();
     const sum=`Hết ngày ${GS.day}: doanh thu ${fmt(Math.round(GS.revToday*10)/10)}${pas?` (thụ động ${fmt(Math.round(pas*10)/10)})`:""}${award?` · Giải thưởng sáng tạo +${fmt(award)}`:""}`; GS.day++; GS.min=480; GS.revToday=0; GS.passToday=0; if(typeof endBorrowDay==="function") endBorrowDay();
@@ -1533,7 +1534,7 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
 function useSource(k){
   if(k!=="ret"&&k!=="ws")return;
   if(closingOffice||GS.min>=CLOSE_MIN){toast("Đội ngũ đang tan làm. Hãy thực hiện vào sáng mai.","err");return;}
-  if(lvl()<2){toast("Cần mở khu đất cấp 2","err");return;}
+  if(!(typeof featureOpen==="function"?featureOpen("retainer"):lvl()>=2)){toast(`Mở ở cấp agency ${typeof FEATURE_LV!=="undefined"?FEATURE_LV.retainer:2}`,"err");return;}
   if(!hasItem("meeting_table")||(k==="ws"&&!hasItem("whiteboard"))){toast(k==="ws"?"Workshop cần bàn họp và bảng trắng":"Hợp đồng cần bàn họp","err");return;}
   const M=lvlMul(); const mt=OBJS.filter(o=>o.id==="meeting_table").length;
   if(k==="ret"){ if(GS.retainers.length>=Math.min(6,mt)) return; if(!canSpend(20)) return; spend(20); GS.retainers.push({left:7,daily:Math.round(0.15*17*M*10)/10}); toast("Đã ký hợp đồng duy trì 7 ngày","ok"); }
@@ -1564,13 +1565,13 @@ function renderJobs(){ const el=document.getElementById("jobList"); if(!el) retu
   const M=lvlMul(), mt=OBJS.filter(o=>o.id==="meeting_table").length, seatsMeet=OBJS.filter(o=>o.id==="meeting_table"||o.id==="round_table").reduce((n,o)=>n+seatsOf(o).length,0);
   const avgJob=17*M, retDaily=Math.round(0.15*avgJob*10)/10, wsRev=Math.round(Math.min(16,seatsMeet)*2*M*10)/10;
   const srcs=[];
-  srcs.push(lvl()<2?`<div class="job off"><b>Hợp đồng duy trì</b><div class="jm">Mở từ cấp 2</div></div>`:!mt?`<div class="job off"><b>Hợp đồng duy trì</b><div class="jm">Cần bàn họp</div></div>`:
+  srcs.push(!(typeof featureOpen==="function"?featureOpen("retainer"):lvl()>=2)?`<div class="job off"><b>Hợp đồng duy trì</b><div class="jm">Mở từ cấp ${typeof FEATURE_LV!=="undefined"?FEATURE_LV.retainer:2}</div></div>`:!mt?`<div class="job off"><b>Hợp đồng duy trì</b><div class="jm">Cần bàn họp</div></div>`:
     `<div class="job off"><div class="jt"><b>Hợp đồng duy trì</b><span class="num">+${fmt(retDaily)}/ngày</span></div><div class="jm">7 ngày · đang có ${GS.retainers.length}/${Math.min(6,mt)} hợp đồng</div><button class="btn g" data-src="ret" ${GS.retainers.length>=Math.min(6,mt)?'aria-disabled="true"':""}>Ký hợp đồng · 20⚡</button></div>`);
-  srcs.push(lvl()<2?`<div class="job off"><b>Workshop</b><div class="jm">Mở từ cấp 2</div></div>`:!(hasItem("whiteboard")&&mt)?`<div class="job off"><b>Workshop</b><div class="jm">Cần bảng trắng + bàn họp</div></div>`:
+  srcs.push(!(typeof featureOpen==="function"?featureOpen("retainer"):lvl()>=2)?`<div class="job off"><b>Workshop</b><div class="jm">Mở từ cấp ${typeof FEATURE_LV!=="undefined"?FEATURE_LV.retainer:2}</div></div>`:!(hasItem("whiteboard")&&mt)?`<div class="job off"><b>Workshop</b><div class="jm">Cần bảng trắng + bàn họp</div></div>`:
     `<div class="job off"><div class="jt"><b>Workshop hôm nay</b><span class="num">+${fmt(wsRev)}</span></div><div class="jm">${Math.min(16,seatsMeet)} học viên · 1 lớp/ngày</div><button class="btn g" data-src="ws" ${GS.wsDay===GS.day?'aria-disabled="true"':""}>${GS.wsDay===GS.day?"Đã mở hôm nay":"Mở lớp · 15⚡"}</button></div>`);
-  srcs.push(`<div class="job off"><div class="jt"><b>Cho thuê studio</b><span class="num">${lvl()>=3?"+"+fmt(Math.round(1.2*M*10)/10)+"/giờ":"cấp 3"}</span></div><div class="jm">Tự thu khi có phông xanh + máy quay + đèn softbox và không có job quay</div></div>`);
-  srcs.push(`<div class="job off"><div class="jt"><b>Bán template số</b><span class="num">${lvl()>=3?GS.templates+"/20 mẫu":"cấp 3"}</span></div><div class="jm">Mỗi job thiết kế xong tạo 1 mẫu; mỗi mẫu +${fmt(Math.round(0.5*M*10)/10)}/ngày</div></div>`);
-  srcs.push(`<div class="job off"><div class="jt"><b>Giải thưởng sáng tạo</b><span class="num">${lvl()>=4?GS.weekDone+"/10 job":"cấp 4"}</span></div><div class="jm">Mỗi 7 ngày, xong ≥ 10 job: thưởng 25% giá khu kế tiếp</div></div>`);
+  srcs.push(`<div class="job off"><div class="jt"><b>Cho thuê studio</b><span class="num">${(typeof featureOpen==="function"?featureOpen("studioRent"):lvl()>=3)?"+"+fmt(Math.round(1.2*M*10)/10)+"/giờ":"cấp "+(typeof FEATURE_LV!=="undefined"?FEATURE_LV.studioRent:3)}</span></div><div class="jm">Tự thu khi có phông xanh + máy quay + đèn softbox và không có job quay</div></div>`);
+  srcs.push(`<div class="job off"><div class="jt"><b>Bán template số</b><span class="num">${(typeof featureOpen==="function"?featureOpen("templates"):lvl()>=3)?GS.templates+"/20 mẫu":"cấp "+(typeof FEATURE_LV!=="undefined"?FEATURE_LV.templates:3)}</span></div><div class="jm">Mỗi job thiết kế xong tạo 1 mẫu; mỗi mẫu +${fmt(Math.round(0.5*M*10)/10)}/ngày</div></div>`);
+  srcs.push(`<div class="job off"><div class="jt"><b>Giải thưởng sáng tạo</b><span class="num">${(typeof featureOpen==="function"?featureOpen("award"):lvl()>=4)?GS.weekDone+"/10 job":"cấp "+(typeof FEATURE_LV!=="undefined"?FEATURE_LV.award:4)}</span></div><div class="jm">Mỗi 7 ngày, xong ≥ 10 job: thưởng 25% giá khu kế tiếp</div></div>`);
   const srcHtml=srcs.map((html,i)=>html.replace('<div class="job off">',`<div class="job off income-card"><span class="income-icon">${UIIMG(['brief','book','shop','chart','trophy'][i],30)}</span>`).replace(/<div class="jm">(.*?)<\/div>/g,(_,text)=>text.startsWith('Мở')||text.startsWith('Mở')||text.startsWith('Cần')?`<div class="jm">${text}</div>`:`<details class="compact-details"><summary>Điều kiện ⓘ</summary><div class="jm">${text}</div></details>`)).join("");
   if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><div id="jOff" class="hub-list"></div><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details></div><div class="jsec" data-sec="active"><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Lễ tân → Account (brief) → Planner (chia việc) → Content → Design. Giá trị job quyết định khối lượng công việc. Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
     el.addEventListener("click",e=>{ if(e.target.closest("[data-sort-deadline]")){sortJobsByDeadline();return;} const pause=e.target.closest("[data-pause-job]");if(pause){toggleJobPaused(+pause.dataset.pauseJob);return;} const decline=e.target.closest("[data-decline]");if(decline){const id=+decline.dataset.decline;const offer=GS.offers.find(j=>j.id===id);if(offer)askConfirm({title:`Từ chối ${offer.name}?`,text:"Khách sẽ ra về, không mất coin hay danh tiếng.",ok:"Từ chối job",danger:true}).then(ok=>{if(ok)declineOffer(id);});return;} const workplace=e.target.closest("[data-workplace]");if(workplace){fSel=workplace.dataset.workplace;fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt, chừa ô ghế và lối vào","ok");return;} const collect=e.target.closest("[data-collect]");if(collect){sendCollector(+collect.dataset.collect,collect.dataset.person);return;} const editor=e.target.closest("[data-team-edit]");if(editor){const id=+editor.dataset.teamEdit;teamEditorJob=teamEditorJob===id?null:id;renderJobs();return;} const team=e.target.closest("[data-team-job]");if(team){setJobStaff(+team.dataset.teamJob,team.dataset.teamId);return;} const priority=e.target.closest("[data-priority]");if(priority){prioritizeJob(+priority.dataset.priority);return;} if(e.target.closest("[data-reception]")){fSel="reception_counter";fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt quầy; chừa lối đi hai phía","ok");return;} const b=e.target.closest("[data-acc]"); if(b) acceptJob(+b.dataset.acc); const c2=e.target.closest("[data-src]"); if(c2&&c2.getAttribute("aria-disabled")!=="true") useSource(c2.dataset.src); }); }
@@ -1582,11 +1583,11 @@ function renderJobs(){ const el=document.getElementById("jobList"); if(!el) retu
   const D=document.getElementById("jDel"); if(D.dataset.sig!==del){ D.innerHTML=gemify(del); D.dataset.sig=del; } }
 function canUnlock(p){ const [,,x0,y0,x1,y1]=p; for(let y=y0-1;y<=y1+1;y++) for(let x=x0-1;x<=x1+1;x++){ const inside=x>=x0&&x<=x1&&y>=y0&&y<=y1; if(inside) continue; const side=(x===x0-1||x===x1+1)!==(y===y0-1||y===y1+1); if(side&&x>=2&&x<=61&&y>=2&&y<=56&&!LOCK[y][x]) return true; } return false; }
 function askUnlock(id){ const p=PLOTS.find(q=>q[0]===id); if(!p) return;
-  if(!canUnlock(p)){ toast(`${p[1]} chưa liền kề khu đã mở. Hãy mở khu bên cạnh trước.`,"err"); return; } const box=document.getElementById("unlockBox");
+  if(!canUnlock(p)){ toast(`${p[1]} chưa liền kề khu đã mở. Hãy mở khu bên cạnh trước.`,"err"); return; } if(typeof agencyLevel==="function"&&agencyLevel()<nextZoneLv()){ toast(`Khu thứ ${UNLOCKED.size+1} mở ở cấp agency ${nextZoneLv()} (đang cấp ${agencyLevel()}). Làm thêm job để lên cấp.`,"err"); return; } const box=document.getElementById("unlockBox");
   box.innerHTML=`<div class="ph"><span class="ic">${UIIMG("crown",22)}</span>Mở rộng ${p[1]}</div><div class="row"><span>Diện tích</span><b>${(p[4]-p[2]+1)}×${(p[5]-p[3]+1)} ô</b></div><div class="row"><span>Chi phí</span><b>${fmt(plotPrice())}</b></div><div class="row"><span>Số dư</span><b>${fmt(Math.round(cash*10)/10)}</b></div><div style="display:flex;gap:8px"><button class="btn c" id="ulNo">Để sau</button><button class="btn y" id="ulYes">Mở khóa</button></div>`;
   box.classList.add("open"); document.getElementById("ulNo").onclick=()=>box.classList.remove("open");
   document.getElementById("ulYes").onclick=()=>{ const price=plotPrice(); if(!UNLIM&&cash<price){ toast(`Chưa đủ tiền: cần ${fmt(price)}`,"err"); return; }
-    cash-=price; UNLOCKED.add(id); undo=[]; document.getElementById("bUndo").disabled=true; rebuild(); hud(); save(); box.classList.remove("open"); clampCam(); GS.gems+=10; toast(`Đã mở ${p[1]} · −${fmt(price)} · +10💎`,"ok"); updatePanels(); if($id("pExpand").classList.contains("open")) renderExpandPage(true); }; }
+    cash-=price; UNLOCKED.add(id); undo=[]; document.getElementById("bUndo").disabled=true; rebuild(); hud(); save(); box.classList.remove("open"); clampCam(); GS.gems+=10; toast(`Đã mở ${p[1]} · −${fmt(price)} · +10💎`,"ok"); updatePanels(); if($id("pExpand").classList.contains("open")) renderExpandPage(true); if(typeof askZoneFn==="function") setTimeout(()=>askZoneFn(id,false),350); }; }
 function drawLock(c,x,y,avail){ x=Math.round(x); y=Math.round(y); const O="#3A2414", B=avail?"#F8C531":"#B8A88A", D=avail?"#C98A0C":"#8E8068";
   c.fillStyle="rgba(0,0,0,.18)"; c.fillRect(x-9,y+11,18,3);
   c.fillStyle=O; c.fillRect(x-6,y-12,12,3); c.fillRect(x-7,y-10,3,9); c.fillRect(x+4,y-10,3,9);   // càng khóa
@@ -1651,7 +1652,9 @@ function frame(){ clampCam(); renderGround(); g.setTransform(1,0,0,1,0,0); g.cle
   if(pend) renderPendBar();
   for(const v of VIS) if(v.kind==="meeting"&&v.state==="meeting")drawMeetingBubble(g,v);
   for(const uid of SEAT_COMPOSITES.keys())if(!OBJS.some(o=>o.uid===uid))SEAT_COMPOSITES.delete(uid);
-  for(const P of PLOTS){ const [id,,x0,y0,x1,y1]=P; if(UNLOCKED.has(id)) continue; const [cx,cy]=iso((x0+x1+1)/2,(y0+y1+1)/2); drawLock(g,cx,cy-10,canUnlock(P)); }
+  const zlv=typeof nextZoneLv==="function"?nextZoneLv():1, zok=typeof agencyLevel!=="function"||agencyLevel()>=zlv;
+  for(const P of PLOTS){ const [id,,x0,y0,x1,y1]=P; if(UNLOCKED.has(id)) continue; const [cx,cy]=iso((x0+x1+1)/2,(y0+y1+1)/2); const adj=canUnlock(P); drawLock(g,cx,cy-10,adj&&zok); if(adj&&!zok){ g.save(); g.font="bold 8px sans-serif"; g.textAlign="center"; g.fillStyle="#3A2414"; g.fillText(`Cấp ${zlv}`,cx,cy+16); g.restore(); } }
+  if(typeof drawZoneLabels==="function") drawZoneLabels(g);
   for(const a of AG) if(a.state==="use"&&a.useObj){ const o=OBJS.find(b=>b.uid===a.useObj); if(!o) continue; const U=USE[o.id]; if(U.fx) drawFx(g,o,U.fx,a.useT,a.useT/U.t); drawBubble(g,a,U.icon); }
   for(const a of AG) if(a.state==="shoot"&&a.useObj){ const o=OBJS.find(b=>b.uid===a.useObj), U=o&&USE[o.id]; if(U&&U.fx) drawFx(g,o,U.fx,a.t%U.t,(a.t%U.t)/U.t); }   // đèn ghi hình nhấp nháy khi đang quay
   if(!closingOffice) for(const a of AG) if(!a.emo&&!(a.state==="use"&&a.useObj)) drawProgressRing(g,a);   // vòng tiến trình; nhường chỗ cho biểu tượng cảm xúc và bong bóng đang dùng đồ
@@ -1734,7 +1737,7 @@ function updatePanels(){ updateDayReport();let work=0,burn=0; for(const a of AG)
   const hh=Math.floor(GS.min/60), mm=Math.floor(GS.min%60); { const ck=`N${GS.day} ${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}<small class="clk-ph"> · ${dayLight(GS.min).phase}</small>`; if($id("clock").dataset.v!==ck){ $id("clock").innerHTML=ck; $id("clock").dataset.v=ck; } }
   document.querySelectorAll("[data-spd]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.spd===GS.speed));
   hud();
-  const np=plotPrice(), lv=UNLOCKED.size; $id("lvlTxt").textContent=`LV ${lv}`; $id("co").title=`Cấp ${lv} · mở khu tiếp: ${fmt(np)}`; $id("lvlBar").style.width=Math.max(0,Math.min(100,cash/np*100)).toFixed(0)+"%";
+  const np=plotPrice(), XP=typeof xpProgress==="function"?xpProgress():{lv:UNLOCKED.size,xp:0,need:0,pct:0}, lv=XP.lv; $id("lvlTxt").textContent=`LV ${lv}`; $id("co").title=`Cấp agency ${lv} · ${XP.need?`${XP.xp}/${XP.need} XP`:"cấp tối đa"} · khu tiếp: ${fmt(np)}`; $id("lvlBar").style.width=XP.pct.toFixed(0)+"%";
   if($id("staff").classList.contains("open")) renderStaff();
   if($id("jobs").classList.contains("open")) renderJobs();
   for(const [t,c,m,r] of questList()){ if(c>=m&&!GS.questClaimed[t]){ GS.questClaimed[t]=1; GS.gems+=r; toast(`Hoàn thành nhiệm vụ "${t}" · +${r}💎`,"ok"); save(); } }
@@ -1813,7 +1816,7 @@ function applyStarterOffice(){
 }
 // Mở game: ai đã có chỗ thì xuất hiện ngay cạnh chỗ của mình; người còn lại không đứng đè lên đồ.
 function placeStaffAtSeats(){ for(const a of AG){ const acc=a.seat&&accessOf(a.seat); if(acc){ [a.x,a.y]=acc; a.path=[]; } else if(blocked(Math.round(a.x),Math.round(a.y))){ [a.x,a.y]=ENTRY; a.path=[]; } } }
-const hadSave=load(); setupAmbience(); ensureReputation(); ensureWeeklyPass(); restoreRoster(); updatePlayerAvatar();
+const hadSave=load(); if(typeof migrateAgencyLevel==="function") migrateAgencyLevel(); setupAmbience(); ensureReputation(); ensureWeeklyPass(); restoreRoster(); updatePlayerAvatar();
 // Bộ khởi đầu: game mới (kể cả khi trình duyệt chặn lưu) hoặc bản lưu cũ chưa từng nhận bộ khởi đầu.
 const starterAdded=(!hadSave||!GS.starterApplied)?applyStarterOffice():[];
 if(hadSave&&starterAdded.length){ const names=[...new Set(starterAdded)]; setTimeout(()=>toast("Đã bổ sung bộ khởi đầu còn thiếu: "+names.join(", "),"ok"),900); }

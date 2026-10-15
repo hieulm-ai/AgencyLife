@@ -121,7 +121,7 @@ function assignStages(){
 }
 // Nhân vật chính gốc Account: cả đội làm bước Brief nhanh hơn (thông số thử).
 function perkStage(role){ const m=typeof perkVal==='function'?perkVal('stage',null):null; return m&&m[role]||1; }
-function stageRate(a,role){ const base=workerRate(a); if(base<=0) return 0; return base*WORK_SPEED*MATCH_F[roleMatch(a,role)]*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1)*perkStage(role); }
+function stageRate(a,role){ const base=workerRate(a); if(base<=0) return 0; return base*WORK_SPEED*MATCH_F[roleMatch(a,role)]*(GS.stars&&GS.stars[CHARS[a.ci].id]?STAR_F:1)*perkStage(role)*(typeof zoneRoleF==='function'?zoneRoleF(a,role):1); }   // 15/10: khu đúng công năng làm nhanh hơn
 // Nhân vật chính có nghề sản xuất: lúc quầy vắng khách thì phụ một tay bước đúng nghề, nửa tốc độ, không cộng stress.
 // Chỉ phụ job đã có người đang làm bước đó (hoàn tất bước vẫn do người đó cầm hồ sơ đi tiếp).
 function founderHelpRate(role){

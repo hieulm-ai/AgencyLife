@@ -232,7 +232,7 @@ function olOfficeSnapshot(){
  for(const k of keep)if(GS[k]!==undefined)gs[k]=JSON.parse(JSON.stringify(GS[k]));
  return {cash:0,ws:WS,ds:DS,fl:FL,unlocked:[...UNLOCKED],t:0,objs:OBJS.map(o=>({...o})),cells:G.map(r=>r.map(v=>v===1?1:v===2?2:0).join('')),gs};
 }
-function olProfileData(){return {agency:agencyName().slice(0,40),look:{player:GS.player&&GS.player.id,custom:GS.player&&GS.player.kind==='custom'?GS.player.look:undefined},level:lvl(),rep:Math.round(GS.reputation&&GS.reputation.points||0),jobs:GS.done||0};}
+function olProfileData(){return {agency:agencyName().slice(0,40),look:{player:GS.player&&GS.player.id,custom:GS.player&&GS.player.kind==='custom'?GS.player.look:undefined},level:typeof agencyLevel==='function'?agencyLevel():lvl(),rep:Math.round(GS.reputation&&GS.reputation.points||0),jobs:GS.done||0};}
 async function olPush(force){
  if(!OL.be||!OL.user||VISIT||OL.pushing)return;
  if(!force&&Date.now()-OL.lastPush<OL_PUSH_EVERY){OL.dirty=true;clearTimeout(OL.timer);OL.timer=setTimeout(()=>olPush(true),OL_PUSH_EVERY-(Date.now()-OL.lastPush));return;}

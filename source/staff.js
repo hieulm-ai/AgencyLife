@@ -52,6 +52,7 @@ function commitRoster(){
  save();updatePanels();renderStaff();
 }
 function hireStaff(id){
+ if(typeof agencyLevel==='function'&&agencyLevel()<roleMinLv(STAFF_ROLE[id])){toast(`${STAFF_ROLE[id]} mở ở cấp agency ${roleMinLv(STAFF_ROLE[id])}`,'err');return;}
  if(typeof bootEnsure==='function')bootEnsure(CHARS.find(c=>c.id===id));
  const ci=CHARS.findIndex(c=>c.id===id);
  if(ci<0||id===MASCOT_ID||AG.some(a=>a.ci===ci))return;
@@ -104,7 +105,8 @@ function renderStaff(){
  for(const c of [...free].sort((p,q)=>(q.id===starId)-(p.id===starId))){
   const star=c.id===starId;   // V17: có HR trong đội → 1 ứng viên làm rất tốt được làm nổi bật mỗi ngày
   const card=document.createElement('div');card.className='pack'+(star?' star-cand':'');card.style.gridTemplateColumns='48px minmax(0,1fr) auto';
-  const name=document.createElement('span');const title=document.createElement('b');title.textContent=staffName(c.id);const sub=document.createElement('small');sub.style.cssText='display:block;font-size:11px';sub.textContent=c.id===MASCOT_ID?'Linh vật · không làm job, giảm stress người xung quanh':roleOf(c.id)+(typeof salaryRate==='function'?` · Lương ${fmt(salaryRate(c.id,star))}/ngày`:'')+(star?' · ⭐ Ứng viên nổi bật · làm nhanh hơn 20%':'');name.append(title,sub);const b=document.createElement('button');b.className='btn g';b.textContent=`Tuyển · ${hireCost()} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${hireCost()} tr`);b.onclick=()=>hireStaff(c.id);card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
+  const name=document.createElement('span');const title=document.createElement('b');title.textContent=staffName(c.id);const sub=document.createElement('small');sub.style.cssText='display:block;font-size:11px';sub.textContent=c.id===MASCOT_ID?'Linh vật · không làm job, giảm stress người xung quanh':roleOf(c.id)+(typeof salaryRate==='function'?` · Lương ${fmt(salaryRate(c.id,star))}/ngày`:'')+(star?' · ⭐ Ứng viên nổi bật · làm nhanh hơn 20%':'');name.append(title,sub);const b=document.createElement('button');const needLv=typeof roleMinLv==='function'?roleMinLv(STAFF_ROLE[c.id]):1,lockedRole=typeof agencyLevel==='function'&&agencyLevel()<needLv;   // 15/10: bộ phận mở theo cấp agency
+  if(lockedRole){b.className='btn c';b.textContent=`🔒 Cấp ${needLv}`;b.setAttribute('aria-disabled','true');b.onclick=()=>toast(`${roleOf(c.id)} mở ở cấp agency ${needLv}`,'err');}else{b.className='btn g';b.textContent=`Tuyển · ${hireCost()} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${hireCost()} tr`);b.onclick=()=>hireStaff(c.id);}card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
  }
 }
 

@@ -24,6 +24,7 @@ function borrowBlock(id){
  const ci=CHARS.findIndex(c=>c.id===id);
  if(ci<0||!STAFF_ROLE[id]||id===MASCOT_ID)return 'Không mượn được người này.';
  if(AG.some(a=>a.ci===ci))return 'Agency của bạn đã có người này.';
+ if(typeof agencyLevel==='function'&&agencyLevel()<roleMinLv(STAFF_ROLE[id]))return `${STAFF_ROLE[id]} mở ở cấp agency ${roleMinLv(STAFF_ROLE[id])}.`;
  if(borrowList().some(b=>b.day===GS.day))return 'Mỗi ngày game chỉ mượn được 1 người.';
  if(closingOffice||GS.min>=CLOSE_MIN-60)return 'Sắp hết giờ làm (sau 20:00). Mượn vào ngày mai.';
  if(AG.length>=15)return 'Văn phòng đã đủ 15 người.';
