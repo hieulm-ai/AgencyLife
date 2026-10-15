@@ -271,6 +271,14 @@ for reference in references:
         raise FileNotFoundError(reference)
 manifest = [{"path": ref, "bytes": (OUTPUT / ref).stat().st_size} for ref in references]
 (OUTPUT / 'asset-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+# 15/10/2026: biểu tượng app (Vịt Vàng, vẽ bằng Higgsfield) — favicon, apple-touch-icon, icon PWA + manifest.
+_icon=Image.open(ASSETS/'app-icon/app-icon-384.png').convert('RGB')
+(OUTPUT/'icons').mkdir(exist_ok=True)
+for _n,_sz in [('icon-512.png',512),('icon-192.png',192),('apple-touch-icon.png',180),('favicon-32.png',32)]:
+    _p=OUTPUT/'icons'/_n; _im=_icon.resize((_sz,_sz),Image.Resampling.LANCZOS)
+    if not _p.exists() or Image.open(_p).convert('RGB').tobytes()!=_im.tobytes(): _im.save(_p,optimize=True)
+_icon.resize((48,48),Image.Resampling.LANCZOS).save(OUTPUT/'favicon.ico',sizes=[(16,16),(32,32),(48,48)])
+(OUTPUT/'manifest.webmanifest').write_text(json.dumps({"name":"Agency's Life Tycoon","short_name":"AgencyLife","start_url":"./","scope":"./","display":"fullscreen","orientation":"landscape","background_color":"#7cc4e6","theme_color":"#5E9E42","icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}]},ensure_ascii=False,indent=1)+'\n')
 # Only replace the preview once its complete set of assets has been written.
 temporary = OUTPUT / 'index.html.tmp'
 temporary.write_text(s)
