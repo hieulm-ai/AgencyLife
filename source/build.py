@@ -259,6 +259,8 @@ loading_gif=ASSETS/'loading/vu-a-vu-transparent.gif'
 loading_still=Image.open(loading_gif).convert('RGBA')
 s=s.replace('__BOOT_VU_GIF__',export_bytes(loading_gif.read_bytes(),'gif')).replace('__BOOT_VU_STILL__',webp(loading_still))
 s=s.replace('__SUPPORT_DRINK_IMAGES__',json.dumps([webp(ASSETS/f'support-drink-{i}.png') for i in range(1,4)]))
+s=s.replace('__GUIDE_DUCK_HI__',webp(ASSETS/'guide/guide_duck.png', lossless=False))   # 15/10/2026: vịt hướng dẫn vẽ lại (Higgsfield)
+s=s.replace('__GUIDE_PANEL__',webp(ASSETS/'guide/guide_panel.png', lossless=False))   # khung thoại 9 mảnh
 s=s.replace('__GUIDE_DUCK__',webp(ASSETS/'characters/09_Vit_Vang/portrait_48x64.png'))
 s=s.replace('__FEEDBACK_ICONS__',webp(ASSETS/'feedback-icons.png'))
 if 'data:image/' in s:

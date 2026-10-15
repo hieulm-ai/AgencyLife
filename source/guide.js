@@ -139,7 +139,7 @@ const TOUR=[
  {id:"guide",rect:()=>domRect("#bGuide"),text:"Quên cách chơi? Biểu tượng Hướng dẫn luôn ở đây. Chạm để hoàn tất.",tap:true,swallow:true}];   // bảng đang mở được đóng khi kết thúc (endTour)
 function tourEls(){
  let el=document.getElementById("tour");
- if(!el){el=document.createElement("div");el.id="tour";el.innerHTML='<div class="tb" data-b="t"></div><div class="tb" data-b="r"></div><div class="tb" data-b="b"></div><div class="tb" data-b="l"></div><div class="tring"></div><div class="thand" aria-hidden="true"></div><div class="tbub" role="dialog" aria-live="polite"><div class="duck-guide" aria-hidden="true"></div><div class="tsay"><small class="tcount"></small><p class="ttext"></p></div><div class="tact"><button class="btn c" data-tour-skip>Bỏ qua</button><button class="btn g" data-tour-next hidden>Tiếp</button></div></div>';document.body.append(el);
+ if(!el){el=document.createElement("div");el.id="tour";el.innerHTML='<div class="tb" data-b="t"></div><div class="tb" data-b="r"></div><div class="tb" data-b="b"></div><div class="tb" data-b="l"></div><div class="tring"></div><div class="thand" aria-hidden="true"></div><div class="tbub" role="dialog" aria-live="polite"><div class="tduck" aria-hidden="true"></div><div class="tpanel"><div class="tsay"><small class="tcount"></small><p class="ttext"></p></div><div class="tact"><button class="btn c" data-tour-skip>Bỏ qua</button><button class="btn g" data-tour-next hidden>Tiếp</button></div></div></div>';document.body.append(el);
   el.querySelector("[data-tour-skip]").onclick=()=>endTour(true);el.querySelector("[data-tour-next]").onclick=()=>nextTour();
 }
  return el;
@@ -204,7 +204,7 @@ function tourLoop(){
  // 15/10/2026: khung trò chuyện của vịt nằm ở góc dưới màn hình, không che các nút (thanh dưới trên máy tính / cột trái trên điện thoại).
  // Nếu đè lên ô đang chỉ thì chuyển sang góc dưới phải, rồi lên giữa phía trên.
  const nav=document.getElementById("nav")?.getBoundingClientRect(),rail=nav&&nav.width&&nav.height>nav.width;
- const left0=rail?nav.right+10:12,bottom0=rail||!nav||!nav.height?H-10:Math.min(H-10,nav.top-12);
+ const left0=rail?nav.right+10:12,bottom0=rail||!nav||!nav.height?H-8:Math.min(H-10,nav.top-26);
  const bw=Math.min(rail?400:440,W-left0-12),bh=bub.offsetHeight||96;
  const hit=(x,y)=>r&&x<hole.r+6&&x+bw>hole.l-6&&y<hole.b+6&&y+bh>hole.t-6;
  const spots=[[left0,bottom0-bh],[W-bw-12,bottom0-bh],[(W-bw)/2,Math.max(64,Math.min(H-bh-10,72))]];

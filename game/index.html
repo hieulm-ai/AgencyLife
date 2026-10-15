@@ -804,22 +804,6 @@ body:has(#unlockBox.open) #earlyPlay,body:has(#askBox:not([hidden])) #earlyPlay,
 /* Ảnh minh họa job trong thẻ việc đầu game: dùng chung kích thước atlas với bảng Công việc (trước đây bị trống) */
 .job-avatar{background-size:500% 200%;background-repeat:no-repeat;background-color:#fff6e2;image-rendering:pixelated}
 
-/* Hướng dẫn chạm: vịt vàng nói chuyện ở góc dưới màn hình (ảnh vịt lớn bên trái, bóng thoại ngang) */
-#tour .tbub{position:fixed;display:grid;grid-template-columns:86px minmax(0,1fr) auto;grid-template-areas:"duck say act";align-items:center;column-gap:10px;row-gap:6px;
- padding:10px 12px 10px 8px;border:3px solid #6B3512;border-radius:20px;background:linear-gradient(#FFF6E3,#FFE3BC);box-shadow:0 4px 0 #6B3512,0 10px 22px rgba(40,20,6,.35);font-size:14px;line-height:1.4;overflow:visible}
-#tour .tbub .duck-guide{grid-area:duck;align-self:end;width:86px;height:100px;margin:-44px 0 -6px;background-size:86px auto;background-position:center bottom;filter:drop-shadow(0 3px 0 rgba(107,53,18,.35))}
-#tour .tbub::before{content:"";position:absolute;left:84px;top:50%;width:14px;height:14px;margin-top:-7px;background:#FFF0D6;border-left:3px solid #6B3512;border-bottom:3px solid #6B3512;transform:rotate(45deg);display:none}
-#tour .tsay{grid-area:say;display:grid;gap:2px;background:#FFFDF6;border:2px solid #E7C48F;border-radius:14px;padding:7px 10px}
-#tour .tcount{font-size:11px;font-weight:800;color:#B0662A;letter-spacing:.02em}
-#tour .ttext{margin:0;font-weight:800;color:#3A2414;font-size:14px}
-#tour .tact{grid-area:act;display:flex;flex-direction:column;justify-content:center;gap:6px}#tour .tact .btn{min-height:30px;min-width:76px;padding:3px 12px;font-size:12.5px}
-@media(max-height:500px) and (orientation:landscape){
- #tour .tbub{grid-template-columns:66px minmax(0,1fr) auto;padding:7px 10px 7px 6px;column-gap:8px;border-radius:16px}
- #tour .tbub .duck-guide{width:66px;height:78px;margin:-34px 0 -4px;background-size:66px auto}
- #tour .tsay{padding:5px 8px}#tour .ttext{font-size:12.5px}#tour .tcount{font-size:10px}
- #tour .tact .btn{min-height:28px;min-width:64px;font-size:11.5px}
-}
-
 /* Điện thoại xoay ngang: cột trái tách khỏi thẻ agency; nút góc phải và các ô chỉ số lớn hơn, cân với bản máy tính */
 @media(max-height:500px) and (orientation:landscape){
  #nav{top:66px!important}
@@ -851,6 +835,24 @@ body:has(#tour:not([hidden])) #earlyPlay{display:none!important}
 @media(max-height:500px) and (orientation:landscape) and (max-width:640px){
  #wrap #res,#wrap.hud-stacked #res,#wrap.hud-compact #res{top:56px!important;left:74px!important;right:auto!important;transform:none!important;justify-content:flex-start}
  #topR{transform:scale(.78)!important}
+}
+
+/* 15/10/2026 (3): khung trò chuyện vịt vàng vẽ lại bằng Higgsfield — ảnh vịt lớn + khung thoại cam 9 mảnh (đuôi thoại bên trái) */
+#tour .tbub{position:fixed;display:flex;align-items:flex-end;gap:0;padding:0;background:none;border:0;box-shadow:none;font-size:14px;line-height:1.35;overflow:visible}
+#tour .tduck{flex:0 0 122px;width:122px;height:130px;margin:0 -18px -4px 0;position:relative;z-index:1;background:url("assets/generated/5e1d34aa6213249396f1606a.webp") center bottom / contain no-repeat;filter:drop-shadow(0 4px 3px rgba(40,20,6,.35));animation:tduckBob 2.4s ease-in-out infinite}
+@keyframes tduckBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){#tour .tduck{animation:none}}
+#tour .tpanel{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:8px;min-height:92px;border-style:solid;border-width:29px 33px 32px 40px;border-image:url("assets/generated/c49d8483e6bd2bf936fcbebf.webp") 42 48 46 58 fill / 29px 33px 32px 40px;padding:0;margin:-14px 0 -12px;filter:drop-shadow(0 6px 10px rgba(40,20,6,.28))}
+#tour .tsay{flex:1 1 auto;min-width:0;display:grid;gap:2px;margin:-4px 0 -6px -4px;background:none;border:0;padding:0}
+#tour .tcount{font-size:11px;font-weight:800;color:#C0692A;letter-spacing:.02em}
+#tour .ttext{margin:0;font-weight:800;color:#4A2A12;font-size:14.5px}
+#tour .tact{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;margin:-6px -12px -8px 0}
+#tour .tact .btn{min-height:30px;min-width:72px;padding:3px 12px;font-size:12.5px}
+@media(max-height:500px) and (orientation:landscape){
+ #tour .tduck{flex-basis:92px;width:92px;height:98px;margin-right:-14px}
+ #tour .tpanel{min-height:72px;border-width:24px 28px 27px 33px;border-image-width:24px 28px 27px 33px}
+ #tour .ttext{font-size:12.5px}#tour .tcount{font-size:10px}
+ #tour .tact .btn{min-height:28px;min-width:62px;font-size:11.5px;padding:2px 10px}
 }
 
 body.booting #wrap{visibility:hidden}
@@ -4638,7 +4640,7 @@ const TOUR=[
  {id:"guide",rect:()=>domRect("#bGuide"),text:"Quên cách chơi? Biểu tượng Hướng dẫn luôn ở đây. Chạm để hoàn tất.",tap:true,swallow:true}];   // bảng đang mở được đóng khi kết thúc (endTour)
 function tourEls(){
  let el=document.getElementById("tour");
- if(!el){el=document.createElement("div");el.id="tour";el.innerHTML='<div class="tb" data-b="t"></div><div class="tb" data-b="r"></div><div class="tb" data-b="b"></div><div class="tb" data-b="l"></div><div class="tring"></div><div class="thand" aria-hidden="true"></div><div class="tbub" role="dialog" aria-live="polite"><div class="duck-guide" aria-hidden="true"></div><div class="tsay"><small class="tcount"></small><p class="ttext"></p></div><div class="tact"><button class="btn c" data-tour-skip>Bỏ qua</button><button class="btn g" data-tour-next hidden>Tiếp</button></div></div>';document.body.append(el);
+ if(!el){el=document.createElement("div");el.id="tour";el.innerHTML='<div class="tb" data-b="t"></div><div class="tb" data-b="r"></div><div class="tb" data-b="b"></div><div class="tb" data-b="l"></div><div class="tring"></div><div class="thand" aria-hidden="true"></div><div class="tbub" role="dialog" aria-live="polite"><div class="tduck" aria-hidden="true"></div><div class="tpanel"><div class="tsay"><small class="tcount"></small><p class="ttext"></p></div><div class="tact"><button class="btn c" data-tour-skip>Bỏ qua</button><button class="btn g" data-tour-next hidden>Tiếp</button></div></div></div>';document.body.append(el);
   el.querySelector("[data-tour-skip]").onclick=()=>endTour(true);el.querySelector("[data-tour-next]").onclick=()=>nextTour();
 }
  return el;
@@ -4703,7 +4705,7 @@ function tourLoop(){
  // 15/10/2026: khung trò chuyện của vịt nằm ở góc dưới màn hình, không che các nút (thanh dưới trên máy tính / cột trái trên điện thoại).
  // Nếu đè lên ô đang chỉ thì chuyển sang góc dưới phải, rồi lên giữa phía trên.
  const nav=document.getElementById("nav")?.getBoundingClientRect(),rail=nav&&nav.width&&nav.height>nav.width;
- const left0=rail?nav.right+10:12,bottom0=rail||!nav||!nav.height?H-10:Math.min(H-10,nav.top-12);
+ const left0=rail?nav.right+10:12,bottom0=rail||!nav||!nav.height?H-8:Math.min(H-10,nav.top-26);
  const bw=Math.min(rail?400:440,W-left0-12),bh=bub.offsetHeight||96;
  const hit=(x,y)=>r&&x<hole.r+6&&x+bw>hole.l-6&&y<hole.b+6&&y+bh>hole.t-6;
  const spots=[[left0,bottom0-bh],[W-bw-12,bottom0-bh],[(W-bw)/2,Math.max(64,Math.min(H-bh-10,72))]];
