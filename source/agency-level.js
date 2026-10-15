@@ -3,7 +3,7 @@
 // XP cần để từ cấp n lên n+1 = 20 × n^1,5. Mô phỏng scripts/economy_xp.py: người chơi tích cực đạt cấp 15 sau ~3 tuần,
 // người chơi 30 phút/ngày ~1 tháng (ước tính, chưa có dữ liệu người chơi thật).
 // Hệ số kinh tế (lvlMul, giá khu) vẫn theo số khu đã mở như trước: lvl() = UNLOCKED.size.
-const AG_LV_MAX=30, XP_A=20, XP_P=1.5, XP_PER_HOUR=.75, XP_GOOD_REVIEW=1.2, LV_UP_GEMS=5;
+const AG_LV_MAX=30, XP_A=20, XP_P=1.5, XP_PER_HOUR=.75, XP_GOOD_REVIEW=1.2, LV_UP_GEMS=2;
 function xpNeed(n){return Math.round(XP_A*Math.pow(n,XP_P));}
 // Mốc mở (thông số thử).
 const ROLE_LV={'Sale':3,'Trợ lý':3,'HR':5,'Quay phim':9,'Editor':11,'AI Designer':13,'Âm thanh':15};
@@ -52,16 +52,16 @@ function addXP(n,quiet){
  while(agencyLevel()<AG_LV_MAX&&GS.xp>=xpNeed(agencyLevel())){GS.xp-=xpNeed(agencyLevel());GS.agLv=agencyLevel()+1;ups.push(GS.agLv);}
  if(agencyLevel()>=AG_LV_MAX)GS.xp=0;
  if(!ups.length||quiet)return;
- for(const lv of ups){if(typeof addGems==='function')addGems(LV_UP_GEMS,`Lên cấp ${lv}`);else GS.gems+=LV_UP_GEMS;
+ let got=0;for(const lv of ups){if(typeof addGems==='function')got+=addGems(LV_UP_GEMS,`Lên cấp ${lv}`)||0;else{GS.gems+=LV_UP_GEMS;got+=LV_UP_GEMS;}
   const u=unlocksAt(lv);if(typeof addOfficeNews==='function')addOfficeNews('level',`Agency lên cấp ${lv}`+(u.length?' · mở: '+u.join(', '):''));}
  if(typeof buildCatalog==='function')buildCatalog();
- showLevelUp(ups[ups.length-1],ups.flatMap(unlocksAt),ups.length*LV_UP_GEMS);
+ showLevelUp(ups[ups.length-1],ups.flatMap(unlocksAt),got);
 }
 function showLevelUp(lv,items,gems){
  if(typeof tourOn!=='undefined'&&tourOn){toast(`Lên cấp ${lv}!`,'ok');return;}
  const box=document.getElementById('unlockBox');if(!box)return;
  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
- box.innerHTML=`<div class="ph"><span class="ic">${UIIMG('up',22)}</span>Agency lên cấp ${lv}!</div><div class="row"><span>Thưởng</span><b>+${gems||LV_UP_GEMS}💎</b></div>`
+ box.innerHTML=`<div class="ph"><span class="ic">${UIIMG('up',22)}</span>Agency lên cấp ${lv}!</div><div class="row"><span>Thưởng</span><b>${gems?'+'+gems+'💎':'Đã nhận đủ ruby tuần này'}</b></div>`
   +(items.length?`<div class="lvup-list">${items.map(t=>`<div class="row"><span>🔓 ${esc(t)}</span></div>`).join('')}</div>`:'')
   +`<button class="btn g" id="lvOk">Tuyệt!</button>`;
  box.innerHTML=typeof gemify==='function'?gemify(box.innerHTML):box.innerHTML;

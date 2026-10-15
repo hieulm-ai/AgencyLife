@@ -82,10 +82,10 @@ test('người đúng chuyên môn vừa rảnh nhận lại bước (chưa quá
  assert.equal(a.who,'C','Content nhận lại bước Sáng tạo');assert.equal(c.AG[0].pass.to,'C','Planner mang hồ sơ sang');assert.equal(a.passing,true);
 });
 test('số chỗ nhận việc tăng theo người làm job, loại lễ tân và linh vật; không mất chỗ khi tan ca',()=>{
- const c=setup('ADK');assert.equal(c.jobCapacity(),3);
- c.AG.push({ci:0,founder:true},{ci:0,mascot:true});assert.equal(c.jobCapacity(),3);
- for(let i=0;i<3;i++)c.AG.push({ci:0,away:true});assert.equal(c.jobCapacity(),4);
- for(let i=0;i<3;i++)c.AG.push({ci:0});assert.equal(c.jobCapacity(),6);
+ const c=setup('ADK');assert.equal(c.teamCapacity(),3);
+ c.AG.push({ci:0,founder:true},{ci:0,mascot:true});assert.equal(c.teamCapacity(),3);
+ for(let i=0;i<3;i++)c.AG.push({ci:0,away:true});assert.equal(c.teamCapacity(),4);
+ for(let i=0;i<3;i++)c.AG.push({ci:0});assert.equal(c.teamCapacity(),6);
 });
 test('ước tính từng bước dùng đúng hệ số sản xuất; ghế tốt và ứng viên nổi bật rút ngắn thời gian',()=>{
  const c=setup('ADK'),j=job(1,'Thiết kế logo',30);c.ensureStages(j);

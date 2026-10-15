@@ -11,7 +11,7 @@ function setup(gs={}){
 test('ngưỡng XP 20 × n^1,5 và lên nhiều cấp một lúc, thưởng ruby mỗi cấp',()=>{
  const c=setup();assert.equal(c.agencyLevel(),1);assert.equal(c.xpNeed(1),20);assert.equal(c.xpNeed(4),160);
  c.addXP(20+57);   // cấp 1→2 cần 20, 2→3 cần 57
- assert.equal(c.agencyLevel(),3);assert.equal(c.GS.xp,0);assert.equal(c.GS.gems,10);
+ assert.equal(c.agencyLevel(),3);assert.equal(c.GS.xp,0);assert.equal(c.GS.gems,4);
  assert.ok(c.news.some(m=>/cấp 3/.test(m)&&/Tuyển Sale/.test(m)));
 });
 test('cấp 15 mở Phòng thu: Âm thanh, phòng thu, Podcast; video từ cấp 9',()=>{

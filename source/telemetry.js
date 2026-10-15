@@ -19,15 +19,17 @@
   try{fetch(cfg.url+'/rest/v1/telemetry',{method:'POST',keepalive:true,headers:{apikey:cfg.anonKey,Authorization:'Bearer '+cfg.anonKey,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(Object.assign({},base,row))}).catch(()=>{});}catch(e){}
  }
  if(!ss('5bit.tm.visit')){ss('5bit.tm.visit','1');send({kind:'visit'});}
- const seen=new Set();let sent=0;
+ const seen=new Set();let sent=0,authSent=0;
  function report(msg,src){
   msg=String(msg||'').slice(0,300);src=String(src||'').slice(0,200);
-  const k=msg+'|'+src;if(!msg||seen.has(k)||sent>=5)return;seen.add(k);sent++;
+  const k=msg+'|'+src,auth=msg.startsWith('[auth]');if(!msg||seen.has(k)||(auth?authSent>=3:sent>=5))return;seen.add(k);auth?authSent++:sent++;
   send({kind:'error',msg,src});
  }
+ window.__tmLog=(m,src)=>report(m,src);   // chẩn đoán đăng nhập từ online.js (dòng "[auth] …")
  addEventListener('error',e=>{
   if(e.target&&e.target!==window&&e.target.tagName){const u=e.target.src||e.target.href||'';if(u&&u.startsWith(location.origin))report('Không tải được tài nguyên',u.replace(location.origin,''));return;}
   const f=e.filename||'';if(f&&!f.startsWith(location.origin))return;   // bỏ lỗi từ tiện ích trình duyệt/trang khác
+  if(/^ResizeObserver loop/.test(e.message||''))return;   // cảnh báo vô hại của trình duyệt, không ảnh hưởng người chơi
   report(e.message,(f.replace(location.origin,'')||'inline')+':'+(e.lineno||0)+':'+(e.colno||0));
  },true);
  addEventListener('unhandledrejection',e=>{const r=e.reason;const m=r&&(r.message||String(r))||'';if(/AbortError|NetworkError|Failed to fetch|Load failed/i.test(m))return;report('Promise: '+m,(r&&r.stack||'').split('\n')[1]||'');});

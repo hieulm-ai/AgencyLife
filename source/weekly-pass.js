@@ -1,6 +1,6 @@
 // A free pass follows seven played game days, not wall-clock time.
 // V15: mốc cuối có thêm 1 vật phẩm vào Kho (Cửa hàng → Kho).
-const PASS_MILESTONES=[{jobs:3,coin:10,gems:0},{jobs:7,coin:0,gems:5},{jobs:12,coin:25,gems:10,item:'potted_plant'}];
+const PASS_MILESTONES=[{jobs:3,coin:10,gems:0},{jobs:7,coin:0,gems:2},{jobs:12,coin:25,gems:4,item:'potted_plant'}];
 function ensureWeeklyPass(){
  const week=Math.floor((Math.max(1,GS.day)-1)/7)+1;
  if(!GS.weeklyPass||!Array.isArray(GS.weeklyPass.weeks))GS.weeklyPass={weeks:[]};
@@ -16,8 +16,8 @@ function claimPassReward(week,index){
  ensureWeeklyPass();const row=GS.weeklyPass.weeks.find(w=>w.week===week),reward=PASS_MILESTONES[index];
  if(!row||!reward||row.jobs<reward.jobs||row.claimed.includes(index))return false;
  row.claimed.push(index);cash=Math.round((cash+reward.coin)*100)/100;
- GS.gems+=reward.gems;GS.gemEarned=(GS.gemEarned||0)+reward.gems;
- addOfficeNews("reward",`Nhận Pass tuần ${week}, mốc ${reward.jobs} job: ${reward.coin} tr + ${reward.gems} ruby`);
+ const gems=typeof grantGems==='function'?grantGems(reward.gems):(GS.gems+=reward.gems,GS.gemEarned=(GS.gemEarned||0)+reward.gems,reward.gems);
+ addOfficeNews("reward",`Nhận Pass tuần ${week}, mốc ${reward.jobs} job: ${reward.coin} tr + ${gems} ruby`);
  if(reward.item&&typeof grantStoreItem==='function')grantStoreItem(reward.item,`Pass tuần ${week}`);
  save();hud();updatePanels();renderGemShop();toast('Đã nhận thưởng Pass tuần','ok');return true;
 }

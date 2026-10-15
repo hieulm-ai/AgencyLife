@@ -147,10 +147,10 @@ function olSupabaseBackend(cfg){
   const m=Object.fromEntries(rows.map(r=>[r.id,r]));for(const id of ids)if(!m[id])m[id]={id,agency:'(đã rời game)',code:'',level:1,likes:0};return m;};
  return {
   kind:'supabase',
-  async init(){const mod=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/+esm');
+  async init(){const mod=await olImportSupabase();
    sb=mod.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
    const {data}=await sb.auth.getSession();uid=data.session?.user?.id||null;
-   sb.auth.onAuthStateChange((_e,s)=>{const n=s?.user?.id||null;if(n!==uid){uid=n;olOnAuth(n?{id:n,email:s.user.email}:null);}});
+   sb.auth.onAuthStateChange((ev,s)=>{const n=s?.user?.id||null;if(ev==='SIGNED_OUT'&&uid&&!OL.signingOut)olAuthDiag('bị đăng xuất tự động (phiên hết hạn hoặc bị thu hồi)');if(n!==uid){uid=n;olOnAuth(n?{id:n,email:s.user.email}:null);}});
    return uid?{id:uid,email:data.session.user.email}:null;},
   async signUp(email,pw){const d=chk(await sb.auth.signUp({email,password:pw,options:{emailRedirectTo:location.href.split('#')[0]}}));uid=d.user&&d.session?d.user.id:null;
    if(!d.session)return {pending:true};return {id:d.user.id,email};},
@@ -160,8 +160,9 @@ function olSupabaseBackend(cfg){
    if(!response.ok)throw Error('Chưa kiểm tra được đăng nhập. Thử lại sau.');
    const settings=await response.json();
    if(settings.external?.[provider]!==true)throw Error((provider==='google'?'Google':'Facebook')+' chưa bật. Hãy tạo tài khoản bằng email.');
+   olLS(OL_OAUTH_KEY,{p:provider,t:Date.now(),sa:olStandalone()});
    chk(await sb.auth.signInWithOAuth({provider,options:{redirectTo:location.href.split('#')[0]}}));return {redirect:true};},
-  async signOut(){chk(await sb.auth.signOut());uid=null;},
+  async signOut(){OL.signingOut=true;try{chk(await sb.auth.signOut());}finally{OL.signingOut=false;}uid=null;},
   async getSave(){return chk(await sb.from('saves').select('data,client_t,device,updated_at').eq('id',me()).maybeSingle());},
   async putSave(data,client_t,device){chk(await sb.from('saves').upsert({id:me(),data,client_t,device,updated_at:new Date().toISOString()}));},
   async myProfile(){return chk(await sb.from('profiles').select('*').eq('id',me()).maybeSingle());},
@@ -195,15 +196,52 @@ function olSupabaseBackend(cfg){
 // ---------- trạng thái ----------
 const OL={be:null,user:null,profile:null,status:'off',dirty:false,lastPush:0,pushing:false,timer:0,friends:[],req:{incoming:[],outgoing:[]},mail:[],lastDay:0,officeSig:''};
 function olMode(){if(VISIT&&VISIT.mode)return VISIT.mode;const m=olLS(OL_MODE_KEY);if(m==='mock')return 'mock';return ONLINE_CFG&&ONLINE_CFG.url?'supabase':'off';}
+// 15/10: giữ đăng nhập ổn định trên điện thoại.
+// - Tải thư viện Supabase thử lại 3 lần; mạng chập chờn lúc mở game không còn làm mất trạng thái đăng nhập.
+// - Có phiên lưu trên máy mà chưa kết nối được: hiện "Đang kết nối…" thay vì nút Đăng nhập, tự thử lại khi có mạng / mở lại app.
+// - Ghi chẩn đoán ẩn danh (telemetry, dòng "[auth] …") khi máy từng đăng nhập mà mất phiên, để tìm nguyên nhân trên iPhone/Android.
+const OL_OAUTH_KEY='5bit.oauth';
+async function olImportSupabase(){
+ let err;for(const wait of [0,1500,4000]){if(wait)await new Promise(r=>setTimeout(r,wait));
+  try{return await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/+esm');}catch(e){err=e;}}
+ throw err;
+}
+function olStandalone(){try{return !!(navigator.standalone||matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches);}catch(e){return false;}}
+function olHasStoredSession(){try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^sb-.+-auth-token$/.test(k||''))return true;}}catch(e){}return false;}
+function olAuthDiag(msg){try{if(typeof window.__tmLog==='function')window.__tmLog('[auth] '+msg,(olStandalone()?'app màn hình chính':'trình duyệt'));}catch(e){}}
+function olAuthBootCheck(){
+ const meta=olLS(OL_META_KEY)||{},oauth=olLS(OL_OAUTH_KEY);
+ if(oauth){olLS(OL_OAUTH_KEY,null);
+  if(!OL.user&&Date.now()-(oauth.t||0)<15*60000)olAuthDiag(`quay về từ ${oauth.p} nhưng chưa có phiên (lúc bấm: ${oauth.sa?'app':'trình duyệt'})`);}
+ if(!OL.user&&meta.uid&&!meta.out)olAuthDiag(`mở game: từng đăng nhập trên máy này nhưng không còn phiên (phiên lưu=${olHasStoredSession()?1:0})`);
+}
+let olRetryT=0,olIniting=false;
+function olRetryInit(){
+ if(olRetryT||!olHasStoredSession())return;
+ const go=()=>{clearTimeout(olRetryT);olRetryT=0;removeEventListener('online',go);document.removeEventListener('visibilitychange',vis);olInit();};
+ const vis=()=>{if(document.visibilityState==='visible')go();};
+ addEventListener('online',go);document.addEventListener('visibilitychange',vis);olRetryT=setTimeout(go,20000);
+}
 async function olInit(){
- const mode=olMode();OL.be=mode==='mock'?olMockBackend():mode==='supabase'?olSupabaseBackend(ONLINE_CFG):null;
- olRenderAccount();updateOnlineBadges();
- if(!OL.be)return;
- try{OL.user=await OL.be.init();}catch(e){OL.status='offline';olRenderAccount();return;}
- if(OL.user)await olOnAuth(OL.user,true);else olRenderAccount();
+ if(olIniting)return;olIniting=true;
+ try{
+  const mode=olMode();OL.be=mode==='mock'?olMockBackend():mode==='supabase'?olSupabaseBackend(ONLINE_CFG):null;
+  if(OL.be&&mode==='supabase'&&olHasStoredSession())OL.status='connecting';
+  olRenderAccount();updateOnlineBadges();olTitleAccount();
+  if(!OL.be)return;
+  try{OL.user=await OL.be.init();}catch(e){OL.status='offline';olAuthDiag('không kết nối được máy chủ đăng nhập: '+String(e&&e.message||e).slice(0,120));olRenderAccount();olTitleAccount();olRetryInit();return;}
+  if(OL.status==='connecting')OL.status='off';
+  olAuthBootCheck();
+  if(OL.user)await olOnAuth(OL.user,true);else{olRenderAccount();olTitleAccount();}
+ }finally{olIniting=false;}
+}
+// Nút ở màn chính: đã đăng nhập thì hiện "Tài khoản ✓" (mở Cài đặt → Tài khoản) thay vì "Đăng nhập".
+function olTitleAccount(){
+ const b=document.getElementById('titleLogin');if(!b)return;
+ b.textContent=OL.user?'Tài khoản ✓':OL.status==='connecting'?'Đang kết nối…':'Đăng nhập';
 }
 async function olOnAuth(user,boot){
- OL.user=user;OL.profile=null;if(user)olLS(GUEST_SESSION,null);
+ OL.user=user;OL.profile=null;if(user)olLS(GUEST_SESSION,null);olTitleAccount();
  if(!user){OL.status='off';OL.friends=[];OL.mail=[];OL.req={incoming:[],outgoing:[]};olRenderAccount();updateOnlineBadges();olSetCloud();return;}
  if(VISIT){olRefreshSocial();return;}
  const meta=olLS(OL_META_KEY)||{};
@@ -219,7 +257,7 @@ async function olOnAuth(user,boot){
     html:`<p>Tài khoản này đã có tiến độ khác với máy này.</p><ul class="ask-list"><li><b>Trên tài khoản:</b> ${olEsc(line(cg,c))}</li>${local?`<li><b>Trên máy này:</b> ${olEsc(line(lg,local))}</li>`:''}</ul><p class="hub-note">Bản không chọn sẽ bị thay thế. Muốn giữ cả hai, hãy vào Cài đặt → Tải bản lưu trước.</p>`});
    if(useCloud||!local){olLS(OL_META_KEY,{...meta,uid:user.id});importGameSave(JSON.stringify(c));toast('Đang tải tiến độ từ tài khoản…','ok');setTimeout(()=>location.reload(),600);return;}
   }
-  olLS(OL_META_KEY,{...meta,uid:user.id});
+  olLS(OL_META_KEY,{...meta,uid:user.id,out:false});
   await olPush(true);
   if(!boot)toast('Đã đăng nhập · tiến độ được lưu lên tài khoản','ok');
  }catch(e){OL.status='offline';toast(olErrText(e),'err');}
@@ -314,6 +352,8 @@ async function guestLogin(name,password,create){
  localStorage.setItem(GUEST_SESSION,JSON.stringify(name));location.reload();
 }
 function openLogin(){
+ if(OL.user){openHub('settings');return;}
+ if(OL.status==='connecting'){toast('Đang kết nối lại tài khoản đã đăng nhập…','ok');return;}
  olBox(`<h2>Vào agency</h2><div class="cg2">Chơi khách · lưu trên máy này</div><label class="ol-f">Tên đăng nhập<input id="guestName" autocomplete="username" maxlength="32"></label><label class="ol-f">Mật khẩu<input id="guestPassword" type="password" autocomplete="current-password"></label><p class="ol-err" id="guestError" role="alert"></p><div class="ask-act"><button class="btn y" id="guestCreate">Tạo khách</button><button class="btn g" id="guestLogin">Vào chơi</button></div><div class="cg2">Tài khoản online</div><div class="ol-oauth"><button class="btn b" id="loginFacebook">Facebook</button><button class="btn b" id="loginEmail">Email</button></div>`,el=>{
  const run=async create=>{const buttons=el.querySelectorAll('button');buttons.forEach(b=>b.disabled=true);try{await guestLogin(el.querySelector('#guestName').value,el.querySelector('#guestPassword').value,create);}catch(e){el.querySelector('#guestError').textContent=olErrText(e);}finally{buttons.forEach(b=>b.disabled=false);}};
  el.querySelector('#guestCreate').onclick=()=>run(true);el.querySelector('#guestLogin').onclick=()=>run(false);
@@ -372,6 +412,7 @@ function openSignup(){
 async function olLogout(){
  if(!await askConfirm({title:'Đăng xuất?',text:'Tiến độ vẫn giữ trên máy này và trên tài khoản. Đăng nhập lại để tiếp tục lưu lên tài khoản.',ok:'Đăng xuất',icon:'people'}))return;
  await olPush(true);try{await OL.be.signOut();}catch(e){toast(olErrText(e),'err');return;}
+ try{olLS(OL_META_KEY,{...(olLS(OL_META_KEY)||{}),out:true});}catch(e){}
  await olOnAuth(null);closeHub();if(guideOpen)closeGuide();
  try{sessionStorage.removeItem(SAVE+'.enter');sessionStorage.removeItem(OL_VISIT_KEY);}catch(e){}
  if(VISIT){location.reload();return;}
@@ -400,7 +441,7 @@ function olRenderAccount(){
 }
 
 // ---------- Bạn bè (nút góc trên phải) ----------
-function olNeedLogin(el){el.innerHTML=`<p class="hub-note">${OL.be?'Đăng nhập để kết bạn, tham quan văn phòng của bạn bè và tặng quà.':'Bản này chưa kết nối máy chủ. Vào Cài đặt → Tài khoản để bật máy chủ thử.'}</p>${OL.be?'<button class="btn g" data-ol-login>Đăng nhập</button>':'<button class="btn b" data-ol-set>Mở Cài đặt</button>'}`;
+function olNeedLogin(el){if(OL.status==='connecting'){el.innerHTML='<p class="hub-note">Đang kết nối lại tài khoản đã đăng nhập trên máy này…</p>';return;}el.innerHTML=`<p class="hub-note">${OL.be?'Đăng nhập để kết bạn, tham quan văn phòng của bạn bè và tặng quà.':'Bản này chưa kết nối máy chủ. Vào Cài đặt → Tài khoản để bật máy chủ thử.'}</p>${OL.be?'<button class="btn g" data-ol-login>Đăng nhập</button>':'<button class="btn b" data-ol-set>Mở Cài đặt</button>'}`;
  el.querySelector('[data-ol-login]')?.addEventListener('click',openLogin);el.querySelector('[data-ol-set]')?.addEventListener('click',()=>openHub('settings'));}
 function olFriendRow(p,acts){return `<div class="ol-row"><span class="ol-av">${olAvatar(p)}</span><span class="ol-who"><b>${olEsc(p.agency)}</b><small>LV ${p.level||1} · ❤ ${p.likes||0}${p.code?' · '+olEsc(p.code):''}</small></span><span class="ol-act">${acts}</span></div>`;}
 function olAvatar(p){const id=p&&p.look&&p.look.player,c=CHARS.find(c=>c.id===id&&!c.custom);return c?(c.avatar?`<i class="av-img" style="background-image:url('${c.avatar}')"></i>`:`<i style="background-image:url('${CHAR_BASE_SRC[c.id]||c.src}')"></i>`):UIIMG('people',28);}

@@ -34,7 +34,11 @@ const TRACK_OF={'Account':{spec:['acc'],near:['plan']},'Sale':{spec:['acc'],near
 const MATCH_F={spec:1.35,near:1,off:.6}, MATCH_N={spec:'Đúng chuyên môn',near:'Gần chuyên môn',off:'Trái nghề'};
 const STAR_F=1.2;   // ứng viên nổi bật (HR giới thiệu) làm nhanh hơn 20% — thông số thử
 const WORK_SPEED=12; // Đo với 3 người làm job; lễ tân và linh vật không tham gia sản xuất.
-function jobCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
+// 15/10: số khách cùng lúc theo sao danh tiếng (1★ → 2 khách … 5★ → 6 khách), nhưng không vượt sức đội ngũ (3 + 1 mỗi 2 người sau người thứ 3).
+const REP_CUSTOMERS=[2,3,4,5,6], REP_STAR_AT=[50,150,350,700];   // mốc điểm = REP_LEVELS trong reputation.js (khai báo sau file này nên không gọi trực tiếp)
+function teamCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
+function repCapacity(){const r=GS.reputation,pts=r&&Number.isFinite(r.points)?r.points:Math.max(0,(GS.done||0)*10-(GS.failed||0)*8);return REP_CUSTOMERS[REP_STAR_AT.filter(m=>pts>=m).length];}
+function jobCapacity(){return Math.min(teamCapacity(),repCapacity());}
 const PASS_GIVEUP=30, PASS_TALK=2.2;
 function roleMatch(a,role){ const t=TRACK_OF[a&&a.role]||{spec:[],near:[]}; return t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'; }
 function buildStages(j){ return stageDefs(j).map(([k,role,split])=>({k,role,need:Math.round(j.need*split*100)/100,done:0})); }

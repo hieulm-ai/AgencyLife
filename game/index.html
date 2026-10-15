@@ -10,7 +10,7 @@
 (function(){
  const cfg={"url": "https://rezhvxgpkryqqqttynie.supabase.co", "anonKey": "sb_publishable_Ym5qwKKisXYnAaByJf_7Aw_JYgZ-Qsp"};
  if(!cfg||!cfg.url||!cfg.anonKey||/^(localhost|127\.|0\.0\.0\.0)/.test(location.hostname))return;
- const VER='261015-1601';
+ const VER='261015-1714';
  const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}};
  const ss=(k,v)=>{try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v);}catch(e){return null;}};
  let dev=ls('5bit.tm.dev');if(!dev){dev=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36)).slice(0,36);ls('5bit.tm.dev',dev);}
@@ -24,15 +24,17 @@
   try{fetch(cfg.url+'/rest/v1/telemetry',{method:'POST',keepalive:true,headers:{apikey:cfg.anonKey,Authorization:'Bearer '+cfg.anonKey,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(Object.assign({},base,row))}).catch(()=>{});}catch(e){}
  }
  if(!ss('5bit.tm.visit')){ss('5bit.tm.visit','1');send({kind:'visit'});}
- const seen=new Set();let sent=0;
+ const seen=new Set();let sent=0,authSent=0;
  function report(msg,src){
   msg=String(msg||'').slice(0,300);src=String(src||'').slice(0,200);
-  const k=msg+'|'+src;if(!msg||seen.has(k)||sent>=5)return;seen.add(k);sent++;
+  const k=msg+'|'+src,auth=msg.startsWith('[auth]');if(!msg||seen.has(k)||(auth?authSent>=3:sent>=5))return;seen.add(k);auth?authSent++:sent++;
   send({kind:'error',msg,src});
  }
+ window.__tmLog=(m,src)=>report(m,src);   // chẩn đoán đăng nhập từ online.js (dòng "[auth] …")
  addEventListener('error',e=>{
   if(e.target&&e.target!==window&&e.target.tagName){const u=e.target.src||e.target.href||'';if(u&&u.startsWith(location.origin))report('Không tải được tài nguyên',u.replace(location.origin,''));return;}
   const f=e.filename||'';if(f&&!f.startsWith(location.origin))return;   // bỏ lỗi từ tiện ích trình duyệt/trang khác
+  if(/^ResizeObserver loop/.test(e.message||''))return;   // cảnh báo vô hại của trình duyệt, không ảnh hưởng người chơi
   report(e.message,(f.replace(location.origin,'')||'inline')+':'+(e.lineno||0)+':'+(e.colno||0));
  },true);
  addEventListener('unhandledrejection',e=>{const r=e.reason;const m=r&&(r.message||String(r))||'';if(/AbortError|NetworkError|Failed to fetch|Load failed/i.test(m))return;report('Promise: '+m,(r&&r.stack||'').split('\n')[1]||'');});
@@ -1248,7 +1250,7 @@ const FBY=Object.fromEntries(FURN.map(f=>[f.id,f]));
 let OBJS=[], OCC=new Map(), RUG=new Map(), nextUid=1;   // OCC: ô bị đồ chặn → uid; RUG: ô có đồ lớp sàn
 function rebuildOcc(){ OCC=new Map(); RUG=new Map(); for(const o of OBJS){ const f=FBY[o.id]; if(!f) continue; const [w,d]=f.views[o.rot].fp;
   for(let y=o.gy;y<o.gy+d;y++) for(let x=o.gx;x<o.gx+w;x++) (f.layer==="floor"?RUG:OCC).set(x+","+y,o.uid); } }
-let cash=200, undo=[];   // vốn khởi đầu 200 tr (giá trị thử)
+let cash=10, undo=[];   // vốn khởi đầu 10 tr (15/10: giảm từ 200 tr theo chủ dự án)
 const PRICE={wall:0.5,door:2}, REFUND=0.5, RUBY_COIN=10;
 let UNLIM=false; let LAST_SEEN=0;   // chế độ thử: cho phép tiêu quá số dư (bật/tắt trong Cài đặt)
 // ---------- trạng thái vận hành công ty ----------
@@ -1851,7 +1853,7 @@ function meetingLabel(j){
 // XP cần để từ cấp n lên n+1 = 20 × n^1,5. Mô phỏng scripts/economy_xp.py: người chơi tích cực đạt cấp 15 sau ~3 tuần,
 // người chơi 30 phút/ngày ~1 tháng (ước tính, chưa có dữ liệu người chơi thật).
 // Hệ số kinh tế (lvlMul, giá khu) vẫn theo số khu đã mở như trước: lvl() = UNLOCKED.size.
-const AG_LV_MAX=30, XP_A=20, XP_P=1.5, XP_PER_HOUR=.75, XP_GOOD_REVIEW=1.2, LV_UP_GEMS=5;
+const AG_LV_MAX=30, XP_A=20, XP_P=1.5, XP_PER_HOUR=.75, XP_GOOD_REVIEW=1.2, LV_UP_GEMS=2;
 function xpNeed(n){return Math.round(XP_A*Math.pow(n,XP_P));}
 // Mốc mở (thông số thử).
 const ROLE_LV={'Sale':3,'Trợ lý':3,'HR':5,'Quay phim':9,'Editor':11,'AI Designer':13,'Âm thanh':15};
@@ -1900,16 +1902,16 @@ function addXP(n,quiet){
  while(agencyLevel()<AG_LV_MAX&&GS.xp>=xpNeed(agencyLevel())){GS.xp-=xpNeed(agencyLevel());GS.agLv=agencyLevel()+1;ups.push(GS.agLv);}
  if(agencyLevel()>=AG_LV_MAX)GS.xp=0;
  if(!ups.length||quiet)return;
- for(const lv of ups){if(typeof addGems==='function')addGems(LV_UP_GEMS,`Lên cấp ${lv}`);else GS.gems+=LV_UP_GEMS;
+ let got=0;for(const lv of ups){if(typeof addGems==='function')got+=addGems(LV_UP_GEMS,`Lên cấp ${lv}`)||0;else{GS.gems+=LV_UP_GEMS;got+=LV_UP_GEMS;}
   const u=unlocksAt(lv);if(typeof addOfficeNews==='function')addOfficeNews('level',`Agency lên cấp ${lv}`+(u.length?' · mở: '+u.join(', '):''));}
  if(typeof buildCatalog==='function')buildCatalog();
- showLevelUp(ups[ups.length-1],ups.flatMap(unlocksAt),ups.length*LV_UP_GEMS);
+ showLevelUp(ups[ups.length-1],ups.flatMap(unlocksAt),got);
 }
 function showLevelUp(lv,items,gems){
  if(typeof tourOn!=='undefined'&&tourOn){toast(`Lên cấp ${lv}!`,'ok');return;}
  const box=document.getElementById('unlockBox');if(!box)return;
  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
- box.innerHTML=`<div class="ph"><span class="ic">${UIIMG('up',22)}</span>Agency lên cấp ${lv}!</div><div class="row"><span>Thưởng</span><b>+${gems||LV_UP_GEMS}💎</b></div>`
+ box.innerHTML=`<div class="ph"><span class="ic">${UIIMG('up',22)}</span>Agency lên cấp ${lv}!</div><div class="row"><span>Thưởng</span><b>${gems?'+'+gems+'💎':'Đã nhận đủ ruby tuần này'}</b></div>`
   +(items.length?`<div class="lvup-list">${items.map(t=>`<div class="row"><span>🔓 ${esc(t)}</span></div>`).join('')}</div>`:'')
   +`<button class="btn g" id="lvOk">Tuyệt!</button>`;
  box.innerHTML=typeof gemify==='function'?gemify(box.innerHTML):box.innerHTML;
@@ -1996,7 +1998,11 @@ const TRACK_OF={'Account':{spec:['acc'],near:['plan']},'Sale':{spec:['acc'],near
 const MATCH_F={spec:1.35,near:1,off:.6}, MATCH_N={spec:'Đúng chuyên môn',near:'Gần chuyên môn',off:'Trái nghề'};
 const STAR_F=1.2;   // ứng viên nổi bật (HR giới thiệu) làm nhanh hơn 20% — thông số thử
 const WORK_SPEED=12; // Đo với 3 người làm job; lễ tân và linh vật không tham gia sản xuất.
-function jobCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
+// 15/10: số khách cùng lúc theo sao danh tiếng (1★ → 2 khách … 5★ → 6 khách), nhưng không vượt sức đội ngũ (3 + 1 mỗi 2 người sau người thứ 3).
+const REP_CUSTOMERS=[2,3,4,5,6], REP_STAR_AT=[50,150,350,700];   // mốc điểm = REP_LEVELS trong reputation.js (khai báo sau file này nên không gọi trực tiếp)
+function teamCapacity(){return 3+Math.floor(Math.max(0,AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length-3)/2);}
+function repCapacity(){const r=GS.reputation,pts=r&&Number.isFinite(r.points)?r.points:Math.max(0,(GS.done||0)*10-(GS.failed||0)*8);return REP_CUSTOMERS[REP_STAR_AT.filter(m=>pts>=m).length];}
+function jobCapacity(){return Math.min(teamCapacity(),repCapacity());}
 const PASS_GIVEUP=30, PASS_TALK=2.2;
 function roleMatch(a,role){ const t=TRACK_OF[a&&a.role]||{spec:[],near:[]}; return t.spec.includes(role)?'spec':t.near.includes(role)?'near':'off'; }
 function buildStages(j){ return stageDefs(j).map(([k,role,split])=>({k,role,need:Math.round(j.need*split*100)/100,done:0})); }
@@ -3494,7 +3500,7 @@ function mkOffer(){
  const base=Math.round((small?Math.min(30,t[2]*k):t[2]*k*lvlMul())*10)/10;
  const reward=Math.round(base*(typeof perkVal==='function'?perkVal('offer'):1)*10)/10;   // nhân vật chính gốc Sale: khách trả cao hơn, khối lượng việc theo giá gốc
  const need=Math.max(2,Math.round(base*.18*100)/100),vip=!small&&Math.random()<.12;
- return {invoice:vip,vip,gem:vip?3+Math.floor(Math.random()*6):0,id:GS.nextJob++,name:(vip?'⭐ ':'')+t[0],need,reward,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8)),flowVersion:2,onboardingPace:1};
+ return {invoice:vip,vip,gem:vip?1+Math.floor(Math.random()*3):0,id:GS.nextJob++,name:(vip?'⭐ ':'')+t[0],need,reward,days:t[3],req:t[4],work:0,en:Math.max(1,Math.ceil(need/8)),flowVersion:2,onboardingPace:1};
 }
 function fillOffers(){ while(GS.offers.length<jobCapacity()) GS.offers.push(typeof applyRepeat==="function"?applyRepeat(mkOffer()):mkOffer());
   // luôn có ít nhất 2 khách không cần đồ đặc biệt (thay khách cần đồ còn thiếu)
@@ -3606,16 +3612,23 @@ function useGem(k){ const it=GEM_SHOP.find(x=>x.k===k); if(!it) return; if(GS.ge
   toast(`Đã dùng: ${it.name} · −${it.cost}💎`,"ok"); save(); renderGemShop(); renderJobs(); }
 const GEMI=()=>`<img src="${(window.UIICON||{}).gem||""}" alt="ruby" width="16" height="16" style="vertical-align:-3px;display:inline-block">`;
 const gemify=h=>String(h).replace(/💎/g,GEMI());
-function addGems(n,why){ GS.gems+=n; GS.gemEarned+=n; toast(`${why} · +${n}💎`,"ok"); save(); }
-const DQ_TPL=[["job","Hoàn thành 3 job",3,8],["ws","Mở 1 lớp workshop",1,5],["rest","Cho nhân viên nghỉ 2 lần",2,5],["place","Đặt 2 món nội thất",2,5],["energy","Dùng 60 năng lượng",60,10],["early","Xong 1 job trước hạn",1,6]];
+// 15/10: ruby nhận từ chơi game (nhiệm vụ, điểm danh, pass, thành tựu, lên cấp, mở khu, job VIP…) tối đa GEM_WEEK_CAP mỗi tuần thật (thứ Hai → Chủ nhật, giờ máy).
+// Không tính: ruby nạp/mua, quà bạn bè tặng.
+const GEM_WEEK_CAP=200;
+function gemWeekKey(){ const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()-(d.getDay()+6)%7); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+function gemWeekLeft(){ const k=gemWeekKey(); const w=GS.gemWeek; if(!w||typeof w!=="object"||w.k!==k||!Number.isFinite(w.n)||w.n<0) GS.gemWeek={k,n:0}; return Math.max(0,GEM_WEEK_CAP-GS.gemWeek.n); }
+function grantGems(n){ n=Math.max(0,Math.floor(n)||0); const g=Math.min(n,gemWeekLeft()); GS.gems+=g; GS.gemEarned=(GS.gemEarned||0)+g; GS.gemWeek.n+=g; return g; }
+function gemCapNote(g,n){ return g<n?(g?` (chạm mức tối đa ${GEM_WEEK_CAP}💎/tuần)`:` · đã nhận đủ ${GEM_WEEK_CAP}💎 tuần này`):""; }
+function addGems(n,why){ const g=grantGems(n); toast(g?`${why} · +${g}💎${gemCapNote(g,n)}`:`${why}${gemCapNote(g,n)}`,"ok"); save(); return g; }
+const DQ_TPL=[["job","Hoàn thành 3 job",3,5],["ws","Mở 1 lớp workshop",1,4],["rest","Cho nhân viên nghỉ 2 lần",2,3],["place","Đặt 2 món nội thất",2,3],["energy","Dùng 60 năng lượng",60,5],["early","Xong 1 job trước hạn",1,4]];
 function today(){ return new Date().toISOString().slice(0,10); }
 function ensureDQ(){ if(GS.dq&&GS.dq.date===today()) return; const pool=[...DQ_TPL].sort(()=>Math.random()-0.5).slice(0,3); GS.dq={date:today(),items:pool.map(([k,t,g,r])=>({k,t,g,r,p:0,c:0}))}; }
 function dq(k,n=1){ ensureDQ(); for(const q of GS.dq.items) if(q.k===k&&!q.c){ q.p=Math.min(q.g,q.p+n); if(q.p>=q.g){ q.c=1; addGems(q.r,`Nhiệm vụ ngày "${q.t}"`); if(typeof addXP==="function") addXP(10); } } }
-const ACH=[["jobs10","Hoàn thành 10 job",()=>GS.done>=10,10],["jobs50","Hoàn thành 50 job",()=>GS.done>=50,25],["jobs200","Hoàn thành 200 job",()=>GS.done>=200,60],
- ["lv2","Mở khu đầu tiên",()=>UNLOCKED.size>=2,15],["lv6","Đạt cấp 6",()=>typeof agencyLevel==="function"&&agencyLevel()>=6,40],["lv15","Đạt cấp 15",()=>typeof agencyLevel==="function"&&agencyLevel()>=15,80],["lv12","Mở hết 12 khu",()=>UNLOCKED.size>=12,100],
- ["rev1","Tổng doanh thu 1 tỷ",()=>GS.revTotal>=1000,10],["rev100","Tổng doanh thu 100 tỷ",()=>GS.revTotal>=100000,50],["ws10","Mở 10 lớp workshop",()=>GS.ws>=10,15]];
+const ACH=[["jobs10","Hoàn thành 10 job",()=>GS.done>=10,5],["jobs50","Hoàn thành 50 job",()=>GS.done>=50,10],["jobs200","Hoàn thành 200 job",()=>GS.done>=200,25],
+ ["lv2","Mở khu đầu tiên",()=>UNLOCKED.size>=2,5],["lv6","Đạt cấp 6",()=>typeof agencyLevel==="function"&&agencyLevel()>=6,15],["lv15","Đạt cấp 15",()=>typeof agencyLevel==="function"&&agencyLevel()>=15,30],["lv12","Mở hết 12 khu",()=>UNLOCKED.size>=12,40],
+ ["rev1","Tổng doanh thu 1 tỷ",()=>GS.revTotal>=1000,5],["rev100","Tổng doanh thu 100 tỷ",()=>GS.revTotal>=100000,20],["ws10","Mở 10 lớp workshop",()=>GS.ws>=10,5]];
 function checkAch(){ for(const [k,t,f,r] of ACH) if(!GS.ach[k]&&f()){ GS.ach[k]=1; addGems(r,`Thành tựu "${t}"`); } grantAchItems(); }
-const STREAK=[5,5,10,10,15,15,30];
+const STREAK=[2,2,3,3,4,4,7];
 function loginBonus(){ const d=today(); if(GS.lastLogin===d) return; const y=new Date(Date.now()-86400000).toISOString().slice(0,10);
   GS.streak=(GS.lastLogin===y)?(GS.streak%7)+1:1; GS.lastLogin=d; addGems(STREAK[GS.streak-1],`Đăng nhập ngày ${GS.streak}/7`); }
 let gemTab="shop", gemSub="items";   // Cửa hàng ruby: items | skins | topup | vip
@@ -3633,7 +3646,7 @@ function renderGemShop(){ const el=document.getElementById("gemShop"); if(!el) r
   else if(gemTab==="achievements"){ body=renderReputation()+`<div class="cg2">Thành tựu của agency (1 lần)</div>`+ACH.map(([k,t,f,r])=>{ const item=ACH_ITEMS[k]&&FBY[ACH_ITEMS[k]]; return `<div class="pack ach${GS.ach[k]?" done":""}" style="grid-template-columns:1fr auto"><span>${GS.ach[k]?"✓ ":""}${t}${item?`<br><small>Quà: ${item.name} vào Kho</small>`:""}</span><b>${r}💎</b></div>`; }).join(""); }
   else if(gemTab==="skins"){ body=renderSkinShop(); }
   else { body=renderWeeklyPass()+`<div class="cg2">Đăng nhập liên tiếp (ngày ${GS.streak||0}/7)</div><div style="display:flex;gap:4px">${STREAK.map((v,i)=>`<div style="flex:1;text-align:center;padding:4px 0;border-radius:8px;border:2px solid ${i<GS.streak?"#6CC24A":"#EBD3A4"};background:${i<GS.streak?"#E3F6D6":"#FFFBEF"};font-family:var(--rf);font-size:12px;font-weight:800">N${i+1}<br>${v}💎</div>`).join("")}</div>`
-     +`<div class="cg2">Nguồn ruby khác</div><div style="font-size:12px;line-height:1.5">• Nhiệm vụ chính và nhiệm vụ hôm nay: tab Nhiệm vụ<br>• Thành tựu: tab Thành tựu<br>• Mở khu mới: +10💎<br>• Job VIP (khoảng 12% khách): +3–8💎<br>• Xong job trước hạn: +1💎<br>• Giải thưởng sáng tạo tuần: +20💎<br>• Nạp ruby: Cửa hàng → Cửa hàng ruby → Nạp ruby</div>`; }
+     +`<div class="cg2">Nguồn ruby khác</div><div style="font-size:12px;line-height:1.5">• Nhiệm vụ chính và nhiệm vụ hôm nay: tab Nhiệm vụ<br>• Thành tựu: tab Thành tựu<br>• Mở khu mới: +3💎<br>• Lên cấp agency: +2💎<br>• Job VIP (khoảng 12% khách): +1–3💎<br>• Giải thưởng sáng tạo tuần: +5💎<br>• Ruby nhận từ chơi game tối đa ${GEM_WEEK_CAP}💎 mỗi tuần (thứ Hai → Chủ nhật). Tuần này còn nhận được ${gemWeekLeft()}💎.<br>• Nạp ruby: Cửa hàng → Cửa hàng ruby → Nạp ruby</div>`; }
   el.innerHTML=gemify(body);
   el.querySelectorAll("[data-support]").forEach(b=>b.onclick=()=>buySupportPack(b.dataset.support));
   el.querySelectorAll("[data-pass-week]").forEach(b=>b.onclick=()=>claimPassReward(+b.dataset.passWeek,+b.dataset.passIndex));
@@ -3681,7 +3694,7 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
   }
   if(!closingOffice&&(typeof featureOpen==="function"?featureOpen("studioRent"):lvl()>=3)&&hasItem("green_screen")&&hasItem("camera_tripod")&&hasItem("softbox")&&!GS.jobs.some(j=>j.req.includes("camera_tripod"))){ const inc=0.4*lvlMul()*h; cash+=inc; GS.passToday+=inc; GS.revToday+=inc; GS.revTotal=(GS.revTotal||0)+inc; }
   if(typeof tickRevisions==="function") tickRevisions(); advanceJobWork(h); if(typeof earlyTick==="function")earlyTick();
-  for(const j of [...GS.jobs]) if(j.work>=j.need-1e-6&&!fbPending(j)&&(typeof earlyReviewReady!=="function"||earlyReviewReady(j))){ finishJobVisitor(j); for(const a of AG) if(!a.collection&&!a.handover&&a.state!=="burn"&&a.state!=="sit"&&a.state!=="use") startReact(a,"cele",2.6); GS.jobs=GS.jobs.filter(x=>x!==j); payJob(j); if(j.vip&&j.gem) addGems(j.gem,`Job VIP "${j.name}"`); if(GS.day<j.due){ addGems(1,"Xong job trước hạn"); dq("early"); } dq("job");
+  for(const j of [...GS.jobs]) if(j.work>=j.need-1e-6&&!fbPending(j)&&(typeof earlyReviewReady!=="function"||earlyReviewReady(j))){ finishJobVisitor(j); for(const a of AG) if(!a.collection&&!a.handover&&a.state!=="burn"&&a.state!=="sit"&&a.state!=="use") startReact(a,"cele",2.6); GS.jobs=GS.jobs.filter(x=>x!==j); payJob(j); if(j.vip&&j.gem) addGems(j.gem,`Job VIP "${j.name}"`); if(GS.day<j.due){ dq("early"); } dq("job");
     GS.done++; const stars=typeof reviewJob==="function"?reviewJob(j):0; recordReputation(j,true,stars); if(typeof addXP==="function") addXP(jobXP(j,stars)); advanceWeeklyPass(); GS.weekDone++; GS.lvlRev[lvl()]=(GS.lvlRev[lvl()]||0)+j.reward; if((typeof featureOpen==="function"?featureOpen("templates"):lvl()>=3)&&/Thiết kế|ấn phẩm|logo/i.test(j.name)) GS.templates=Math.min(20,GS.templates+1); hud(); save(); }
   for(const [minute,bit] of [[630,2],[780,1],[960,4]])if(GS.min>=minute&&!((GS.midRefresh||0)&bit)){ GS.midRefresh=(GS.midRefresh||0)|bit; fillOffers(); renderJobs(); }   // Bổ sung chỗ trống, không đuổi khách đang còn kiên nhẫn.
   if(GS.min>=CLOSE_MIN){ // Tan làm lúc 21:00, chờ đội ngũ đi ra vỉa hè.
@@ -3689,7 +3702,7 @@ function stepGame(gdt){ if(gdt<=0) return;if(!GS.dayStartTotals)GS.dayStartTotal
     GS.midRefresh=0;
     let pas=0; for(const r of GS.retainers){ pas+=r.daily; r.left--; } GS.retainers=GS.retainers.filter(r=>r.left>0);
     if((typeof featureOpen==="function"?featureOpen("templates"):lvl()>=3)) pas+=GS.templates*0.5*lvlMul(); cash+=pas; GS.passToday+=pas; GS.revToday+=pas; GS.revTotal=(GS.revTotal||0)+pas;
-    let award=0; if(GS.day%7===0){ if((typeof featureOpen==="function"?featureOpen("award"):lvl()>=4)&&GS.weekDone>=10){ award=Math.round(0.25*plotPrice()); cash+=award; GS.revTotal=(GS.revTotal||0)+award; addGems(20,"Giải thưởng sáng tạo tuần"); } GS.weekDone=0; }
+    let award=0; if(GS.day%7===0){ if((typeof featureOpen==="function"?featureOpen("award"):lvl()>=4)&&GS.weekDone>=10){ award=Math.round(0.25*plotPrice()); cash+=award; GS.revTotal=(GS.revTotal||0)+award; addGems(5,"Giải thưởng sáng tạo tuần"); } GS.weekDone=0; }
     const payroll=typeof settlePayroll==="function"?settlePayroll():null;
     GS.lastDayReport=captureDayReport(award);if(payroll)GS.lastDayReport.payroll=payroll;hud();
     const sum=`Hết ngày ${GS.day}: doanh thu ${fmt(Math.round(GS.revToday*10)/10)}${pas?` (thụ động ${fmt(Math.round(pas*10)/10)})`:""}${award?` · Giải thưởng sáng tạo +${fmt(award)}`:""}`; GS.day++; GS.min=480; GS.revToday=0; GS.passToday=0; if(typeof endBorrowDay==="function") endBorrowDay();
@@ -3753,7 +3766,7 @@ function askUnlock(id){ const p=PLOTS.find(q=>q[0]===id); if(!p) return;
   box.innerHTML=`<div class="ph"><span class="ic">${UIIMG("crown",22)}</span>Mở rộng ${p[1]}</div><div class="row"><span>Diện tích</span><b>${(p[4]-p[2]+1)}×${(p[5]-p[3]+1)} ô</b></div><div class="row"><span>Chi phí</span><b>${fmt(plotPrice())}</b></div><div class="row"><span>Số dư</span><b>${fmt(Math.round(cash*10)/10)}</b></div><div style="display:flex;gap:8px"><button class="btn c" id="ulNo">Để sau</button><button class="btn y" id="ulYes">Mở khóa</button></div>`;
   box.classList.add("open"); document.getElementById("ulNo").onclick=()=>box.classList.remove("open");
   document.getElementById("ulYes").onclick=()=>{ const price=plotPrice(); if(!UNLIM&&cash<price){ toast(`Chưa đủ tiền: cần ${fmt(price)}`,"err"); return; }
-    cash-=price; UNLOCKED.add(id); undo=[]; document.getElementById("bUndo").disabled=true; rebuild(); hud(); save(); box.classList.remove("open"); clampCam(); GS.gems+=10; toast(`Đã mở ${p[1]} · −${fmt(price)} · +10💎`,"ok"); updatePanels(); if($id("pExpand").classList.contains("open")) renderExpandPage(true); if(typeof askZoneFn==="function") setTimeout(()=>askZoneFn(id,false),350); }; }
+    cash-=price; UNLOCKED.add(id); undo=[]; document.getElementById("bUndo").disabled=true; rebuild(); hud(); save(); box.classList.remove("open"); clampCam(); { const g=grantGems(3); toast(`Đã mở ${p[1]} · −${fmt(price)}${g?` · +${g}💎`:""}`,"ok"); } updatePanels(); if($id("pExpand").classList.contains("open")) renderExpandPage(true); if(typeof askZoneFn==="function") setTimeout(()=>askZoneFn(id,false),350); }; }
 function drawLock(c,x,y,avail){ x=Math.round(x); y=Math.round(y); const O="#3A2414", B=avail?"#F8C531":"#B8A88A", D=avail?"#C98A0C":"#8E8068";
   c.fillStyle="rgba(0,0,0,.18)"; c.fillRect(x-9,y+11,18,3);
   c.fillStyle=O; c.fillRect(x-6,y-12,12,3); c.fillRect(x-7,y-10,3,9); c.fillRect(x+4,y-10,3,9);   // càng khóa
@@ -4023,7 +4036,7 @@ function renderExpandPage(force){
   +`<div class="row"><span>Khu tiếp theo (thứ ${UNLOCKED.size+1})</span><b>${UNLOCKED.size>=PLOTS.length?'—':zok?fmt(np):'Cần cấp '+zlv}</b></div><div class="row"><span>Số dư</span><b>${fmt(Math.round(cash*10)/10)}</b></div><div class="pbar"><i style="width:${pct}%"></i><span>${cash>=np?'Đủ tiền mở khu mới':'Còn thiếu '+fmt(Math.round((np-cash)*10)/10)}</span></div>`
   +(adj.length?`<div class="cg2">Chọn khu liền kề để mở</div><div class="land-grid">${adj.map(p=>`<button class="btn ${zok?'y':'c'}" data-pl="${p[0]}" ${zok?'':'aria-disabled="true"'}>${p[1]}<small>${zok?`${p[4]-p[2]+1}×${p[5]-p[3]+1} ô`:'🔒 Cấp '+zlv}</small></button>`).join('')}</div>`:'<p class="hub-note">Đã mở hết khu đất.</p>')
   +(mine.length?`<div class="cg2">Công năng các khu</div><div class="zfn-mine">${mine.map(p=>{const z=zoneFn(p[0]);return `<button class="btn c" data-zf="${p[0]}">${UIIMG(z?z.ic:'tile',20)}<span><b>Khu ${p[0]}: ${z?z.n:'chưa chọn'}</b><small>${z?z.d:'Chạm để chọn công năng'}</small></span></button>`;}).join('')}</div>`:'')
-  +`<p class="hub-note">Mỗi khu mở thêm: +10💎 và job nhiều tiền hơn. Chọn công năng để nhân viên làm đúng việc trong khu nhanh hơn. Bật chế độ Xây dựng để xem tên khu trên bản đồ.</p>`);
+  +`<p class="hub-note">Mỗi khu mở thêm: +3💎 và job nhiều tiền hơn. Chọn công năng để nhân viên làm đúng việc trong khu nhanh hơn. Bật chế độ Xây dựng để xem tên khu trên bản đồ.</p>`);
  if(!force&&el.dataset.sig===html)return;el.dataset.sig=html;el.innerHTML=html;
  el.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>askUnlock(+b.dataset.pl));
  el.querySelectorAll('[data-zf]').forEach(b=>b.onclick=()=>askZoneFn(+b.dataset.zf,!!zoneFn(+b.dataset.zf)));
@@ -4104,7 +4117,7 @@ $id("saveFile").onchange=async event=>{
 
 function questList(){ const n=id=>OBJS.filter(o=>o.id===id).length; let walls=0; for(let y=0;y<N;y++) for(let x=0;x<N;x++) if(G[y][x]===1) walls++;
   $id("stSalary").textContent=fmt(AG.reduce((n,a)=>n+salaryRate(CHARS[a.ci].id),0)); const mor=teamMorale();
-  return [["Đặt bàn họp",Math.min(1,n("meeting_table")),1,20],["Hoàn thành 3 job",Math.min(3,GS.done),3,30],["Mở rộng 1 khu",Math.min(1,UNLOCKED.size-1),1,25],["Tinh thần ≥ 70%",mor>=70?1:0,1,15]]; }
+  return [["Đặt bàn họp",Math.min(1,n("meeting_table")),1,5],["Hoàn thành 3 job",Math.min(3,GS.done),3,10],["Mở rộng 1 khu",Math.min(1,UNLOCKED.size-1),1,5],["Tinh thần ≥ 70%",mor>=70?1:0,1,5]]; }
 // Tinh thần tính trên nhân viên; linh vật không tính.
 function teamMorale(){ const team=AG.filter(a=>!a.mascot); return team.length?Math.round(100-team.reduce((s,a)=>s+a.stress,0)/team.length):100; }
 function updatePanels(){ updateDayReport();let work=0,burn=0; for(const a of AG){ if(isWorking(a)) work++; if(a.state==="burn") burn++; }
@@ -4116,7 +4129,7 @@ function updatePanels(){ updateDayReport();let work=0,burn=0; for(const a of AG)
   const np=plotPrice(), XP=typeof xpProgress==="function"?xpProgress():{lv:UNLOCKED.size,xp:0,need:0,pct:0}, lv=XP.lv; $id("lvlTxt").textContent=`LV ${lv}`; $id("co").title=`Cấp agency ${lv} · ${XP.need?`${XP.xp}/${XP.need} XP`:"cấp tối đa"} · khu tiếp: ${fmt(np)}`; $id("lvlBar").style.width=XP.pct.toFixed(0)+"%";
   if($id("staff").classList.contains("open")) renderStaff();
   if($id("jobs").classList.contains("open")) renderJobs();
-  for(const [t,c,m,r] of questList()){ if(c>=m&&!GS.questClaimed[t]){ GS.questClaimed[t]=1; GS.gems+=r; toast(`Hoàn thành nhiệm vụ "${t}" · +${r}💎`,"ok"); save(); } }
+  for(const [t,c,m,r] of questList()){ if(c>=m&&!GS.questClaimed[t]){ GS.questClaimed[t]=1; addGems(r,`Hoàn thành nhiệm vụ "${t}"`); } }
   if(document.getElementById("pNews")?.classList.contains("open"))renderOfficeNews();
   updateHubBadges(); updateHubTabs(); if($id("pQuest").classList.contains("open")) renderDailyQuests(); if($id("pExpand").classList.contains("open")) renderExpandPage(); $id("gemTxt").textContent=GS.gems; $id("staffTop").textContent=AG.length;
   $id("quests").innerHTML=gemify(questList().map(([t,c,m,r])=>`<div class="q${c>=m?" done":""}"><span>${t}</span><span class="rw">${UIIMG("gem",16)}${r}</span><div class="pbar"><i style="width:${Math.round(c/m*100)}%;background:${c>=m?"#5DBB3F":"#F2A33A"}"></i><span>${c}/${m}</span></div><span></span></div>`).join(""));
@@ -4737,7 +4750,7 @@ function guidePages(){
     "<b>Job video</b> (TikTok, Reels, TVC, Livestream, review, phim doanh nghiệp, chụp ảnh): thêm bước <b>Quay</b> tại máy quay (hoặc đèn softbox) và bước cuối là <b>Dựng</b> (Editor). <b>Podcast</b>: bước <b>Thu âm</b> tại phòng thu (Âm thanh). <b>Dựng video sự kiện</b>: khách gửi sẵn cảnh quay, Editor làm phần lớn.",
     "<b>Quay phim</b> (Min) vừa quay vừa dựng đúng nghề; <b>Âm thanh</b> (Liu) thu âm; <b>Editor</b> dựng, quay/thu âm ở mức gần nghề. Không có máy quay hay phòng thu thì bước đó làm ở bàn.",
     "Đúng chuyên môn làm nhanh ×1,35; gần chuyên môn ×1; trái nghề ×0,6. Thiếu bộ phận thì người khác làm thay. Vòng trên đầu nhân vật: icon bộ phận + tiến độ bước.",
-    `Làm tối đa <b>${jobCapacity()} job</b> cùng lúc; tuyển thêm người làm job sẽ tăng số chỗ nhận việc. Trong <b>Công việc → Đang làm</b>: <b>Ưu tiên làm trước</b>, <b>Phân công nhân sự</b>, <b>Xếp theo hạn giao</b>.`,
+    `Làm tối đa <b>${jobCapacity()} job</b> cùng lúc. Số khách tới cùng lúc tăng theo sao danh tiếng (1★: 2 khách … 5★: 6 khách) và không vượt sức đội ngũ: tuyển thêm người để có thêm chỗ. Trong <b>Công việc → Đang làm</b>: <b>Ưu tiên làm trước</b>, <b>Phân công nhân sự</b>, <b>Xếp theo hạn giao</b>.`,
     `Job từ <b>60 giờ công</b> hoặc cần bàn họp: khách và 1 nhân viên họp <b>${h(MEETING_MINUTES)}</b> ở bàn họp rồi mới làm.`,
     "<b>Ghế công thái học</b> làm nhanh hơn 20% và tăng stress chậm hơn.",
     "Tạm dừng sản xuất không dừng hạn giao. Qua ngày hạn mà chưa xong là trễ hạn."],
@@ -4752,7 +4765,7 @@ function guidePages(){
   {id:"money",icon:"coin",title:"Giao sản phẩm và thu tiền",lead:"Job xong, khách tới quầy nhận sản phẩm; tiền về tùy loại job.",
    items:["Khách ngồi sofa chờ thì tới quầy nhận ngay; khách đã về sẽ quay lại xếp hàng.",
     "Job thường trả tiền khi xong. Job VIP <b>thanh toán sau</b> tạo công nợ: vào <b>Công việc → Bàn giao & công nợ</b>, cử nhân viên đi thu <b>trước 20:00</b> (30 phút game ở điểm hẹn, cộng thời gian đi lại).",
-    "Xong job trước hạn được <b>+1 ruby</b>; job VIP còn thưởng thêm ruby.",
+    "Job VIP thưởng thêm 1–3 ruby. Ruby nhận từ chơi game (nhiệm vụ, điểm danh, pass, thành tựu…) tối đa <b>200 ruby mỗi tuần</b>.",
     `Ruby (kim cương): mọi thứ mua bằng ruby (gói hỗ trợ, đồ mặc, nạp ruby, VIP) nằm ở <b>Cửa hàng → Cửa hàng ruby</b>; 1 ruby quy đổi ${RUBY_COIN} triệu coin khi tính giá nội thất.`],
    tip:"Giữ quầy lễ tân có lối đi hai phía để bàn giao được sản phẩm."},
   {id:"build",icon:"hammer",title:"Xây văn phòng",lead:"Tự xây tường, đặt cửa và bày nội thất cho văn phòng.",
@@ -4969,7 +4982,7 @@ function renderReputation(){
 
 // A free pass follows seven played game days, not wall-clock time.
 // V15: mốc cuối có thêm 1 vật phẩm vào Kho (Cửa hàng → Kho).
-const PASS_MILESTONES=[{jobs:3,coin:10,gems:0},{jobs:7,coin:0,gems:5},{jobs:12,coin:25,gems:10,item:'potted_plant'}];
+const PASS_MILESTONES=[{jobs:3,coin:10,gems:0},{jobs:7,coin:0,gems:2},{jobs:12,coin:25,gems:4,item:'potted_plant'}];
 function ensureWeeklyPass(){
  const week=Math.floor((Math.max(1,GS.day)-1)/7)+1;
  if(!GS.weeklyPass||!Array.isArray(GS.weeklyPass.weeks))GS.weeklyPass={weeks:[]};
@@ -4985,8 +4998,8 @@ function claimPassReward(week,index){
  ensureWeeklyPass();const row=GS.weeklyPass.weeks.find(w=>w.week===week),reward=PASS_MILESTONES[index];
  if(!row||!reward||row.jobs<reward.jobs||row.claimed.includes(index))return false;
  row.claimed.push(index);cash=Math.round((cash+reward.coin)*100)/100;
- GS.gems+=reward.gems;GS.gemEarned=(GS.gemEarned||0)+reward.gems;
- addOfficeNews("reward",`Nhận Pass tuần ${week}, mốc ${reward.jobs} job: ${reward.coin} tr + ${reward.gems} ruby`);
+ const gems=typeof grantGems==='function'?grantGems(reward.gems):(GS.gems+=reward.gems,GS.gemEarned=(GS.gemEarned||0)+reward.gems,reward.gems);
+ addOfficeNews("reward",`Nhận Pass tuần ${week}, mốc ${reward.jobs} job: ${reward.coin} tr + ${gems} ruby`);
  if(reward.item&&typeof grantStoreItem==='function')grantStoreItem(reward.item,`Pass tuần ${week}`);
  save();hud();updatePanels();renderGemShop();toast('Đã nhận thưởng Pass tuần','ok');return true;
 }
@@ -5325,10 +5338,10 @@ function olSupabaseBackend(cfg){
   const m=Object.fromEntries(rows.map(r=>[r.id,r]));for(const id of ids)if(!m[id])m[id]={id,agency:'(đã rời game)',code:'',level:1,likes:0};return m;};
  return {
   kind:'supabase',
-  async init(){const mod=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/+esm');
+  async init(){const mod=await olImportSupabase();
    sb=mod.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
    const {data}=await sb.auth.getSession();uid=data.session?.user?.id||null;
-   sb.auth.onAuthStateChange((_e,s)=>{const n=s?.user?.id||null;if(n!==uid){uid=n;olOnAuth(n?{id:n,email:s.user.email}:null);}});
+   sb.auth.onAuthStateChange((ev,s)=>{const n=s?.user?.id||null;if(ev==='SIGNED_OUT'&&uid&&!OL.signingOut)olAuthDiag('bị đăng xuất tự động (phiên hết hạn hoặc bị thu hồi)');if(n!==uid){uid=n;olOnAuth(n?{id:n,email:s.user.email}:null);}});
    return uid?{id:uid,email:data.session.user.email}:null;},
   async signUp(email,pw){const d=chk(await sb.auth.signUp({email,password:pw,options:{emailRedirectTo:location.href.split('#')[0]}}));uid=d.user&&d.session?d.user.id:null;
    if(!d.session)return {pending:true};return {id:d.user.id,email};},
@@ -5338,8 +5351,9 @@ function olSupabaseBackend(cfg){
    if(!response.ok)throw Error('Chưa kiểm tra được đăng nhập. Thử lại sau.');
    const settings=await response.json();
    if(settings.external?.[provider]!==true)throw Error((provider==='google'?'Google':'Facebook')+' chưa bật. Hãy tạo tài khoản bằng email.');
+   olLS(OL_OAUTH_KEY,{p:provider,t:Date.now(),sa:olStandalone()});
    chk(await sb.auth.signInWithOAuth({provider,options:{redirectTo:location.href.split('#')[0]}}));return {redirect:true};},
-  async signOut(){chk(await sb.auth.signOut());uid=null;},
+  async signOut(){OL.signingOut=true;try{chk(await sb.auth.signOut());}finally{OL.signingOut=false;}uid=null;},
   async getSave(){return chk(await sb.from('saves').select('data,client_t,device,updated_at').eq('id',me()).maybeSingle());},
   async putSave(data,client_t,device){chk(await sb.from('saves').upsert({id:me(),data,client_t,device,updated_at:new Date().toISOString()}));},
   async myProfile(){return chk(await sb.from('profiles').select('*').eq('id',me()).maybeSingle());},
@@ -5373,15 +5387,52 @@ function olSupabaseBackend(cfg){
 // ---------- trạng thái ----------
 const OL={be:null,user:null,profile:null,status:'off',dirty:false,lastPush:0,pushing:false,timer:0,friends:[],req:{incoming:[],outgoing:[]},mail:[],lastDay:0,officeSig:''};
 function olMode(){if(VISIT&&VISIT.mode)return VISIT.mode;const m=olLS(OL_MODE_KEY);if(m==='mock')return 'mock';return ONLINE_CFG&&ONLINE_CFG.url?'supabase':'off';}
+// 15/10: giữ đăng nhập ổn định trên điện thoại.
+// - Tải thư viện Supabase thử lại 3 lần; mạng chập chờn lúc mở game không còn làm mất trạng thái đăng nhập.
+// - Có phiên lưu trên máy mà chưa kết nối được: hiện "Đang kết nối…" thay vì nút Đăng nhập, tự thử lại khi có mạng / mở lại app.
+// - Ghi chẩn đoán ẩn danh (telemetry, dòng "[auth] …") khi máy từng đăng nhập mà mất phiên, để tìm nguyên nhân trên iPhone/Android.
+const OL_OAUTH_KEY='5bit.oauth';
+async function olImportSupabase(){
+ let err;for(const wait of [0,1500,4000]){if(wait)await new Promise(r=>setTimeout(r,wait));
+  try{return await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/+esm');}catch(e){err=e;}}
+ throw err;
+}
+function olStandalone(){try{return !!(navigator.standalone||matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches);}catch(e){return false;}}
+function olHasStoredSession(){try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^sb-.+-auth-token$/.test(k||''))return true;}}catch(e){}return false;}
+function olAuthDiag(msg){try{if(typeof window.__tmLog==='function')window.__tmLog('[auth] '+msg,(olStandalone()?'app màn hình chính':'trình duyệt'));}catch(e){}}
+function olAuthBootCheck(){
+ const meta=olLS(OL_META_KEY)||{},oauth=olLS(OL_OAUTH_KEY);
+ if(oauth){olLS(OL_OAUTH_KEY,null);
+  if(!OL.user&&Date.now()-(oauth.t||0)<15*60000)olAuthDiag(`quay về từ ${oauth.p} nhưng chưa có phiên (lúc bấm: ${oauth.sa?'app':'trình duyệt'})`);}
+ if(!OL.user&&meta.uid&&!meta.out)olAuthDiag(`mở game: từng đăng nhập trên máy này nhưng không còn phiên (phiên lưu=${olHasStoredSession()?1:0})`);
+}
+let olRetryT=0,olIniting=false;
+function olRetryInit(){
+ if(olRetryT||!olHasStoredSession())return;
+ const go=()=>{clearTimeout(olRetryT);olRetryT=0;removeEventListener('online',go);document.removeEventListener('visibilitychange',vis);olInit();};
+ const vis=()=>{if(document.visibilityState==='visible')go();};
+ addEventListener('online',go);document.addEventListener('visibilitychange',vis);olRetryT=setTimeout(go,20000);
+}
 async function olInit(){
- const mode=olMode();OL.be=mode==='mock'?olMockBackend():mode==='supabase'?olSupabaseBackend(ONLINE_CFG):null;
- olRenderAccount();updateOnlineBadges();
- if(!OL.be)return;
- try{OL.user=await OL.be.init();}catch(e){OL.status='offline';olRenderAccount();return;}
- if(OL.user)await olOnAuth(OL.user,true);else olRenderAccount();
+ if(olIniting)return;olIniting=true;
+ try{
+  const mode=olMode();OL.be=mode==='mock'?olMockBackend():mode==='supabase'?olSupabaseBackend(ONLINE_CFG):null;
+  if(OL.be&&mode==='supabase'&&olHasStoredSession())OL.status='connecting';
+  olRenderAccount();updateOnlineBadges();olTitleAccount();
+  if(!OL.be)return;
+  try{OL.user=await OL.be.init();}catch(e){OL.status='offline';olAuthDiag('không kết nối được máy chủ đăng nhập: '+String(e&&e.message||e).slice(0,120));olRenderAccount();olTitleAccount();olRetryInit();return;}
+  if(OL.status==='connecting')OL.status='off';
+  olAuthBootCheck();
+  if(OL.user)await olOnAuth(OL.user,true);else{olRenderAccount();olTitleAccount();}
+ }finally{olIniting=false;}
+}
+// Nút ở màn chính: đã đăng nhập thì hiện "Tài khoản ✓" (mở Cài đặt → Tài khoản) thay vì "Đăng nhập".
+function olTitleAccount(){
+ const b=document.getElementById('titleLogin');if(!b)return;
+ b.textContent=OL.user?'Tài khoản ✓':OL.status==='connecting'?'Đang kết nối…':'Đăng nhập';
 }
 async function olOnAuth(user,boot){
- OL.user=user;OL.profile=null;if(user)olLS(GUEST_SESSION,null);
+ OL.user=user;OL.profile=null;if(user)olLS(GUEST_SESSION,null);olTitleAccount();
  if(!user){OL.status='off';OL.friends=[];OL.mail=[];OL.req={incoming:[],outgoing:[]};olRenderAccount();updateOnlineBadges();olSetCloud();return;}
  if(VISIT){olRefreshSocial();return;}
  const meta=olLS(OL_META_KEY)||{};
@@ -5397,7 +5448,7 @@ async function olOnAuth(user,boot){
     html:`<p>Tài khoản này đã có tiến độ khác với máy này.</p><ul class="ask-list"><li><b>Trên tài khoản:</b> ${olEsc(line(cg,c))}</li>${local?`<li><b>Trên máy này:</b> ${olEsc(line(lg,local))}</li>`:''}</ul><p class="hub-note">Bản không chọn sẽ bị thay thế. Muốn giữ cả hai, hãy vào Cài đặt → Tải bản lưu trước.</p>`});
    if(useCloud||!local){olLS(OL_META_KEY,{...meta,uid:user.id});importGameSave(JSON.stringify(c));toast('Đang tải tiến độ từ tài khoản…','ok');setTimeout(()=>location.reload(),600);return;}
   }
-  olLS(OL_META_KEY,{...meta,uid:user.id});
+  olLS(OL_META_KEY,{...meta,uid:user.id,out:false});
   await olPush(true);
   if(!boot)toast('Đã đăng nhập · tiến độ được lưu lên tài khoản','ok');
  }catch(e){OL.status='offline';toast(olErrText(e),'err');}
@@ -5492,6 +5543,8 @@ async function guestLogin(name,password,create){
  localStorage.setItem(GUEST_SESSION,JSON.stringify(name));location.reload();
 }
 function openLogin(){
+ if(OL.user){openHub('settings');return;}
+ if(OL.status==='connecting'){toast('Đang kết nối lại tài khoản đã đăng nhập…','ok');return;}
  olBox(`<h2>Vào agency</h2><div class="cg2">Chơi khách · lưu trên máy này</div><label class="ol-f">Tên đăng nhập<input id="guestName" autocomplete="username" maxlength="32"></label><label class="ol-f">Mật khẩu<input id="guestPassword" type="password" autocomplete="current-password"></label><p class="ol-err" id="guestError" role="alert"></p><div class="ask-act"><button class="btn y" id="guestCreate">Tạo khách</button><button class="btn g" id="guestLogin">Vào chơi</button></div><div class="cg2">Tài khoản online</div><div class="ol-oauth"><button class="btn b" id="loginFacebook">Facebook</button><button class="btn b" id="loginEmail">Email</button></div>`,el=>{
  const run=async create=>{const buttons=el.querySelectorAll('button');buttons.forEach(b=>b.disabled=true);try{await guestLogin(el.querySelector('#guestName').value,el.querySelector('#guestPassword').value,create);}catch(e){el.querySelector('#guestError').textContent=olErrText(e);}finally{buttons.forEach(b=>b.disabled=false);}};
  el.querySelector('#guestCreate').onclick=()=>run(true);el.querySelector('#guestLogin').onclick=()=>run(false);
@@ -5550,6 +5603,7 @@ function openSignup(){
 async function olLogout(){
  if(!await askConfirm({title:'Đăng xuất?',text:'Tiến độ vẫn giữ trên máy này và trên tài khoản. Đăng nhập lại để tiếp tục lưu lên tài khoản.',ok:'Đăng xuất',icon:'people'}))return;
  await olPush(true);try{await OL.be.signOut();}catch(e){toast(olErrText(e),'err');return;}
+ try{olLS(OL_META_KEY,{...(olLS(OL_META_KEY)||{}),out:true});}catch(e){}
  await olOnAuth(null);closeHub();if(guideOpen)closeGuide();
  try{sessionStorage.removeItem(SAVE+'.enter');sessionStorage.removeItem(OL_VISIT_KEY);}catch(e){}
  if(VISIT){location.reload();return;}
@@ -5578,7 +5632,7 @@ function olRenderAccount(){
 }
 
 // ---------- Bạn bè (nút góc trên phải) ----------
-function olNeedLogin(el){el.innerHTML=`<p class="hub-note">${OL.be?'Đăng nhập để kết bạn, tham quan văn phòng của bạn bè và tặng quà.':'Bản này chưa kết nối máy chủ. Vào Cài đặt → Tài khoản để bật máy chủ thử.'}</p>${OL.be?'<button class="btn g" data-ol-login>Đăng nhập</button>':'<button class="btn b" data-ol-set>Mở Cài đặt</button>'}`;
+function olNeedLogin(el){if(OL.status==='connecting'){el.innerHTML='<p class="hub-note">Đang kết nối lại tài khoản đã đăng nhập trên máy này…</p>';return;}el.innerHTML=`<p class="hub-note">${OL.be?'Đăng nhập để kết bạn, tham quan văn phòng của bạn bè và tặng quà.':'Bản này chưa kết nối máy chủ. Vào Cài đặt → Tài khoản để bật máy chủ thử.'}</p>${OL.be?'<button class="btn g" data-ol-login>Đăng nhập</button>':'<button class="btn b" data-ol-set>Mở Cài đặt</button>'}`;
  el.querySelector('[data-ol-login]')?.addEventListener('click',openLogin);el.querySelector('[data-ol-set]')?.addEventListener('click',()=>openHub('settings'));}
 function olFriendRow(p,acts){return `<div class="ol-row"><span class="ol-av">${olAvatar(p)}</span><span class="ol-who"><b>${olEsc(p.agency)}</b><small>LV ${p.level||1} · ❤ ${p.likes||0}${p.code?' · '+olEsc(p.code):''}</small></span><span class="ol-act">${acts}</span></div>`;}
 function olAvatar(p){const id=p&&p.look&&p.look.player,c=CHARS.find(c=>c.id===id&&!c.custom);return c?(c.avatar?`<i class="av-img" style="background-image:url('${c.avatar}')"></i>`:`<i style="background-image:url('${CHAR_BASE_SRC[c.id]||c.src}')"></i>`):UIIMG('people',28);}
@@ -5805,6 +5859,7 @@ function openTitle(){
  document.getElementById('titleSettings').onclick=()=>openHub('settings');
  document.getElementById('titleLogin').onclick=()=>openLogin();
  document.getElementById('titleLogin').hidden=!OL.be;
+ if(typeof olTitleAccount==='function')olTitleAccount();
  document.getElementById('titleMusic').onclick=()=>document.getElementById('ambientMusic').click();
  go.focus();
 }

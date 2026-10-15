@@ -171,7 +171,7 @@ function renderExpandPage(force){
   +`<div class="row"><span>Khu tiếp theo (thứ ${UNLOCKED.size+1})</span><b>${UNLOCKED.size>=PLOTS.length?'—':zok?fmt(np):'Cần cấp '+zlv}</b></div><div class="row"><span>Số dư</span><b>${fmt(Math.round(cash*10)/10)}</b></div><div class="pbar"><i style="width:${pct}%"></i><span>${cash>=np?'Đủ tiền mở khu mới':'Còn thiếu '+fmt(Math.round((np-cash)*10)/10)}</span></div>`
   +(adj.length?`<div class="cg2">Chọn khu liền kề để mở</div><div class="land-grid">${adj.map(p=>`<button class="btn ${zok?'y':'c'}" data-pl="${p[0]}" ${zok?'':'aria-disabled="true"'}>${p[1]}<small>${zok?`${p[4]-p[2]+1}×${p[5]-p[3]+1} ô`:'🔒 Cấp '+zlv}</small></button>`).join('')}</div>`:'<p class="hub-note">Đã mở hết khu đất.</p>')
   +(mine.length?`<div class="cg2">Công năng các khu</div><div class="zfn-mine">${mine.map(p=>{const z=zoneFn(p[0]);return `<button class="btn c" data-zf="${p[0]}">${UIIMG(z?z.ic:'tile',20)}<span><b>Khu ${p[0]}: ${z?z.n:'chưa chọn'}</b><small>${z?z.d:'Chạm để chọn công năng'}</small></span></button>`;}).join('')}</div>`:'')
-  +`<p class="hub-note">Mỗi khu mở thêm: +10💎 và job nhiều tiền hơn. Chọn công năng để nhân viên làm đúng việc trong khu nhanh hơn. Bật chế độ Xây dựng để xem tên khu trên bản đồ.</p>`);
+  +`<p class="hub-note">Mỗi khu mở thêm: +3💎 và job nhiều tiền hơn. Chọn công năng để nhân viên làm đúng việc trong khu nhanh hơn. Bật chế độ Xây dựng để xem tên khu trên bản đồ.</p>`);
  if(!force&&el.dataset.sig===html)return;el.dataset.sig=html;el.innerHTML=html;
  el.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>askUnlock(+b.dataset.pl));
  el.querySelectorAll('[data-zf]').forEach(b=>b.onclick=()=>askZoneFn(+b.dataset.zf,!!zoneFn(+b.dataset.zf)));

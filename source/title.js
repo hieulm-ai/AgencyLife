@@ -29,6 +29,7 @@ function openTitle(){
  document.getElementById('titleSettings').onclick=()=>openHub('settings');
  document.getElementById('titleLogin').onclick=()=>openLogin();
  document.getElementById('titleLogin').hidden=!OL.be;
+ if(typeof olTitleAccount==='function')olTitleAccount();
  document.getElementById('titleMusic').onclick=()=>document.getElementById('ambientMusic').click();
  go.focus();
 }

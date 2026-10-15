@@ -65,7 +65,7 @@ test('Quà vật phẩm của thành tựu vào Kho đúng 1 lần, kể cả b�
  assert.match(src,/function checkAch\(\)\{[^\n]*grantAchItems\(\); \}/);
 });
 test('Pass tuần mốc cuối có thêm vật phẩm vào Kho',()=>{
- const w=read('weekly-pass.js');assert.match(w,/jobs:12,coin:25,gems:10,item:'potted_plant'/);assert.match(w,/grantStoreItem\(reward\.item/);
+ const w=read('weekly-pass.js');assert.match(w,/jobs:12,coin:25,gems:4,item:'potted_plant'/);assert.match(w,/grantStoreItem\(reward\.item/);
 });
 test('bản lưu: Kho hợp lệ được nhận, Kho sai kiểu bị từ chối',()=>{
  const st=new Map(),c={N:2,SAVE:'t',cash:5,WS:{},DS:{},FL:{},UNLIM:false,GS:{jobs:[],offers:[],day:1},UNLOCKED:new Set([0]),AG:[],CHARS:[],OBJS:[],FBY:{},G:[[0,0],[0,0]],LAST_SEEN:0,nextUid:1,rebuildLock(){},toast(){},localStorage:{getItem:k=>st.get(k)||null,setItem:(k,v)=>st.set(k,v)}};
