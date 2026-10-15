@@ -77,15 +77,20 @@ function stationFor(a){
 function shootingAt(a){ const o=a&&a.state==='shoot'&&a.useObj!=null&&OBJS.find(b=>b.uid===a.useObj); return o&&BUSY.get(o.uid)===a?o:null; }
 function releaseStation(a){ if(a.useObj!=null&&BUSY.get(a.useObj)===a) BUSY.delete(a.useObj); a.useObj=null; if(a.state==='shoot'||a.state==='toShoot'){ a.state='wander'; a.wait=.2; a.path=[]; } }
 function nearObj(here,o){ const [w,d]=FBY[o.id].views[o.rot].fp; return ((here[0]===o.gx-1||here[0]===o.gx+w)&&here[1]>=o.gy&&here[1]<o.gy+d)||((here[1]===o.gy-1||here[1]===o.gy+d)&&here[0]>=o.gx&&here[0]<o.gx+w); }
+// 15/10/2026: máy quay trên chân (camera_tripod) — người quay đứng SAU ống kính, nhìn cùng hướng ống kính.
+// rot 0..3 = 01_front_left, 02_front_right, 03_back_right, 04_back_left: ống kính hướng +y (SW), +x (SE), −y (NE), −x (NW).
+const CAM_BEHIND=[[0,-1,'SW'],[-1,0,'SE'],[0,1,'NE'],[1,0,'NW']];
+function camOperatorSpot(o){ if(!o||o.id!=='camera_tripod')return null; const [dx,dy,dir]=CAM_BEHIND[o.rot%4], x=o.gx+dx, y=o.gy+dy;
+ const R=typeof REACH!=='undefined'?REACH:null; return (!blocked(x,y)&&(!R||(R[y]&&R[y][x])))?{x,y,dir}:null; }
 function stepShoot(a,dt,here){
  if(a.state==='shoot'){ const st=stationFor(a); if(!st||st.uid!==a.useObj){ releaseStation(a); return false; } a.t+=dt; return true; }
  if((a.shootRetry||0)>0){ a.shootRetry-=dt; if(a.state==='toShoot') releaseStation(a); return false; }
  const st=stationFor(a); if(!st){ if(a.state==='toShoot') releaseStation(a); return false; }
  if(a.state==='toShoot'&&a.useObj===st.uid){
-  if(nearObj(here,st)){ a.state='shoot'; a.t=0; a.dir=faceToward(a,st); return true; }
+  if(nearObj(here,st)){ const cs=camOperatorSpot(st); a.state='shoot'; a.t=0; a.dir=cs&&cs.x===here[0]&&cs.y===here[1]?cs.dir:faceToward(a,st); return true; }
   releaseStation(a); a.shootRetry=STATION_RETRY; return false;   // không tới được: làm ở bàn một lúc rồi thử lại
  }
- const sp=useSpot(st); const p=sp&&bfs(here,sp,true); if(!p){ a.shootRetry=STATION_RETRY; return false; }
+ const cs=camOperatorSpot(st), sp=cs?[cs.x,cs.y]:useSpot(st); const p=sp&&bfs(here,sp,true); if(!p){ a.shootRetry=STATION_RETRY; return false; }
  if(a.state==='sit'&&a.acc)[a.x,a.y]=a.acc;
  if(a.useObj!=null&&a.useObj!==st.uid&&BUSY.get(a.useObj)===a) BUSY.delete(a.useObj);
  a.useObj=st.uid; BUSY.set(st.uid,a); a.state='toShoot'; a.react=null; a.path=p.slice(1); a.wait=0;

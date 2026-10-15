@@ -6,7 +6,10 @@ Nguồn: Higgsfield gpt_image_2_5 (high, 2k, nền trong), đã thu nhỏ 1/2, n
   <tên>_burn_raw.png        2×2  bốc hỏa trước/sau
   <tên>_chair_blue_raw.png  2×2  ngồi ghế xanh 4 góc
   <tên>_chair_ergo_raw.png  2×2  ngồi ghế công thái học 4 góc
-  min_cam_raw.png          2×2  cầm máy quay trước/sau (chỉ Min) → hd_cam.png
+  min_cam_raw.png          2×2  tư thế quay phim (chỉ Min) → hd_cam.png
+  15/10/2026: hd_cam.png v2 (đứng sau máy quay trên chân của game, tay không cầm máy) vẽ bằng Higgsfield
+  (job 356bd68b), xử lý cùng cách cam() ngoài máy; bản cầm máy cũ giữ ở src/min_cam_handheld_old.png.
+  Không có min_cam_raw.png thì cam() bỏ qua, giữ nguyên hd_cam.png hiện có.
 Bố cục lấy theo bộ hình Huy (assets/characters/01_Huy/src_v2). Cỡ đầu lấy theo một nhân vật cùng giới.
 Chạy: python3 -I scripts/prepare_new_chars.py  rồi python3 source/build.py
 """

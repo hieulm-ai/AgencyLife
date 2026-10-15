@@ -963,7 +963,8 @@ function drawAgent0(c,a){
     c.drawImage(IMGS[a.ci],96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore();
     drawFlame(c,sx,sy-30,a.t); return; }
   if(a.state==="shoot"&&a.useObj&&(CAMIMGS[a.ci]||UIMGS[a.ci])){ const o=OBJS.find(b=>b.uid===a.useObj), cam=CAMIMGS[a.ci]&&o&&o.id!=="sound_booth", img=cam?CAMIMGS[a.ci]:UIMGS[a.ci];
-    const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.t*(cam?1.5:2.5))%2;
+    const cs=o&&typeof camOperatorSpot==="function"?camOperatorSpot(o):null, behind=cs&&Math.floor(a.x)===cs.x&&Math.floor(a.y)===cs.y;   // 15/10: đứng sau máy quay — vẽ sát vào chân máy
+    const [sx,sy]=behind?iso(a.x+0.5-(cs.x-o.gx)*.42,a.y+0.5-(cs.y-o.gy)*.42):iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.t*(cam?1.5:2.5))%2;
     c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill(); c.drawImage(img,col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore(); return; }
   if(a.state==="use"&&a.useObj&&UIMGS[a.ci]){ const o=OBJS.find(b=>b.uid===a.useObj); if(o&&USE[o.id].pose==="use"){ const [sx,sy]=iso(a.x+0.5,a.y+0.5), back=(a.dir==="NW"||a.dir==="NE"), flip=(a.dir==="SE"||a.dir==="NE"), col=Math.floor(a.useT*2.5)%2;
     c.save(); c.translate(Math.round(sx),Math.round(sy+2)); if(flip) c.scale(-1,1); c.fillStyle="rgba(80,40,10,.25)"; c.beginPath(); c.ellipse(0,-.5,6,2.3,0,0,Math.PI*2); c.fill(); c.drawImage(UIMGS[a.ci],col*96,(back?1:0)*128,96,128,-12,-31,24,32); c.restore(); return; } }
