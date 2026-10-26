@@ -51,11 +51,17 @@ function commitRoster(){
  GS.staffStress=Object.fromEntries(AG.map(a=>[CHARS[a.ci].id,Math.round(a.stress||0)]));
  save();updatePanels();renderStaff();
 }
+// 26/10: kiểm tra bàn trống TRƯỚC khi trừ tiền tuyển (ghế làm việc − người cần bàn; không tính linh vật và người đứng quầy).
+const WORK_CHAIRS=['office_chair_blue','ergo_chair'];
+function workSeatCount(){if(typeof seatsOf!=='function')return Infinity;return OBJS.filter(o=>WORK_CHAIRS.includes(o.id)).reduce((n,o)=>n+seatsOf(o).length,0);}
+function deskUsers(){return AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length;}
+function freeDesks(){return workSeatCount()-deskUsers();}
 function hireStaff(id){
  if(typeof agencyLevel==='function'&&agencyLevel()<roleMinLv(STAFF_ROLE[id])){toast(`${STAFF_ROLE[id]} mở ở cấp agency ${roleMinLv(STAFF_ROLE[id])}`,'err');return;}
  if(typeof bootEnsure==='function')bootEnsure(CHARS.find(c=>c.id===id));
  const ci=CHARS.findIndex(c=>c.id===id);
  if(ci<0||id===MASCOT_ID||AG.some(a=>a.ci===ci))return;
+ if(CHARS[ci].id!==MASCOT_ID&&freeDesks()<=0){toast(`Chưa có bàn trống cho ${staffName(id)}: đặt thêm bàn + ghế làm việc (Xây dựng → Nội thất) rồi tuyển. Chưa trừ tiền.`,'err');return;}
  const cost=hireCost();if(cash<cost){toast(`Cần ${cost} tr để tuyển ${staffName(id)}`,'err');return;}
  // Người mới đi bộ từ đầu vỉa hè vào cửa chính như ngày đầu đi làm.
  cash=Math.round((cash-cost)*100)/100;
@@ -64,7 +70,7 @@ function hireStaff(id){
  startArrival(a,.3);   // đi bộ từ đầu vỉa hè vào văn phòng
  AG.push(a);
  pendingDismiss=null;addOfficeNews("staff",`Đã tuyển ${staffName(id)} · ${cost} tr`);commitRoster();hud();
- if(!a.mascot&&!a.seat)toast(`Đã tuyển ${staffName(id)} · chưa có bàn trống: đặt thêm bàn hoặc mở khu mới`,'err');
+ if(!a.mascot&&freeDesks()<0)toast(`Đã tuyển ${staffName(id)} · chưa có bàn trống: đặt thêm bàn hoặc mở khu mới`,'err');
  else toast(`Đã tuyển ${staffName(id)} · −${cost} tr`,'ok');
 }
 function dismissStaff(id){
@@ -98,7 +104,7 @@ function renderStaff(){
  });
  // V15: phần Tuyển dụng là tab riêng trong Đội ngũ — các phần tử data-sec="hire" chỉ hiện ở tab đó (CSS theo #staff[data-tab]).
  const free=CHARS.filter(c=>!AG.some(a=>CHARS[a.ci].id===c.id));
- const hn=document.createElement('p');hn.className='hub-note';hn.dataset.sec='hire';hn.textContent=`${AG.length}/15 người · Cần bàn trống`;list.append(hn);
+ const hn=document.createElement('p');hn.className='hub-note';hn.dataset.sec='hire';{const fd=freeDesks();hn.textContent=`${AG.length}/15 người · ${fd>0?`Còn ${fd} bàn trống`:'Hết bàn trống: đặt thêm bàn + ghế để tuyển'}`;}list.append(hn);
  const heading=document.createElement('div');heading.className='cg2';heading.dataset.sec='hire';heading.textContent='Ứng viên';list.append(heading);
  const starId=typeof starCandidate==='function'?starCandidate(free):null;
  if(starId){const sn=document.createElement('p');sn.className='hub-note';sn.dataset.sec='hire';sn.innerHTML=`<b>HR giới thiệu</b>: ${staffName(starId)} làm việc rất tốt (nhanh hơn 20%). Mỗi ngày HR giới thiệu 1 người.`;list.append(sn);}
@@ -106,14 +112,15 @@ function renderStaff(){
   const star=c.id===starId;   // V17: có HR trong đội → 1 ứng viên làm rất tốt được làm nổi bật mỗi ngày
   const card=document.createElement('div');card.className='pack'+(star?' star-cand':'');card.style.gridTemplateColumns='48px minmax(0,1fr) auto';
   const name=document.createElement('span');const title=document.createElement('b');title.textContent=staffName(c.id);const sub=document.createElement('small');sub.style.cssText='display:block;font-size:11px';sub.textContent=c.id===MASCOT_ID?'Linh vật · không làm job, giảm stress người xung quanh':roleOf(c.id)+(typeof salaryRate==='function'?` · Lương ${fmt(salaryRate(c.id,star))}/ngày`:'')+(star?' · ⭐ Ứng viên nổi bật · làm nhanh hơn 20%':'');name.append(title,sub);const b=document.createElement('button');const needLv=typeof roleMinLv==='function'?roleMinLv(STAFF_ROLE[c.id]):1,lockedRole=typeof agencyLevel==='function'&&agencyLevel()<needLv;   // 15/10: bộ phận mở theo cấp agency
-  if(lockedRole){b.className='btn c';b.textContent=`🔒 Cấp ${needLv}`;b.setAttribute('aria-disabled','true');b.onclick=()=>toast(`${roleOf(c.id)} mở ở cấp agency ${needLv}`,'err');}else{b.className='btn g';b.textContent=`Tuyển · ${hireCost()} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${hireCost()} tr`);b.onclick=()=>hireStaff(c.id);}card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
+  if(lockedRole){b.className='btn c';b.textContent=`🔒 Cấp ${needLv}`;b.setAttribute('aria-disabled','true');b.onclick=()=>toast(`${roleOf(c.id)} mở ở cấp agency ${needLv}`,'err');}else if(c.id!==MASCOT_ID&&freeDesks()<=0){b.className='btn c';b.textContent='Cần bàn trống';b.setAttribute('aria-disabled','true');b.onclick=()=>hireStaff(c.id);}else{b.className='btn g';b.textContent=`Tuyển · ${hireCost()} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${hireCost()} tr`);b.onclick=()=>hireStaff(c.id);}card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
  }
 }
 
+const REST_MIN_STRESS=5;   // 26/10: stress dưới 5% thì nút Cho nghỉ tắt, bấm vẫn có thông báo
 function restStaff(a){
  if(!AG.includes(a)||a.away)return false;
  if(closingOffice||a.collection||a.meetingJob!=null||a.receptionUid!=null){toast('Nhân viên đang có nhiệm vụ; hãy cho nghỉ sau khi hoàn tất.','err');return false;}
- if(a.stress<=0)return false;
+ if(a.stress<(typeof REST_MIN_STRESS!=="undefined"?REST_MIN_STRESS:5)){toast(`${staffName(CHARS[a.ci].id)} đang thoải mái (stress ${Math.round(a.stress)}%), chưa cần nghỉ.`,'ok');return false;}
  const id=CHARS[a.ci].id,now=GS.day*1440+GS.min;
  const remaining=restCooldown(a);if(remaining){toast(`Cần chờ ${remaining} phút game trước lần nghỉ tiếp theo.`, 'err');return false;}
  if(!GS.staffRestUntil)GS.staffRestUntil={};GS.staffRestUntil[id]=now+30;
@@ -122,7 +129,7 @@ function restStaff(a){
  if(a.useObj){BUSY.delete(a.useObj);a.useObj=null;}
  a.react=null;a.path=[];
  if(a.state!=='burn'||a.stress<60){a.state='wander';a.roam=2;a.wait=.5;}
- dq('rest');save();hud();toast(staffName(CHARS[a.ci].id)+' được nghỉ ngơi','ok');return true;
+ dq('rest');save();hud();toast(`${staffName(CHARS[a.ci].id)} được nghỉ · stress còn ${Math.round(a.stress)}% · cho nghỉ tiếp sau 30 phút game`,'ok');return true;
 }
 
 function restCooldown(a){return Math.max(0,Math.ceil((GS.staffRestUntil?.[CHARS[a.ci].id]||0)-(GS.day*1440+GS.min)));}

@@ -28,9 +28,9 @@ test('khôi phục đội gắn chức danh, cờ linh vật và người sáng 
  assert.equal(by('03_Pali').role,'Account');assert.equal(by('01_Huy').founder,true);
  assert.equal(by('09_Vit_Vang').mascot,true);assert.equal(by('09_Vit_Vang').stress,0);
 });
-test('người mới tuyển đi bộ từ đầu vỉa hè vào cửa chính; thiếu bàn thì báo, linh vật thì không',()=>{
+test('người mới tuyển đi bộ từ đầu vỉa hè vào cửa chính; linh vật thì không tuyển',()=>{
  const c=staffCtx();c.restoreRoster();c.hireStaff('10_Con_LT');const a=c.AG.at(-1);
- assert.equal(a.state,'arrive');assert.deepEqual([a.x,a.y],[-14,58]);assert.deepEqual(a.path.at(-1),[31,56]);assert.equal(a.role,'Account');assert.equal(c.toasts.at(-1)[1],'err');
+ assert.equal(a.state,'arrive');assert.deepEqual([a.x,a.y],[-14,58]);assert.deepEqual(a.path.at(-1),[31,56]);assert.equal(a.role,'Account');
  const n=c.AG.length,cash=c.cash;c.hireStaff('09_Vit_Vang');assert.equal(c.AG.length,n,'Vịt Vàng có sẵn từ đầu, không tuyển');assert.equal(c.cash,cash);
 });
 
@@ -128,4 +128,12 @@ test('nhóm bàn+ghế vướng tường bị bỏ cả nhóm, không để gh�
  for(const id of ['01_Huy','03_Pali'])assert.equal(c.OBJS.find(o=>o.uid===c.GS.homeSeats[id]).id,'office_chair_blue');
  const blockedCounter=starterCtx([{uid:9,id:'potted_plant',gx:31,gy:52,rot:0}]);blockedCounter.applyStarterOffice();
  assert.ok(!blockedCounter.OBJS.some(o=>o.id==='reception_counter'));assert.equal(blockedCounter.OBJS.filter(o=>o.id==='potted_plant').length,1);
+});
+
+test('26/10: hết bàn trống thì không tuyển và không trừ tiền; còn bàn thì tuyển được',()=>{
+ const c=staffCtx(['01_Huy','03_Pali','09_Vit_Vang']);c.restoreRoster();
+ c.OBJS=[{uid:1,id:'office_chair_blue'}];c.seatsOf=()=>[{}];vm.runInContext('',c);
+ const cash=c.cash,n=c.AG.length;c.hireStaff('10_Con_LT');
+ assert.equal(c.AG.length,n,'1 ghế, đã có Pali dùng → không tuyển');assert.equal(c.cash,cash,'không trừ tiền');assert.match(c.toasts.at(-1)[0],/Chưa có bàn trống/);
+ c.OBJS.push({uid:2,id:'office_chair_blue'});c.hireStaff('10_Con_LT');assert.equal(c.AG.length,n+1);assert.equal(c.cash,cash-20);
 });

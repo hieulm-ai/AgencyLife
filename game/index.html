@@ -10,7 +10,7 @@
 (function(){
  const cfg={"url": "https://rezhvxgpkryqqqttynie.supabase.co", "anonKey": "sb_publishable_Ym5qwKKisXYnAaByJf_7Aw_JYgZ-Qsp"};
  if(!cfg||!cfg.url||!cfg.anonKey||/^(localhost|127\.|0\.0\.0\.0)/.test(location.hostname))return;
- const VER='261015-1744';
+ const VER='261026-1610';
  const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}};
  const ss=(k,v)=>{try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v);}catch(e){return null;}};
  let dev=ls('5bit.tm.dev');if(!dev){dev=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36)).slice(0,36);ls('5bit.tm.dev',dev);}
@@ -911,6 +911,9 @@ body:has(#tour:not([hidden])) #earlyPlay{display:none!important}
 @media(max-width:1000px){#nav .nb:not(.crown-wide) .bdg,#nav .crown-wide .bdg{top:-7px!important;right:-7px!important;min-width:22px!important;height:22px!important;font-size:12px!important}}
 @media(max-height:500px) and (orientation:landscape){#nav .bdg{transform:none!important;top:-6px!important;right:-6px!important;min-width:18px!important;height:18px!important;font-size:11px!important;line-height:18px!important;border-width:1.5px!important}}
 
+/* 26/10: lỗi tên agency trống */
+.intro-name .intro-err{display:block;min-height:0;color:#C0392B;font-size:12px;font-weight:700;margin-top:3px}.intro-name.bad input{border-color:#E2483B!important;box-shadow:0 0 0 2px rgba(226,72,59,.25)}
+
 body.booting #wrap{visibility:hidden}
 #boot[hidden],#titleScreen[hidden]{display:none!important}
 #boot{position:fixed;inset:0;z-index:5000;background:#f6e7c7;display:grid;place-items:center;text-align:center;color:#4a2a1a;padding:24px}
@@ -1051,6 +1054,11 @@ body.booting #wrap{visibility:hidden}
 #boot .boot-runway{height:96px!important}#boot .boot-runner{width:64px!important}
 @media(max-height:500px) and (orientation:landscape){#boot .boot-stage{bottom:104px}#boot .boot-card{height:98px!important}#boot .boot-runway{height:66px!important}#boot .boot-runner{width:44px!important}}
 
+/* 26/10: nút Chơi thử không cần tài khoản trong màn Tạo tài khoản */
+.su-or{display:flex;align-items:center;gap:8px;margin:6px 0 2px;color:#9A6A3A;font-size:12px}.su-or::before,.su-or::after{content:'';flex:1;border-top:1px solid #E2C79A}
+#suGuest{width:100%}.su-guest-note{display:block;margin-top:4px;font-size:11px;line-height:1.35;color:#8A6040;text-align:center}
+@media(max-height:480px){#titleScreen .su-guest-note,#titleScreen .su-or{display:none}#titleScreen #suGuest{min-height:34px;margin-top:2px}}
+
 #dayTransition{position:absolute;inset:0;z-index:100;background:#f7f4ef;color:#fff3ce;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:auto}
 #dayTransition[hidden]{display:none}#dayTransition .vu{position:absolute;left:2%;bottom:3%;height:94%;width:48%;object-fit:contain;image-rendering:pixelated;opacity:1}
 #dayTransition .day-copy{position:relative;margin-left:30%;width:min(520px,60%);padding:28px;background:#382718e8;border:4px solid #e7ba75;border-radius:20px;box-shadow:0 12px 40px #22140955;line-height:1.8}
@@ -1061,7 +1069,7 @@ body.booting #wrap{visibility:hidden}
 </style></head><body class="booting">
 <section id="boot" role="status" aria-live="polite"><img class="boot-bg" src="assets/generated/eeb4f7b66e521a028f3791a4.webp" alt=""><div class="boot-stage"><img class="boot-chars" src="assets/generated/b8ed4c4f71d63978d79ce1d8.webp" alt="Cả đội agency và Vịt Vàng"><img class="boot-logo" src="assets/generated/b4af538028cce3f03ff7c6bd.webp" alt="Agency’s Life Tycoon"></div><div class="boot-card"><h1>AGENCY'S LIFE TYCOON</h1><div class="boot-track" id="bootTrack" style="--progress:0%"><div class="boot-runway"><span class="boot-runner"><img class="boot-vu-motion" src="assets/generated/620808419caa3f3555637142.gif" alt="Vũ à Vũ nhún nhảy"><img class="boot-vu-still" src="assets/generated/7baa5fdbbb76130a2faa4601.webp" alt="Vũ à Vũ"></span></div><progress id="bootProgress" value="0" max="100" aria-label="Tiến độ tải"></progress></div><p id="bootStatus">Đang chuẩn bị…</p><button class="btn g" id="bootRetry" hidden>Thử lại</button><p class="boot-tip">Mỗi dự án là một bước xây dựng agency của bạn.</p><p class="boot-version">V25</p></div></section>
 
-<div id="wrap"><section id="titleScreen" hidden aria-label="Màn hình chính"><img class="title-bg" src="assets/generated/eeb4f7b66e521a028f3791a4.webp" alt=""><div class="title-stage"><img class="title-chars" src="assets/generated/b8ed4c4f71d63978d79ce1d8.webp" alt="Cả đội agency"><img class="title-logo" src="assets/generated/b4af538028cce3f03ff7c6bd.webp" alt="Agency’s Life Tycoon"><div class="title-card"><div class="title-actions"><button class="btn g" id="titlePlay">Bắt đầu</button><button class="btn b" id="titleGuide">Hướng dẫn</button></div><div class="title-extra"><button id="titleSettings">Cài đặt</button><button id="titleLogin">Đăng nhập</button><button id="titleMusic">Âm nhạc</button></div></div></div><div class="title-auth" id="titleAuth" hidden><img class="title-auth-logo" src="assets/generated/b4af538028cce3f03ff7c6bd.webp" alt="Agency’s Life Tycoon"><div class="title-auth-boxes"><form class="title-auth-box" id="suForm" autocomplete="on" novalidate><h2 id="suTitle">Tạo tài khoản</h2><label class="ol-f"><span>Tên tài khoản</span><input id="suName" name="username" autocomplete="username" maxlength="32" placeholder="3–32 chữ không dấu, số, gạch dưới" autocapitalize="none" spellcheck="false"></label><label class="ol-f"><span>Mật khẩu</span><input id="suPw" name="password" type="password" autocomplete="new-password" placeholder="Ít nhất 6 ký tự"></label><p class="ol-err" id="suErr" role="alert"></p><button class="btn g" id="suGo" type="submit">Tạo tài khoản và vào chơi</button><button class="title-auth-link" id="suSwitch" type="button">Đã có tài khoản? Đăng nhập</button></form></div><div class="title-auth-icons" role="group" aria-label="Đăng nhập bằng nền tảng khác"><button class="title-auth-icon fb" type="button" data-su-oauth="facebook" aria-label="Đăng nhập bằng Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M13.5 21v-7.5h2.6l.4-3.1h-3V8.5c0-.9.3-1.5 1.6-1.5h1.6V4.2c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.3H7.9v3.1h2.6V21z"/></svg></button><button class="title-auth-icon gg" type="button" data-su-oauth="google" aria-label="Đăng nhập bằng Google" title="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2z"/><path fill="#EA4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10c.8-2.3 3-4.1 5.6-4.1z"/></svg></button><button class="title-auth-icon em" type="button" data-su-email aria-label="Đăng nhập bằng Email" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.2" fill="none" stroke="#5B2E10" stroke-width="2"/><path d="M4 7l8 6 8-6" fill="none" stroke="#5B2E10" stroke-width="2" stroke-linejoin="round"/></svg></button></div><button class="title-auth-back" type="button" data-su-back>‹ Quay lại</button></div></section>
+<div id="wrap"><section id="titleScreen" hidden aria-label="Màn hình chính"><img class="title-bg" src="assets/generated/eeb4f7b66e521a028f3791a4.webp" alt=""><div class="title-stage"><img class="title-chars" src="assets/generated/b8ed4c4f71d63978d79ce1d8.webp" alt="Cả đội agency"><img class="title-logo" src="assets/generated/b4af538028cce3f03ff7c6bd.webp" alt="Agency’s Life Tycoon"><div class="title-card"><div class="title-actions"><button class="btn g" id="titlePlay">Bắt đầu</button><button class="btn b" id="titleGuide">Hướng dẫn</button></div><div class="title-extra"><button id="titleSettings">Cài đặt</button><button id="titleLogin">Đăng nhập</button><button id="titleMusic">Âm nhạc</button></div></div></div><div class="title-auth" id="titleAuth" hidden><img class="title-auth-logo" src="assets/generated/b4af538028cce3f03ff7c6bd.webp" alt="Agency’s Life Tycoon"><div class="title-auth-boxes"><form class="title-auth-box" id="suForm" autocomplete="on" novalidate><h2 id="suTitle">Tạo tài khoản</h2><label class="ol-f"><span>Tên tài khoản</span><input id="suName" name="username" autocomplete="username" maxlength="32" placeholder="3–32 chữ không dấu, số, gạch dưới" autocapitalize="none" spellcheck="false"></label><label class="ol-f"><span>Mật khẩu</span><input id="suPw" name="password" type="password" autocomplete="new-password" placeholder="Ít nhất 6 ký tự"></label><p class="ol-err" id="suErr" role="alert"></p><button class="btn g" id="suGo" type="submit">Tạo tài khoản và vào chơi</button><button class="title-auth-link" id="suSwitch" type="button">Đã có tài khoản? Đăng nhập</button><div class="su-or"><span>hoặc</span></div><button class="btn y" id="suGuest" type="button">Chơi thử ngay · không cần tài khoản</button><small class="su-guest-note">Tiến độ lưu trên máy này. Muốn giữ khi đổi máy, tạo tài khoản sau trong Cài đặt.</small></form></div><div class="title-auth-icons" role="group" aria-label="Đăng nhập bằng nền tảng khác"><button class="title-auth-icon fb" type="button" data-su-oauth="facebook" aria-label="Đăng nhập bằng Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M13.5 21v-7.5h2.6l.4-3.1h-3V8.5c0-.9.3-1.5 1.6-1.5h1.6V4.2c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.3H7.9v3.1h2.6V21z"/></svg></button><button class="title-auth-icon gg" type="button" data-su-oauth="google" aria-label="Đăng nhập bằng Google" title="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2z"/><path fill="#EA4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10c.8-2.3 3-4.1 5.6-4.1z"/></svg></button><button class="title-auth-icon em" type="button" data-su-email aria-label="Đăng nhập bằng Email" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.2" fill="none" stroke="#5B2E10" stroke-width="2"/><path d="M4 7l8 6 8-6" fill="none" stroke="#5B2E10" stroke-width="2" stroke-linejoin="round"/></svg></button></div><button class="title-auth-back" type="button" data-su-back>‹ Quay lại</button></div></section>
 <canvas id="c" aria-label="Văn phòng isometric, toàn màn hình"></canvas>
 <div id="co" class="ov pf dark safeT safeL"><div class="av"><img id="coImg" alt="Nhân vật của bạn"><span id="cloudSt" role="img" hidden></span></div><div id="lvlBox" class="lvw"><span class="nm">TYCOON AGENCY</span><span class="lv" id="lvlTxt">Cấp 1 · mở khu tiếp: 500 tr</span><div class="pbar"><i id="lvlBar" style="width:0%"></i></div><button id="repChip" type="button" title="Danh tiếng và đánh giá của khách"><span class="rc-ic" aria-hidden="true">★</span><span class="rc-n">Agency mới</span><span class="rc-bar"><i></i></span><span class="rc-p">0</span><span class="rc-badge" hidden></span></button></div></div>
 <div id="res" class="ov safeT">
@@ -1082,7 +1090,7 @@ body.booting #wrap{visibility:hidden}
  <div class="hub-head"><span class="hub-ic" id="hubIc" aria-hidden="true"></span><h2 id="hubTitle">Công việc</h2><button id="hubX" class="hub-x" aria-label="Đóng bảng" title="Đóng (Esc)">✕</button></div>
  <div class="hub-tabs" id="hubTabs" role="tablist" aria-label="Mục trong bảng"></div>
  <div class="hub-body" id="hubBody">
-  <section id="jobs" class="hub-page" data-tab="offers" aria-label="Công việc"><details class="compact-details en-row"><summary><span class="en-line">⚡ <span id="enJob">120/120</span> · Còn hôm nay: <span id="enDayLeft">200</span>⚡</span> ⓘ</summary><p class="hub-note">Hồi 1 năng lượng mỗi 90 giây, tối đa 120, kể cả khi nghỉ hoặc đọc hướng dẫn. Hạn mức dùng 200/ngày thật không đặt lại khi sang ngày mới trong game.</p></details><div id="jobList"></div></section>
+  <section id="jobs" class="hub-page" data-tab="offers" aria-label="Công việc"><details class="compact-details en-row"><summary><span class="en-line">⚡ <span id="enJob">120/120</span> · Còn hôm nay: <span id="enDayLeft">200</span>⚡</span> ⓘ</summary><p class="hub-note">Nhận job tốn 1⚡ cho mỗi 8 giờ công (làm tròn lên). Hồi 1⚡ mỗi 90 giây thật, tối đa 120, kể cả khi tắt game. Hạn mức dùng 200⚡ mỗi ngày thật, đặt lại lúc 0:00 theo giờ trên máy (không đặt lại khi sang ngày trong game).</p></details><div id="jobList"></div></section>
   <section id="staff" class="hub-page" data-tab="team" aria-label="Đội ngũ"><div id="staffList"></div></section>
   <section id="cat" class="hub-page" aria-label="Nội thất"><p class="hub-note">Chọn món rồi bấm lên sàn để xem vị trí → <b>Đồng ý</b> · <b>Từ chối</b> · <b>Xoay</b> (R hoặc chuột phải) · <b>Vào kho</b> để mua để dành.</p><div id="storePick" class="store-pick" hidden></div><div id="catList" role="listbox"></div></section>
   <section id="pBuild" class="hub-page" aria-label="Tường và sàn"><p class="hub-note">Chọn công cụ rồi kéo trên sàn. Kéo lên tường có sẵn, kể cả tường bao quanh, để thay bằng kiểu đang chọn. Phá: bấm vào tường hoặc món đồ để bán lại (hoàn 50%); tường bao quanh trở về tường kem.</p>
@@ -3624,7 +3632,9 @@ function grantGems(n){ n=Math.max(0,Math.floor(n)||0); const g=Math.min(n,gemWee
 function gemCapNote(g,n){ return g<n?(g?` (chạm mức tối đa ${GEM_WEEK_CAP}💎/tuần)`:` · đã nhận đủ ${GEM_WEEK_CAP}💎 tuần này`):""; }
 function addGems(n,why){ const g=grantGems(n); toast(g?`${why} · +${g}💎${gemCapNote(g,n)}`:`${why}${gemCapNote(g,n)}`,"ok"); save(); return g; }
 const DQ_TPL=[["job","Hoàn thành 3 job",3,5],["ws","Mở 1 lớp workshop",1,4],["rest","Cho nhân viên nghỉ 2 lần",2,3],["place","Đặt 2 món nội thất",2,3],["energy","Dùng 60 năng lượng",60,5],["early","Xong 1 job trước hạn",1,4]];
-function today(){ return new Date().toISOString().slice(0,10); }
+// 26/10: ngày thật theo giờ trên máy (trước là giờ UTC → ở VN đặt lại lúc 7:00 sáng)
+function localDay(back=0){ const d=new Date(); d.setDate(d.getDate()-back); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+function today(){ return localDay(); }
 function ensureDQ(){ if(GS.dq&&GS.dq.date===today()) return; const pool=[...DQ_TPL].sort(()=>Math.random()-0.5).slice(0,3); GS.dq={date:today(),items:pool.map(([k,t,g,r])=>({k,t,g,r,p:0,c:0}))}; }
 function dq(k,n=1){ ensureDQ(); for(const q of GS.dq.items) if(q.k===k&&!q.c){ q.p=Math.min(q.g,q.p+n); if(q.p>=q.g){ q.c=1; addGems(q.r,`Nhiệm vụ ngày "${q.t}"`); if(typeof addXP==="function") addXP(10); } } }
 const ACH=[["jobs10","Hoàn thành 10 job",()=>GS.done>=10,5],["jobs50","Hoàn thành 50 job",()=>GS.done>=50,10],["jobs200","Hoàn thành 200 job",()=>GS.done>=200,25],
@@ -3632,7 +3642,7 @@ const ACH=[["jobs10","Hoàn thành 10 job",()=>GS.done>=10,5],["jobs50","Hoàn t
  ["rev1","Tổng doanh thu 1 tỷ",()=>GS.revTotal>=1000,5],["rev100","Tổng doanh thu 100 tỷ",()=>GS.revTotal>=100000,20],["ws10","Mở 10 lớp workshop",()=>GS.ws>=10,5]];
 function checkAch(){ for(const [k,t,f,r] of ACH) if(!GS.ach[k]&&f()){ GS.ach[k]=1; addGems(r,`Thành tựu "${t}"`); } grantAchItems(); }
 const STREAK=[2,2,3,3,4,4,7];
-function loginBonus(){ const d=today(); if(GS.lastLogin===d) return; const y=new Date(Date.now()-86400000).toISOString().slice(0,10);
+function loginBonus(){ const d=today(); if(GS.lastLogin===d) return; const y=localDay(1);
   GS.streak=(GS.lastLogin===y)?(GS.streak%7)+1:1; GS.lastLogin=d; addGems(STREAK[GS.streak-1],`Đăng nhập ngày ${GS.streak}/7`); }
 let gemTab="shop", gemSub="items";   // Cửa hàng ruby: items | skins | topup | vip
 // V15: nội dung ngăn #pGem theo tab của trung tâm đang mở — shop (Cửa hàng), skins (Đội ngũ → Trang phục),
@@ -3661,7 +3671,7 @@ function renderGemShop(){ const el=document.getElementById("gemShop"); if(!el) r
 function renderDailyQuests(){ const el=document.getElementById("dqList"); if(!el) return; ensureDQ();
   const html=gemify(GS.dq.items.map(q=>`<div class="q${q.c?" done":""}"><span>${q.t}</span><span class="rw">${q.r}💎</span><div class="pbar"><i style="width:${Math.round(q.p/q.g*100)}%"></i><span>${q.p}/${q.g}</span></div><span></span></div>`).join(""));
   if(el.dataset.sig!==html){ el.innerHTML=html; el.dataset.sig=html; } }
-function enDay(){ const d=new Date().toISOString().slice(0,10); if(!GS.enUse||GS.enUse.d!==d) GS.enUse={d,n:0}; return GS.enUse; }
+function enDay(){ const d=today(); if(!GS.enUse||GS.enUse.d!==d) GS.enUse={d,n:0}; return GS.enUse; }
 function enLeftToday(){ return Math.max(0,EN_DAY_CAP-enDay().n); }
 function canSpend(n){ if(GS.energy<n){ toast(`Thiếu năng lượng: cần ${n}⚡, đang có ${Math.floor(GS.energy)}⚡`,"err"); return false; }
   if(enLeftToday()<n){ toast(`Hôm nay chỉ còn dùng được ${enLeftToday()}⚡ (tối đa ${EN_DAY_CAP}⚡/ngày). Quay lại vào ngày mai nhé!`,"err"); return false; } return true; }
@@ -3739,11 +3749,14 @@ function jobArtwork(j){
  return index<0?`<span class="job-art" aria-hidden="true">${UIIMG('brief',40)}</span>`:`<span class="job-art job-avatar" aria-hidden="true" style="background-image:url('assets/generated/81d1b568e46e184a0f00e2a8.webp');background-position:${index%5*25}% ${Math.floor(index/5)*100}%"></span>`;
 }
 function jobHeading(j){return `<div class="job-heading">${jobArtwork(j)}<div><b>${j.name}</b><span class="job-reward">+${fmt(j.reward)}${j.vip?` <small>VIP +${j.gem}💎</small>`:''}</span></div></div>`;}
+// 26/10: không vẽ lại danh sách job khi người chơi đang chạm/bấm (tránh bấm hụt hoặc bấm nhầm job khác); khách hiện theo thứ tự đến (ổn định).
+let jobsHold=false, jobsHoldUntil=0, jobsHoldT=0;
 function renderJobs(){ const el=document.getElementById("jobList"); if(!el) return;
+  if(el.dataset.ready&&(jobsHold||performance.now()<jobsHoldUntil)){ if(!jobsHoldT) jobsHoldT=setTimeout(()=>{ jobsHoldT=0; renderJobs(); },450); return; }
   const act=productionHint()+GS.jobs.map((j,index)=>`<div class="job">${jobHeading(j)}<div class="pbar"><i style="width:${Math.min(100,j.work/j.need*100).toFixed(0)}%;background:#5DBB3F"></i><span>${Math.floor(j.work)}/${j.need} giờ công</span></div>${stageChips(j)}<div class="jm"><b>${stageLine(j)}</b><br>${meetingLabel(j)?meetingLabel(j)+"<br>":""}Hạn: hết ngày ${j.due}${GS.day>=j.due?" · <b style=\"color:#C0392B\">hôm nay</b>":""}${jobAccountLine(j)}</div><details class="compact-details" data-job-detail="${j.id}" ${teamEditorJob===j.id?"open":""}><summary>Phân công & thao tác ⋯</summary>${jobTeamUI(j)}<button class="btn c" data-pause-job="${j.id}">${j.paused?"Tiếp tục sản xuất":"Tạm dừng sản xuất"}</button>${j.paused?`<div class="jm">Giữ nguyên tiến độ và đội riêng. Nhân viên đội riêng vẫn được giữ cho job này; đổi sang đội tự động nếu muốn giải phóng họ.</div>`:""}${index?`<button class="btn b" data-priority="${j.id}">Ưu tiên làm trước</button>`:`<div class="jm">Ưu tiên số 1${meetingPending(j)?" · đội làm việc khác trong lúc chờ họp":""}</div>`}</details></div>`).join("")||'<div class="jm">Chưa nhận job nào. Chọn một job bên dưới.</div>';
   const receptionHint=!hasItem("reception_counter")?`<div class="job"><b>Đặt quầy lễ tân để nhận việc</b><div class="jm">Khách cần gặp bạn (lễ tân) tại quầy trước khi giao job. Chừa lối đi ở cả phía khách và phía nhân viên.</div><button class="btn g" data-reception>Chọn quầy lễ tân · ${fmt(FBY.reception_counter.price)}</button></div>`:!receptionPair()?'<div class="job"><b>Quầy lễ tân đang thiếu lối đi</b><div class="jm">Chừa ô trống ở hai phía quầy và đường thông từ cửa chính để khách gặp nhân viên.</div></div>':"";
   const del=pickupUI()+collectionUI()||'<p class="hub-note">Chưa có sản phẩm chờ bàn giao hay công nợ cần thu.</p>';
-  const off=receptionHint+GS.offers.map(j=>{ const miss=missingReq(j); return `<div class="job off">${jobHeading(j)}<div class="job-chips"><span>⚡ ${j.en||Math.ceil(j.need/2)}</span><span>${j.need} giờ công</span><span>${j.days} ngày</span>${j.invoice?'<span>Trả sau</span>':''}${needsMeeting(j)?'<span>Họp 20′</span>':''}</div><details class="compact-details"><summary>Chi tiết ⓘ</summary><div class="jm">${j.req.length?'Cần '+j.req.map(r=>ITEM_NAME[r]).join(', '):'Không cần thiết bị thêm'}${j.invoice?' · Cử người thu tiền sau bàn giao':''}</div>${j.received?offerCapacityUI(j):'<div class="jm">Chờ khách giao yêu cầu ở quầy lễ tân.</div>'}</details><div class="job-actions"><button class="btn ${miss.length?"r":"g"}" data-acc="${j.id}" ${miss.length?'aria-disabled="true"':""}>${miss.length?"Thiếu "+miss.map(m=>ITEM_NAME[m]).join(", "):!j.received?"Chờ lễ tân":"Nhận job"}</button><button class="btn rd" data-decline="${j.id}" ${!j.received?'disabled title="Chờ khách giao yêu cầu"':''} aria-label="Từ chối job: ${j.name}">Từ chối job</button></div></div>`; }).join("");
+  const off=receptionHint+[...GS.offers].sort((p,q)=>p.id-q.id).map(j=>{ const miss=missingReq(j); return `<div class="job off">${jobHeading(j)}<div class="job-chips"><span>⚡ ${j.en||Math.ceil(j.need/2)}</span><span>${j.need} giờ công</span><span>${j.days} ngày</span>${j.invoice?'<span>Trả sau</span>':''}${needsMeeting(j)?'<span>Họp 20′</span>':''}</div><details class="compact-details"><summary>Chi tiết ⓘ</summary><div class="jm">${j.req.length?'Cần '+j.req.map(r=>ITEM_NAME[r]).join(', '):'Không cần thiết bị thêm'}${j.invoice?' · Cử người thu tiền sau bàn giao':''}</div>${j.received?offerCapacityUI(j):'<div class="jm">Chờ khách giao yêu cầu ở quầy lễ tân.</div>'}</details><div class="job-actions"><button class="btn ${miss.length?"r":"g"}" data-acc="${j.id}" ${miss.length?'aria-disabled="true"':""}>${miss.length?"Thiếu "+miss.map(m=>ITEM_NAME[m]).join(", "):!j.received?"Chờ lễ tân":"Nhận job"}</button><button class="btn rd" data-decline="${j.id}" ${!j.received?'disabled title="Chờ khách giao yêu cầu"':''} aria-label="Từ chối job: ${j.name}">Từ chối job</button></div></div>`; }).join("");
   const M=lvlMul(), mt=OBJS.filter(o=>o.id==="meeting_table").length, seatsMeet=OBJS.filter(o=>o.id==="meeting_table"||o.id==="round_table").reduce((n,o)=>n+seatsOf(o).length,0);
   const avgJob=17*M, retDaily=Math.round(0.15*avgJob*10)/10, wsRev=Math.round(Math.min(16,seatsMeet)*2*M*10)/10;
   const srcs=[];
@@ -3755,7 +3768,7 @@ function renderJobs(){ const el=document.getElementById("jobList"); if(!el) retu
   srcs.push(`<div class="job off"><div class="jt"><b>Bán template số</b><span class="num">${(typeof featureOpen==="function"?featureOpen("templates"):lvl()>=3)?GS.templates+"/20 mẫu":"cấp "+(typeof FEATURE_LV!=="undefined"?FEATURE_LV.templates:3)}</span></div><div class="jm">Mỗi job thiết kế xong tạo 1 mẫu; mỗi mẫu +${fmt(Math.round(0.5*M*10)/10)}/ngày</div></div>`);
   srcs.push(`<div class="job off"><div class="jt"><b>Giải thưởng sáng tạo</b><span class="num">${(typeof featureOpen==="function"?featureOpen("award"):lvl()>=4)?GS.weekDone+"/10 job":"cấp "+(typeof FEATURE_LV!=="undefined"?FEATURE_LV.award:4)}</span></div><div class="jm">Mỗi 7 ngày, xong ≥ 10 job: thưởng 25% giá khu kế tiếp</div></div>`);
   const srcHtml=srcs.map((html,i)=>html.replace('<div class="job off">',`<div class="job off income-card"><span class="income-icon">${UIIMG(['brief','book','shop','chart','trophy'][i],30)}</span>`).replace(/<div class="jm">(.*?)<\/div>/g,(_,text)=>text.startsWith('Мở')||text.startsWith('Mở')||text.startsWith('Cần')?`<div class="jm">${text}</div>`:`<details class="compact-details"><summary>Điều kiện ⓘ</summary><div class="jm">${text}</div></details>`)).join("");
-  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><div id="jOff" class="hub-list"></div><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details></div><div class="jsec" data-sec="active"><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Lễ tân → Account (brief) → Planner (chia việc) → Content → Design. Giá trị job quyết định khối lượng công việc. Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1;
+  if(!el.dataset.ready){ el.innerHTML='<div class="jsec" data-sec="offers"><div id="jOff" class="hub-list"></div><details class="compact-details"><summary>Cách nhận job ⓘ</summary><p class="hub-note">Khách giao brief ở quầy lễ tân xong thì bấm <b>Nhận job</b> hoặc <b>Từ chối job</b>.</p></details></div><div class="jsec" data-sec="active"><div class="cg2" id="jaH"></div><button class="btn b" id="sortJobs" data-sort-deadline>Xếp theo hạn giao</button><div id="jAct" class="hub-list"></div><details class="compact-details"><summary>Quy trình ⓘ</summary><p class="hub-note">Lễ tân → Account (brief) → Planner (chia việc) → Content → Design. Giá trị job quyết định khối lượng công việc. Xong bước nào, người làm mang hồ sơ sang bàn người làm bước kế. Thiếu bộ phận thì người khác làm thay, chậm hơn. Trễ hạn mất job.</p></details></div><div class="jsec" data-sec="deliver"><p class="hub-note">Job thường trả tiền ngay khi xong; job thanh toán sau cần cử người đi thu trước 20:00.</p><div id="jDel" class="hub-list"></div></div><div class="jsec" data-sec="income"><div id="jSrc" class="hub-list"></div></div>'; el.dataset.ready=1; el.addEventListener("pointerdown",()=>{ jobsHold=true; }); const rel=()=>{ if(jobsHold){ jobsHold=false; jobsHoldUntil=performance.now()+350; } }; addEventListener("pointerup",rel); addEventListener("pointercancel",rel); el.addEventListener("scroll",()=>{ jobsHoldUntil=performance.now()+350; },{passive:true});
     el.addEventListener("click",e=>{ if(e.target.closest("[data-sort-deadline]")){sortJobsByDeadline();return;} const pause=e.target.closest("[data-pause-job]");if(pause){toggleJobPaused(+pause.dataset.pauseJob);return;} const decline=e.target.closest("[data-decline]");if(decline){const id=+decline.dataset.decline;const offer=GS.offers.find(j=>j.id===id);if(offer)askConfirm({title:`Từ chối ${offer.name}?`,text:"Khách sẽ ra về, không mất coin hay danh tiếng.",ok:"Từ chối job",danger:true}).then(ok=>{if(ok)declineOffer(id);});return;} const workplace=e.target.closest("[data-workplace]");if(workplace){fSel=workplace.dataset.workplace;fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt, chừa ô ghế và lối vào","ok");return;} const collect=e.target.closest("[data-collect]");if(collect){sendCollector(+collect.dataset.collect,collect.dataset.person);return;} const editor=e.target.closest("[data-team-edit]");if(editor){const id=+editor.dataset.teamEdit;teamEditorJob=teamEditorJob===id?null:id;renderJobs();return;} const team=e.target.closest("[data-team-job]");if(team){setJobStaff(+team.dataset.teamJob,team.dataset.teamId);return;} const priority=e.target.closest("[data-priority]");if(priority){prioritizeJob(+priority.dataset.priority);return;} if(e.target.closest("[data-reception]")){fSel="reception_counter";fRot=0;setTool("furn");document.querySelectorAll(".ci").forEach(x=>x.setAttribute("aria-selected",x.dataset.id===fSel));toast("Chọn vị trí đặt quầy; chừa lối đi hai phía","ok");return;} const b=e.target.closest("[data-acc]"); if(b) acceptJob(+b.dataset.acc); const c2=e.target.closest("[data-src]"); if(c2&&c2.getAttribute("aria-disabled")!=="true") useSource(c2.dataset.src); }); }
   { const S=document.getElementById("jSrc"); if(S.dataset.sig!==srcHtml){ S.innerHTML=gemify(srcHtml); S.dataset.sig=srcHtml; } }
   document.getElementById("sortJobs").disabled=GS.jobs.length<2;
@@ -4165,7 +4178,7 @@ function pickAgent(cx,cy){ const r=wrap.getBoundingClientRect(), wx=(cx-r.left-o
   for(const a of AG){ if(a.away)continue;const p=(a.state==="sit"&&a.seat&&a.seat.sx!=null)?[a.seat.sx,a.seat.sy-12]:(()=>{ const q=iso(a.x+0.5,a.y+0.5); return [q[0],q[1]-15]; })(); const d=Math.hypot(p[0]-wx,p[1]-wy); if(d<bd){ bd=d; best=a; } }
   const C2=document.getElementById("agentCard"); if(!best){ C2.classList.remove("open"); return; }
   const a=best, nm=staffName(CHARS[a.ci].id), st=staffActivity(a);
-  C2.innerHTML=`<span class="nm">${nm}</span><small>${roleOf(CHARS[a.ci].id)}${typeof salaryLabel==="function"?" · "+salaryLabel(CHARS[a.ci].id):""}</small><span>${st}</span><div class="pbar"><i style="width:${Math.round(a.stress)}%;background:${a.stress>75?"#E2483B":a.stress>45?"#F2A33A":"#5DBB3F"}"></i><span>STRESS ${Math.round(a.stress)}%</span></div>${a.mascot||deskBound(a)?"":`<button class="btn g" id="restBtn">${restCooldown(a)?`Chờ ${restCooldown(a)} phút game để nghỉ tiếp`:"Cho nghỉ (−25 stress)"}</button>`}${CHARS[a.ci].id===FOUNDER_ID?'<button class="btn b" id="renameBtn">Đổi tên agency</button>':""}`;
+  C2.innerHTML=`<span class="nm">${nm}</span><small>${roleOf(CHARS[a.ci].id)}${typeof salaryLabel==="function"?" · "+salaryLabel(CHARS[a.ci].id):""}</small><span>${st}</span><div class="pbar"><i style="width:${Math.round(a.stress)}%;background:${a.stress>75?"#E2483B":a.stress>45?"#F2A33A":"#5DBB3F"}"></i><span>STRESS ${Math.round(a.stress)}%</span></div>${a.mascot||deskBound(a)?"":(()=>{ const cd=restCooldown(a), low=a.stress<REST_MIN_STRESS; return `<button class="btn ${cd||low?"c":"g"}" id="restBtn"${cd||low?' aria-disabled="true"':""}>${cd?`Đang nghỉ · còn ${cd} phút game`:low?"Chưa cần nghỉ (stress thấp)":"Cho nghỉ (−25 stress)"}</button>`; })()}${CHARS[a.ci].id===FOUNDER_ID?'<button class="btn b" id="renameBtn">Đổi tên agency</button>':""}`;
   C2.style.left=Math.min(r.width-250,cx-r.left+12)+"px"; C2.style.top=Math.max(70,cy-r.top-150)+"px"; C2.classList.add("open");
   const rb=document.getElementById("restBtn"); if(rb) rb.onclick=()=>{ if(restStaff(a))C2.classList.remove("open"); };
   const nb=document.getElementById("renameBtn"); if(nb) nb.onclick=()=>{ C2.classList.remove("open"); openPlayerCard(); }; }
@@ -4292,11 +4305,17 @@ function commitRoster(){
  GS.staffStress=Object.fromEntries(AG.map(a=>[CHARS[a.ci].id,Math.round(a.stress||0)]));
  save();updatePanels();renderStaff();
 }
+// 26/10: kiểm tra bàn trống TRƯỚC khi trừ tiền tuyển (ghế làm việc − người cần bàn; không tính linh vật và người đứng quầy).
+const WORK_CHAIRS=['office_chair_blue','ergo_chair'];
+function workSeatCount(){if(typeof seatsOf!=='function')return Infinity;return OBJS.filter(o=>WORK_CHAIRS.includes(o.id)).reduce((n,o)=>n+seatsOf(o).length,0);}
+function deskUsers(){return AG.filter(a=>!a.mascot&&!a.founder&&!(typeof deskBound==='function'&&deskBound(a))).length;}
+function freeDesks(){return workSeatCount()-deskUsers();}
 function hireStaff(id){
  if(typeof agencyLevel==='function'&&agencyLevel()<roleMinLv(STAFF_ROLE[id])){toast(`${STAFF_ROLE[id]} mở ở cấp agency ${roleMinLv(STAFF_ROLE[id])}`,'err');return;}
  if(typeof bootEnsure==='function')bootEnsure(CHARS.find(c=>c.id===id));
  const ci=CHARS.findIndex(c=>c.id===id);
  if(ci<0||id===MASCOT_ID||AG.some(a=>a.ci===ci))return;
+ if(CHARS[ci].id!==MASCOT_ID&&freeDesks()<=0){toast(`Chưa có bàn trống cho ${staffName(id)}: đặt thêm bàn + ghế làm việc (Xây dựng → Nội thất) rồi tuyển. Chưa trừ tiền.`,'err');return;}
  const cost=hireCost();if(cash<cost){toast(`Cần ${cost} tr để tuyển ${staffName(id)}`,'err');return;}
  // Người mới đi bộ từ đầu vỉa hè vào cửa chính như ngày đầu đi làm.
  cash=Math.round((cash-cost)*100)/100;
@@ -4305,7 +4324,7 @@ function hireStaff(id){
  startArrival(a,.3);   // đi bộ từ đầu vỉa hè vào văn phòng
  AG.push(a);
  pendingDismiss=null;addOfficeNews("staff",`Đã tuyển ${staffName(id)} · ${cost} tr`);commitRoster();hud();
- if(!a.mascot&&!a.seat)toast(`Đã tuyển ${staffName(id)} · chưa có bàn trống: đặt thêm bàn hoặc mở khu mới`,'err');
+ if(!a.mascot&&freeDesks()<0)toast(`Đã tuyển ${staffName(id)} · chưa có bàn trống: đặt thêm bàn hoặc mở khu mới`,'err');
  else toast(`Đã tuyển ${staffName(id)} · −${cost} tr`,'ok');
 }
 function dismissStaff(id){
@@ -4339,7 +4358,7 @@ function renderStaff(){
  });
  // V15: phần Tuyển dụng là tab riêng trong Đội ngũ — các phần tử data-sec="hire" chỉ hiện ở tab đó (CSS theo #staff[data-tab]).
  const free=CHARS.filter(c=>!AG.some(a=>CHARS[a.ci].id===c.id));
- const hn=document.createElement('p');hn.className='hub-note';hn.dataset.sec='hire';hn.textContent=`${AG.length}/15 người · Cần bàn trống`;list.append(hn);
+ const hn=document.createElement('p');hn.className='hub-note';hn.dataset.sec='hire';{const fd=freeDesks();hn.textContent=`${AG.length}/15 người · ${fd>0?`Còn ${fd} bàn trống`:'Hết bàn trống: đặt thêm bàn + ghế để tuyển'}`;}list.append(hn);
  const heading=document.createElement('div');heading.className='cg2';heading.dataset.sec='hire';heading.textContent='Ứng viên';list.append(heading);
  const starId=typeof starCandidate==='function'?starCandidate(free):null;
  if(starId){const sn=document.createElement('p');sn.className='hub-note';sn.dataset.sec='hire';sn.innerHTML=`<b>HR giới thiệu</b>: ${staffName(starId)} làm việc rất tốt (nhanh hơn 20%). Mỗi ngày HR giới thiệu 1 người.`;list.append(sn);}
@@ -4347,14 +4366,15 @@ function renderStaff(){
   const star=c.id===starId;   // V17: có HR trong đội → 1 ứng viên làm rất tốt được làm nổi bật mỗi ngày
   const card=document.createElement('div');card.className='pack'+(star?' star-cand':'');card.style.gridTemplateColumns='48px minmax(0,1fr) auto';
   const name=document.createElement('span');const title=document.createElement('b');title.textContent=staffName(c.id);const sub=document.createElement('small');sub.style.cssText='display:block;font-size:11px';sub.textContent=c.id===MASCOT_ID?'Linh vật · không làm job, giảm stress người xung quanh':roleOf(c.id)+(typeof salaryRate==='function'?` · Lương ${fmt(salaryRate(c.id,star))}/ngày`:'')+(star?' · ⭐ Ứng viên nổi bật · làm nhanh hơn 20%':'');name.append(title,sub);const b=document.createElement('button');const needLv=typeof roleMinLv==='function'?roleMinLv(STAFF_ROLE[c.id]):1,lockedRole=typeof agencyLevel==='function'&&agencyLevel()<needLv;   // 15/10: bộ phận mở theo cấp agency
-  if(lockedRole){b.className='btn c';b.textContent=`🔒 Cấp ${needLv}`;b.setAttribute('aria-disabled','true');b.onclick=()=>toast(`${roleOf(c.id)} mở ở cấp agency ${needLv}`,'err');}else{b.className='btn g';b.textContent=`Tuyển · ${hireCost()} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${hireCost()} tr`);b.onclick=()=>hireStaff(c.id);}card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
+  if(lockedRole){b.className='btn c';b.textContent=`🔒 Cấp ${needLv}`;b.setAttribute('aria-disabled','true');b.onclick=()=>toast(`${roleOf(c.id)} mở ở cấp agency ${needLv}`,'err');}else if(c.id!==MASCOT_ID&&freeDesks()<=0){b.className='btn c';b.textContent='Cần bàn trống';b.setAttribute('aria-disabled','true');b.onclick=()=>hireStaff(c.id);}else{b.className='btn g';b.textContent=`Tuyển · ${hireCost()} tr`;b.setAttribute('aria-label',`Tuyển ${staffName(c.id)}: ${hireCost()} tr`);b.onclick=()=>hireStaff(c.id);}card.dataset.sec='hire';const ava=document.createElement('span');ava.innerHTML=staffAvatar(c.id);card.append(ava,name,b);list.append(card);
  }
 }
 
+const REST_MIN_STRESS=5;   // 26/10: stress dưới 5% thì nút Cho nghỉ tắt, bấm vẫn có thông báo
 function restStaff(a){
  if(!AG.includes(a)||a.away)return false;
  if(closingOffice||a.collection||a.meetingJob!=null||a.receptionUid!=null){toast('Nhân viên đang có nhiệm vụ; hãy cho nghỉ sau khi hoàn tất.','err');return false;}
- if(a.stress<=0)return false;
+ if(a.stress<(typeof REST_MIN_STRESS!=="undefined"?REST_MIN_STRESS:5)){toast(`${staffName(CHARS[a.ci].id)} đang thoải mái (stress ${Math.round(a.stress)}%), chưa cần nghỉ.`,'ok');return false;}
  const id=CHARS[a.ci].id,now=GS.day*1440+GS.min;
  const remaining=restCooldown(a);if(remaining){toast(`Cần chờ ${remaining} phút game trước lần nghỉ tiếp theo.`, 'err');return false;}
  if(!GS.staffRestUntil)GS.staffRestUntil={};GS.staffRestUntil[id]=now+30;
@@ -4363,7 +4383,7 @@ function restStaff(a){
  if(a.useObj){BUSY.delete(a.useObj);a.useObj=null;}
  a.react=null;a.path=[];
  if(a.state!=='burn'||a.stress<60){a.state='wander';a.roam=2;a.wait=.5;}
- dq('rest');save();hud();toast(staffName(CHARS[a.ci].id)+' được nghỉ ngơi','ok');return true;
+ dq('rest');save();hud();toast(`${staffName(CHARS[a.ci].id)} được nghỉ · stress còn ${Math.round(a.stress)}% · cho nghỉ tiếp sau 30 phút game`,'ok');return true;
 }
 
 function restCooldown(a){return Math.max(0,Math.ceil((GS.staffRestUntil?.[CHARS[a.ci].id]||0)-(GS.day*1440+GS.min)));}
@@ -4615,12 +4635,12 @@ function openIntro(fresh){
   body.querySelector('[data-guide]').onclick=()=>openGuide(0);
   body.querySelector('[data-go="preset"]').focus();
  }
- function nameRow(){return `<label class="intro-name">Tên agency của bạn<input id="introName" maxlength="${AGENCY_NAME_MAX}" autocomplete="off" placeholder="${AGENCY_PLACEHOLDER}" value=""></label>`;}
+ function nameRow(){return `<label class="intro-name">Tên agency của bạn<input id="introName" maxlength="${AGENCY_NAME_MAX}" autocomplete="off" placeholder="${AGENCY_PLACEHOLDER}" value=""><span class="intro-err" role="alert"></span></label>`;}
  function actions(label){return `<div class="intro-act"><button class="btn c" id="introBack">Quay lại</button><button class="btn g" id="introGo">${label||(introFresh?"Tiếp: chọn đồng hành":"Bắt đầu")}</button></div>`;}
  // Ván mới: kiểm tên agency rồi sang bước chọn đồng hành; bản lưu cũ giữ đội hiện có nên bắt đầu luôn.
  function next(choice){
   if(!introFresh)return confirmIntro(choice);
-  if(!sanitizeName(choice.agency,AGENCY_NAME_MAX)){toast("Hãy nhập tên agency của bạn","err");body.querySelector("#introName")?.focus();return false;}
+  if(!sanitizeName(choice.agency,AGENCY_NAME_MAX)){introNameErr();return false;}
   companions(choice);return true;
  }
  function companions(choice){
@@ -4708,9 +4728,13 @@ function companionMessage(ids){
  return `Đã chọn ${ids.length}/2 · `+(need.length?`Cần chọn ${need.join(" và ")} thì mới khởi đầu được.`:"Cần chọn đủ 2 người.");
 }
 function starterTeam(playerId,companions){return [...new Set([playerId,...companions,MASCOT_ID])];}
+// 26/10: tên agency trống → báo ngay dưới ô nhập (toast có thể bị bảng chọn nhân vật che).
+function introNameErr(){const inp=document.getElementById("introName");toast("Hãy nhập tên agency của bạn","err");if(!inp)return;
+ const lab=inp.closest?.(".intro-name");lab?.classList.add("bad");const e=lab?.querySelector(".intro-err");if(e)e.textContent="Hãy nhập tên agency (1–"+AGENCY_NAME_MAX+" ký tự) để tiếp tục.";
+ inp.focus?.();inp.scrollIntoView?.({block:"center"});inp.addEventListener?.("input",()=>{lab?.classList.remove("bad");if(e)e.textContent="";},{once:true});}
 function confirmIntro(choice){
  const agency=sanitizeName(choice.agency,AGENCY_NAME_MAX);
- if(!agency){toast("Hãy nhập tên agency của bạn","err");document.getElementById("introName")?.focus();return false;}
+ if(!agency){introNameErr();return false;}
  const prev=FOUNDER_ID,prevAgency=GS.agencyName,prevPlayer=GS.player,prevStaff=GS.staffIds;
  const player=choice.kind==="custom"?{kind:"custom",id:"P_custom",look:{...choice.look}}:{kind:"preset",id:choice.id};
  if(!validPlayer(player)){toast("Lựa chọn nhân vật chưa hợp lệ","err");return false;}
@@ -4744,7 +4768,7 @@ function guidePages(){
   {id:"reception",icon:"brief",title:"Đón khách ở quầy lễ tân",lead:"HR, Kế toán và Trợ lý luân phiên tiếp khách; người chơi hỗ trợ khi thiếu người.",
    items:["Khách xếp hàng trước quầy; bạn tiếp từng người khoảng <b>2 giây</b> để nhận brief.",
     "Mở <b>Công việc</b> (cặp hồ sơ) → tab <b>Khách chờ</b> để <b>Nhận job</b> hoặc <b>Từ chối job</b>. Từ chối không mất danh tiếng.",
-    `Nhận job tốn <b>năng lượng ⚡</b> (bằng nửa số giờ công). Khách chỉ chờ tối đa <b>${h(typeof patienceMin==='function'?patienceMin():PATIENCE_MIN)}</b> trước khi bạn nhận.`,
+    `Nhận job tốn <b>năng lượng ⚡</b>: 1⚡ cho mỗi 8 giờ công, làm tròn lên (job 16 giờ công tốn 2⚡). Khách chỉ chờ tối đa <b>${h(typeof patienceMin==='function'?patienceMin():PATIENCE_MIN)}</b> trước khi bạn nhận.`,
     "Nhận xong, bạn mang brief tới <b>Account</b> gần nhất rồi về quầy. Job bắt đầu làm ngay, không chờ giao xong.",
     (()=>{const pk=typeof founderPerk==="function"&&founderPerk();return pk?`Thế mạnh của bạn theo nghề gốc <b>${STAFF_ROLE[GS.player.id]}</b>: ${pk.t}.`:"Nhân vật chọn sẵn có thế mạnh theo nghề gốc (Sale, Account, HR…); nhân vật tự tạo thì không.";})()],
    tip:"Khách tới khi bạn đang đi giao việc sẽ đứng chờ ở quầy."},
@@ -4781,7 +4805,7 @@ function guidePages(){
    tip:"Đặt nhầm? Bấm Hoàn tác hoặc Ctrl+Z."},
   {id:"day",icon:"trophy",title:"Một ngày ở agency",lead:"Ngày làm việc từ 08:00 tới 21:00; tan làm xong, ngày mới tự bắt đầu.",
    items:["1 phút game trôi trong <b>1 giây thật</b>: một ngày làm việc (13 giờ game) dài khoảng 13 phút.",
-    `Năng lượng ⚡ hồi 1 điểm mỗi ${EN_REGEN_S} giây thật, tối đa ${EN_MAX}; mỗi ngày dùng tối đa ${EN_DAY_CAP}.`,
+    `Năng lượng ⚡ hồi 1 điểm mỗi ${EN_REGEN_S} giây thật, tối đa ${EN_MAX}; mỗi ngày thật dùng tối đa ${EN_DAY_CAP} (đặt lại lúc 0:00 theo giờ trên máy, không theo ngày trong game).`,
     "<b>Thành tựu</b> (cúp): nhiệm vụ, quà đăng nhập, Pass tuần và thành tựu cho thêm ruby; một số mốc tặng vật phẩm vào <b>Kho</b>.",
     "<b>Hôm nay</b> (biểu đồ, góc trên phải) tổng kết ngày trước và nhắc job sắp đến hạn, công nợ, người stress cao."],
    tip:"Khi bạn ẩn tab, giờ game và kiên nhẫn của khách dừng lại; năng lượng vẫn hồi."},
@@ -4853,14 +4877,16 @@ function closeAllPanels(){   // V15: mọi bảng nằm trong 1 ngăn #hub
  if(typeof setTool==="function"&&tool!=="pan")setTool("pan",{hub:true});
 }
 function acceptButton(){return [...document.querySelectorAll("#jOff [data-acc]")].find(b=>b.getAttribute("aria-disabled")!=="true"&&/Nhận job/.test(b.textContent))||null;}
+function tourJobsFull(){return typeof jobCapacity==="function"&&GS.jobs.length>=jobCapacity();}
 const TOUR=[
  {id:"me",rect:founderRect,text:"Đây là bạn, chủ agency. Chạm vào nhân vật của bạn.",tap:true,after:closeAllPanels},
  {id:"wait",rect:counterRect,text:"Khách sẽ xếp hàng trước quầy để giao yêu cầu. Đang tua nhanh tới khi khách đầu tiên giao xong…",
   start(){tourSpeed=GS.speed;GS.speed=3;},done:()=>GS.offers.some(o=>o.received),end(){if(tourSpeed!=null){GS.speed=tourSpeed;tourSpeed=null;}},passive:true},
  {id:"jobs",rect:()=>domRect("#bJobs"),text:"Khách đã giao yêu cầu. Chạm Công việc.",tap:true,keepOpen:true},
- {id:"accept",rect:()=>domRect(acceptButton),text:"Chạm Nhận job để nhận việc của khách.",
-  start(){tourState.jobs=GS.jobs.length;openHub("work","offers",{keep:true});acceptButton()?.scrollIntoView({block:"center"});},
-  done:()=>GS.jobs.length>tourState.jobs,fallback:"Chưa có job nhận được ngay (thiếu đồ hoặc năng lượng). Bấm Tiếp để xem phần sau.",after:closeAllPanels},
+ // 26/10: đã nhận đủ job (vd. chọn brief cho cả 2 khách đầu) thì không bắt chạm Nhận job nữa: mở tab Đang làm và cho bấm Tiếp.
+ {id:"accept",rect:()=>tourJobsFull()?null:domRect(acceptButton),text:"Chạm Nhận job để nhận việc của khách.",
+  start(){tourState.jobs=GS.jobs.length;const full=tourJobsFull();openHub("work",full?"active":"offers",{keep:true});if(!full)acceptButton()?.scrollIntoView({block:"center"});},
+  done:()=>GS.jobs.length>tourState.jobs,fallback:()=>tourJobsFull()?`Bạn đã nhận đủ ${jobCapacity()} job đang làm. Theo dõi tiến độ ở tab Đang làm; xong job sẽ nhận được thêm khách. Bấm Tiếp.`:"Chưa có job nhận được ngay (thiếu đồ hoặc năng lượng). Bấm Tiếp để xem phần sau.",after:closeAllPanels},
  {id:"handover",rect:founderRect,text:"Bạn mang brief tới nhân viên Account. Đội sẽ bắt đầu làm job.",
   start(){tourState.t=performance.now();},done:()=>{const a=tourFounder();return performance.now()-tourState.t>2500&&!(a&&a.handover);},passive:true,limit:14000},
  // V15: các bước sau mở lần lượt từng trung tâm ở thanh dưới; bảng vừa mở để nguyên cho người chơi nhìn tới khi chạm nút tiếp theo.
@@ -4920,7 +4946,7 @@ function tourLoop(){
  const age=performance.now()-tourT0;
  if(s.limit&&age>s.limit){nextTour();return;}
  const next=el.querySelector("[data-tour-next]");
- if(!r&&s.fallback){el.querySelector(".ttext").textContent=s.fallback;next.hidden=false;}
+ if(!r&&s.fallback){el.querySelector(".ttext").textContent=typeof s.fallback==="function"?s.fallback():s.fallback;next.hidden=false;}
  else if(s.passive&&age>20000)next.hidden=false;   // chờ quá lâu thì cho bấm Tiếp
  const W=innerWidth,H=innerHeight;
  const hole=r?{l:Math.max(0,r.left-pad),t:Math.max(0,r.top-pad),r:Math.min(W,r.left+r.width+pad),b:Math.min(H,r.top+r.height+pad)}:{l:W/2,t:H/2,r:W/2,b:H/2};
@@ -5595,6 +5621,7 @@ function openSignup(){
   // guestLogin tải lại trang khi thành công; cờ signup giúp vào thẳng bước chọn nhân vật sau khi tải lại.
   try{await guestLogin(name.value,pw.value,mode==='create');}catch(e){signupMark(false);err.textContent=signupErr(e);busy(false);}};
  sw.onclick=()=>setMode(mode==='create'?'login':'create');
+ const gu=$('suGuest');if(gu)gu.onclick=()=>{signupMark(false);closeSignup();enterOffice();};   // 26/10: chơi thử không cần tài khoản (lưu trên máy)
  box.querySelectorAll('[data-su-oauth]').forEach(b=>b.onclick=async()=>{err.textContent='';
   try{if(!OL.be)throw Error('no_server');signupMark(true);const u=await OL.be.signInOAuth(b.dataset.suOauth);
    if(u&&!u.redirect){signupMark(false);closeSignup();await olOnAuth(u);enterOffice();}}catch(e){signupMark(false);err.textContent=signupErr(e);}});

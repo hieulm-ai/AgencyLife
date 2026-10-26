@@ -137,3 +137,8 @@ body.booting #wrap{visibility:hidden}
 @media(orientation:portrait){#boot{--chars-h:min(40vh,calc((100vw - 24px) * .565))}}
 #boot .boot-runway{height:96px!important}#boot .boot-runner{width:64px!important}
 @media(max-height:500px) and (orientation:landscape){#boot .boot-stage{bottom:104px}#boot .boot-card{height:98px!important}#boot .boot-runway{height:66px!important}#boot .boot-runner{width:44px!important}}
+
+/* 26/10: nút Chơi thử không cần tài khoản trong màn Tạo tài khoản */
+.su-or{display:flex;align-items:center;gap:8px;margin:6px 0 2px;color:#9A6A3A;font-size:12px}.su-or::before,.su-or::after{content:'';flex:1;border-top:1px solid #E2C79A}
+#suGuest{width:100%}.su-guest-note{display:block;margin-top:4px;font-size:11px;line-height:1.35;color:#8A6040;text-align:center}
+@media(max-height:480px){#titleScreen .su-guest-note,#titleScreen .su-or{display:none}#titleScreen #suGuest{min-height:34px;margin-top:2px}}

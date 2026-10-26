@@ -149,12 +149,12 @@ function openIntro(fresh){
   body.querySelector('[data-guide]').onclick=()=>openGuide(0);
   body.querySelector('[data-go="preset"]').focus();
  }
- function nameRow(){return `<label class="intro-name">Tên agency của bạn<input id="introName" maxlength="${AGENCY_NAME_MAX}" autocomplete="off" placeholder="${AGENCY_PLACEHOLDER}" value=""></label>`;}
+ function nameRow(){return `<label class="intro-name">Tên agency của bạn<input id="introName" maxlength="${AGENCY_NAME_MAX}" autocomplete="off" placeholder="${AGENCY_PLACEHOLDER}" value=""><span class="intro-err" role="alert"></span></label>`;}
  function actions(label){return `<div class="intro-act"><button class="btn c" id="introBack">Quay lại</button><button class="btn g" id="introGo">${label||(introFresh?"Tiếp: chọn đồng hành":"Bắt đầu")}</button></div>`;}
  // Ván mới: kiểm tên agency rồi sang bước chọn đồng hành; bản lưu cũ giữ đội hiện có nên bắt đầu luôn.
  function next(choice){
   if(!introFresh)return confirmIntro(choice);
-  if(!sanitizeName(choice.agency,AGENCY_NAME_MAX)){toast("Hãy nhập tên agency của bạn","err");body.querySelector("#introName")?.focus();return false;}
+  if(!sanitizeName(choice.agency,AGENCY_NAME_MAX)){introNameErr();return false;}
   companions(choice);return true;
  }
  function companions(choice){
@@ -242,9 +242,13 @@ function companionMessage(ids){
  return `Đã chọn ${ids.length}/2 · `+(need.length?`Cần chọn ${need.join(" và ")} thì mới khởi đầu được.`:"Cần chọn đủ 2 người.");
 }
 function starterTeam(playerId,companions){return [...new Set([playerId,...companions,MASCOT_ID])];}
+// 26/10: tên agency trống → báo ngay dưới ô nhập (toast có thể bị bảng chọn nhân vật che).
+function introNameErr(){const inp=document.getElementById("introName");toast("Hãy nhập tên agency của bạn","err");if(!inp)return;
+ const lab=inp.closest?.(".intro-name");lab?.classList.add("bad");const e=lab?.querySelector(".intro-err");if(e)e.textContent="Hãy nhập tên agency (1–"+AGENCY_NAME_MAX+" ký tự) để tiếp tục.";
+ inp.focus?.();inp.scrollIntoView?.({block:"center"});inp.addEventListener?.("input",()=>{lab?.classList.remove("bad");if(e)e.textContent="";},{once:true});}
 function confirmIntro(choice){
  const agency=sanitizeName(choice.agency,AGENCY_NAME_MAX);
- if(!agency){toast("Hãy nhập tên agency của bạn","err");document.getElementById("introName")?.focus();return false;}
+ if(!agency){introNameErr();return false;}
  const prev=FOUNDER_ID,prevAgency=GS.agencyName,prevPlayer=GS.player,prevStaff=GS.staffIds;
  const player=choice.kind==="custom"?{kind:"custom",id:"P_custom",look:{...choice.look}}:{kind:"preset",id:choice.id};
  if(!validPlayer(player)){toast("Lựa chọn nhân vật chưa hợp lệ","err");return false;}

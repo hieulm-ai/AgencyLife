@@ -401,6 +401,7 @@ function openSignup(){
   // guestLogin tải lại trang khi thành công; cờ signup giúp vào thẳng bước chọn nhân vật sau khi tải lại.
   try{await guestLogin(name.value,pw.value,mode==='create');}catch(e){signupMark(false);err.textContent=signupErr(e);busy(false);}};
  sw.onclick=()=>setMode(mode==='create'?'login':'create');
+ const gu=$('suGuest');if(gu)gu.onclick=()=>{signupMark(false);closeSignup();enterOffice();};   // 26/10: chơi thử không cần tài khoản (lưu trên máy)
  box.querySelectorAll('[data-su-oauth]').forEach(b=>b.onclick=async()=>{err.textContent='';
   try{if(!OL.be)throw Error('no_server');signupMark(true);const u=await OL.be.signInOAuth(b.dataset.suOauth);
    if(u&&!u.redirect){signupMark(false);closeSignup();await olOnAuth(u);enterOffice();}}catch(e){signupMark(false);err.textContent=signupErr(e);}});

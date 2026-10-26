@@ -14,7 +14,7 @@ function guidePages(){
   {id:"reception",icon:"brief",title:"Đón khách ở quầy lễ tân",lead:"HR, Kế toán và Trợ lý luân phiên tiếp khách; người chơi hỗ trợ khi thiếu người.",
    items:["Khách xếp hàng trước quầy; bạn tiếp từng người khoảng <b>2 giây</b> để nhận brief.",
     "Mở <b>Công việc</b> (cặp hồ sơ) → tab <b>Khách chờ</b> để <b>Nhận job</b> hoặc <b>Từ chối job</b>. Từ chối không mất danh tiếng.",
-    `Nhận job tốn <b>năng lượng ⚡</b> (bằng nửa số giờ công). Khách chỉ chờ tối đa <b>${h(typeof patienceMin==='function'?patienceMin():PATIENCE_MIN)}</b> trước khi bạn nhận.`,
+    `Nhận job tốn <b>năng lượng ⚡</b>: 1⚡ cho mỗi 8 giờ công, làm tròn lên (job 16 giờ công tốn 2⚡). Khách chỉ chờ tối đa <b>${h(typeof patienceMin==='function'?patienceMin():PATIENCE_MIN)}</b> trước khi bạn nhận.`,
     "Nhận xong, bạn mang brief tới <b>Account</b> gần nhất rồi về quầy. Job bắt đầu làm ngay, không chờ giao xong.",
     (()=>{const pk=typeof founderPerk==="function"&&founderPerk();return pk?`Thế mạnh của bạn theo nghề gốc <b>${STAFF_ROLE[GS.player.id]}</b>: ${pk.t}.`:"Nhân vật chọn sẵn có thế mạnh theo nghề gốc (Sale, Account, HR…); nhân vật tự tạo thì không.";})()],
    tip:"Khách tới khi bạn đang đi giao việc sẽ đứng chờ ở quầy."},
@@ -51,7 +51,7 @@ function guidePages(){
    tip:"Đặt nhầm? Bấm Hoàn tác hoặc Ctrl+Z."},
   {id:"day",icon:"trophy",title:"Một ngày ở agency",lead:"Ngày làm việc từ 08:00 tới 21:00; tan làm xong, ngày mới tự bắt đầu.",
    items:["1 phút game trôi trong <b>1 giây thật</b>: một ngày làm việc (13 giờ game) dài khoảng 13 phút.",
-    `Năng lượng ⚡ hồi 1 điểm mỗi ${EN_REGEN_S} giây thật, tối đa ${EN_MAX}; mỗi ngày dùng tối đa ${EN_DAY_CAP}.`,
+    `Năng lượng ⚡ hồi 1 điểm mỗi ${EN_REGEN_S} giây thật, tối đa ${EN_MAX}; mỗi ngày thật dùng tối đa ${EN_DAY_CAP} (đặt lại lúc 0:00 theo giờ trên máy, không theo ngày trong game).`,
     "<b>Thành tựu</b> (cúp): nhiệm vụ, quà đăng nhập, Pass tuần và thành tựu cho thêm ruby; một số mốc tặng vật phẩm vào <b>Kho</b>.",
     "<b>Hôm nay</b> (biểu đồ, góc trên phải) tổng kết ngày trước và nhắc job sắp đến hạn, công nợ, người stress cao."],
    tip:"Khi bạn ẩn tab, giờ game và kiên nhẫn của khách dừng lại; năng lượng vẫn hồi."},
@@ -123,14 +123,16 @@ function closeAllPanels(){   // V15: mọi bảng nằm trong 1 ngăn #hub
  if(typeof setTool==="function"&&tool!=="pan")setTool("pan",{hub:true});
 }
 function acceptButton(){return [...document.querySelectorAll("#jOff [data-acc]")].find(b=>b.getAttribute("aria-disabled")!=="true"&&/Nhận job/.test(b.textContent))||null;}
+function tourJobsFull(){return typeof jobCapacity==="function"&&GS.jobs.length>=jobCapacity();}
 const TOUR=[
  {id:"me",rect:founderRect,text:"Đây là bạn, chủ agency. Chạm vào nhân vật của bạn.",tap:true,after:closeAllPanels},
  {id:"wait",rect:counterRect,text:"Khách sẽ xếp hàng trước quầy để giao yêu cầu. Đang tua nhanh tới khi khách đầu tiên giao xong…",
   start(){tourSpeed=GS.speed;GS.speed=3;},done:()=>GS.offers.some(o=>o.received),end(){if(tourSpeed!=null){GS.speed=tourSpeed;tourSpeed=null;}},passive:true},
  {id:"jobs",rect:()=>domRect("#bJobs"),text:"Khách đã giao yêu cầu. Chạm Công việc.",tap:true,keepOpen:true},
- {id:"accept",rect:()=>domRect(acceptButton),text:"Chạm Nhận job để nhận việc của khách.",
-  start(){tourState.jobs=GS.jobs.length;openHub("work","offers",{keep:true});acceptButton()?.scrollIntoView({block:"center"});},
-  done:()=>GS.jobs.length>tourState.jobs,fallback:"Chưa có job nhận được ngay (thiếu đồ hoặc năng lượng). Bấm Tiếp để xem phần sau.",after:closeAllPanels},
+ // 26/10: đã nhận đủ job (vd. chọn brief cho cả 2 khách đầu) thì không bắt chạm Nhận job nữa: mở tab Đang làm và cho bấm Tiếp.
+ {id:"accept",rect:()=>tourJobsFull()?null:domRect(acceptButton),text:"Chạm Nhận job để nhận việc của khách.",
+  start(){tourState.jobs=GS.jobs.length;const full=tourJobsFull();openHub("work",full?"active":"offers",{keep:true});if(!full)acceptButton()?.scrollIntoView({block:"center"});},
+  done:()=>GS.jobs.length>tourState.jobs,fallback:()=>tourJobsFull()?`Bạn đã nhận đủ ${jobCapacity()} job đang làm. Theo dõi tiến độ ở tab Đang làm; xong job sẽ nhận được thêm khách. Bấm Tiếp.`:"Chưa có job nhận được ngay (thiếu đồ hoặc năng lượng). Bấm Tiếp để xem phần sau.",after:closeAllPanels},
  {id:"handover",rect:founderRect,text:"Bạn mang brief tới nhân viên Account. Đội sẽ bắt đầu làm job.",
   start(){tourState.t=performance.now();},done:()=>{const a=tourFounder();return performance.now()-tourState.t>2500&&!(a&&a.handover);},passive:true,limit:14000},
  // V15: các bước sau mở lần lượt từng trung tâm ở thanh dưới; bảng vừa mở để nguyên cho người chơi nhìn tới khi chạm nút tiếp theo.
@@ -190,7 +192,7 @@ function tourLoop(){
  const age=performance.now()-tourT0;
  if(s.limit&&age>s.limit){nextTour();return;}
  const next=el.querySelector("[data-tour-next]");
- if(!r&&s.fallback){el.querySelector(".ttext").textContent=s.fallback;next.hidden=false;}
+ if(!r&&s.fallback){el.querySelector(".ttext").textContent=typeof s.fallback==="function"?s.fallback():s.fallback;next.hidden=false;}
  else if(s.passive&&age>20000)next.hidden=false;   // chờ quá lâu thì cho bấm Tiếp
  const W=innerWidth,H=innerHeight;
  const hole=r?{l:Math.max(0,r.left-pad),t:Math.max(0,r.top-pad),r:Math.min(W,r.left+r.width+pad),b:Math.min(H,r.top+r.height+pad)}:{l:W/2,t:H/2,r:W/2,b:H/2};
