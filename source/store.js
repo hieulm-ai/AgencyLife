@@ -58,7 +58,7 @@ function stashPend(){
   if(f.gem){if(GS.gems<f.gem){toast(`Thiếu ruby: cần ${f.gem}💎`,'err');return false;}}
   else if(!UNLIM&&f.price>cash+1e-9){toast(`Không đủ tiền: cần ${fmt(f.price)}`,'err');return false;}
   if(!addToStore(pend.id,1,'buy')){toast('Kho đã đủ 99 món này','err');return false;}
-  if(f.gem)GS.gems-=f.gem;else cash=Math.round((cash-f.price)*100)/100;
+  if(f.gem)GS.gems-=f.gem;else{cash=Math.round((cash-f.price)*100)/100;if(typeof ledgerSpend==='function')ledgerSpend('build',f.price);}
   undo.push({before:[],cost:f.gem?0:f.price,gem:f.gem||0,objs:null,store:before});document.getElementById('bUndo').disabled=false;
   pend=null;renderPendBar();hud();save();renderStore();
   toast(`Đã mua ${f.name} và cất vào Kho · −${f.gem?f.gem+'💎':fmt(f.price)}`,'ok');return true;
@@ -84,7 +84,7 @@ function placeFromStore(p){
  if(DESKS.has(p.id)){
   const sp=deskChairSpot(no),ch=FBY.office_chair_blue,free=at(sp.x,sp.y)===0&&!OCC.has(sp.x+','+sp.y)&&!agentTiles().has(sp.x+','+sp.y);
   if(free&&takeFromStore('office_chair_blue')){OBJS.push({uid:nextUid++,id:'office_chair_blue',gx:sp.x,gy:sp.y,rot:sp.rot});msg+=' kèm ghế trong kho';}
-  else if(free&&(UNLIM||cash>=ch.price)){OBJS.push({uid:nextUid++,id:'office_chair_blue',gx:sp.x,gy:sp.y,rot:sp.rot});cash=Math.round((cash-ch.price)*100)/100;undo[undo.length-1].cost+=ch.price;msg+=` · mua thêm ghế −${fmt(ch.price)}`;}
+  else if(free&&(UNLIM||cash>=ch.price)){OBJS.push({uid:nextUid++,id:'office_chair_blue',gx:sp.x,gy:sp.y,rot:sp.rot});cash=Math.round((cash-ch.price)*100)/100;if(typeof ledgerSpend==='function')ledgerSpend('build',ch.price);undo[undo.length-1].cost+=ch.price;msg+=` · mua thêm ghế −${fmt(ch.price)}`;}
   else{msg+=', chưa kèm được ghế (ô trước bàn không trống hoặc thiếu tiền)';kind='err';}
  }
  if(!storeCount(p.id)){storePick=null;fSel=null;document.querySelectorAll('.ci').forEach(x=>x.setAttribute('aria-selected','false'));}

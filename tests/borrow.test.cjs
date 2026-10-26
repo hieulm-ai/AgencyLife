@@ -17,14 +17,14 @@ test('mượn được người mình chưa có khi còn chỗ; không lương, 
  assert.equal(c.borrowBlock('09_Vit_Vang'),'Không mượn được người này.');
  assert.equal(c.borrowBlock('11_Juice'),'');
  assert.ok(c.startBorrow('11_Juice',{id:'u-b',agency:'Agency <B>'}));
- assert.equal(c.cash,45,'trả tiền mượn 2 × 2,5 tr');
+ assert.equal(c.cash,40,'trả tiền mượn 2 × 5 tr (lương 26/10)');
  assert.ok(has(c,'11_Juice'));assert.ok(!c.GS.staffIds.includes('11_Juice'),'người mượn không lưu vào đội');
  assert.equal(c.salaryRate('11_Juice'),0);assert.equal(c.salaryLabel('11_Juice'),'Mượn từ Agency &#60;B&#62; · về cuối ngày');
  c.dismissStaff('11_Juice');assert.ok(has(c,'11_Juice'),'không cho nghỉ việc');
  assert.equal(c.borrowBlock('12_ADM'),'Mỗi ngày game chỉ mượn được 1 người.');
 });
 test('hết chỗ làm, gần giờ đóng cửa, đang tham quan hoặc thiếu tiền thì không mượn',()=>{
- let c0=setup();c0.cash=4.9;assert.match(c0.borrowBlock('11_Juice'),/Cần 5 tr/);
+ let c0=setup();c0.cash=9.9;assert.match(c0.borrowBlock('11_Juice'),/Cần 10 tr/);
  let c=setup();c.SEATS=[{uid:1}];assert.match(c.borrowBlock('11_Juice'),/chỗ làm việc trống/);
  c=setup();c.GS.min=1200;assert.match(c.borrowBlock('11_Juice'),/20:00/);
  c=setup();c.VISIT={id:'x'};assert.match(c.borrowBlock('11_Juice'),/tham quan/);
@@ -41,5 +41,5 @@ test('tải lại giữa ngày vẫn còn người mượn; sang ngày mới th�
 });
 test('tiền mượn = tiền công = 2 × lương gốc, không cộng ★; đọc mã nhân viên từ thư',()=>{
  const c=setup();assert.equal(c.borrowIdFromItem('wage_11_juice'),'11_Juice');assert.equal(c.borrowIdFromItem('wage_x<'),null);
- assert.equal(c.borrowWage('11_Juice'),5);assert.equal(c.borrowWage('12_ADM'),6);c.GS.stars['11_Juice']=1;assert.equal(c.borrowWage('11_Juice'),5);
+ assert.equal(c.borrowWage('11_Juice'),10);assert.equal(c.borrowWage('12_ADM'),12);c.GS.stars['11_Juice']=1;assert.equal(c.borrowWage('11_Juice'),10);
 });

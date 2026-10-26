@@ -700,3 +700,11 @@ body:has(#tour:not([hidden])) #earlyPlay{display:none!important}
 
 /* 26/10: lỗi tên agency trống */
 .intro-name .intro-err{display:block;min-height:0;color:#C0392B;font-size:12px;font-weight:700;margin-top:3px}.intro-name.bad input{border-color:#E2483B!important;box-shadow:0 0 0 2px rgba(226,72,59,.25)}
+
+/* 26/10 giai đoạn A: nhãn job gấp / táo bạo / khách sắp bỏ về; báo giờ chậm khi mở bảng */
+.job-chips .chip-rush{background:#FFE1D6!important;color:#A23A1B!important;border-color:#F2A88E!important;font-weight:800}
+.job-chips .chip-bold{background:#FFF1C2!important;color:#8A5A00!important;border-color:#F0C75A!important;font-weight:800}
+.job-chips .chip-wait{background:#E2483B!important;color:#fff!important;border-color:#B8322A!important;font-weight:800;animation:chipPulse 1s ease-in-out infinite alternate}
+@keyframes chipPulse{to{opacity:.65}}
+body.slowmo .clock-pill::after{content:'chậm';position:absolute;right:-6px;top:-8px;background:#6B3512;color:#FFF6E2;font:800 10px/1 var(--rf,system-ui);padding:3px 5px;border-radius:8px}
+.clock-pill{position:relative}

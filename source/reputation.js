@@ -9,7 +9,7 @@ function ensureReputation(){
 function reputationLevel(points){let index=0;for(let i=1;i<REP_LEVELS.length;i++)if(points>=REP_LEVELS[i].min)index=i;return index;}
 function recordReputation(job,success,stars){
  const rep=ensureReputation(),before=reputationLevel(rep.points);
- const delta=success?10+(job.vip?5:0)+(GS.day<job.due?2:0)+(typeof STAR_REP!=='undefined'&&STAR_REP[stars]||0):-8;
+ const delta=success?10+(job.vip?5:0)+(GS.day<job.due?2:0)+(typeof STAR_REP!=='undefined'&&STAR_REP[stars]||0):(typeof lateRepDelta==='function'?lateRepDelta(job):-8);
  const applied=Math.max(0,rep.points+delta)-rep.points;rep.points+=applied;
  rep.history.unshift({day:GS.day,name:String(job.name),delta:applied,success,...(stars?{stars}:{})});rep.history=rep.history.slice(0,8);
  addOfficeNews(success?"job":"late",`${success?"Hoàn thành":"Trễ hạn"}: ${job.name}${stars?' · '+stars+'★':''} · danh tiếng ${applied>0?"+":""}${applied}`);

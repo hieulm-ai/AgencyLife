@@ -64,7 +64,7 @@ function hireStaff(id){
  if(CHARS[ci].id!==MASCOT_ID&&freeDesks()<=0){toast(`Chưa có bàn trống cho ${staffName(id)}: đặt thêm bàn + ghế làm việc (Xây dựng → Nội thất) rồi tuyển. Chưa trừ tiền.`,'err');return;}
  const cost=hireCost();if(cash<cost){toast(`Cần ${cost} tr để tuyển ${staffName(id)}`,'err');return;}
  // Người mới đi bộ từ đầu vỉa hè vào cửa chính như ngày đầu đi làm.
- cash=Math.round((cash-cost)*100)/100;
+ cash=Math.round((cash-cost)*100)/100;if(typeof ledgerSpend==='function')ledgerSpend('hire',cost);
  if(typeof starCandidate==='function'&&GS.starPick&&GS.starPick.id===id&&GS.starPick.day===GS.day){GS.stars=GS.stars||{};GS.stars[id]=1;}   // ứng viên nổi bật giữ hệ số làm nhanh
  const a=tagStaff({x:ENTRY[0],y:ENTRY[1],ci,path:[],dir:'NE',t:0,wait:.3,seat:null,state:'wander',sitT:0,roam:0,stress:0});
  startArrival(a,.3);   // đi bộ từ đầu vỉa hè vào văn phòng

@@ -17,7 +17,7 @@ function earlyChoose(id,kind,value){
  }else if(kind==='idea'){
   if(!GS.jobs.includes(j)||!atCreative(j))return;
   e.idea=value;
-  if(value==='bold'){j.reward=Math.round(j.reward*1.1*10)/10;const s=j.stg.find(s=>s.k==='creative');if(s){const add=s.need*.15;s.need+=add;j.need+=add;}}
+  if(value==='bold'){const s=j.stg.find(s=>s.k==='creative');if(s){const add=s.need*.15;s.need+=add;j.need+=add;}}
  }else if(kind==='review'){
   if(j.work<j.need-1e-6)return;
   e.review=value;
@@ -65,7 +65,7 @@ function earlyRender(){
  let j=GS.jobs.find(j=>j.early&&!j.early.review&&j.work>=j.need-1e-6),kind='review';
  if(!j){j=GS.jobs.find(j=>j.early&&!j.early.idea&&atCreative(j));kind='idea';}
  if(!j){j=GS.offers.find(j=>j.received&&!j.early?.brief&&!missingReq(j).length);kind='brief';}
- const choices={brief:[['clear','brief','Rõ ràng'],['playful','palette','Vui nhộn']],idea:[['safe','pen','An toàn'],['bold','star','Táo bạo · +10% thưởng']],review:[['send','clip','Gửi khách'],['polish','palette','Chỉnh thêm · +5% thưởng']]};
+ const choices={brief:[['clear','brief','Rõ ràng'],['playful','palette','Vui nhộn']],idea:[['safe','pen','An toàn'],['bold','star','Táo bạo · cược +1★']],review:[['send','clip','Gửi khách'],['polish','palette','Chỉnh thêm · +5% thưởng']]};
  const title={brief:'Chọn brief',idea:'Chọn ý tưởng',review:'Duyệt sản phẩm'};
  box.innerHTML=`<button class="early-close" aria-label="Đóng hướng dẫn" title="Đóng">×</button><b>${j?title[kind]:'Agency đầu tiên của bạn'}</b><small>${j?olEsc(j.name):'Đón khách · Làm job · Nhận thưởng'}</small>${j?`${kind==='review'?`<div class="early-preview">${jobArtwork(j)}<span>${j.early.brief==='playful'?'Vui nhộn':'Rõ ràng'} · ${j.early.idea==='bold'?'Táo bạo':'An toàn'}</span></div>`:''}<div class="early-actions">${choices[kind].map(([value,icon,label])=>`<button class="btn c" data-choice="${value}">${UIIMG(icon,28)}${label}</button>`).join('')}</div><small>Tự chọn ${kind==='review'?'Gửi khách':kind==='idea'?'An toàn':'Rõ ràng'} sau ${Math.max(0,Math.ceil(EARLY_CHOICE_MIN-(earlyNow()-(j.early?.[kind+'At']??earlyNow()))))} phút game</small>`:''}<div class="early-actions"><button class="btn c" id="earlyWater" ${GS.offers.some(o=>!o.received&&!o.earlyWater)?'':'disabled'}>${UIIMG('coffee',20)}Mời nước</button><button class="btn c" id="earlyCheer" ${(GS.earlyCheerUntil||0)>earlyNow()?'disabled':''}>${UIIMG('heart',20)}Động viên</button><button class="btn c" id="earlyBuild">${UIIMG('chair',20)}Nội thất</button></div>`;
  box.querySelector('.early-close').onclick=e=>{e.stopPropagation();earlyDismissed=true;box.remove();};

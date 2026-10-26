@@ -40,7 +40,7 @@ function borrowAgent(ci,arrive){
 function startBorrow(id,from){
  const ci=CHARS.findIndex(c=>c.id===id);if(ci<0)return false;
  if(typeof bootEnsure==='function')bootEnsure(CHARS[ci]);
- const fee=borrowWage(id);cash=Math.round((cash-fee)*100)/100;   // trả tiền mượn sau khi máy chủ đã ghi nhận lượt mượn
+ const fee=borrowWage(id);cash=Math.round((cash-fee)*100)/100;if(typeof ledgerSpend==='function')ledgerSpend('fee',fee);   // trả tiền mượn sau khi máy chủ đã ghi nhận lượt mượn
  borrowList().push({id,day:GS.day,fromId:String(from.id||''),agency:String(from.agency||'Bạn bè').slice(0,40),fee});
  AG.push(borrowAgent(ci,true));
  addOfficeNews('staff',`Mượn ${staffName(id)} từ ${from.agency} · −${fmt(fee)}, làm tới hết hôm nay`);

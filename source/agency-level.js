@@ -85,7 +85,7 @@ function zoneReliefF(o){if(!o)return 1;const p=zonePlotAt(o.gx,o.gy),z=p&&zoneFn
 function setZoneFn(id,k,paid){
  const z=ZONE_FN_BY[k];if(!z||!UNLOCKED.has(id)||id===0)return false;
  if(agencyLevel()<z.lv){toast(`${z.n} mở ở cấp ${z.lv}`,'err');return false;}
- if(paid){if(cash<ZONE_FN_CHANGE){toast(`Cần ${fmt(ZONE_FN_CHANGE)} để đổi công năng`,'err');return false;}cash=Math.round((cash-ZONE_FN_CHANGE)*100)/100;}
+ if(paid){if(cash<ZONE_FN_CHANGE){toast(`Cần ${fmt(ZONE_FN_CHANGE)} để đổi công năng`,'err');return false;}cash=Math.round((cash-ZONE_FN_CHANGE)*100)/100;if(typeof ledgerSpend==='function')ledgerSpend('fee',ZONE_FN_CHANGE);}
  GS.zoneFn=GS.zoneFn||{};GS.zoneFn[id]=k;save();hud();toast(`Khu ${id} thành ${z.n}`,'ok');
  if(typeof updatePanels==='function')updatePanels();return true;
 }
